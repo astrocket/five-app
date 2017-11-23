@@ -1,57 +1,130 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
+ * Astro Boiler App
+ * https://github.com/astrocket
+ * init, 2017.11.21
  */
-
-import React, { Component } from 'react';
+import React, {
+  Component,
+} from 'react';
 import {
-  Platform,
-  StyleSheet,
+  AsyncStorage,
   Text,
-  View
+  View,
 } from 'react-native';
+import {
+  Root,
+  StyleProvider,
+  Spinner,
+  Button,
+} from 'native-base';
+import getTheme from './native-base-theme/components';
+import platform from './native-base-theme/variables/platform';
+import BaseStyle from './src/config/BaseStyle';
+import RootNavigation from './src/config/RootNavigation';
+import {
+  observer,
+} from 'mobx-react/native';
+import ApplicationStore from './src/mobx/ApplicationStore';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+/*
+import FacebookAuth from './src/class/Auth/FacebookAuth';
+*/
 
+@observer
 export default class App extends Component<{}> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      loggedIn: false,
+    };
+  }
+
+  componentWillMount() {
+    let isAuthenticated;
+    AsyncStorage.getItem('token')
+      .then((result) => {
+        if (result) {
+          isAuthenticated = true;
+          ApplicationStore.setAuthInfo().then(() => {
+            this.setState({
+              loggedIn: isAuthenticated,
+              loading: false,
+            });
+          });
+        } else {
+          isAuthenticated = false;
+          this.setState({
+            loggedIn: isAuthenticated,
+            loading: false,
+          });
+        }
+      });
+  }
+
+  fakeAuthCallback() {
+    AsyncStorage.multiSet([
+      [ 'email', 'prime@sling.com' ],
+      [ 'token', 'test_token_prime' ],
+      [ 'key', 'test_key_prime' ],
+    ]).then(() => {
+      ApplicationStore.setAuthInfo().then(() => {
+        this.setState({
+          loggedIn: true,
+          loading: false,
+        });
+      });
+    });
+  }
+
+  authSuccessCallback() {
+    this.setState({
+      loggedIn: true,
+      loading: false,
+    });
+  }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+    const { container } = BaseStyle;
+    if (this.state.loading) {
+      return (
+        <Root>
+          <StyleProvider style={getTheme(platform)}>
+            <View style={container}>
+              <Spinner size="large"/>
+              <Text>로딩중</Text>
+            </View>
+          </StyleProvider>
+        </Root>
+      );
+    } else {
+      if (this.state.loggedIn) {
+        return (
+          <Root>
+            <StyleProvider style={getTheme(platform)}>
+              <RootNavigation/>
+            </StyleProvider>
+          </Root>
+        );
+      }
+      else {
+        return (
+          <Root>
+            <StyleProvider style={getTheme(platform)}>
+              <View style={container}>
+                {/*                                <FacebookAuth
+                                    authSuccessCallback={() => this.authSuccessCallback()}
+                                />*/}
+                <Spinner size="large"/>
+                <Button onPress={() => this.fakeAuthCallback()}>
+                  <Text>임시 로그인 하기</Text>
+                </Button>
+              </View>
+            </StyleProvider>
+          </Root>
+        );
+      }
+    }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
