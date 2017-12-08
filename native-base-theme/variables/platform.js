@@ -124,7 +124,7 @@ export default {
 
   // Font
   fontFamily: platform === 'ios' ? 'System' : 'Roboto',
-  fontSizeBase: 15,
+  fontSizeBase: 14,
 
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;

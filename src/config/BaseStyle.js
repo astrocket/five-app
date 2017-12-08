@@ -20,7 +20,7 @@ const BaseStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     paddingTop: platform.OS === 'ios' ? 20 : 0,
-  },
+  }
 });
 
 export default BaseStyle;

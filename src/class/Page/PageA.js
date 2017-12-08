@@ -23,7 +23,7 @@ export default class PageA extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false, //실서비스에서는 로딩 true로
     };
   }
 

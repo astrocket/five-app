@@ -8,9 +8,9 @@ class ObservableApplicationStore {
 
   async setAuthInfo() {
     await AsyncStorage.multiGet([ 'email', 'token', 'key' ], (err, stores) => {
-      this.email = stores[ 0 ][ 1 ];
-      this.token = stores[ 1 ][ 1 ];
-      this.key = stores[ 2 ][ 1 ];
+      this.email = stores[0][1];
+      this.token = stores[1][1];
+      this.key = stores[2][1];
     });
   }
 }

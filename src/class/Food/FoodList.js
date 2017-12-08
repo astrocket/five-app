@@ -1,35 +1,36 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {
   Container,
+  Header,
   Content,
-  Spinner,
   Text,
-  Button,
+  Spinner,
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
+import { FoodUnitBar } from '../../component/common';
 import axios from 'axios';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabA extends Component {
+export default class FoodList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      foods: this.props.navigation.state.params.foods
     };
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
     this.apiCall();
   }
 
@@ -40,8 +41,6 @@ export default class TabA extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(ApiServer.HOME_INDEX);
-    console.log(config);
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
@@ -56,16 +55,28 @@ export default class TabA extends Component {
 
   render() {
     const { container, preLoading } = BaseStyle;
-    const { rootNavigation } = this.props.screenProps;
+    const { navigation } = this.props;
 
     return (
       <Container>
-        <View style={container}>
-          <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => rootNavigation.navigate('FoodIndex', { title: '#맛집' })}>
-            <Text note>맛집으로 고 !</Text>
-          </TouchableOpacity>
-        </View>
+        <Content>
+          <FlatList
+            data={this.state.foods}
+            renderItem={({ item }) => (
+              <FoodUnitBar
+                id={item.id}
+                title={item.title}
+                location={item.location}
+                image_url={item.image_url}
+                onPress={() => navigation.navigate('FoodShow', {
+                  food: item,
+                  title: item.name,
+                })}
+              />
+            )}
+            keyExtractor={item => 'food-list-' + item.id}
+          />
+        </Content>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large" />
