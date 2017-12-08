@@ -65,9 +65,9 @@ export default class App extends Component<{}> {
 
   fakeAuthCallback() {
     AsyncStorage.multiSet([
-      [ 'email', 'prime@sling.com' ],
+      [ 'email', 'astro@insomenia.com' ],
       [ 'token', 'test_token_prime' ],
-      [ 'key', 'test_key_prime' ],
+      [ 'key', 'test_key_astro' ],
     ]).then(() => {
       ApplicationStore.setAuthInfo().then(() => {
         this.setState({
