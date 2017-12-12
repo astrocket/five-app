@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {
   Container,
+  Header,
   Content,
-  Spinner,
   Text,
+  Spinner,
+  Card,
+  CardItem,
+  Thumbnail,
   Button,
   Icon,
+  Left,
+  Body,
+  Right,
 } from 'native-base';
 import {
   Col,
@@ -21,20 +28,10 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabA extends Component {
+export default class UserShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '홈',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-list-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
-      />
-    ),
-    title: 'MYFIVE',
+    title: navigation.state.params.title,
     headerStyle: {
       backgroundColor: '#FF9800',
     },
@@ -45,28 +42,17 @@ export default class TabA extends Component {
     headerTitleStyle: {
       color: 'white',
     },
-    headerLeft: (
-      <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
-        <Icon
-          name="ios-menu-outline"
-          style={{
-            fontSize: 25,
-            color: 'white',
-          }}
-        />
-      </Button>
-    ),
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      user: this.props.navigation.state.params.user,
     };
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
     this.apiCall();
   }
 
@@ -77,8 +63,6 @@ export default class TabA extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(ApiServer.HOME_INDEX);
-    console.log(config);
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
@@ -98,10 +82,25 @@ export default class TabA extends Component {
     return (
       <Container>
         <Content>
-          <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('FoodIndex')}>
-            <Text note>맛집으로 고 !</Text>
-          </TouchableOpacity>
+          <Content>
+            <Card>
+              <CardItem>
+                <Left>
+                  <Thumbnail source={{ uri: this.state.user.image_url }}/>
+                  <Body>
+                  <Text>{this.state.user.name}</Text>
+                  </Body>
+                </Left>
+              </CardItem>
+              <CardItem cardBody>
+                <Image source={{ uri: this.state.user.image_url }} style={{
+                  height: 200,
+                  width: null,
+                  flex: 1,
+                }}/>
+              </CardItem>
+            </Card>
+          </Content>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

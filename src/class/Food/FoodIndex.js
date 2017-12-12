@@ -11,6 +11,7 @@ import {
   Text,
   Spinner,
   Icon,
+  Button,
 } from 'native-base';
 import {
   Col,
@@ -27,6 +28,32 @@ import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class FoodIndex extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: '#맛집',
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
+    headerRight: (
+      <Button onPress={() => navigation.navigate('Invitation')} transparent>
+        <Icon
+          name="md-person-add"
+          style={{
+            fontSize: 25,
+            color: 'white',
+          }}
+        />
+      </Button>
+    ),
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -153,7 +180,6 @@ export default class FoodIndex extends Component {
               <Text>새로 친구들의 five로 선정 된 맛집</Text>
               <TouchableOpacity onPress={() => navigation.navigate('FoodList', {
                 foods: this.state.foods,
-                title: '새로 선정된 맛집'
               })} underlayColor={'#fff'}>
                 <Text note>전체보기 ></Text>
               </TouchableOpacity>
@@ -196,7 +222,9 @@ export default class FoodIndex extends Component {
               paddingRight: 10,
             }}>
               <Text>새로 five 를 바꾼 친구</Text>
-              <TouchableOpacity underlayColor={'#fff'}>
+              <TouchableOpacity onPress={() => navigation.navigate('UserList', {
+                users: this.state.users,
+              })} underlayColor={'#fff'}>
                 <Text note>전체보기 ></Text>
               </TouchableOpacity>
             </View>
@@ -214,7 +242,7 @@ export default class FoodIndex extends Component {
                     name={item.name}
                     image_url={item.image_url}
                     onPress={() => navigation.navigate('UserShow', {
-                      id: item.id,
+                      user: item,
                       title: item.name,
                     })}
                     barWidth={60}
@@ -256,7 +284,7 @@ export default class FoodIndex extends Component {
                     title={item.title}
                     image_url={item.image_url}
                     onPress={() => navigation.navigate('FoodShow', {
-                      id: item.id,
+                      food: item,
                       title: item.title,
                     })}
                     barWidth={60}

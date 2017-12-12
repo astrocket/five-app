@@ -8,16 +8,18 @@ import {
 import { TabNavigator } from 'react-navigation';
 import TabA from '../class/TabA/TabA';
 import TabB from '../class/TabB/TabB';
+import TabC from '../class/TabC/TabC';
 
 const TabContainer = ({ initialRouteName, screenProps }) => {
   const routeConfigs = {
     TabA: {
       screen: TabA,
       navigationOptions: {
+        header: null,
         tabBarLabel: '홈',
         tabBarIcon: ({ tintColor }) => (
           <Icon
-            name="ios-home"
+            name="ios-list-outline"
             style={{
               fontSize: 25,
               color: tintColor,
@@ -28,6 +30,21 @@ const TabContainer = ({ initialRouteName, screenProps }) => {
     },
     TabB: {
       screen: TabB,
+      navigationOptions: {
+        tabBarLabel: '5',
+        tabBarIcon: ({ tintColor }) => (
+          <Icon
+            name="logo-apple"
+            style={{
+              fontSize: 25,
+              color: tintColor,
+            }}
+          />
+        ),
+      },
+    },
+    TabC: {
+      screen: TabC,
       navigationOptions: {
         tabBarLabel: '검색',
         tabBarIcon: ({ tintColor }) => (

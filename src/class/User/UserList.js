@@ -1,40 +1,30 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {
   Container,
+  Header,
   Content,
-  Spinner,
   Text,
-  Button,
-  Icon,
+  Spinner,
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
+import { UserUnitBar } from '../../component/common';
 import axios from 'axios';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabA extends Component {
+export default class UserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '홈',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-list-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
-      />
-    ),
-    title: 'MYFIVE',
+    title: '최근 유저들',
     headerStyle: {
       backgroundColor: '#FF9800',
     },
@@ -45,28 +35,17 @@ export default class TabA extends Component {
     headerTitleStyle: {
       color: 'white',
     },
-    headerLeft: (
-      <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
-        <Icon
-          name="ios-menu-outline"
-          style={{
-            fontSize: 25,
-            color: 'white',
-          }}
-        />
-      </Button>
-    ),
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      users: this.props.navigation.state.params.users
     };
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
     this.apiCall();
   }
 
@@ -77,8 +56,6 @@ export default class TabA extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(ApiServer.HOME_INDEX);
-    console.log(config);
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
@@ -98,14 +75,25 @@ export default class TabA extends Component {
     return (
       <Container>
         <Content>
-          <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('FoodIndex')}>
-            <Text note>맛집으로 고 !</Text>
-          </TouchableOpacity>
+          <FlatList
+            data={this.state.users}
+            renderItem={({ item }) => (
+              <UserUnitBar
+                id={item.id}
+                name={item.name}
+                image_url={item.image_url}
+                onPress={() => navigation.navigate('UserShow', {
+                  user: item,
+                  title: item.name,
+                })}
+              />
+            )}
+            keyExtractor={item => 'user-list-' + item.id}
+          />
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large"/>
+          <Spinner size="large" />
         </View>
         }
       </Container>

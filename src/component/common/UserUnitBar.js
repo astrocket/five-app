@@ -16,15 +16,15 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FoodUnitBar = ({ id, location, title, image_url, onPress, barWidth, barHeight, borderRadius }) => {
+const UserUnitBar = ({ id, name, image_url, onPress }) => {
   const {} = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress}>
+    <ListItem avatar button onPress={onPress} transparent>
       <Left>
         <Thumbnail source={{ uri: image_url }}/>
       </Left>
       <Body>
-      <Text>{location} {title}</Text>
+      <Text>{name}</Text>
       <Text note>Doing what you like will always keep you happy . .</Text>
       </Body>
       <Right>
@@ -34,4 +34,4 @@ const FoodUnitBar = ({ id, location, title, image_url, onPress, barWidth, barHei
   );
 };
 
-export { FoodUnitBar };
+export { UserUnitBar };

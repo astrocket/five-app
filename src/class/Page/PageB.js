@@ -20,6 +20,21 @@ import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class PageB extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: 'PageB',
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
+  });
+
   constructor(props) {
     super(props);
     this.state = {

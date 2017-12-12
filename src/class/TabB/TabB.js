@@ -8,6 +8,7 @@ import {
   Content,
   Text,
   Spinner,
+  Icon,
 } from 'native-base';
 import {
   Col,
@@ -20,6 +21,31 @@ import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class TabB extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    tabBarLabel: '5',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon
+        name="logo-apple"
+        style={{
+          fontSize: 25,
+          color: tintColor,
+        }}
+      />
+    ),
+    title: 'MY FIVE 맛집',
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,19 +79,19 @@ export default class TabB extends Component {
 
   render() {
     const { container, preLoading } = BaseStyle;
-    const { rootNavigation } = this.props.screenProps;
+    const { navigation } = this.props;
 
     return (
       <Container>
         <View style={container}>
           <Text>꿈은 모든것의 원동력</Text>
-          <TouchableOpacity onPress={() => rootNavigation.navigate('PageB', { title: '이한결의 꿈' })}>
+          <TouchableOpacity onPress={() => navigation.navigate('PageB', { title: '이한결의 꿈' })}>
             <Text note>어떻게 ?</Text>
           </TouchableOpacity>
         </View>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large" />
+          <Spinner size="large"/>
         </View>
         }
       </Container>

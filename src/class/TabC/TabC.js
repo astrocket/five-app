@@ -8,6 +8,7 @@ import {
   Content,
   Text,
   Spinner,
+  Icon,
 } from 'native-base';
 import {
   Col,
@@ -20,6 +21,31 @@ import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class TabC extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    tabBarLabel: '검색',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon
+        name="ios-search-outline"
+        style={{
+          fontSize: 25,
+          color: tintColor,
+        }}
+      />
+    ),
+    title: '검색창',
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,19 +79,19 @@ export default class TabC extends Component {
 
   render() {
     const { container, preLoading } = BaseStyle;
-    const { rootNavigation } = this.props.screenProps;
+    const { navigation } = this.props;
 
     return (
       <Container>
         <View style={container}>
           <Text>행복은 직접 만들어가는 것</Text>
-          <TouchableOpacity onPress={() => rootNavigation.navigate('PageC')}>
+          <TouchableOpacity onPress={() => navigation.navigate('PageC')}>
             <Text note>어떻게 ?</Text>
           </TouchableOpacity>
         </View>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large" />
+          <Spinner size="large"/>
         </View>
         }
       </Container>

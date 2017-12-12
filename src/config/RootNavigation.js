@@ -1,65 +1,52 @@
 import React from 'react';
+import { Platform } from 'react-native';
+import {
+  Button,
+  Icon,
+} from 'native-base';
 import {
   StackNavigator,
+  TabNavigator,
+  DrawerNavigator,
 } from 'react-navigation';
-import TabNavigation from '../config/TabNavigation';
+import TabA from '../class/TabA/TabA';
+import TabB from '../class/TabB/TabB';
+import TabC from '../class/TabC/TabC';
+import CustomDrawer from './CustomDrawer';
 import PageA from '../class/Page/PageA';
 import PageB from '../class/Page/PageB';
 import PageC from '../class/Page/PageC';
 import FoodIndex from '../class/Food/FoodIndex';
 import FoodList from '../class/Food/FoodList';
 import FoodShow from '../class/Food/FoodShow';
+import Invitation from '../class/Invitation/Invitation';
+import UserList from '../class/User/UserList';
+import UserShow from '../class/User/UserShow';
 
-
-const RootNavigation = StackNavigator(
+const StackNavigation = StackNavigator(
   {
+    /*    Main: {
+          screen: ({ navigation }) => <TabNavigation screenProps={{ rootNavigation: navigation }}/>,
+        },*/
     Main: {
-      screen: ({ navigation }) => <TabNavigation screenProps={{ rootNavigation: navigation }}/>,
-      navigationOptions: ({ navigation }) => ({
-        title: 'MYFIVE',
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
+      screen: TabNavigator(
+        {
+          TabA: {
+            screen: TabA,
+          },
+          TabB: {
+            screen: TabB,
+          },
+          TabC: {
+            screen: TabC,
+          },
+        }),
     },
     PageA: {
       screen: PageA,
-      navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
     },
     PageB: {
       screen: PageB,
-      navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
     },
     PageC: {
       screen: PageC,
@@ -69,57 +56,38 @@ const RootNavigation = StackNavigator(
     },
     FoodIndex: {
       screen: FoodIndex,
-      navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
     },
     FoodList: {
       screen: FoodList,
-      navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
     },
     FoodShow: {
       screen: FoodShow,
-      navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
-        headerStyle: {
-          backgroundColor: '#FF9800',
-        },
-        headerTintColor: 'white',
-        headerBackTitleStyle: {
-          color: 'white',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }),
     },
+    Invitation: {
+      screen: Invitation,
+    },
+    UserList: {
+      screen: UserList,
+    },
+    UserShow: {
+      screen: UserShow,
+    },
+  }, {
+    headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
+    mode: 'card',
+  },
+);
 
+const RootNavigation = DrawerNavigator(
+  {
+    Main: {
+      screen: StackNavigation,
+    },
   },
   {
-    headerMode: 'float',
-    mode: 'card',
+    drawerWidth: 200,
+    drawerPosition: 'left',
+    contentComponent: CustomDrawer
   },
 );
 

@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Container,
+  Header,
   Content,
-  Spinner,
   Text,
-  Button,
-  Icon,
+  Spinner,
 } from 'native-base';
 import {
   Col,
@@ -21,20 +19,10 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabA extends Component {
+export default class Invitation extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '홈',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-list-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
-      />
-    ),
-    title: 'MYFIVE',
+    title: '친구초대',
     headerStyle: {
       backgroundColor: '#FF9800',
     },
@@ -45,17 +33,6 @@ export default class TabA extends Component {
     headerTitleStyle: {
       color: 'white',
     },
-    headerLeft: (
-      <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
-        <Icon
-          name="ios-menu-outline"
-          style={{
-            fontSize: 25,
-            color: 'white',
-          }}
-        />
-      </Button>
-    ),
   });
 
   constructor(props) {
@@ -66,7 +43,6 @@ export default class TabA extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
     this.apiCall();
   }
 
@@ -77,8 +53,6 @@ export default class TabA extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(ApiServer.HOME_INDEX);
-    console.log(config);
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
@@ -98,14 +72,11 @@ export default class TabA extends Component {
     return (
       <Container>
         <Content>
-          <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('FoodIndex')}>
-            <Text note>맛집으로 고 !</Text>
-          </TouchableOpacity>
+          <Text>친구야반가워</Text>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large"/>
+          <Spinner size="large" />
         </View>
         }
       </Container>

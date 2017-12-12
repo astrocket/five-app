@@ -29,6 +29,21 @@ import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class FoodShow extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.title,
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
+  });
+
   constructor(props) {
     super(props);
     this.state = {

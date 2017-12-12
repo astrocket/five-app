@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   View,
-  FlatList,
 } from 'react-native';
 import {
   Container,
@@ -15,33 +14,17 @@ import {
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { FoodUnitBar } from '../../component/common';
 import axios from 'axios';
-import * as ApiServer from '../../config/ApiServer';
-import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import * as ApiServer from './ApiServer';
+import BaseStyle from './BaseStyle';
+import ApplicationStore from '../mobx/ApplicationStore';
 
-export default class FoodList extends Component {
-
-  static navigationOptions = ({ navigation }) => ({
-    title: '새로 선정된 맛집',
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
-  });
+export default class CustomDrawer extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      foods: this.props.navigation.state.params.foods
     };
   }
 
@@ -75,22 +58,7 @@ export default class FoodList extends Component {
     return (
       <Container>
         <Content>
-          <FlatList
-            data={this.state.foods}
-            renderItem={({ item }) => (
-              <FoodUnitBar
-                id={item.id}
-                title={item.title}
-                location={item.location}
-                image_url={item.image_url}
-                onPress={() => navigation.navigate('FoodShow', {
-                  food: item,
-                  title: item.title,
-                })}
-              />
-            )}
-            keyExtractor={item => 'food-list-' + item.id}
-          />
+          <Text>안녕하세요 햄버거 메뉴입니다.</Text>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
