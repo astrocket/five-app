@@ -17,7 +17,7 @@ import {
 import BaseStyle from '../../config/BaseStyle';
 
 const UserUnitBar = ({ id, name, image_url, onPress }) => {
-  const {} = BaseStyle;
+  const { container } = BaseStyle;
   return (
     <ListItem avatar button onPress={onPress} transparent>
       <Left>

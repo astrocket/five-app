@@ -24,6 +24,7 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
@@ -32,16 +33,7 @@ export default class FoodShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.title,
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
+    ... Constant.FiveNavOptions,
   });
 
   constructor(props) {

@@ -17,6 +17,7 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
@@ -35,16 +36,6 @@ export default class TabA extends Component {
       />
     ),
     title: 'MYFIVE',
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
     headerLeft: (
       <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
         <Icon
@@ -56,6 +47,16 @@ export default class TabA extends Component {
         />
       </Button>
     ),
+    headerStyle: {
+      backgroundColor: '#FF9800',
+    },
+    headerTintColor: 'white',
+    headerBackTitleStyle: {
+      color: 'white',
+    },
+    headerTitleStyle: {
+      color: 'white',
+    },
   });
 
   constructor(props) {

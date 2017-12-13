@@ -23,6 +23,7 @@ import {
   UserUnitRound,
 } from '../../component/common';
 import axios from 'axios';
+import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
@@ -31,16 +32,6 @@ export default class FoodIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: '#맛집',
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
     headerRight: (
       <Button onPress={() => navigation.navigate('Invitation')} transparent>
         <Icon
@@ -52,6 +43,7 @@ export default class FoodIndex extends Component {
         />
       </Button>
     ),
+    ... Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -184,7 +176,7 @@ export default class FoodIndex extends Component {
                 <Text note>전체보기 ></Text>
               </TouchableOpacity>
             </View>
-            <Row>
+            <Row style={{ marginBottom: 20 }}>
               <FlatList
                 horizontal
                 data={this.state.foods}
@@ -205,13 +197,12 @@ export default class FoodIndex extends Component {
                     barWidth={100}
                     barHeight={100}
                     borderRadius={35}
+                    marginRight={10}
                   />
                 )}
                 keyExtractor={item => 'food-' + item.id}
               />
             </Row>
-          </Grid>
-          <Grid style={{ marginBottom: 20 }}>
             <View style={{
               flex: 1,
               flexDirection: 'row',
@@ -228,7 +219,7 @@ export default class FoodIndex extends Component {
                 <Text note>전체보기 ></Text>
               </TouchableOpacity>
             </View>
-            <Row>
+            <Row style={{ marginBottom: 20 }}>
               <FlatList
                 horizontal
                 data={this.state.users}
@@ -248,13 +239,12 @@ export default class FoodIndex extends Component {
                     barWidth={60}
                     barHeight={60}
                     borderRadius={30}
+                    marginRight={10}
                   />
                 )}
                 keyExtractor={item => 'user-' + item.id}
               />
             </Row>
-          </Grid>
-          <Grid>
             <View style={{
               flex: 1,
               flexDirection: 'row',
@@ -290,6 +280,7 @@ export default class FoodIndex extends Component {
                     barWidth={60}
                     barHeight={60}
                     borderRadius={15}
+                    marginRight={10}
                   />
                 )}
                 keyExtractor={item => 'my-food-' + item.id}

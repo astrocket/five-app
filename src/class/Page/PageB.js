@@ -15,6 +15,7 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
@@ -23,16 +24,7 @@ export default class PageB extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: 'PageB',
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -76,7 +68,7 @@ export default class PageB extends Component {
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large" />
+          <Spinner size="large"/>
         </View>
         }
       </Container>

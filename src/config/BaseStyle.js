@@ -20,6 +20,21 @@ const BaseStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     paddingTop: platform.OS === 'ios' ? 20 : 0,
+  },
+  flexAroundCenter: {
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  flexBetweenCenter: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  flexCenterCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

@@ -17,7 +17,7 @@ import {
 import BaseStyle from '../../config/BaseStyle';
 
 const FoodUnitBar = ({ id, location, title, image_url, onPress, barWidth, barHeight, borderRadius }) => {
-  const {} = BaseStyle;
+  const { container } = BaseStyle;
   return (
     <ListItem avatar button onPress={onPress}>
       <Left>

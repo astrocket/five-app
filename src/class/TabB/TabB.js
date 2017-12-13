@@ -16,6 +16,7 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
@@ -34,16 +35,7 @@ export default class TabB extends Component {
       />
     ),
     title: 'MY FIVE 맛집',
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
