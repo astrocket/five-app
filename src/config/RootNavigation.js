@@ -17,11 +17,15 @@ import PageA from '../class/Page/PageA';
 import PageB from '../class/Page/PageB';
 import PageC from '../class/Page/PageC';
 import FoodIndex from '../class/Food/FoodIndex';
+import FoodNew from '../class/Food/FoodNew';
 import FoodList from '../class/Food/FoodList';
 import FoodShow from '../class/Food/FoodShow';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
+import Map from '../class/Page/Map';
+import FollowerIndex from '../class/Follow/FollowerIndex';
+import MyItemIndex from '../class/Item/MyItemIndex';
 
 const StackNavigation = StackNavigator(
   {
@@ -40,6 +44,24 @@ const StackNavigation = StackNavigator(
           TabC: {
             screen: TabC,
           },
+        }, {
+          swipeEnabled: false,
+          tabBarPosition: 'bottom',
+          tabBarOptions: {
+            activeTintColor: '#FF9800',
+            inactiveTintColor: '#9e9e9e',
+            indicatorStyle: {
+              backgroundColor: 'transparent',
+            },
+            showIcon: true,
+            showLabel: Platform.OS === 'ios',
+            labelStyle: {
+              fontSize: 12,
+            },
+            style: {
+              backgroundColor: '#fff',
+            },
+          }
         }),
     },
     PageA: {
@@ -53,6 +75,9 @@ const StackNavigation = StackNavigator(
       navigationOptions: {
         header: null,
       },
+    },
+    FoodNew: {
+      screen: FoodNew,
     },
     FoodIndex: {
       screen: FoodIndex,
@@ -71,6 +96,15 @@ const StackNavigation = StackNavigator(
     },
     UserShow: {
       screen: UserShow,
+    },
+    Map: {
+      screen: Map,
+    },
+    FollowerIndex: {
+      screen: FollowerIndex,
+    },
+    MyItemIndex: {
+      screen: MyItemIndex,
     },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',

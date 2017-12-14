@@ -35,6 +35,10 @@ const BaseStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  centerCenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 

@@ -67,7 +67,6 @@ export default class TabA extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
     this.apiCall();
   }
 
@@ -78,11 +77,8 @@ export default class TabA extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(ApiServer.HOME_INDEX);
-    console.log(config);
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
-        console.log(response);
         this.setState({
           loading: false,
         });

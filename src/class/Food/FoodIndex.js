@@ -3,30 +3,24 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  Image,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
-  Icon,
-  Button,
+  Container, Header, Content, Text, Spinner, Icon, Button, H1,
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FoodUnitRound,
-  UserUnitRound,
+  FoodUnitRound, UserUnitRound, SmallButton,
 } from '../../component/common';
+import FoodShow from './FoodShow';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
+import PopupDialog from 'react-native-popup-dialog';
 
 export default class FoodIndex extends Component {
 
@@ -43,7 +37,7 @@ export default class FoodIndex extends Component {
         />
       </Button>
     ),
-    ... Constant.FiveNavOptions,
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -126,6 +120,7 @@ export default class FoodIndex extends Component {
           image_url: 'https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2014/11/leonardo_dicaprio.jpg',
         },
       ],
+      popup: '',
     };
   }
 
@@ -150,6 +145,32 @@ export default class FoodIndex extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  openPopUp(item) {
+    this.setState({
+      popup: item,
+    }, () => this.popupDialog.show());
+  }
+
+  renderPopUp(item) {
+    const { flexAroundCenter, flexCenterCenter, centerCenter } = BaseStyle;
+    const { navigation } = this.props;
+    return (
+      <PopupDialog
+        width={0.9}
+        height={400}
+        dialogStyle={{ position: 'relative', top: -40}}
+        ref={(popupDialog) => {
+          this.popupDialog = popupDialog;
+        }}
+      >
+        <FoodShow
+          item={item}
+          navigation={navigation}
+        />
+      </PopupDialog>
+    );
   }
 
   render() {
@@ -190,10 +211,7 @@ export default class FoodIndex extends Component {
                     location={item.location}
                     title={item.title}
                     image_url={item.image_url}
-                    onPress={() => navigation.navigate('FoodShow', {
-                      food: item,
-                      title: item.title,
-                    })}
+                    onPress={() => this.openPopUp(item)}
                     barWidth={100}
                     barHeight={100}
                     borderRadius={35}
@@ -262,7 +280,7 @@ export default class FoodIndex extends Component {
             <Row>
               <FlatList
                 horizontal
-                data={this.state.foods}
+                data={this.state.foods.slice(0, 5)}
                 style={{
                   paddingLeft: 10,
                   paddingRight: 20,
@@ -273,10 +291,7 @@ export default class FoodIndex extends Component {
                     location={item.location}
                     title={item.title}
                     image_url={item.image_url}
-                    onPress={() => navigation.navigate('FoodShow', {
-                      food: item,
-                      title: item.title,
-                    })}
+                    onPress={() => this.openPopUp(item)}
                     barWidth={60}
                     barHeight={60}
                     borderRadius={15}
@@ -288,6 +303,7 @@ export default class FoodIndex extends Component {
             </Row>
           </Grid>
         </Content>
+        {this.renderPopUp(this.state.popup)}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
