@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const UserUnitBar = ({ id, name, image_url, onPress }) => {
+const MyItemUnitBar = ({ title, location, image_url, date_time, onPress }) => {
   const { container } = BaseStyle;
   return (
     <ListItem avatar button onPress={onPress} transparent>
@@ -22,14 +22,14 @@ const UserUnitBar = ({ id, name, image_url, onPress }) => {
         <Thumbnail source={{ uri: image_url }}/>
       </Left>
       <Body>
-      <Text>{name}</Text>
+      <Text>{location} {title}</Text>
       <Text note>Doing what you like will always keep you happy . .</Text>
       </Body>
       <Right>
-        <Text note>오늘</Text>
+        <Text note>{date_time}</Text>
       </Right>
     </ListItem>
   );
 };
 
-export { UserUnitBar };
+export { MyItemUnitBar };

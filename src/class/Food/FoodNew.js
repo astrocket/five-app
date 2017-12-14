@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button,
+  Container,
+  Header,
+  Content,
+  Text,
+  Spinner,
+  Input,
+  Item,
 } from 'native-base';
 import {
   Col,
@@ -18,27 +22,18 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabC extends Component {
+export default class FoodNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '검색',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-search-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
-      />
-    ),
-    title: '검색창',
+    title: '새 파이브 추가',
     ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: false, //실서비스에서는 로딩 true로
+      name: ''
     };
   }
 
@@ -71,26 +66,20 @@ export default class TabC extends Component {
 
     return (
       <Container>
-        <Header searchBar rounded style={{paddingTop: 0, height: 56 }}>
+        <Content padder>
           <Item>
-            <Icon name="ios-search" />
             <Input
-              placeholder="Search"
+              placeholder={'파이브 이름 입력'}
+              placeholderTextColor={'#eee'}
+              onChangeText={(name) => this.setState({ name })}
               autoCapitalize={'none'}
               autoCorrect={false}
+              autoFocus={true}
+              multiline={false}
+              style={{ fontSize: 15, padding: 10 }}
             />
-            <Icon name="ios-people" />
           </Item>
-          <Button transparent>
-            <Text>검색</Text>
-          </Button>
-        </Header>
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-        </View>
+        </Content>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

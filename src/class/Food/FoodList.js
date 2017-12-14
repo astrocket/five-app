@@ -16,11 +16,13 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import { FoodUnitBar } from '../../component/common';
+import FoodShow from './FoodShow';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
+import PopupDialog from 'react-native-popup-dialog';
 
 export default class FoodList extends Component {
 
@@ -33,7 +35,8 @@ export default class FoodList extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      foods: this.props.navigation.state.params.foods
+      foods: this.props.navigation.state.params.foods,
+      popup: ''
     };
   }
 
@@ -60,6 +63,31 @@ export default class FoodList extends Component {
       });
   }
 
+  openPopUp(item) {
+    this.setState({
+      popup: item,
+    }, () => this.popupDialog.show());
+  }
+
+  renderPopUp(item) {
+    const { navigation } = this.props;
+    return (
+      <PopupDialog
+        width={0.9}
+        height={400}
+        dialogStyle={{ position: 'relative', top: -40}}
+        ref={(popupDialog) => {
+          this.popupDialog = popupDialog;
+        }}
+      >
+        <FoodShow
+          item={item}
+          navigation={navigation}
+        />
+      </PopupDialog>
+    );
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -75,15 +103,13 @@ export default class FoodList extends Component {
                 title={item.title}
                 location={item.location}
                 image_url={item.image_url}
-                onPress={() => navigation.navigate('FoodShow', {
-                  food: item,
-                  title: item.title,
-                })}
+                onPress={() => this.openPopUp(item)}
               />
             )}
             keyExtractor={item => 'food-list-' + item.id}
           />
         </Content>
+        {this.renderPopUp(this.state.popup)}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large" />

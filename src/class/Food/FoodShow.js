@@ -17,12 +17,16 @@ import {
   Left,
   Body,
   Right,
+  H1
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
+import {
+  SmallButton,
+} from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -31,16 +35,10 @@ import ApplicationStore from '../../mobx/ApplicationStore';
 
 export default class FoodShow extends Component {
 
-  static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
-    ... Constant.FiveNavOptions,
-  });
-
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      food: this.props.navigation.state.params.food,
     };
   }
 
@@ -72,35 +70,70 @@ export default class FoodShow extends Component {
     const { navigation } = this.props;
 
     return (
-      <Container>
-        <Content>
-          <Content>
-            <Card>
-              <CardItem>
-                <Left>
-                  <Thumbnail source={{ uri: this.state.food.image_url }}/>
-                  <Body>
-                  <Text>{this.state.food.name}</Text>
-                  <Text note>{this.state.food.location}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-              <CardItem cardBody>
-                <Image source={{ uri: this.state.food.image_url }} style={{
-                  height: 200,
-                  width: null,
-                  flex: 1,
-                }}/>
-              </CardItem>
-            </Card>
-          </Content>
-        </Content>
-        {this.state.loading &&
-        <View style={preLoading}>
-          <Spinner size="large"/>
-        </View>
-        }
-      </Container>
+      <Grid style={{ margin: 20 }}>
+        <Row style={{
+          height: 200,
+          width: null,
+        }}>
+          <Image source={{ uri: this.props.item.image_url }} style={{
+            height: null,
+            width: null,
+            flex: 1,
+          }}/>
+        </Row>
+        <Row style={{
+          marginTop: 20,
+          marginBottom: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <H1 style={{ textAlign: 'center' }}>
+            {`${this.props.item.location} ${this.props.item.title}`}
+          </H1>
+          <Button
+            onPress={() => navigation.navigate('Map', {
+              lat: '33',
+              lng: '22',
+              title: this.props.item.title,
+            })}
+            transparent
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: -5,
+            }}
+          >
+            <Icon
+              name="ios-map-outline"
+              style={{
+                fontSize: 25,
+                color: '#000',
+              }}
+            />
+          </Button>
+        </Row>
+        <Row style={{
+          marginBottom: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <Text>현재 124명의 Five</Text>
+        </Row>
+        <Row style={{
+          marginBottom: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <SmallButton
+            onPress={() => console.log('hi')}
+            title={'공유하기'}
+          />
+          <SmallButton
+            onPress={() => console.log('hi')}
+            title={'담아두기'}
+          />
+        </Row>
+      </Grid>
     );
   }
 }
