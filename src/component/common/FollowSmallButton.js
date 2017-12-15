@@ -1,16 +1,18 @@
 import React from 'react';
 import {
+  View,
+} from 'react-native';
+import {
   Button, Icon,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FollowSmallButton = ({ icon, onPress, clicked }) => {
+const FollowSmallButton = ({ icon, clicked }) => {
   const { container } = BaseStyle;
   if (clicked) {
     return (
-      <Button
-        onPress={onPress}
-        style={{ width: 30, height: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
+      <View
+        style={{ backgroundColor: '#123' ,width: 30, height: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
       >
         <Icon
           name={icon}
@@ -19,13 +21,11 @@ const FollowSmallButton = ({ icon, onPress, clicked }) => {
             color: '#eee',
           }}
         />
-      </Button>
+      </View>
     );
   } else {
     return (
-      <Button
-        onPress={onPress}
-        transparent
+      <View
         style={{ width: 30, height: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
       >
         <Icon
@@ -35,7 +35,7 @@ const FollowSmallButton = ({ icon, onPress, clicked }) => {
             color: '#eee',
           }}
         />
-      </Button>
+      </View>
     );
   }
 

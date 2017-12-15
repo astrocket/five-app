@@ -12,3 +12,5 @@ export * from './MenuBar';
 export * from './EmptyBox';
 export * from './InviteBox';
 export * from './MyItemUnitBar';
+export * from './DeleteCategory';
+export * from './NoticeUnitBar';

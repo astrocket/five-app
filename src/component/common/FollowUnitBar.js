@@ -55,18 +55,17 @@ export default class FollowUnitBar extends Component {
 
   render() {
     return (
-      <ListItem avatar>
+      <ListItem avatar button onPress={this.props.onPress}>
         <Left>
-          <Thumbnail source={{ uri: this.props.image_url }}/>
+          <Thumbnail small source={{ uri: this.props.image_url }}/>
         </Left>
-        <Body>
+        <Body style={{ borderBottomWidth: 0 }}>
         <Text numberOfLines={1}>{this.props.name}</Text>
-        <Text note>Doing what you like will always keep you happy . .</Text>
+        <Text note>안녕하세요</Text>
         </Body>
-        <Right style={{ width: 120, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Right style={{ borderBottomWidth: 0, width: 120, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <FollowSmallButton
             icon={'logo-apple'}
-            onPress={() => this.toggleFoodFollow()} //api 요청
             clicked={this.state.foodFollowing}
           />
           <FollowSmallButton

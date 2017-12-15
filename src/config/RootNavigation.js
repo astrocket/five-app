@@ -26,6 +26,12 @@ import UserShow from '../class/User/UserShow';
 import Map from '../class/Page/Map';
 import FollowerIndex from '../class/Follow/FollowerIndex';
 import MyItemIndex from '../class/Item/MyItemIndex';
+import Setting from '../class/Page/Setting';
+import UserInfoNew from '../class/User/UserInfoNew';
+import UserImageNew from '../class/User/UserImageNew';
+import FriendIndex from '../class/Friend/FriendIndex';
+import NoticeIndex from '../class/Notice/NoticeIndex';
+import NoticeShow from '../class/Notice/NoticeShow';
 
 const StackNavigation = StackNavigator(
   {
@@ -105,6 +111,24 @@ const StackNavigation = StackNavigator(
     },
     MyItemIndex: {
       screen: MyItemIndex,
+    },
+    Setting: {
+      screen: Setting,
+    },
+    UserInfoNew: {
+      screen: UserInfoNew,
+    },
+    UserImageNew: {
+      screen: UserImageNew,
+    },
+    FriendIndex: {
+      screen: FriendIndex,
+    },
+    NoticeIndex: {
+      screen: NoticeIndex,
+    },
+    NoticeShow: {
+      screen: NoticeShow,
     },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
