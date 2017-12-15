@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Container,
+  Header,
   Content,
-  Spinner,
   Text,
-  Button,
-  Icon,
+  Spinner,
+  Input,
+  Item,
 } from 'native-base';
 import {
   Col,
@@ -22,47 +22,18 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class TabA extends Component {
+export default class UserInfoNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '홈',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-list-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
-      />
-    ),
-    title: 'MYFIVE',
-    headerLeft: (
-      <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
-        <Icon
-          name="ios-menu-outline"
-          style={{
-            fontSize: 25,
-            color: 'white',
-          }}
-        />
-      </Button>
-    ),
-    headerStyle: {
-      backgroundColor: '#FF9800',
-    },
-    headerTintColor: 'white',
-    headerBackTitleStyle: {
-      color: 'white',
-    },
-    headerTitleStyle: {
-      color: 'white',
-    },
+    title: '한줄 소개',
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      user: this.props.navigation.state.params.user
     };
   }
 
@@ -79,6 +50,7 @@ export default class TabA extends Component {
     };
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
+        console.log(response);
         this.setState({
           loading: false,
         });
@@ -94,14 +66,20 @@ export default class TabA extends Component {
 
     return (
       <Container>
-        <Content>
-          <TouchableOpacity onPress={() => navigation.navigate('NoticeIndex')}>
-            <Text note>공지사항</Text>
-          </TouchableOpacity>
-          <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('FoodIndex')}>
-            <Text note>맛집으로 고 !</Text>
-          </TouchableOpacity>
+        <Content padder>
+          <Item>
+            <Input
+              placeholder={'한줄 자기소개 입력'}
+              placeholderTextColor={'#eee'}
+              onChangeText={(name) => this.setState({ name })}
+              autoCapitalize={'none'}
+              value={this.state.user.user_info}
+              autoCorrect={false}
+              autoFocus={true}
+              multiline={false}
+              style={{ fontSize: 15, padding: 10 }}
+            />
+          </Item>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

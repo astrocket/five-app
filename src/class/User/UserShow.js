@@ -97,13 +97,17 @@ export default class UserShow extends Component {
   }
 
   renderPopUp(item) {
-    const { flexAroundCenter, flexCenterCenter, centerCenter } = BaseStyle;
     const { navigation } = this.props;
     return (
       <PopupDialog
-        width={0.9}
-        height={400}
-        dialogStyle={{ position: 'relative', top: -40}}
+        width={1}
+        height={1}
+        dismissOnTouchOutside={false}
+        dialogStyle={{
+          position: 'relative',
+          top: -40,
+          backgroundColor: 'transparent',
+        }}
         ref={(popupDialog) => {
           this.popupDialog = popupDialog;
         }}
@@ -111,6 +115,11 @@ export default class UserShow extends Component {
         <FoodShow
           item={item}
           navigation={navigation}
+          marginTop={100}
+          marginLeft={20}
+          marginRight={20}
+          marginBottom={100}
+          closePopUp={() => this.popupDialog.dismiss()}
         />
       </PopupDialog>
     );

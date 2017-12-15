@@ -93,9 +93,9 @@ export default class CustomDrawer extends Component {
               title={'친구 초대하기'}
             />
             <MenuBar
-              onPress={() => navigation.navigate('Invitation')}
+              onPress={() => navigation.navigate('FriendIndex')}
               icon={'logo-apple'}
-              title={'친구 초대하기'}
+              title={'친구들보기'}
             />
             <MenuBar
               onPress={() => navigation.navigate('Invitation')}

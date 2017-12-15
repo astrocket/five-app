@@ -36,6 +36,17 @@ export default class TabB extends Component {
       />
     ),
     title: 'MY FIVE 맛집',
+    headerRight: (
+      <Button onPress={() => navigation.navigate('Invitation')} transparent>
+        <Icon
+          name="md-person-add"
+          style={{
+            fontSize: 25,
+            color: 'white',
+          }}
+        />
+      </Button>
+    ),
     ...Constant.FiveNavOptions,
   });
 
@@ -47,8 +58,8 @@ export default class TabB extends Component {
         id: '1',
         name: '혜리',
         image_url: 'https://pbs.twimg.com/profile_images/434151642951213056/h-YeBKj8.jpeg',
+        user_info: '안녕하세요 !'
       },
-      foodFollowing: false,
       foods: [
         {
           id: '1',
@@ -106,7 +117,7 @@ export default class TabB extends Component {
 
   deleteCall() {
     this.setState({
-      foods: this.state.foods.slice(0, 4) // api상으로 하나 줄어서 리셋시킨다.
+      foods: this.state.foods.slice(0,-1) // api상으로 하나 줄어서 리셋시킨다.
     });
   }
 
@@ -120,11 +131,13 @@ export default class TabB extends Component {
     const { navigation } = this.props;
     return (
       <PopupDialog
-        width={0.9}
-        height={400}
+        width={1}
+        height={1}
+        dismissOnTouchOutside={false}
         dialogStyle={{
           position: 'relative',
-          top: -60,
+          top: -40,
+          backgroundColor: 'transparent',
         }}
         ref={(popupDialog) => {
           this.popupDialog = popupDialog;
@@ -132,28 +145,45 @@ export default class TabB extends Component {
       >
         <FoodShow
           item={item}
+          marginTop={80}
+          marginLeft={20}
+          marginRight={20}
+          marginBottom={120}
           navigation={navigation}
+          closePopUp={() => this.popupDialog.dismiss()}
         />
       </PopupDialog>
     );
   }
 
   askDelete(item) {
-    Alert.alert(
-      '알림',
-      '해당 파이브를 삭제하시겠어요?',
-      [
-        {
-          text: '네',
-          onPress: () => this.deleteCall(item),
-          style: 'cancel',
-        },
-        { text: '아니요' },
-      ],
-      { cancelable: true },
-    );
+    if (this.state.foods.length <= 3) {
+      Alert.alert(
+        '알림',
+        '3개 이하로 파이브를 삭제할 수 없습니다.',
+        [
+          {
+            text: '확인',
+          },
+        ],
+        { cancelable: true },
+      );
+    } else {
+      Alert.alert(
+        '알림',
+        '해당 파이브를 삭제하시겠어요?',
+        [
+          {
+            text: '네',
+            onPress: () => this.deleteCall(item),
+            style: 'cancel',
+          },
+          { text: '아니요' },
+        ],
+        { cancelable: true },
+      );
+    }
   }
-
 
   renderFirstThree(openPopUp, askDelete) {
     const { navigation } = this.props;
@@ -282,12 +312,14 @@ export default class TabB extends Component {
                 id={this.state.user.id}
                 name={this.state.user.name}
                 image_url={this.state.user.image_url}
+                onPress={() => navigation.navigate('Setting', { title: '설정', user: this.state.user})}
                 barWidth={70}
                 barHeight={70}
                 borderRadius={35}
                 marginRight={10}
                 fontSize={20}
               />
+              <Text note>{this.state.user.user_info}</Text>
             </View>
           </Row>
           <Row style={{

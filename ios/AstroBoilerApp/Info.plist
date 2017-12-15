@@ -44,11 +44,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-	        <key>m.map.naver.com</key>
-            <dict>
-                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-            </dict>
+			<key>m.map.naver.com</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -71,5 +71,9 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>마이파이브에서 사용자의 카메라 앱 접근 허용을 필요로 합니다.</string>
 </dict>
 </plist>
