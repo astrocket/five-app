@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -35,8 +36,8 @@
 		C06C1A2D05504424AD9947D0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5BD10CFC390419ABB98BC82 /* Octicons.ttf */; };
 		C3FBC972C5034E8B9939F257 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B5DD0DFBA014CD38B314542 /* Zocial.ttf */; };
 		DF1670081AF545428E6AD6AA /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEB8F2C3EB49C583EC3F91 /* Entypo.ttf */; };
-		F3C046B058AC4AC3AC210287 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 000426450E5A476A84BE9788 /* Roboto_medium.ttf */; };
 		E4ADF95ACF3E4C25971C5C1E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */; };
+		F3C046B058AC4AC3AC210287 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 000426450E5A476A84BE9788 /* Roboto_medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = AstroBoilerApp;
+		};
+		043BAC9F1FE3C821008740D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
 		};
 		043D8AA71FDF8AFD00AA0637 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -291,6 +299,7 @@
 		00E356EE1AD99517003FC87E /* AstroBoilerAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AstroBoilerAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* AstroBoilerAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AstroBoilerAppTests.m; sourceTree = "<group>"; };
+		0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AstroBoilerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AstroBoilerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,8 +325,7 @@
 		CBA32BE77E964A52AA77E22F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		D7CCB5A517804190B0FFAEF4 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		EF3B68408E2848069817C32F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,6 +418,22 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		043BAC7A1FE3C81D008740D3 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		043BAC9C1FE3C821008740D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				043BACA01FE3C821008740D3 /* libRNImagePicker.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
@@ -520,6 +544,7 @@
 				00E356EF1AD99517003FC87E /* AstroBoilerAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				8C2D012577054C86AC8ECF8B /* Resources */,
+				043BAC7A1FE3C81D008740D3 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -681,6 +706,10 @@
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
+				{
+					ProductGroup = 043BAC9C1FE3C821008740D3 /* Products */;
+					ProjectRef = 0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -724,6 +753,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		043BACA01FE3C821008740D3 /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = 043BAC9F1FE3C821008740D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		043D8AA81FDF8AFD00AA0637 /* libRCTBlob-tvOS.a */ = {
@@ -1022,23 +1058,23 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AstroBoilerApp.app/AstroBoilerApp";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-				);
 			};
 			name = Debug;
 		};
@@ -1048,23 +1084,23 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 4YCR8M2TJY;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AstroBoilerApp.app/AstroBoilerApp";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-				);
 			};
 			name = Release;
 		};
@@ -1075,6 +1111,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4YCR8M2TJY;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1084,10 +1124,6 @@
 				);
 				PRODUCT_NAME = AstroBoilerApp;
 				VERSIONING_SYSTEM = "apple-generic";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-				);
 			};
 			name = Debug;
 		};
@@ -1097,6 +1133,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4YCR8M2TJY;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1106,10 +1146,6 @@
 				);
 				PRODUCT_NAME = AstroBoilerApp;
 				VERSIONING_SYSTEM = "apple-generic";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-				);
 			};
 			name = Release;
 		};
