@@ -33,7 +33,7 @@ export default class Invitation extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      food_invitations: [
+      restaurant_invitations: [
         {
           id: '1',
           status: true,
@@ -72,11 +72,11 @@ export default class Invitation extends Component {
       });
   }
 
-  renderFoodInviteBoxes() {
-    const food_invitations = this.state.food_invitations;
+  renderRestaurantInviteBoxes() {
+    const restaurant_invitations = this.state.restaurant_invitations;
     return [0,1,2,3,4].map(function (index, i) {
-      const food_invitation = food_invitations[index];
-      if (food_invitation) {
+      const restaurant_invitation = restaurant_invitations[index];
+      if (restaurant_invitation) {
         return (
           <Col key={i}>
             <InviteBox
@@ -120,7 +120,7 @@ export default class Invitation extends Component {
             </View>
           </Row>
           <Row>
-            {this.renderFoodInviteBoxes()}
+            {this.renderRestaurantInviteBoxes()}
           </Row>
         </Grid>
         {this.state.loading &&

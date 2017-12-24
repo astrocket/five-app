@@ -14,10 +14,9 @@ import {
   Body,
   Right,
 } from 'native-base';
-import { FollowSmallButton } from './FollowSmallButton';
 import BaseStyle from '../../config/BaseStyle';
 
-const FollowUnitBar = ({ user, onPress, following }) => {
+const FiveUserUnitBar = ({ user, onPress }) => {
   const { container } = BaseStyle;
   return (
     <ListItem avatar button onPress={onPress}>
@@ -35,21 +34,10 @@ const FollowUnitBar = ({ user, onPress, following }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.restaurant}
-        />
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.music}
-        />
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.book}
-        />
+        <Text>{user.five_days}</Text>
       </Right>
     </ListItem>
   );
 };
 
-export { FollowUnitBar };
+export { FiveUserUnitBar };

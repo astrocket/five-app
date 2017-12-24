@@ -9,7 +9,7 @@ import {
   Text,
   Spinner,
   Input,
-  Item,
+  Item, Button,
 } from 'native-base';
 import {
   Col,
@@ -33,31 +33,42 @@ export default class UserInfoNew extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      user: this.props.navigation.state.params.user
+      user: this.props.navigation.state.params.user,
+      introduce: ''
     };
   }
 
-  componentDidMount() {
-    this.apiCall();
+
+  onUploadSuccess(data) {
+    this.props.navigation.state.params.updateUser(data);
+    this.setState({
+      loading: false,
+    }, () => this.props.navigation.goBack() );
   }
 
-  apiCall() {
-    const config = {
+  postUserInfo() {
+    const data = new FormData();
+
+    data.append("user[introduce]", this.state.introduce);
+
+    const header = {
       headers: {
         'X-User-Email': ApplicationStore.email,
         'X-User-Token': ApplicationStore.token,
+        'Content-Type': 'multipart/form-data;',
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+
+    axios.post(`${ApiServer.MY_PROFILE}/update_user`, data, header)
       .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+        this.onUploadSuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
+      }).catch((error) => {
+      Toast.show({
+        text: JSON.stringify(error.response),
+        position: 'bottom',
+        duration: 1500,
       });
+    });
   }
 
   render() {
@@ -69,17 +80,19 @@ export default class UserInfoNew extends Component {
         <Content padder>
           <Item>
             <Input
-              placeholder={'한줄 자기소개 입력'}
+              placeholder={this.state.user.introduce}
               placeholderTextColor={'#eee'}
-              onChangeText={(name) => this.setState({ name })}
+              onChangeText={(introduce) => this.setState({ introduce })}
               autoCapitalize={'none'}
-              value={this.state.user.user_info}
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
               style={{ fontSize: 15, padding: 10 }}
             />
           </Item>
+          <Button onPress={() => this.postUserInfo()}>
+            <Text>제출</Text>
+          </Button>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

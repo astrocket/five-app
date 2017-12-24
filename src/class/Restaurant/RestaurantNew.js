@@ -22,7 +22,7 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class FoodNew extends Component {
+export default class RestaurantNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: '새 파이브 추가',

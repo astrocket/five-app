@@ -94,12 +94,42 @@ export default class TabA extends Component {
 
     return (
       <Container>
-        <Content>
+{/*          <Grid>
+            <Row style={{ backgroundColor: '#eee'}}>
+
+            </Row>
+            <Row style={{ backgroundColor: '#123'}}>
+
+            </Row>
+            <Row style={{ backgroundColor: '#eee'}}>
+
+            </Row>
+            <Row style={{ backgroundColor: '#123', alignItems: 'center'}}>
+              <Col style={{ justifyContent: 'center',backgroundColor: '#eee', alignItems: 'center' }}>
+                <View>
+                  <Button>
+                    <Text>안녕</Text>
+                  </Button>
+                </View>
+              </Col>
+              <Col>
+                <Button>
+                  <Text>안녕</Text>
+                </Button>
+              </Col>
+              <Col>
+                <Button>
+                  <Text>안녕</Text>
+                </Button>
+              </Col>
+            </Row>
+          </Grid>*/}
+       <Content>
           <TouchableOpacity onPress={() => navigation.navigate('NoticeIndex')}>
             <Text note>공지사항</Text>
           </TouchableOpacity>
           <Text>마이파이브 맛집 페이지</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('FoodIndex')}>
+          <TouchableOpacity onPress={() => navigation.navigate('RestaurantIndex')}>
             <Text note>맛집으로 고 !</Text>
           </TouchableOpacity>
         </Content>

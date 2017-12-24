@@ -11,6 +11,7 @@ const BaseStyle = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },

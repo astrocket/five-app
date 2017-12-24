@@ -5,22 +5,21 @@ import {
 import {
   Container, Header, Content, Text, Spinner, Card,
   CardItem, Thumbnail, Button, Icon, Left, Body,
-  Right, Segment, H1,
+  Right, Segment, H1, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import {
-  FoodUnitRound, UserUnitRound, FollowerButton,
+  FollowUserButton, UserUnitRound, FollowerButton,
 } from '../../component/common';
-import FoodShow from '../Food/FoodShow';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 import PopupDialog from 'react-native-popup-dialog';
-
+import UserFiveRestaurantModal from '../User/UserFiveRestaurantModal';
 
 export default class UserShow extends Component {
 
@@ -33,37 +32,10 @@ export default class UserShow extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      user: this.props.navigation.state.params.user,
-      foodFollowing: false,
-      foods: [
-        {
-          id: '1',
-          location: '망리단길',
-          title: '이지첸',
-          image_url: 'https://scontent.cdninstagram.com/t51.2885-15/s320x320/sh0.08/e35/21980744_278103439350120_3623176725199847424_n.jpg',
-        }, {
-          id: '2',
-          location: '의정부',
-          title: '부대찌개',
-          image_url: 'https://img.buzzfeed.com/buzzfeed-static/static/2017-03/29/15/campaign_images/buzzfeed-prod-fastlane-03/26-delicious-korean-foods-you-need-in-your-life-2-30138-1490814365-13_dblbig.jpg',
-        }, {
-          id: '3',
-          location: '강남역',
-          title: '도스 타코스',
-          image_url: 'https://i.ytimg.com/vi/mEBFswpYms4/maxresdefault.jpg',
-        }, {
-          id: '4',
-          location: '성수동',
-          title: '도치 피자',
-          image_url: 'https://scontent.cdninstagram.com/t51.2885-15/s320x320/e35/23498854_193592511207603_4852021826986967040_n.jpg',
-        }, {
-          id: '5',
-          location: '성수동',
-          title: '치킨앤 파티',
-          image_url: 'https://www.chick-fil-a.com/-/media/Images/CFACOM/Menu-Items/WS-Menu-PDP-Images/Entrees/CFA_PDP_ChickNStrips-3ct_1085.ashx',
-        },
-      ],
-      popup: '',
+      user: '',
+      restaurant_followers_count: '',
+      restaurant_followees_count: '',
+      restaurant_following: false,
     };
   }
 
@@ -78,11 +50,14 @@ export default class UserShow extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}?category=restaurant`, config)
       .then((response) => {
-        console.log(response);
         this.setState({
           loading: false,
+          user: response.data.user,
+          restaurant_followers_count: response.data.restaurant_followers_count,
+          restaurant_followees_count: response.data.restaurant_followees_count,
+          restaurant_following: response.data.restaurant_following,
         });
       })
       .catch((error) => {
@@ -90,13 +65,45 @@ export default class UserShow extends Component {
       });
   }
 
-  openPopUp(item) {
-    this.setState({
-      popup: item,
-    }, () => this.popupDialog.show());
+  followCall(category, data, onSuccess) {
+    const header = {
+      headers: {
+        'X-User-Email': ApplicationStore.email,
+        'X-User-Token': ApplicationStore.token
+      }
+    };
+
+    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, header)
+      .then((response) => {
+        onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
+      }).catch((error) => {
+      console.log(error.response);
+      Toast.show({
+        text: JSON.stringify(error.response.data),
+        position: 'bottom',
+        duration: 1500,
+      });
+    });
   }
 
-  renderPopUp(item) {
+  toggleRestaurantFollow() {
+    const data = {
+      following: {
+        user_id: this.state.user.id,
+        restaurant_following: !this.state.restaurant_following,
+      }
+    };
+    this.followCall('restaurant' ,data, (response) => this.onFollowRestaurantSuccess(response));
+  }
+
+  onFollowRestaurantSuccess(response) {
+    this.setState({
+      restaurant_following: !this.state.restaurant_following,
+      restaurant_followers_count: this.state.restaurant_following ? this.state.restaurant_followers_count -= 1 : this.state.restaurant_followers_count += 1
+    });
+  }
+
+  renderRestaurantPopUp(item) {
     const { navigation } = this.props;
     return (
       <PopupDialog
@@ -112,118 +119,49 @@ export default class UserShow extends Component {
           this.popupDialog = popupDialog;
         }}
       >
-        <FoodShow
-          item={item}
-          navigation={navigation}
-          marginTop={100}
+        <UserFiveRestaurantModal
+          marginTop={80}
           marginLeft={20}
           marginRight={20}
-          marginBottom={100}
+          marginBottom={120}
+          navigation={navigation}
           closePopUp={() => this.popupDialog.dismiss()}
         />
       </PopupDialog>
     );
   }
 
-  toggleFollow() {
-    this.setState({
-      foodFollowing: !this.state.foodFollowing,
-    });
-  }
-
-  renderFirstThree(openPopUp) {
-    const { navigation } = this.props;
-    return this.state.foods.slice(0, 3).map(function (item, i) {
+  renderRestaurantFollowing() {
+    if (this.state.restaurant_following) {
       return (
-        <FoodUnitRound
-          key={i}
-          id={item.id}
-          location={item.location}
-          title={item.title}
-          image_url={item.image_url}
-          onPress={() => openPopUp(item)}
-          barWidth={100}
-          barHeight={100}
-          borderRadius={35}
-          marginRight={0}
-        />
-      );
-    });
-  }
-
-  renderLastTwo(openPopUp) {
-    const { navigation } = this.props;
-
-    return this.state.foods.slice(3, 5).map(function (item, i) {
-      return (
-        <FoodUnitRound
-          key={i}
-          id={item.id}
-          location={item.location}
-          title={item.title}
-          image_url={item.image_url}
-          onPress={() => openPopUp(item)}
-          barWidth={100}
-          barHeight={100}
-          borderRadius={35}
-          marginRight={0}
-        />
-      );
-    });
-  }
-
-  renderFoodFollowing() {
-    if (this.state.foodFollowing) {
-      return (
-        <FollowerButton
-          onPress={() => this.toggleFollow()}
-          title={'맛집'}
-          followings={'17'}
-          followers={'420'}
+        <FollowUserButton
+          onPress={() => this.toggleRestaurantFollow()}
+          title={' 팔로잉'}
           clicked
         />
       );
     } else {
       return (
-        <FollowerButton
-          onPress={() => this.toggleFollow()}
-          title={'맛집'}
-          followings={'17'}
-          followers={'420'}
+        <FollowUserButton
+          onPress={() => this.toggleRestaurantFollow()}
+          title={'+팔로우 '}
         />
       );
     }
   }
 
   render() {
-    const { container, preLoading, flexBetweenCenter, flexAroundCenter, flexCenterCenter } = BaseStyle;
+    const { preLoading } = BaseStyle;
     const { navigation } = this.props;
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <Grid style={{ padding: 10 }}>
           <Row style={{
-            height: 140,
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: 10
+            flex: 1,
+            alignItems: 'center',
           }}>
-            {this.renderFirstThree((item) => this.openPopUp(item))}
-          </Row>
-          <Row style={{
-            height: 140,
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          }}>
-            {this.renderLastTwo((item) => this.openPopUp(item))}
-          </Row>
-          <Row style={{
-            justifyContent: 'center',
-          }}>
-            <View style={{
-              position: 'relative',
-              top: -30,
-            }}>
+            <Col style={{ alignItems: 'center' }}>
               <UserUnitRound
                 id={this.state.user.id}
                 name={this.state.user.name}
@@ -234,29 +172,64 @@ export default class UserShow extends Component {
                 marginRight={10}
                 fontSize={20}
               />
-            </View>
+              <Text note>{this.state.user.introduce}</Text>
+            </Col>
           </Row>
           <Row style={{
-            height: 130,
-            justifyContent: 'space-around',
+            height: 100,
             alignItems: 'center',
           }}>
-            {this.renderFoodFollowing()}
-            <FollowerButton
-              onPress={() => console.log('hi')}
-              title={'음악'}
-              followings={'24'}
-              followers={'299'}
-            />
-            <FollowerButton
-              onPress={() => console.log('hi')}
-              title={'책'}
-              followings={'27'}
-              followers={'310'}
-            />
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <FollowerButton
+                onPress={() => this.popupDialog.show()}
+                title={'맛집'}
+                followees={this.state.restaurant_followees_count}
+                followers={this.state.restaurant_followers_count}
+              />
+            </Col>
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <FollowerButton
+                title={'음악'}
+                followees={'24'}
+                followers={'299'}
+              />
+            </Col>
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <FollowerButton
+                title={'책'}
+                followees={'27'}
+                followers={'310'}
+              />
+            </Col>
+          </Row>
+          <Row style={{
+            height: 50,
+            alignItems: 'center'
+          }}>
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View>
+                {this.renderRestaurantFollowing()}
+              </View>
+            </Col>
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View>
+                <FollowUserButton
+                  onPress={() => console.log('hi')}
+                  title={'+팔로우 '}
+                />
+              </View>
+            </Col>
+            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View>
+                <FollowUserButton
+                  onPress={() => console.log('hi')}
+                  title={'+팔로우 '}
+                />
+              </View>
+            </Col>
           </Row>
         </Grid>
-        {this.renderPopUp(this.state.popup)}
+        {this.renderRestaurantPopUp()}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

@@ -55,7 +55,6 @@ export default class TabC extends Component {
     };
     axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
-        console.log(response);
         this.setState({
           loading: false,
         });

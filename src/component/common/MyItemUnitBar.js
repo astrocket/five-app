@@ -21,11 +21,11 @@ const MyItemUnitBar = ({ title, location, image_url, date_time, onPress }) => {
       <Left>
         <Thumbnail source={{ uri: image_url }}/>
       </Left>
-      <Body>
+      <Body style={{ borderBottomWidth: 0 }}>
       <Text>{location} {title}</Text>
       <Text note>Doing what you like will always keep you happy . .</Text>
       </Body>
-      <Right>
+      <Right style={{ borderBottomWidth: 0 }}>
         <Text note>{date_time}</Text>
       </Right>
     </ListItem>

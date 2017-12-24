@@ -34,52 +34,52 @@ export default class FriendIndex extends Component {
           id: '1',
           name: '혜리',
           image_url: 'https://pbs.twimg.com/profile_images/434151642951213056/h-YeBKj8.jpeg',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '2',
           name: '김유정',
           image_url: 'https://pbs.twimg.com/profile_images/846361396296241152/zK7wpe1o.jpg',
-          food_following: false
+          restaurant_following: false
         }, {
           id: '3',
           name: '설현',
           image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/160911_%EB%8F%99%ED%83%84_%EC%97%94%ED%84%B0%EC%8B%9D%EC%8A%A4_%EC%84%A4%ED%98%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C.jpg',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '4',
           name: 'Taylor Swift',
           image_url: 'https://www.grammy.com/sites/com/files/styles/image_landscape_hero/public/taylorswift-hero-510837066.jpg?itok=VeBknRmv',
-          food_following: false
+          restaurant_following: false
         }, {
           id: '5',
           name: 'Leo',
           image_url: 'https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2014/11/leonardo_dicaprio.jpg',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '6',
           name: '혜리',
           image_url: 'https://pbs.twimg.com/profile_images/434151642951213056/h-YeBKj8.jpeg',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '7',
           name: '김유정',
           image_url: 'https://pbs.twimg.com/profile_images/846361396296241152/zK7wpe1o.jpg',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '8',
           name: '설현',
           image_url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/160911_%EB%8F%99%ED%83%84_%EC%97%94%ED%84%B0%EC%8B%9D%EC%8A%A4_%EC%84%A4%ED%98%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C.jpg',
-          food_following: false
+          restaurant_following: false
         }, {
           id: '9',
           name: 'Taylor Swift',
           image_url: 'https://www.grammy.com/sites/com/files/styles/image_landscape_hero/public/taylorswift-hero-510837066.jpg?itok=VeBknRmv',
-          food_following: true
+          restaurant_following: true
         }, {
           id: '10',
           name: 'Leo',
           image_url: 'https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2014/11/leonardo_dicaprio.jpg',
-          food_following: true
+          restaurant_following: true
         },
       ],
     };

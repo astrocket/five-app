@@ -113,7 +113,7 @@ export default {
   cardDefaultBg: '#fff',
 
   // Color
-  brandPrimary: platform === 'ios' ? '#007aff' : '#3F51B5',
+  brandPrimary: platform === 'ios' ? '#FF9800' : '#FF9800',
   brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -246,7 +246,7 @@ export default {
   },
 
   // Spinner
-  defaultSpinnerColor: '#45D56E',
+  defaultSpinnerColor: this.brandPrimary,
   inverseSpinnerColor: '#1A191B',
 
   // Tabs

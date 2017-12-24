@@ -16,15 +16,15 @@ import CustomDrawer from './CustomDrawer';
 import PageA from '../class/Page/PageA';
 import PageB from '../class/Page/PageB';
 import PageC from '../class/Page/PageC';
-import FoodIndex from '../class/Food/FoodIndex';
-import FoodNew from '../class/Food/FoodNew';
-import FoodList from '../class/Food/FoodList';
-import FoodShow from '../class/Food/FoodShow';
+import RestaurantIndex from '../class/Restaurant/RestaurantIndex';
+import RestaurantNew from '../class/Restaurant/RestaurantNew';
+import RestaurantList from '../class/Restaurant/RestaurantList';
+import RestaurantShow from '../class/Restaurant/RestaurantShow';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
 import Map from '../class/Page/Map';
-import FollowerIndex from '../class/Follow/FollowerIndex';
+import FollowIndex from '../class/Follow/FollowIndex';
 import MyItemIndex from '../class/Item/MyItemIndex';
 import Setting from '../class/Page/Setting';
 import UserInfoNew from '../class/User/UserInfoNew';
@@ -82,17 +82,17 @@ const StackNavigation = StackNavigator(
         header: null,
       },
     },
-    FoodNew: {
-      screen: FoodNew,
+    RestaurantNew: {
+      screen: RestaurantNew,
     },
-    FoodIndex: {
-      screen: FoodIndex,
+    RestaurantIndex: {
+      screen: RestaurantIndex,
     },
-    FoodList: {
-      screen: FoodList,
+    RestaurantList: {
+      screen: RestaurantList,
     },
-    FoodShow: {
-      screen: FoodShow,
+    RestaurantShow: {
+      screen: RestaurantShow,
     },
     Invitation: {
       screen: Invitation,
@@ -106,8 +106,8 @@ const StackNavigation = StackNavigator(
     Map: {
       screen: Map,
     },
-    FollowerIndex: {
-      screen: FollowerIndex,
+    FollowIndex: {
+      screen: FollowIndex,
     },
     MyItemIndex: {
       screen: MyItemIndex,

@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FoodUnitRound = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
+const RestaurantUnitRound = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
   const { container } = BaseStyle;
   return (
     <TouchableHighlight onPress={onPress} onLongPress={onLongPress} underlayColor={'#fff'}>
@@ -42,4 +42,4 @@ const FoodUnitRound = ({ id, location, title, image_url, onPress, onLongPress, b
   );
 };
 
-export { FoodUnitRound };
+export { RestaurantUnitRound };

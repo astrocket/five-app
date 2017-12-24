@@ -11,3 +11,5 @@ export const FiveNavOptions = {
   },
   drawerLockMode: 'locked-closed',
 };
+
+export const FiveColor = '#FF9800';
