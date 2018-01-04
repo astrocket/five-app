@@ -19,15 +19,18 @@ import BaseStyle from '../../config/BaseStyle';
 const RestaurantUnitBar = ({ id, location, title, image_url, onPress, barWidth, barHeight, borderRadius }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress}>
-      <Left>
-        <Thumbnail source={{ uri: image_url }}/>
-      </Left>
-      <Body style={{ borderBottomWidth: 0 }}>
-      <Text>{location} {title}</Text>
-      <Text note>Doing what you like will always keep you happy . .</Text>
+    <ListItem avatarList button onPress={onPress}>
+      <Image
+        style={{ width: 90, height: 90, borderRadius: 20 }}
+        source={{ uri: image_url }}
+      />
+      <Body>
+        <View style={{ flex: 1 }}>
+          <Text normal numberOfLines={1}>{title}</Text>
+          <Text note numberOfLines={1}>{location}</Text>
+        </View>
       </Body>
-      <Right style={{ borderBottomWidth: 0 }}>
+      <Right>
         <Text note>2017.12.13</Text>
       </Right>
     </ListItem>

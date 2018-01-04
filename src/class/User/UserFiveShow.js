@@ -22,7 +22,7 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ApplicationStore from '../../mobx/ApplicationStore';
 
-export default class RestaurantShow extends Component {
+export default class UserFiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.title,
@@ -187,20 +187,26 @@ export default class RestaurantShow extends Component {
     } else {
       return (
         <Row>
-          <RestaurantUnitFull
-            id={this.state.restaurant.id}
-            location={this.state.restaurant.location}
-            title={this.state.restaurant.title}
-            image_url={this.state.restaurant.image_url}
-            onPress={() => navigation.navigate('Map', {
-              lat: '33',
-              lng: '22',
-              title: this.state.restaurant.title,
-            })}
-            barWidth={null}
-            barHeight={null}
-            borderRadius={15}
-            marginRight={10}
+          <FlatList
+            data={this.state.five_users}
+            renderItem={({ item }) => (
+              <RestaurantUnitFull
+                id={item.id}
+                location={item.location}
+                title={item.title}
+                image_url={item.image_url}
+                onPress={() => navigation.navigate('Map', {
+                  lat: '33',
+                  lng: '22',
+                  title: item,
+                })}
+                barWidth={null}
+                barHeight={null}
+                borderRadius={15}
+                marginRight={10}
+              />
+            )}
+            keyExtractor={item => 'follower-list-' + item.id}
           />
         </Row>
       );
@@ -208,8 +214,8 @@ export default class RestaurantShow extends Component {
   }
 
   openActionSheet() {
-    const BUTTONS = [ '보관함으로 가기', '나만의 FIVE 추가', 'Cancel' ];
-    const CANCEL_INDEX = 2;
+    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
+    const CANCEL_INDEX = 1;
 
     ActionSheet.show(
       {
@@ -242,120 +248,4 @@ export default class RestaurantShow extends Component {
     );
   }
 
-  render2() {
-    const { container, preLoading } = BaseStyle;
-    const { navigation } = this.props;
-
-    if (this.state.flip) {
-      return (
-        <Container>
-          <Content>
-            {this.renderCardFlipper()}
-            <Grid style={{
-              padding: 10,
-              marginTop: this.props.marginTop,
-              marginLeft: this.props.marginLeft,
-              marginRight: this.props.marginRight,
-              marginBottom: this.props.marginBottom,
-              borderRadius: 10,
-              backgroundColor: '#FFF',
-            }}>
-              <FlatList
-                data={this.state.five_users}
-                renderItem={({ item }) => (
-                  <FiveUserUnitBar
-                    user={item}
-                    onPress={() => navigation.navigate('UserShow', {
-                      user: item,
-                      title: item.name,
-                    })}
-                  />
-                )}
-                keyExtractor={item => 'follow-list-' + item.id}
-              />
-            </Grid>
-          </Content>
-        </Container>
-      );
-    } else {
-      return (
-        <Container>
-          <Content>
-            <Grid style={{
-              padding: 10,
-              marginTop: this.props.marginTop,
-              marginLeft: this.props.marginLeft,
-              marginRight: this.props.marginRight,
-              marginBottom: this.props.marginBottom,
-              borderRadius: 10,
-              backgroundColor: '#FFF',
-            }}>
-              <Row style={{
-                height: 200,
-                width: null,
-              }}>
-                <Image source={{ uri: this.state.restaurant.image_url }} style={{
-                  height: null,
-                  width: null,
-                  flex: 1,
-                }}/>
-              </Row>
-              <Row style={{
-                marginTop: 20,
-                marginBottom: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <H1 style={{ textAlign: 'center' }}>
-                  {`${this.state.restaurant.location} ${this.state.restaurant.title}`}
-                </H1>
-                <Button
-                  onPress={() => navigation.navigate('Map', {
-                    lat: '33',
-                    lng: '22',
-                    title: this.state.restaurant.title,
-                  })}
-                  transparent
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    top: -5,
-                  }}
-                >
-                  <Icon
-                    name="ios-map-outline"
-                    style={{
-                      fontSize: 25,
-                      color: '#000',
-                    }}
-                  />
-                </Button>
-              </Row>
-              <Row style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {this.renderCardFlipper()}
-              </Row>
-              <Row style={{
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}>
-                <SmallButton
-                  onPress={() => console.log('hi')}
-                  title={'공유하기'}
-                />
-                <SmallButton
-                  onPress={() => this.postUserItem(this.state.restaurant)}
-                  title={'담아두기'}
-                  clicked={this.state.clicked}
-                />
-              </Row>
-            </Grid>
-          </Content>
-        </Container>
-      );
-    }
-  }
 }

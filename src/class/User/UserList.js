@@ -107,6 +107,7 @@ export default class UserList extends Component {
                 id={item.id}
                 name={item.name}
                 image_url={item.image_url}
+                introduce={item.introduce}
                 onPress={() => navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,

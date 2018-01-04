@@ -57,6 +57,10 @@ export default {
     return this.textColor;
   },
 
+  get primaryColor() {
+    return this.brandPrimary;
+  },
+
   get btnPrimaryBg() {
     return this.brandPrimary;
   },
@@ -113,7 +117,7 @@ export default {
   cardDefaultBg: '#fff',
 
   // Color
-  brandPrimary: platform === 'ios' ? '#FF9800' : '#FF9800',
+  brandPrimary: platform === 'ios' ? '#FA3F97' : '#FA3F97',
   brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',

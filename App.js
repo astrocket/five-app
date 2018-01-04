@@ -24,7 +24,10 @@ import RootNavigation from './src/config/RootNavigation';
 import {
   observer,
 } from 'mobx-react/native';
+import { Provider } from 'mobx-react/native';
 import ApplicationStore from './src/mobx/ApplicationStore';
+
+const stores = { ApplicationStore };
 
 /*
 import FacebookAuth from './src/class/Auth/FacebookAuth';
@@ -102,9 +105,11 @@ export default class App extends Component<{}> {
       if (this.state.loggedIn) {
         return (
           <Root>
-            <StyleProvider style={getTheme(platform)}>
-              <RootNavigation/>
-            </StyleProvider>
+            <Provider {...stores}>
+              <StyleProvider style={getTheme(platform)}>
+                <RootNavigation/>
+              </StyleProvider>
+            </Provider>
           </Root>
         );
       }

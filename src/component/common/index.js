@@ -18,3 +18,6 @@ export * from './ShowMore';
 export * from './FollowUserButton';
 export * from './NotificationUnitBar';
 export * from './FiveUserUnitBar';
+export * from './HomeCategoryBar';
+export * from './FiveUnitBar';
+export * from './RestaurantUnitFull';

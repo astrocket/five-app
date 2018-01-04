@@ -203,7 +203,7 @@ export default class MyFiveRestaurantModal extends Component {
       >
         <Grid style={{
           padding: 10,
-          marginTop: this.props.marginTop,
+          marginTop: this.propsㅈㅈ.marginTop,
           marginLeft: this.props.marginLeft,
           marginRight: this.props.marginRight,
           marginBottom: this.props.marginBottom,

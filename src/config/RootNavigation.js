@@ -9,6 +9,7 @@ import {
   TabNavigator,
   DrawerNavigator,
 } from 'react-navigation';
+import * as Constant from './Constant';
 import TabA from '../class/TabA/TabA';
 import TabB from '../class/TabB/TabB';
 import TabC from '../class/TabC/TabC';
@@ -54,7 +55,7 @@ const StackNavigation = StackNavigator(
           swipeEnabled: false,
           tabBarPosition: 'bottom',
           tabBarOptions: {
-            activeTintColor: '#FF9800',
+            activeTintColor: Constant.FiveColor,
             inactiveTintColor: '#9e9e9e',
             indicatorStyle: {
               backgroundColor: 'transparent',
@@ -143,8 +144,8 @@ const RootNavigation = DrawerNavigator(
     },
   },
   {
-    drawerWidth: 200,
-    drawerPosition: 'left',
+    drawerWidth: 300,
+    drawerPosition: 'right',
     contentComponent: CustomDrawer
   },
 );

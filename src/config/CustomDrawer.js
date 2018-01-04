@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Dimensions, Platform,
+  View, Dimensions, Platform, FlatList,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -14,7 +14,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { MenuBar } from '../component/common';
+import { NotificationUnitBar, ShowMore } from '../component/common';
 import axios from 'axios';
 import * as ApiServer from './ApiServer';
 import BaseStyle from './BaseStyle';
@@ -25,12 +25,11 @@ export default class CustomDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
-      user: {
-        id: '1',
-        name: '혜리',
-        image_url: 'https://pbs.twimg.com/profile_images/434151642951213056/h-YeBKj8.jpeg',
-      },
+      loading: true, //실서비스에서는 로딩 true로
+      notifications: [],
+      page: 1,
+      page_loading: false,
+      no_more: false,
     };
   }
 
@@ -45,15 +44,46 @@ export default class CustomDrawer extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+    axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
       .then((response) => {
         this.setState({
           loading: false,
+          notifications: response.data,
         });
       })
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  pageCall() {
+    const config = {
+      headers: {
+        'X-User-Email': ApplicationStore.email,
+        'X-User-Token': ApplicationStore.token,
+      },
+    };
+    axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
+      .then((response) => {
+        if (response.data.notifications === undefined || response.data.notifications.length === 0) {
+          this.setState({ no_more: true });
+        }
+        this.setState({
+          notifications: [ ...this.state.notifications, ...response.data.notifications ],
+          page_loading: false,
+        });
+      }).catch((error) => {
+      console.log(error.response);
+    });
+  }
+
+  nextPage() {
+    this.setState({
+      page: this.state.page + 1,
+      page_loading: true,
+    }, () => {
+      this.pageCall();
+    });
   }
 
   render() {
@@ -72,34 +102,40 @@ export default class CustomDrawer extends Component {
           <Row style={{
             paddingTop: platform === "ios" ? (isIphoneX ? 39 : 15) : 0,
             height: 100,
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             alignItems: 'center',
+            borderBottomWidth: 1,
+            borderBottomColor: '#c9c9c9'
           }}>
-            <ListItem avatar transparent>
-              <Left>
-                <Thumbnail source={{ uri: this.state.user.image_url }}/>
-              </Left>
-              <Right style={{ justifyContent: 'center', alignItems: 'flex-start', marginLeft: 10, borderBottomWidth: 0 }}>
-                <H3 style={{ textAlign: 'center'}}>{this.state.user.name}</H3>
-                <Text note>대한민국 서울</Text>
-              </Right>
-            </ListItem>
+            <Text medium style={{ textAlign: 'center' }}>알림</Text>
           </Row>
-          <Row style={{ backgroundColor: '#eee', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <MenuBar
-              onPress={() => navigation.navigate('Invitation')}
-              icon={'logo-apple'}
-              title={'친구 초대하기'}
-            />
-            <MenuBar
-              onPress={() => navigation.navigate('FriendIndex')}
-              icon={'logo-apple'}
-              title={'친구들보기'}
-            />
-            <MenuBar
-              onPress={() => navigation.navigate('Invitation')}
-              icon={'logo-apple'}
-              title={'친구 초대하기'}
+          <Row style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
+            <FlatList
+              data={this.state.notifications}
+              style={{paddingBottom: 10}}
+              renderItem={({ item }) => (
+                <NotificationUnitBar
+                  id={item.id}
+                  user={item.from_user}
+                  title={item.title}
+                  created_at={item.created_at}
+                  onPress={() => navigation.navigate('UserShow', {
+                    title: item.from_user.name,
+                    user: item.from_user,
+                  })}
+                />
+              )}
+              keyExtractor={item => 'notifications-list-' + item.id}
+              ListFooterComponent={
+                () =>
+                  <ShowMore
+                    onPress={() => this.nextPage()}
+                    moreText={'더보기'}
+                    overText={'끝'}
+                    no_more={this.state.no_more}
+                    page_loading={this.state.page_loading}
+                  />
+              }
             />
           </Row>
         </Grid>

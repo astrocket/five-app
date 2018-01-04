@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const UserUnitRound = ({ id, name, image_url, onPress, barWidth, barHeight, borderRadius, marginRight, fontSize }) => {
+const UserUnitRound = ({ id, name, image_url, large, onPress, barWidth, barHeight, borderRadius, marginRight, fontSize }) => {
   const { container } = BaseStyle;
   return (
     <TouchableHighlight onPress={onPress} underlayColor={'#fff'}>
@@ -28,7 +28,7 @@ const UserUnitRound = ({ id, name, image_url, onPress, barWidth, barHeight, bord
           alignItems: 'center',
           borderRadius: borderRadius,
           backgroundColor: '#FBE175',
-          marginBottom: 5,
+          marginBottom: 15,
         }}>
           <Image source={{ uri: image_url }} style={{
             width: barWidth - 4,
@@ -40,7 +40,7 @@ const UserUnitRound = ({ id, name, image_url, onPress, barWidth, barHeight, bord
           <Text style={{
             textAlign: 'center',
             fontSize: fontSize,
-          }} numberOfLines={1}>{name}</Text>
+          }} large={large} numberOfLines={1}>{name}</Text>
         </View>
       </View>
     </TouchableHighlight>

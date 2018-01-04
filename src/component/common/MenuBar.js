@@ -19,7 +19,7 @@ const MenuBar = ({ icon, title, onPress }) => {
   return (
     <ListItem avatar transparent button
               onPress={onPress}
-              style={{ marginLeft: 0, paddingLeft: 20, width: 200, marginTop: 10}}
+              style={{ marginLeft: 0, paddingLeft: 20, width: 300, marginTop: 10}}
     >
       <Left>
         <Icon

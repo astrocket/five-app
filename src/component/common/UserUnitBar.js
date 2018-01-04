@@ -14,16 +14,16 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const UserUnitBar = ({ id, name, image_url, onPress }) => {
+const UserUnitBar = ({ id, name, image_url, onPress, introduce }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress} transparent>
+    <ListItem avatarList button onPress={onPress} transparent>
       <Left>
         <Thumbnail source={{ uri: image_url }}/>
       </Left>
       <Body style={{ borderBottomWidth: 0 }}>
       <Text>{name}</Text>
-      <Text note>Doing what you like will always keep you happy . .</Text>
+      <Text note>{introduce}</Text>
       </Body>
       <Right style={{ borderBottomWidth: 0 }}>
         <Text note>2017.12.13</Text>

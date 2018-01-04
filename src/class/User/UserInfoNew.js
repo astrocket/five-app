@@ -20,8 +20,10 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class UserInfoNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -33,17 +35,17 @@ export default class UserInfoNew extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      user: this.props.navigation.state.params.user,
       introduce: ''
     };
   }
 
 
   onUploadSuccess(data) {
-    this.props.navigation.state.params.updateUser(data);
-    this.setState({
-      loading: false,
-    }, () => this.props.navigation.goBack() );
+    this.props.ApplicationStore.setMyProfile(data).then(() => {
+      this.setState({
+        loading: false,
+      }, () => this.props.navigation.goBack() );
+    });
   }
 
   postUserInfo() {
@@ -53,8 +55,8 @@ export default class UserInfoNew extends Component {
 
     const header = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
         'Content-Type': 'multipart/form-data;',
       },
     };
@@ -74,13 +76,14 @@ export default class UserInfoNew extends Component {
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
+    const { my_profile } = this.props.ApplicationStore;
 
     return (
       <Container>
         <Content padder>
           <Item>
             <Input
-              placeholder={this.state.user.introduce}
+              placeholder={my_profile.introduce}
               placeholderTextColor={'#eee'}
               onChangeText={(introduce) => this.setState({ introduce })}
               autoCapitalize={'none'}

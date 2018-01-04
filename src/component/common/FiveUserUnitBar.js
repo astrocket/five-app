@@ -25,7 +25,7 @@ const FiveUserUnitBar = ({ user, onPress }) => {
       </Left>
       <Body style={{ borderBottomWidth: 0 }}>
       <Text numberOfLines={1}>{user.name}</Text>
-      <Text note>{user.introduce}</Text>
+      <Text note numberOfLines={1}>{user.introduce}</Text>
       </Body>
       <Right style={{
         borderBottomWidth: 0,

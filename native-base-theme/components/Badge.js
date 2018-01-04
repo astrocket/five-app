@@ -17,6 +17,21 @@ export default (variables = variable) => {
     ".danger": {
       backgroundColor: variables.btnDangerBg
     },
+    ".micro": {
+      backgroundColor: variables.badgeBg,
+      padding: variables.badgePadding / 1.5,
+      paddingHorizontal: 4,
+      alignSelf: "flex-start",
+      borderRadius: 9,
+      height: 18,
+      "NativeBase.Text": {
+        color: variables.badgeColor,
+        fontSize: 8,
+        lineHeight: variables.lineHeight - 7,
+        textAlign: "center",
+        paddingHorizontal: 1.5
+      },
+    },
     "NativeBase.Text": {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,

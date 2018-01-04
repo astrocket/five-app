@@ -255,6 +255,38 @@ export default (variables = variable) => {
       paddingRight: null
     },
 
+    ".avatarList": {
+      "NativeBase.Left": {
+        flex: 0
+      },
+      "NativeBase.Body": {
+        "NativeBase.Text": {
+          marginLeft: null
+        },
+        flex: 1,
+        paddingVertical: 0,
+        borderBottomWidth: null,
+        borderColor: variables.listBorderColor,
+        marginLeft: variables.listItemPadding + 5
+      },
+      "NativeBase.Right": {
+        "NativeBase.Text": {
+          ".note": {
+            fontSize: variables.noteFontSize - 2
+          }
+        },
+        flex: 0,
+        paddingRight: variables.listItemPadding + 5,
+        alignSelf: "stretch",
+        paddingVertical: 0,
+        borderBottomWidth: null,
+        borderColor: variables.listBorderColor
+      },
+      borderBottomWidth: null,
+      paddingVertical: variables.listItemPadding,
+      paddingRight: null
+    },
+
     ".thumbnail": {
       "NativeBase.Left": {
         flex: 0
@@ -392,6 +424,12 @@ export default (variables = variable) => {
     },
     ".noBorder": {
       borderBottomWidth: null
+    },
+    ".cardStyle" : {
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      borderBottomWidth: 0,
     },
     alignItems: "center",
     flexDirection: "row",

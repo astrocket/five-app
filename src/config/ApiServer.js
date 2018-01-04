@@ -12,3 +12,4 @@ export const USERS = API + '/users';
 export const MY_PROFILE = API + '/profiles';
 export const RESTAURANTS = API + '/restaurants';
 export const FOLLOWINGS = API + '/followings';
+export const NOTIFICATIONS = API + '/notifications';

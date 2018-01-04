@@ -17,21 +17,22 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
 import ImagePicker from 'react-native-image-picker';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class Setting extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
+    title: '설정',
     ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
-      user: this.props.navigation.state.params.user,
+      loading: true, //실서비스에서는 로딩 true로
     };
   }
 
@@ -42,32 +43,21 @@ export default class Setting extends Component {
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+    axios.get(`${ApiServer.MY_PROFILE}/me`, config)
       .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
+        this.props.ApplicationStore.setMyProfile(response.data).then(() => {
+          this.setState({
+            loading: false,
+          });
         });
       })
       .catch((error) => {
         console.log(error.response);
       });
-  }
-
-  onUploadSuccess(data) {
-    this.updateUser(data)
-  }
-
-  updateUser(data) {
-    this.props.navigation.state.params.updateUser(data);
-    this.setState({
-      user: data,
-      loading: false,
-    });
   }
 
   postImage(source) {
@@ -82,15 +72,19 @@ export default class Setting extends Component {
 
     const header = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
         'Content-Type': 'multipart/form-data;',
       }
     };
 
     axios.post(`${ApiServer.MY_PROFILE}/update_user`, data, header)
       .then((response) => {
-        this.onUploadSuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
+        this.props.ApplicationStore.setMyProfile(response.data).then(() => {
+          this.setState({
+            loading: false,
+          });
+        }); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
       Toast.show({
         text: JSON.stringify(error.response),
@@ -140,6 +134,7 @@ export default class Setting extends Component {
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
+    const { my_profile } = this.props.ApplicationStore;
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
@@ -166,8 +161,7 @@ export default class Setting extends Component {
             </ListItem>
             <ListItem button
                       onPress={() => navigation.navigate('UserInfoNew', {
-                        user: this.state.user,
-                        updateUser: (user) => this.updateUser(user)
+                        user: my_profile,
                       })}>
               <Body>
               <Text>한줄 자기소개 변경하기</Text>
@@ -184,9 +178,9 @@ export default class Setting extends Component {
           }}>
             <Col style={{ alignItems: 'center' }}>
               <UserUnitRound
-                id={this.state.user.id}
-                name={this.state.user.name}
-                image_url={this.state.user.image_url}
+                id={my_profile.id}
+                name={my_profile.name}
+                image_url={my_profile.image_url}
                 onPress={() => this.openImagePicker()}
                 barWidth={70}
                 barHeight={70}
@@ -194,7 +188,7 @@ export default class Setting extends Component {
                 marginRight={10}
                 fontSize={20}
               />
-              <Text note>{this.state.user.introduce}</Text>
+              <Text note>{my_profile.introduce}</Text>
             </Col>
           </Row>
           <Row style={{

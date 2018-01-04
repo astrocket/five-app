@@ -31,7 +31,7 @@ export default class RestaurantIndex extends Component {
           name="md-person-add"
           style={{
             fontSize: 25,
-            color: 'white',
+            color: Constant.FiveColor,
           }}
         />
       </Button>
@@ -83,16 +83,17 @@ export default class RestaurantIndex extends Component {
               flex: 1,
               flexDirection: 'row',
               justifyContent: 'space-between',
+              alignItems: 'center',
               paddingTop: 10,
               paddingBottom: 10,
               paddingLeft: 10,
               paddingRight: 10,
             }}>
-              <Text>새로 친구들의 five로 선정 된 맛집</Text>
+              <Text medium>새로 친구들의 five로 선정 된 맛집</Text>
               <TouchableOpacity onPress={() => navigation.navigate('RestaurantList', {
                 restaurants: this.state.restaurants,
               })} underlayColor={'#fff'}>
-                <Text note>전체보기 ></Text>
+                <Text primary>더보기</Text>
               </TouchableOpacity>
             </View>
             <Row style={{ marginBottom: 20 }}>
@@ -108,11 +109,12 @@ export default class RestaurantIndex extends Component {
                     id={item.id}
                     location={item.location}
                     title={item.title}
+                    five_users_count={item.five_users_count}
                     image_url={item.image_url}
                     onPress={() => navigation.navigate('RestaurantShow', { title: item.title, restaurant_id: item.id})}
-                    barWidth={100}
-                    barHeight={100}
-                    borderRadius={35}
+                    barWidth={150}
+                    barHeight={150}
+                    borderRadius={15}
                     marginRight={10}
                   />
                 )}
@@ -123,16 +125,17 @@ export default class RestaurantIndex extends Component {
               flex: 1,
               flexDirection: 'row',
               justifyContent: 'space-between',
+              alignItems: 'center',
               paddingTop: 10,
               paddingBottom: 10,
               paddingLeft: 10,
               paddingRight: 10,
             }}>
-              <Text>새로 five 를 바꾼 친구</Text>
+              <Text medium>새로 five 를 바꾼 친구</Text>
               <TouchableOpacity onPress={() => navigation.navigate('UserList', {
                 users: this.state.users,
               })} underlayColor={'#fff'}>
-                <Text note>전체보기 ></Text>
+                <Text primary>더보기</Text>
               </TouchableOpacity>
             </View>
             <Row style={{ marginBottom: 20 }}>
@@ -152,9 +155,9 @@ export default class RestaurantIndex extends Component {
                       user: item,
                       title: item.name,
                     })}
-                    barWidth={60}
-                    barHeight={60}
-                    borderRadius={30}
+                    barWidth={90}
+                    barHeight={90}
+                    borderRadius={45}
                     marginRight={10}
                   />
                 )}

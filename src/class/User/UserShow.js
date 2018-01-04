@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image,
+  View, FlatList
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Card,
@@ -12,15 +12,18 @@ import {
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import {
-  FollowUserButton, UserUnitRound, FollowerButton,
+  FollowUserButton, UserUnitRound, FollowerButton, FiveUnitBar
 } from '../../component/common';
+import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
 import PopupDialog from 'react-native-popup-dialog';
 import UserFiveRestaurantModal from '../User/UserFiveRestaurantModal';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class UserShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -33,9 +36,7 @@ export default class UserShow extends Component {
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       user: '',
-      restaurant_followers_count: '',
-      restaurant_followees_count: '',
-      restaurant_following: false,
+      categories: [],
     };
   }
 
@@ -46,8 +47,8 @@ export default class UserShow extends Component {
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}?category=restaurant`, config)
@@ -55,9 +56,7 @@ export default class UserShow extends Component {
         this.setState({
           loading: false,
           user: response.data.user,
-          restaurant_followers_count: response.data.restaurant_followers_count,
-          restaurant_followees_count: response.data.restaurant_followees_count,
-          restaurant_following: response.data.restaurant_following,
+          categories: response.data.categories,
         });
       })
       .catch((error) => {
@@ -68,8 +67,8 @@ export default class UserShow extends Component {
   followCall(category, data, onSuccess) {
     const header = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token
       }
     };
 
@@ -103,7 +102,7 @@ export default class UserShow extends Component {
     });
   }
 
-  renderRestaurantPopUp(item) {
+/*  renderRestaurantPopUp(item) {
     const { navigation } = this.props;
     return (
       <PopupDialog
@@ -129,9 +128,9 @@ export default class UserShow extends Component {
         />
       </PopupDialog>
     );
-  }
+  }*/
 
-  renderRestaurantFollowing() {
+/*  renderRestaurantFollowing() {
     if (this.state.restaurant_following) {
       return (
         <FollowUserButton
@@ -148,7 +147,7 @@ export default class UserShow extends Component {
         />
       );
     }
-  }
+  }*/
 
   render() {
     const { preLoading } = BaseStyle;
@@ -156,9 +155,9 @@ export default class UserShow extends Component {
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
-        <Grid style={{ padding: 10 }}>
+        <Grid>
           <Row style={{
-            flex: 1,
+            height: 250,
             alignItems: 'center',
           }}>
             <Col style={{ alignItems: 'center' }}>
@@ -166,16 +165,42 @@ export default class UserShow extends Component {
                 id={this.state.user.id}
                 name={this.state.user.name}
                 image_url={this.state.user.image_url}
-                barWidth={70}
-                barHeight={70}
-                borderRadius={35}
+                barWidth={130}
+                barHeight={130}
+                borderRadius={65}
                 marginRight={10}
-                fontSize={20}
+                fontSize={25}
+                large
               />
-              <Text note>{this.state.user.introduce}</Text>
+              <Text note style={{ width: 250, textAlign: 'center' }}>{this.state.user.introduce}</Text>
             </Col>
           </Row>
-          <Row style={{
+          <FlatList
+            data={this.state.categories}
+            style={{paddingBottom: 15}}
+            renderItem={({ item }) => (
+              <FiveUnitBar
+                onPress={() => navigation.navigate(`${item.klass}Index`)}
+                category={item.category}
+                followers={item.followers_count}
+                followees={item.followees_count}
+                fives={item.fives}
+                image={Images.findImageOf(item.klass.toLowerCase())}
+              />
+            )}
+            keyExtractor={item => 'five-category-list-' + item.id}
+            ListFooterComponent={
+              <FiveUnitBar
+                onPress={() => navigation.navigate('RestaurantIndex')}
+                category={'더미데이터'}
+                followers={'222'}
+                followees={'242'}
+                fives={[]}
+                image={Images.restaurant_main}
+              />
+            }
+          />
+{/*          <Row style={{
             height: 100,
             alignItems: 'center',
           }}>
@@ -228,8 +253,8 @@ export default class UserShow extends Component {
               </View>
             </Col>
           </Row>
+        {this.renderRestaurantPopUp()}*/}
         </Grid>
-        {this.renderRestaurantPopUp()}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

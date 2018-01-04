@@ -22,6 +22,10 @@ const BaseStyle = StyleSheet.create({
     flex: 1,
     paddingTop: platform.OS === 'ios' ? 20 : 0,
   },
+  headerDoubleIconsContainer: {
+    flexDirection: 'row',
+    width: null,
+  },
   flexAroundCenter: {
     flex: 1,
     justifyContent: 'space-around',
@@ -40,6 +44,11 @@ const BaseStyle = StyleSheet.create({
   centerCenter: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  topLeftLabel: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
   }
 });
 

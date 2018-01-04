@@ -6,6 +6,7 @@ import {
   Icon,
 } from 'native-base';
 import { TabNavigator } from 'react-navigation';
+import * as Constant from './Constant';
 import TabA from '../class/TabA/TabA';
 import TabB from '../class/TabB/TabB';
 import TabC from '../class/TabC/TabC';
@@ -64,7 +65,7 @@ const TabContainer = ({ initialRouteName, screenProps }) => {
     swipeEnabled: false,
     tabBarPosition: 'bottom',
     tabBarOptions: {
-      activeTintColor: '#990008',
+      activeTintColor: Constant.FiveColor,
       inactiveTintColor: '#9e9e9e',
       indicatorStyle: {
         backgroundColor: 'transparent',

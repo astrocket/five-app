@@ -5,6 +5,7 @@ class ObservableApplicationStore {
   @observable email = '';
   @observable token = '';
   @observable key = '';
+  @observable my_profile = '';
 
   async setAuthInfo() {
     await AsyncStorage.multiGet([ 'email', 'token', 'key' ], (err, stores) => {
@@ -12,6 +13,12 @@ class ObservableApplicationStore {
       this.token = stores[1][1];
       this.key = stores[2][1];
     });
+  }
+
+  async setMyProfile(user) {
+    await (
+      this.my_profile = user
+    )
   }
 }
 

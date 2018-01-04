@@ -1,15 +1,15 @@
+export const FiveColor = '#FA3F97';
+
 export const FiveNavOptions = {
   headerStyle: {
-    backgroundColor: '#FF9800',
+    backgroundColor: 'white',
   },
-  headerTintColor: 'white',
+  headerTintColor: '#FA3F97',
   headerBackTitleStyle: {
-    color: 'white',
+    color: '#FA3F97',
   },
   headerTitleStyle: {
-    color: 'white',
+    color: 'black',
   },
   drawerLockMode: 'locked-closed',
 };
-
-export const FiveColor = '#FF9800';
