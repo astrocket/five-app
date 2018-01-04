@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  SmallButton, FiveUserUnitBar, RestaurantUnitFull,
+  FollowSmallButton, FiveUserUnitBar, FiveUnitFull,
 } from '../../component/common';
 import { FollowUnitBar } from '../../component/common';
 import axios from 'axios';
@@ -28,26 +28,31 @@ export default class RestaurantShow extends Component {
     title: navigation.state.params.title,
 
     headerRight: (
-      <View style={BaseStyle.headerDoubleIconsContainer}>
-        <Button onPress={() => navigation.navigate('Setting')} transparent>
-          <Icon
-            name="ios-share-outline"
-            style={{
-              fontSize: 25,
-              color: Constant.FiveColor,
-            }}
-          />
-        </Button>
-        <Button onPress={navigation.state.params.shareActionSheet} transparent>
-          <Icon
-            name="ios-add-circle"
-            style={{
-              fontSize: 25,
-              color: Constant.FiveColor,
-            }}
-          />
-        </Button>
-      </View>
+      navigation.state.params.navLoading ?
+        null :
+        <View style={BaseStyle.headerDoubleIconsContainer}>
+          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
+            <Icon
+              name="ios-share-outline"
+              style={{
+                fontSize: 25,
+                color: Constant.FiveColor,
+              }}
+            />
+          </Button>
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingRight: 5,
+          }}>
+            <FollowSmallButton
+              onPress={navigation.state.params.openFiveActionSheet}
+              textTrue={'담김'}
+              textFalse={'+ 담기'}
+              clicked={navigation.state.params.my_five && navigation.state.params.my_wish}
+            />
+          </View>
+        </View>
     ),
     ...Constant.FiveNavOptions,
   });
@@ -61,14 +66,20 @@ export default class RestaurantShow extends Component {
       five_users: [],
       five_users_count: '',
       my_five: false,
+      my_wish: false,
       clicked: true,
     };
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ shareActionSheet: this.openActionSheet });
+    this.props.navigation.setParams({
+      openShareActionSheet: () => this.openShareActionSheet(),
+      openFiveActionSheet: () => this.openFiveActionSheet(),
+    });
     this.apiCall();
   }
+
+  // API CALLS
 
   apiCall() {
     const config = {
@@ -77,23 +88,29 @@ export default class RestaurantShow extends Component {
         'X-User-Token': ApplicationStore.token,
       },
     };
-    console.log(this.props.navigation.state.params.restaurant_id);
-    axios.get(`${ApiServer.RESTAURANTS}/${this.props.navigation.state.params.restaurant_id}`, config)
+    console.log(this.props.navigation.state.params.id);
+    axios.get(`${ApiServer.RESTAURANTS}/${this.props.navigation.state.params.id}`, config)
       .then((response) => {
-        this.props.navigation.setParams({ my_five: response.data.my_five });
+        this.props.navigation.setParams({
+          my_five: response.data.my_five,
+          my_wish: response.data.my_wish,
+          navLoading: false,
+        });
         this.setState({
           loading: false,
           restaurant: response.data.restaurant,
           five_users: response.data.five_users,
           five_users_count: response.data.five_users_count,
+          my_five: response.data.my_five,
+          my_wish: response.data.my_wish,
         });
       })
       .catch((error) => {
-        console.log('에러 : ' + error.response);
+        console.log('에러 : ' + JSON.stringify(error.response));
       });
   }
 
-  createFiveCall() {
+  createFiveCall(url) {
     const data = {
       restaurant: {
         favorable_id: this.state.restaurant.id,
@@ -107,118 +124,107 @@ export default class RestaurantShow extends Component {
       },
     };
 
-    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=restaurant`, data, header)
-      .then((response) => {
-        this.onCreateFiveCallSuccess();
-      }).catch((error) => {
-      Toast.show({
-        text: JSON.stringify('에러 : ' + error.response),
-        position: 'bottom',
-        duration: 1500,
+    if (url) {
+      axios.post(url, data, header)
+        .then((response) => {
+          this.onCreateFiveCallSuccess(response.data);
+        }).catch((error) => {
+        console.log(error.response);
+        Toast.show({
+          text: '에러 : ' + JSON.stringify(error.response.data.errors),
+          position: 'bottom',
+          duration: 1500,
+        });
       });
-    });
-  }
-
-  onCreateFiveCallSuccess() {
-    const resetAction = NavigationActions.reset({
-      index: 1,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'Main',
-        }),
-        NavigationActions.navigate({
-          routeName: 'MyItemIndex',
-        }),
-      ],
-    });
-
-    Alert.alert(
-      '알림',
-      '담아두기 리스트로 가시겠어요?',
-      [
-        {
-          text: '네',
-          onPress: () => this.props.navigation.dispatch(resetAction),
-          style: 'cancel',
-        },
-        { text: '아니요' },
-      ],
-      { cancelable: true },
-    );
-  }
-
-  flipCard() {
-    this.setState({
-      flip: !this.state.flip,
-    });
-  }
-
-  renderCardFlipper() {
-    return (
-      <ListItem>
-        <Button transparent onPress={() => this.flipCard()}>
-          <Text>{`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}</Text>
-        </Button>
-      </ListItem>
-    );
-  }
-
-  renderCard(flip) {
-    const { navigation } = this.props;
-
-    if (flip) {
-      return (
-        <Row>
-          <FlatList
-            data={this.state.five_users}
-            renderItem={({ item }) => (
-              <FiveUserUnitBar
-                user={item}
-                onPress={() => navigation.navigate('UserShow', {
-                  user: item,
-                  title: item.name,
-                })}
-              />
-            )}
-            keyExtractor={item => 'follower-list-' + item.id}
-          />
-        </Row>
-      );
-    } else {
-      return (
-        <Row>
-          <RestaurantUnitFull
-            id={this.state.restaurant.id}
-            location={this.state.restaurant.location}
-            title={this.state.restaurant.title}
-            image_url={this.state.restaurant.image_url}
-            onPress={() => navigation.navigate('Map', {
-              lat: '33',
-              lng: '22',
-              title: this.state.restaurant.title,
-            })}
-            barWidth={null}
-            barHeight={null}
-            borderRadius={15}
-            marginRight={10}
-          />
-        </Row>
-      );
     }
   }
 
-  openActionSheet() {
-    const BUTTONS = [ '보관함으로 가기', '나만의 FIVE 추가', 'Cancel' ];
-    const CANCEL_INDEX = 2;
+  // CONTROLLERS
+
+  openShareActionSheet() {
+    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
+    const CANCEL_INDEX = 1;
 
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
       },
-      buttonIndex => this.createFiveCall(),
+      buttonIndex => this.shareAction(BUTTONS[ buttonIndex ]),
     );
   }
+
+  openFiveActionSheet() {
+    const my_five = this.state.my_five;
+    const my_wish = this.state.my_wish;
+    var BUTTONS;
+    var URLS;
+    var CANCEL_INDEX ;
+    var message;
+
+    if (!my_five && !my_wish) {
+      BUTTONS = [ '보관함으로 추가', '나만의 FIVE 추가', 'Cancel' ];
+      URLS = [`${ApiServer.MY_PROFILE}/create_wish?category=restaurant`, `${ApiServer.MY_PROFILE}/create_five?category=restaurant`, false];
+      CANCEL_INDEX = 2;
+      message = '보관함 또는 나만의 FIVE에 담아보세요.'
+    } else if (!my_five && my_wish) {
+      BUTTONS = [ '나만의 FIVE 추가', 'Cancel' ];
+      URLS = [`${ApiServer.MY_PROFILE}/create_five?category=restaurant`, false];
+      CANCEL_INDEX = 1;
+      message = '이미 보관함에 있는 아이템 입니다.'
+    } else if (my_five && !my_wish) {
+      BUTTONS = [ '보관함으로 추가', 'Cancel' ];
+      URLS = [`${ApiServer.MY_PROFILE}/create_wish?category=restaurant`, false];
+      CANCEL_INDEX = 1;
+      message = '이미 FIVE에 있는 아이템 입니다.'
+    } else {
+      BUTTONS = [ 'Cancel' ];
+      URLS = [false];
+      CANCEL_INDEX = 0;
+      message = '이미 FIVE이면서 보관함에 담긴 아이템 입니다.'
+    }
+
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+        cancelButtonIndex: CANCEL_INDEX,
+        title: message
+      },
+      buttonIndex => this.createFiveCall(URLS[buttonIndex]),
+    );
+  }
+
+  shareAction(value) {
+    Toast.show({
+      text: value,
+      position: 'bottom',
+      duration: 1500,
+    });
+  }
+
+  onCreateFiveCallSuccess(data) {
+    const before_my_five = this.state.my_five;
+    const my_five = data.my_five;
+    const my_wish = data.my_wish;
+
+    this.setState({
+      my_five: my_five,
+      my_wish: my_wish,
+    });
+
+    if (before_my_five !== my_five) {
+      this.setState({
+        five_users_count: my_five ? this.state.five_users_count += 1 : this.state.five_users_count -= 1,
+      });
+    }
+
+    this.props.navigation.setParams({
+      my_five: my_five,
+      my_wish: my_wish,
+    });
+  }
+
+  // VIEW
 
   render() {
     const { container, preLoading } = BaseStyle;
@@ -227,39 +233,39 @@ export default class RestaurantShow extends Component {
     return (
       <Container>
         <Content>
-          {this.renderCard(this.state.flip)}
-          <ListItem avatar>
-            <Left>
-              <Thumbnail small source={Images.book_main}/>
-            </Left>
-            <Body style={{ borderBottomWidth: 0 }}>
-            <Text>레스토랑</Text>
-            </Body>
-          </ListItem>
-          {this.renderCardFlipper()}
-        </Content>
-      </Container>
-    );
-  }
-
-  render2() {
-    const { container, preLoading } = BaseStyle;
-    const { navigation } = this.props;
-
-    if (this.state.flip) {
-      return (
-        <Container>
-          <Content>
-            {this.renderCardFlipper()}
-            <Grid style={{
-              padding: 10,
-              marginTop: this.props.marginTop,
-              marginLeft: this.props.marginLeft,
-              marginRight: this.props.marginRight,
-              marginBottom: this.props.marginBottom,
-              borderRadius: 10,
-              backgroundColor: '#FFF',
+          <Grid>
+            <Row>
+              <FiveUnitFull
+                id={this.state.restaurant.id}
+                location={this.state.restaurant.location}
+                title={this.state.restaurant.title}
+                image_url={this.state.restaurant.image_url}
+                onPress={() => navigation.navigate('Map', {
+                  lat: '33',
+                  lng: '22',
+                  title: this.state.restaurant.title,
+                })}
+                barWidth={null}
+                barHeight={null}
+                borderRadius={15}
+                marginRight={0}
+              />
+            </Row>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail small source={Images.book_main}/>
+              </Left>
+              <Body style={{ borderBottomWidth: 0 }}>
+              <Text>레스토랑</Text>
+              </Body>
+            </ListItem>
+            <Row style={{
+              marginTop: 10,
+              paddingLeft: 10,
             }}>
+              <Text small>{`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}</Text>
+            </Row>
+            <Row>
               <FlatList
                 data={this.state.five_users}
                 renderItem={({ item }) => (
@@ -271,91 +277,13 @@ export default class RestaurantShow extends Component {
                     })}
                   />
                 )}
-                keyExtractor={item => 'follow-list-' + item.id}
+                keyExtractor={item => 'follower-list-' + item.id}
               />
-            </Grid>
-          </Content>
-        </Container>
-      );
-    } else {
-      return (
-        <Container>
-          <Content>
-            <Grid style={{
-              padding: 10,
-              marginTop: this.props.marginTop,
-              marginLeft: this.props.marginLeft,
-              marginRight: this.props.marginRight,
-              marginBottom: this.props.marginBottom,
-              borderRadius: 10,
-              backgroundColor: '#FFF',
-            }}>
-              <Row style={{
-                height: 200,
-                width: null,
-              }}>
-                <Image source={{ uri: this.state.restaurant.image_url }} style={{
-                  height: null,
-                  width: null,
-                  flex: 1,
-                }}/>
-              </Row>
-              <Row style={{
-                marginTop: 20,
-                marginBottom: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <H1 style={{ textAlign: 'center' }}>
-                  {`${this.state.restaurant.location} ${this.state.restaurant.title}`}
-                </H1>
-                <Button
-                  onPress={() => navigation.navigate('Map', {
-                    lat: '33',
-                    lng: '22',
-                    title: this.state.restaurant.title,
-                  })}
-                  transparent
-                  style={{
-                    position: 'absolute',
-                    right: 0,
-                    top: -5,
-                  }}
-                >
-                  <Icon
-                    name="ios-map-outline"
-                    style={{
-                      fontSize: 25,
-                      color: '#000',
-                    }}
-                  />
-                </Button>
-              </Row>
-              <Row style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                {this.renderCardFlipper()}
-              </Row>
-              <Row style={{
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}>
-                <SmallButton
-                  onPress={() => console.log('hi')}
-                  title={'공유하기'}
-                />
-                <SmallButton
-                  onPress={() => this.postUserItem(this.state.restaurant)}
-                  title={'담아두기'}
-                  clicked={this.state.clicked}
-                />
-              </Row>
-            </Grid>
-          </Content>
-        </Container>
-      );
-    }
+            </Row>
+          </Grid>
+        </Content>
+      </Container>
+    );
   }
+
 }

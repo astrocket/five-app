@@ -19,5 +19,7 @@ export * from './FollowUserButton';
 export * from './NotificationUnitBar';
 export * from './FiveUserUnitBar';
 export * from './HomeCategoryBar';
+export * from './FivesBar';
+export * from './FiveUnitFull';
 export * from './FiveUnitBar';
-export * from './RestaurantUnitFull';
+export * from './FiveUpdatedUnitBar';

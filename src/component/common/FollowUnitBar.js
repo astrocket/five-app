@@ -1,20 +1,11 @@
 import React from 'react';
 import {
-  Image,
-  TouchableOpacity,
-  View,
+  Image, View,
 } from 'react-native';
 import {
-  Card,
-  CardItem,
-  Text,
-  Thumbnail,
-  ListItem,
-  Left,
-  Body,
-  Right,
+  Card, CardItem, Text, Thumbnail, ListItem, Left, Body, Right, Badge,
 } from 'native-base';
-import { FollowSmallButton } from './FollowSmallButton';
+import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
 
 const FollowUnitBar = ({ user, onPress, following }) => {
@@ -30,23 +21,25 @@ const FollowUnitBar = ({ user, onPress, following }) => {
       </Body>
       <Right style={{
         borderBottomWidth: 0,
-        width: 120,
+        width: 80,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.restaurant}
-        />
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.music}
-        />
-        <FollowSmallButton
-          icon={'logo-apple'}
-          clicked={following.book}
-        />
+        {following.restaurant &&
+          <Image style={{ width: 25, height: 25, borderRadius: 12.5 }} source={Images.restaurant_main}/>
+        }
+        {following.music &&
+          <Image style={{ width: 25, height: 25, borderRadius: 12.5 }} source={Images.music_main}/>
+        }
+        {following.book &&
+          <Image style={{ width: 25, height: 25, borderRadius: 12.5 }} source={Images.book_main}/>
+        }
+        <View style={BaseStyle.topRightLabel}>
+          <Badge primary round_micro>
+            <Text>+0</Text>
+          </Badge>
+        </View>
       </Right>
     </ListItem>
   );

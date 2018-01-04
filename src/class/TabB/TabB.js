@@ -6,13 +6,13 @@ import {
   Container, Header, Content, Text,
   Spinner, Card, CardItem, Thumbnail,
   Button, Icon, Left, Body,
-  Right, Segment, H1, H3,
+  Right, Segment, H1, H3, Toast
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FiveUnitBar,
+  UserUnitRound, FivesBar,
 } from '../../component/common';
 import axios from 'axios';
 import * as Images from '../../assets/images/Images';
@@ -144,8 +144,8 @@ export default class TabB extends Component {
             data={this.state.categories}
             style={{paddingBottom: 15}}
             renderItem={({ item }) => (
-              <FiveUnitBar
-                onPress={() => navigation.navigate(`${item.klass}Index`)}
+              <FivesBar
+                onPress={() => navigation.navigate('ProfileFiveShow', { five_category: item.klass.toLowerCase() })}
                 category={item.category}
                 followers={item.followers_count}
                 followees={item.followees_count}
@@ -155,8 +155,13 @@ export default class TabB extends Component {
             )}
             keyExtractor={item => 'five-category-list-' + item.id}
             ListFooterComponent={
-              <FiveUnitBar
-                onPress={() => navigation.navigate('RestaurantIndex')}
+              <FivesBar
+                onPress={() =>
+                  Toast.show({
+                    text: '더미카테고리',
+                    position: 'bottom',
+                    duration: 1500,
+                  })}
                 category={'더미데이터'}
                 followers={'222'}
                 followees={'242'}

@@ -111,7 +111,7 @@ export default class RestaurantIndex extends Component {
                     title={item.title}
                     five_users_count={item.five_users_count}
                     image_url={item.image_url}
-                    onPress={() => navigation.navigate('RestaurantShow', { title: item.title, restaurant_id: item.id})}
+                    onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
                     barWidth={150}
                     barHeight={150}
                     borderRadius={15}

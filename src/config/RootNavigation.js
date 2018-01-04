@@ -33,6 +33,11 @@ import UserImageNew from '../class/User/UserImageNew';
 import FriendIndex from '../class/Friend/FriendIndex';
 import NoticeIndex from '../class/Notice/NoticeIndex';
 import NoticeShow from '../class/Notice/NoticeShow';
+import UserFiveShow from '../class/User/UserFiveShow';
+import ProfileFiveShow from '../class/Profile/ProfileFiveShow';
+import ProfileFiveEdit from '../class/Profile/ProfileFiveEdit';
+import ProfileFollowerIndex from '../class/Profile/ProfileFollowerIndex';
+import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
 
 const StackNavigation = StackNavigator(
   {
@@ -130,6 +135,21 @@ const StackNavigation = StackNavigator(
     },
     NoticeShow: {
       screen: NoticeShow,
+    },
+    UserFiveShow: {
+      screen: UserFiveShow,
+    },
+    ProfileFiveShow: {
+      screen: ProfileFiveShow,
+    },
+    ProfileFiveEdit: {
+      screen: ProfileFiveEdit,
+    },
+    ProfileFollowerIndex: {
+      screen: ProfileFollowerIndex,
+    },
+    ProfileFolloweeIndex: {
+      screen: ProfileFolloweeIndex,
     },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',

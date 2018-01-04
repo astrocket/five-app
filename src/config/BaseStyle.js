@@ -49,6 +49,11 @@ const BaseStyle = StyleSheet.create({
     position: 'absolute',
     top: 15,
     left: 15,
+  },
+  topRightLabel: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
   }
 });
 

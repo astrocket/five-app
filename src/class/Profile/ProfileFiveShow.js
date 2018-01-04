@@ -24,13 +24,22 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class UserFiveShow extends Component {
+export default class ProfileFiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     headerRight: (
       navigation.state.params.navLoading ?
         null :
         <View style={BaseStyle.headerDoubleIconsContainer}>
+          <Button onPress={() => navigation.navigate('ProfileFiveEdit', { five_category: navigation.state.params.five_category })} transparent>
+            <Icon
+              name="md-create"
+              style={{
+                fontSize: 25,
+                color: Constant.FiveColor,
+              }}
+            />
+          </Button>
           <Button onPress={navigation.state.params.openShareActionSheet} transparent>
             <Icon
               name="ios-share-outline"
@@ -40,18 +49,6 @@ export default class UserFiveShow extends Component {
               }}
             />
           </Button>
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingRight: 5,
-          }}>
-            <FollowSmallButton
-              onPress={navigation.state.params.toggleFollow}
-              textTrue={'팔로잉'}
-              textFalse={'팔로우'}
-              clicked={navigation.state.params.following}
-            />
-          </View>
         </View>
     ),
     ...Constant.FiveNavOptions,
@@ -61,13 +58,11 @@ export default class UserFiveShow extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
-      user: this.props.navigation.state.params.user,
       flip: false,
       clicked: false,
       fives: [],
       followers_count: '',
       followees_count: '',
-      following: false,
     };
   }
 
@@ -86,12 +81,8 @@ export default class UserFiveShow extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.props.navigation.state.params.five_category}`, config)
       .then((response) => {
-        this.props.navigation.setParams({
-          following: response.data.following,
-          navLoading: false,
-        });
         this.setState({
           loading: false,
           klass: response.data.klass,
@@ -99,7 +90,6 @@ export default class UserFiveShow extends Component {
           fives: response.data.fives,
           followers_count: response.data.followers_count,
           followees_count: response.data.followees_count,
-          following: response.data.following,
         });
       })
       .catch((error) => {
@@ -126,46 +116,6 @@ export default class UserFiveShow extends Component {
       position: 'bottom',
       duration: 1500
     })
-  }
-
-  followCall(category, data, onSuccess) {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, header)
-      .then((response) => {
-        onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
-  }
-
-  toggleFollow() {
-    const data = {
-      following: {
-        user_id: this.state.user.id,
-        following: !this.state.following,
-      },
-    };
-    this.followCall(this.state.klass.toLowerCase(), data, (response) => this.onFollowSuccess(response));
-  }
-
-  onFollowSuccess(response) {
-    const new_following = response.data;
-    this.setState({
-      following: new_following,
-      followers_count: new_following ? this.state.followers_count += 1 : this.state.followers_count -= 1,
-    });
-    this.props.navigation.setParams({ following: new_following });
   }
 
   flipCard() {
@@ -260,6 +210,7 @@ export default class UserFiveShow extends Component {
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
+    const { my_profile } = this.props.ApplicationStore;
 
     return (
       <Container>
@@ -268,7 +219,7 @@ export default class UserFiveShow extends Component {
             flexDirection: 'column',
             padding: 10,
           }}>
-            <Text style={{ marginBottom: 5 }}>{this.state.user.name}의</Text>
+            <Text style={{ marginBottom: 5 }}>{my_profile.name}의</Text>
             <Text large>{this.state.category} 파이브</Text>
           </Row>
           <Row style={{
@@ -277,19 +228,24 @@ export default class UserFiveShow extends Component {
           }}>
             <Col size={2} style={{ justifyContent: 'center' }}>
               <View style={{ flexDirection: 'row' }}>
-                <View style={{
+                <Button transparent style={{
                   flexDirection: 'column',
+                  alignItems: 'flex-start',
                   marginRight: 5,
-                }}>
+                }} onPress={() => navigation.navigate('ProfileFollowerIndex', { five_category: navigation.state.params.five_category })}>
                   <Text small
                         style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
                   <Text note>{'Follower'}</Text>
-                </View>
-                <View style={{ flexDirection: 'column' }}>
+                </Button>
+                <Button transparent style={{
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  marginRight: 5,
+                }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { five_category: navigation.state.params.five_category })}>
                   <Text small
                         style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
                   <Text note>{'Following'}</Text>
-                </View>
+                </Button>
               </View>
             </Col>
             <Col size={1} style={{ alignItems: 'flex-end' }}>

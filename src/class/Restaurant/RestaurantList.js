@@ -16,7 +16,7 @@ import {
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { RestaurantUnitBar, ShowMore } from '../../component/common';
+import { FiveUnitBar, ShowMore } from '../../component/common';
 import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -106,15 +106,19 @@ export default class RestaurantList extends Component {
         <Content>
           <FlatList
             data={this.state.restaurants}
+            style={{
+              paddingTop: 10,
+            }}
             renderItem={({ item }) => (
-              <RestaurantUnitBar
+              <FiveUnitBar
                 id={item.id}
                 title={item.title}
                 location={item.location}
                 image_url={item.image_url}
                 onPress={() => navigation.navigate('RestaurantShow', {
                   title: item.title,
-                  restaurant_id: item.id,
+                  id: item.id,
+                  navLoading: true
                 })}
               />
             )}

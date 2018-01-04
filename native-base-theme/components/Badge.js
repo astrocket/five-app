@@ -32,6 +32,21 @@ export default (variables = variable) => {
         paddingHorizontal: 1.5
       },
     },
+    ".round_micro": {
+      "NativeBase.Text": {
+        color: variables.badgeColor,
+        fontSize: variables.fontSizeBase,
+        lineHeight: variables.lineHeight - 1,
+        textAlign: "center",
+        paddingHorizontal: 3
+      },
+      backgroundColor: '#858585',
+      padding: variables.badgePadding,
+      paddingHorizontal: 3,
+      alignSelf: "flex-start",
+      borderRadius: 12.5,
+      height: 25
+    },
     "NativeBase.Text": {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,

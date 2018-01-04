@@ -264,6 +264,39 @@ export default (variables = variable) => {
           marginLeft: null
         },
         flex: 1,
+        paddingVertical: variables.listItemPadding,
+        borderBottomWidth: null,
+        borderColor: variables.listBorderColor,
+        marginLeft: variables.listItemPadding + 5
+      },
+      "NativeBase.Right": {
+        "NativeBase.Text": {
+          ".note": {
+            fontSize: variables.noteFontSize - 2
+          }
+        },
+        flex: 0,
+        paddingRight: variables.listItemPadding + 5,
+        alignSelf: "stretch",
+        paddingVertical: variables.listItemPadding,
+        borderBottomWidth: null,
+        borderColor: variables.listBorderColor
+      },
+      borderBottomWidth: null,
+      paddingVertical: null,
+      paddingRight: null,
+      paddingBottom: 10,
+    },
+
+    ".avatarUpdatedList": {
+      "NativeBase.Left": {
+        flex: 0
+      },
+      "NativeBase.Body": {
+        "NativeBase.Text": {
+          marginLeft: null
+        },
+        flex: 1,
         paddingVertical: 0,
         borderBottomWidth: null,
         borderColor: variables.listBorderColor,

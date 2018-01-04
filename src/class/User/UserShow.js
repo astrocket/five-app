@@ -12,7 +12,7 @@ import {
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import {
-  FollowUserButton, UserUnitRound, FollowerButton, FiveUnitBar
+  FollowUserButton, UserUnitRound, FollowerButton, FivesBar
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
@@ -64,43 +64,6 @@ export default class UserShow extends Component {
       });
   }
 
-  followCall(category, data, onSuccess) {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token
-      }
-    };
-
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, header)
-      .then((response) => {
-        onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
-  }
-
-  toggleRestaurantFollow() {
-    const data = {
-      following: {
-        user_id: this.state.user.id,
-        restaurant_following: !this.state.restaurant_following,
-      }
-    };
-    this.followCall('restaurant' ,data, (response) => this.onFollowRestaurantSuccess(response));
-  }
-
-  onFollowRestaurantSuccess(response) {
-    this.setState({
-      restaurant_following: !this.state.restaurant_following,
-      restaurant_followers_count: this.state.restaurant_following ? this.state.restaurant_followers_count -= 1 : this.state.restaurant_followers_count += 1
-    });
-  }
 
 /*  renderRestaurantPopUp(item) {
     const { navigation } = this.props;
@@ -179,8 +142,8 @@ export default class UserShow extends Component {
             data={this.state.categories}
             style={{paddingBottom: 15}}
             renderItem={({ item }) => (
-              <FiveUnitBar
-                onPress={() => navigation.navigate(`${item.klass}Index`)}
+              <FivesBar
+                onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
                 category={item.category}
                 followers={item.followers_count}
                 followees={item.followees_count}
@@ -190,8 +153,13 @@ export default class UserShow extends Component {
             )}
             keyExtractor={item => 'five-category-list-' + item.id}
             ListFooterComponent={
-              <FiveUnitBar
-                onPress={() => navigation.navigate('RestaurantIndex')}
+              <FivesBar
+                onPress={() =>
+                  Toast.show({
+                  text: '더미카테고리',
+                  position: 'bottom',
+                  duration: 1500,
+                })}
                 category={'더미데이터'}
                 followers={'222'}
                 followees={'242'}
