@@ -22,9 +22,10 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
-import PopupDialog from 'react-native-popup-dialog';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class RestaurantList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -50,8 +51,8 @@ export default class RestaurantList extends Component {
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}`, config)
@@ -69,8 +70,8 @@ export default class RestaurantList extends Component {
   pageCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}`, config)
@@ -114,6 +115,8 @@ export default class RestaurantList extends Component {
                 id={item.id}
                 title={item.title}
                 location={item.location}
+                five_users_count={item.five_users_count}
+                updated_at={item.updated_at}
                 image_url={item.image_url}
                 onPress={() => navigation.navigate('RestaurantShow', {
                   title: item.title,

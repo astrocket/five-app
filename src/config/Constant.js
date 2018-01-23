@@ -1,4 +1,9 @@
+import {
+  Dimensions
+} from 'react-native';
+
 export const FiveColor = '#FA3F97';
+export const GreyColor = '#A1A1A1';
 
 export const FiveNavOptions = {
   headerStyle: {
@@ -13,3 +18,5 @@ export const FiveNavOptions = {
   },
   drawerLockMode: 'locked-closed',
 };
+
+export const deviceWidth = Dimensions.get('window').width;

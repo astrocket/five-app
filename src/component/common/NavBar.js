@@ -13,8 +13,8 @@ import {
   Title,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
+import * as Constant from '../../config/Constant';
 
-// Make a component
 const NavBar = ({ leftButton, leftIcon, onPressLeft, rightButton, rightIcon, onPressRight, headerText }) => {
   const { container } = BaseStyle;
   const { leftSpace, rightSpace } = styles;
@@ -28,6 +28,10 @@ const NavBar = ({ leftButton, leftIcon, onPressLeft, rightButton, rightIcon, onP
               <Button transparent onPress={onPressLeft}>
                 <Icon
                   name={leftIcon}
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
                 />
               </Button>
             )
@@ -50,6 +54,10 @@ const NavBar = ({ leftButton, leftIcon, onPressLeft, rightButton, rightIcon, onP
               <Button transparent onPress={onPressRight}>
                 <Icon
                   name={rightIcon}
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
                 />
               </Button>
             )

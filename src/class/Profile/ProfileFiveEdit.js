@@ -3,13 +3,13 @@ import {
   View, Alert, ListView
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon,
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Toast
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
-import { FiveUnitBar } from '../../component/common';
+import { FiveUnitBar, EmptyBox } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -29,6 +29,8 @@ export default class ProfileFiveEdit extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      klass: '',
+      category: '',
       fives: [],
     };
   }
@@ -79,18 +81,17 @@ export default class ProfileFiveEdit extends Component {
     });
   }
 
-  askRestaurantDelete(secId, rowId, rowMap, item) {
+  askRestaurantDelete(secId, rowId, rowMap, five_data) {
     const url = `${ApiServer.MY_PROFILE}/destroy_five?category=restaurant`;
+    const item = this.state.fives[ rowId ];
     const data = {
-      restaurant: {
-        favorable_id: item.id
-      }
+      favorable_id: item.id
     };
 
-    if (this.state.fives.length <= 3) {
+    if (this.state.fives.length <= 1) {
       Alert.alert(
         '알림',
-        '3개 이하로 파이브를 삭제할 수 없습니다.',
+        '1개 이하로 파이브를 삭제할 수 없습니다.',
         [
           {
             text: '확인',
@@ -98,6 +99,7 @@ export default class ProfileFiveEdit extends Component {
         ],
         { cancelable: true },
       );
+      rowMap[`${secId}${rowId}`].props.closeRow();
     } else {
       Alert.alert(
         '알림',
@@ -122,6 +124,36 @@ export default class ProfileFiveEdit extends Component {
     this.setState({ fives: newData });
   }
 
+  renderFiveUnitBars(data, secId, rowId, rowMap) {
+    const navigation = this.props.navigation;
+    const item = this.state.fives[ rowId ];
+
+    if (item) {
+      return (
+        <FiveUnitBar
+          key={rowId}
+          multiple
+          id={item.id}
+          title={item.title}
+          location={item.location}
+          image_url={item.image_url}
+          icon={'ios-arrow-forward-outline'}
+        />
+      )
+    } else {
+      return (
+        <EmptyBox
+          key={rowId}
+          barWidth={null}
+          onPress={() => navigation.navigate('RestaurantNew')}
+          barHeight={60}
+          borderRadius={10}
+          marginRight={0}
+        />
+      );
+    }
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -132,19 +164,12 @@ export default class ProfileFiveEdit extends Component {
           <Grid>
             <Row>
               <List
-                dataSource={this.ds.cloneWithRows(this.state.fives)}
+                dataSource={this.ds.cloneWithRows([0,1,2,3,4])}
                 style={{
                   paddingTop: 10,
                 }}
-                renderRow={data =>
-                  <FiveUnitBar
-                    multiple
-                    id={data.id}
-                    title={data.title}
-                    location={data.location}
-                    image_url={data.image_url}
-                    icon={'ios-arrow-forward-outline'}
-                  />
+                renderRow={(data, secId, rowId, rowMap) =>
+                  this.renderFiveUnitBars(data, secId, rowId, rowMap)
                 }
                 disableRightSwipe={true}
                 renderLeftHiddenRow={data =>

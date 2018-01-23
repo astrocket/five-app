@@ -24,7 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class ProfileFiveShow extends Component {
+export default class ProfileFiveIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     headerRight: (
@@ -171,6 +171,7 @@ export default class ProfileFiveShow extends Component {
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
                   title: item.title,
                   id: item.id,
+                  navLoading: true,
                 })}
               />
             )}
@@ -193,6 +194,7 @@ export default class ProfileFiveShow extends Component {
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
                   title: item.title,
                   id: item.id,
+                  navLoading: true,
                 })}
                 barWidth={null}
                 barHeight={null}

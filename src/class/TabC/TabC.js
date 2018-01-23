@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
+  TouchableOpacity, AsyncStorage,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -16,8 +16,10 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class TabC extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -42,15 +44,12 @@ export default class TabC extends Component {
     };
   }
 
-  componentDidMount() {
-    this.apiCall();
-  }
 
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(ApiServer.HOME_INDEX, config)
@@ -62,6 +61,28 @@ export default class TabC extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  signOutAction() {
+    this.setState({ loading: true });
+
+    axios.post(`${ApiServer.USERS}/sign_out`, {
+      headers: {
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
+      }
+    }).then((response) => {
+      AsyncStorage.multiRemove(['email', 'token', 'key'])
+        .then(() => {
+          this.props.ApplicationStore.signOut();
+        });
+    }).catch((error) => {
+      Toast.show({
+        text: JSON.stringify(error.response.data),
+        position: 'bottom',
+        duration: 1500,
+      });
+    });
   }
 
   render() {
@@ -86,6 +107,9 @@ export default class TabC extends Component {
         </Header>
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
           <Text>성수동 맛집</Text>
+          <TouchableOpacity onPress={() => this.signOutAction()}>
+            <Text>로그아웃</Text>
+          </TouchableOpacity>
           <Text>성수동 맛집</Text>
           <Text>성수동 맛집</Text>
           <Text>성수동 맛집</Text>

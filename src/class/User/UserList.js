@@ -20,8 +20,10 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class UserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -32,7 +34,7 @@ export default class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
+      loading: true, //실서비스에서는 로딩 true로
       users: [],
       page: 1,
       page_loading: false,
@@ -47,11 +49,11 @@ export default class UserList extends Component {
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/users?page=${this.state.page}`, config)
+    axios.get(`${ApiServer.API}/${this.props.navigation.state.params.category}s/users?page=${this.state.page}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -66,8 +68,8 @@ export default class UserList extends Component {
   pageCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(`${ApiServer.RESTAURANTS}/users?page=${this.state.page}`, config)
@@ -102,12 +104,18 @@ export default class UserList extends Component {
         <Content>
           <FlatList
             data={this.state.users}
+            style={{
+              paddingTop: 10,
+            }}
             renderItem={({ item }) => (
               <UserUnitBar
                 id={item.id}
                 name={item.name}
-                image_url={item.image_url}
+                image_url={item.image_medium_url}
                 introduce={item.introduce}
+                updated_at={item.updated_at}
+                followers_count={item.followers_count}
+                followees_count={item.followees_count}
                 onPress={() => navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,

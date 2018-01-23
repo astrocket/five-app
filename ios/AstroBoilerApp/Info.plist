@@ -54,6 +54,11 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
+			<key>five_api.insomenia.com</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>
@@ -70,10 +75,12 @@
 		<string>rubicon-icon-font.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Feather.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
 	</array>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>마이파이브에서 사용자의 카메라 앱 접근 허용을 필요로 합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>마이파이브에서 사용자의 카메라 앱 접근 허용을 필요로 합니다.</string>
 </dict>
 </plist>

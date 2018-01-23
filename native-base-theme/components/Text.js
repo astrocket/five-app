@@ -9,6 +9,11 @@ export default (variables = variable) => {
       color: "#a7a7a7",
       fontSize: variables.noteFontSize
     },
+    ".xlarge": {
+      fontSize: 35,
+      marginBottom: 5,
+      fontWeight: "800"
+    },
     ".large": {
       fontSize: 25,
       marginBottom: 5,
@@ -18,6 +23,10 @@ export default (variables = variable) => {
       fontSize: 20,
       marginBottom: 5,
       fontWeight: "800"
+    },
+    ".medium-thin": {
+      fontSize: 20,
+      marginBottom: 5,
     },
     ".normal": {
       fontSize: 16,

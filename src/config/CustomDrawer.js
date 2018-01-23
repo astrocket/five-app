@@ -109,10 +109,17 @@ export default class CustomDrawer extends Component {
           }}>
             <Text medium style={{ textAlign: 'center' }}>알림</Text>
           </Row>
-          <Row style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
+          <Row style={{
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            flexDirection: 'column',
+          }}>
             <FlatList
               data={this.state.notifications}
-              style={{paddingBottom: 10}}
+              style={{
+                paddingBottom: 10,
+                width: 300,
+              }}
               renderItem={({ item }) => (
                 <NotificationUnitBar
                   id={item.id}

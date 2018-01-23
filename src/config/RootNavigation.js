@@ -34,10 +34,13 @@ import FriendIndex from '../class/Friend/FriendIndex';
 import NoticeIndex from '../class/Notice/NoticeIndex';
 import NoticeShow from '../class/Notice/NoticeShow';
 import UserFiveShow from '../class/User/UserFiveShow';
-import ProfileFiveShow from '../class/Profile/ProfileFiveShow';
+import ProfileFiveIndex from '../class/Profile/ProfileFiveIndex';
+import ProfileWishIndex from '../class/Profile/ProfileWishIndex';
 import ProfileFiveEdit from '../class/Profile/ProfileFiveEdit';
 import ProfileFollowerIndex from '../class/Profile/ProfileFollowerIndex';
 import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
+import FiveStoryShow from '../class/Page/FiveStoryShow';
+
 
 const StackNavigation = StackNavigator(
   {
@@ -139,8 +142,11 @@ const StackNavigation = StackNavigator(
     UserFiveShow: {
       screen: UserFiveShow,
     },
-    ProfileFiveShow: {
-      screen: ProfileFiveShow,
+    ProfileFiveIndex: {
+      screen: ProfileFiveIndex,
+    },
+    ProfileWishIndex: {
+      screen: ProfileWishIndex,
     },
     ProfileFiveEdit: {
       screen: ProfileFiveEdit,
@@ -151,10 +157,28 @@ const StackNavigation = StackNavigator(
     ProfileFolloweeIndex: {
       screen: ProfileFolloweeIndex,
     },
+    FiveStoryShow: {
+      screen: FiveStoryShow,
+    },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
-    mode: 'card',
+    mode: 'card'
   },
+);
+
+const ModalNavigation = StackNavigator(
+  {
+    FiveStoryShow: {
+      screen: FiveStoryShow,
+      navigationOptions: {
+        transitionConfig: {
+          isModal: true
+        },
+      },
+    },
+  }, {
+    mode: 'modal'
+  }
 );
 
 const RootNavigation = DrawerNavigator(
@@ -162,6 +186,9 @@ const RootNavigation = DrawerNavigator(
     Main: {
       screen: StackNavigation,
     },
+/*    Modal: {
+      screen: ModalNavigation,
+    }*/
   },
   {
     drawerWidth: 300,

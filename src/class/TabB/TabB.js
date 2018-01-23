@@ -39,9 +39,9 @@ export default class TabB extends Component {
       />
     ),
     headerRight: (
-      <Button onPress={() => navigation.navigate('Invitation')} transparent>
+      <Button onPress={() => navigation.navigate('ProfileWishIndex')} transparent>
         <Icon
-          name="md-person-add"
+          name="ios-cube-outline"
           style={{
             fontSize: 25,
             color: Constant.FiveColor,
@@ -145,7 +145,7 @@ export default class TabB extends Component {
             style={{paddingBottom: 15}}
             renderItem={({ item }) => (
               <FivesBar
-                onPress={() => navigation.navigate('ProfileFiveShow', { five_category: item.klass.toLowerCase() })}
+                onPress={() => navigation.navigate('ProfileFiveIndex', { five_category: item.klass.toLowerCase() })}
                 category={item.category}
                 followers={item.followers_count}
                 followees={item.followees_count}

@@ -17,8 +17,10 @@ import {
 import axios from 'axios';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class MyFiveRestaurantModal extends Component {
 
   constructor(props) {
@@ -36,8 +38,8 @@ export default class MyFiveRestaurantModal extends Component {
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(`${ApiServer.MY_PROFILE}/fives?category=restaurant`, config)
@@ -55,8 +57,8 @@ export default class MyFiveRestaurantModal extends Component {
   deleteCall(url, data, onSuccess) {
     const header = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token
       }
     };
 

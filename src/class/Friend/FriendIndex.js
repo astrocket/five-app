@@ -16,8 +16,10 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import ApplicationStore from '../../mobx/ApplicationStore';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
+@observer
 export default class FriendIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -85,15 +87,11 @@ export default class FriendIndex extends Component {
     };
   }
 
-  componentDidMount() {
-    this.apiCall();
-  }
-
   apiCall() {
     const config = {
       headers: {
-        'X-User-Email': ApplicationStore.email,
-        'X-User-Token': ApplicationStore.token,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     };
     axios.get(ApiServer.HOME_INDEX, config)

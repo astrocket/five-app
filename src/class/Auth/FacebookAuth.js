@@ -15,14 +15,12 @@ import axios from 'axios';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import {
-  observer,
-} from 'mobx-react/native';
-import ApplicationStore from '../../mobx/ApplicationStore';
-import {
   LoginButton,
   AccessToken,
 } from 'react-native-fbsdk';
+import { observer, inject } from 'mobx-react/native';
 
+@inject('ApplicationStore') // Inject some or all the stores!
 @observer
 export default class FacebookAuth extends Component {
   constructor(props) {
@@ -50,7 +48,7 @@ export default class FacebookAuth extends Component {
       [ 'token', data.authentication_token ],
       [ 'key', data.key ],
     ]).then(() => {
-      ApplicationStore.setAuthInfo().then(() => {
+      this.props.ApplicationStore.setAuthInfo().then(() => {
         this.setState({
           loading: false,
         });

@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {
   Card,
   CardItem,
-  Text,
-  Thumbnail,
+  Text, Body,
+  Thumbnail, ListItem,
   Icon,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
@@ -15,30 +15,26 @@ import BaseStyle from '../../config/BaseStyle';
 const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
   const { container } = BaseStyle;
   return (
-    <TouchableHighlight onPress={onPress} onLongPress={onLongPress} underlayColor={'#fff'}>
+    <TouchableOpacity onPress={onPress} style={{ padding: 10 }}>
       <View style={{
         width: barWidth,
-        height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
-        marginRight: marginRight,
-        borderWidth: 1,
-        borderColor: '#eee'
+        height: barHeight,
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#EEE',
+        borderRadius: borderRadius,
+        marginRight: marginRight
       }}>
-        <View style={{
-          width: barWidth,
-          height: barHeight,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <Icon
-            name="ios-add-circle-outline"
-            style={{
-              fontSize: 50,
-              color: '#eee',
-            }}
-          />
-        </View>
+        <Icon
+          name="ios-add-circle-outline"
+          style={{
+            fontSize: 50,
+            color: '#FFF',
+          }}
+        />
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

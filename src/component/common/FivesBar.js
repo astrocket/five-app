@@ -15,22 +15,24 @@ import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
 
 const FiveImages = ({ fives, image }) => {
-  let dice = Math.floor(Math.random() *  4);
+  let dice = Math.floor(Math.random() *  (fives.length - 1));
 
   return [0,1,2,3,4].map(function(index, i) {
     const five = fives[ index ];
-    const five_next = fives [ index + 1 ];
+    const five_next = fives[ index + 1 ];
     if (five) {
-      if (i === dice ) {
+      if (i === dice && fives.length > 1 ) {
         return (
-          <View key={9999} style={{height: 100, width: null, flex: 1, marginRight: 4}}>
-            <Image key={i} source={{ uri: five.image_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10, marginBottom: 2 }}/>
-            <Image key={i + 1} source={{ uri: five_next.image_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10 }}/>
+          <View key={9999} style={{ height: 100, width: null, flex: 1, marginRight: 4 }}>
+            <Image key={i} source={{ uri: five.image_medium_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10, marginBottom: 2 }}/>
+            <Image key={i + 1} source={{ uri: five_next.image_medium_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10 }}/>
           </View>
         )
-      } else if (i !== dice && i !== dice + 1) {
+      } else if ((i !== dice && i === dice + 1) || fives.length === 2) {
+        return null;
+      } else {
         return (
-          <Image key={i} source={{ uri: five.image_url }} style={{height: 100, width: null, flex: 1, marginRight: 4, borderRadius: 10 }}/>
+          <Image key={i} source={{ uri: five.image_medium_url }} style={{height: 100, width: null, flex: 1, marginRight: 4, borderRadius: 10 }}/>
         )
       }
     } else {

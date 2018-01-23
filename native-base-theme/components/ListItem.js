@@ -267,7 +267,7 @@ export default (variables = variable) => {
         paddingVertical: variables.listItemPadding,
         borderBottomWidth: null,
         borderColor: variables.listBorderColor,
-        marginLeft: variables.listItemPadding + 5
+        marginLeft: variables.listItemPadding + 5,
       },
       "NativeBase.Right": {
         "NativeBase.Text": {
@@ -278,14 +278,14 @@ export default (variables = variable) => {
         flex: 0,
         paddingRight: variables.listItemPadding + 5,
         alignSelf: "stretch",
-        paddingVertical: variables.listItemPadding,
+        paddingVertical: 5,
         borderBottomWidth: null,
-        borderColor: variables.listBorderColor
+        borderColor: variables.listBorderColor,
       },
       borderBottomWidth: null,
       paddingVertical: null,
       paddingRight: null,
-      paddingBottom: 10,
+      paddingBottom: 0,
     },
 
     ".avatarUpdatedList": {
@@ -459,9 +459,10 @@ export default (variables = variable) => {
       borderBottomWidth: null
     },
     ".cardStyle" : {
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingBottom: 20,
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 10,
       borderBottomWidth: 0,
     },
     alignItems: "center",

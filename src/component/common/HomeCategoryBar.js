@@ -9,24 +9,21 @@ import {
   Left,
   Body,
   Right,
-  Badge
+  Badge, Icon
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
 const HomeCategoryBar = ({ image, onPress, title, people, new_people }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem cardStyle transparent button onPress={onPress}>
-      <Thumbnail square large size={150} source={image}/>
+    <ListItem button
+              onPress={onPress} style={{ paddingLeft: 0 }}>
       <Body>
-      <Text large>{title}</Text>
-      <Text note>{`${Number(people).toLocaleString()}명이 참여하고 있습니다.`}</Text>
+      <Text medium-thin primary>{title}</Text>
       </Body>
-      <View style={BaseStyle.topLeftLabel}>
-        <Badge primary micro>
-          <Text>{new_people} NEW</Text>
-        </Badge>
-      </View>
+      <Right>
+        <Icon name="arrow-forward"/>
+      </Right>
     </ListItem>
   );
 };

@@ -34,7 +34,7 @@ export default class UserShow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
+      loading: true, //실서비스에서는 로딩 true로
       user: '',
       categories: [],
     };
