@@ -176,7 +176,7 @@ export default class TabA extends Component {
                     id={item.id}
                     title={item.title}
                     subtitle={item.subtitle}
-                    image_url={item.image_url}
+                    image_url={item.image_large_url}
                     onPress={() => navigation.navigate('FiveStoryShow', {
                       title: item.title,
                       id: item.id,

@@ -146,7 +146,7 @@ export default class UserImageNew extends Component {
         <UserUnitRound
           id={this.state.user.id}
           name={this.state.user.name}
-          image_url={this.state.user.image_url}
+          image_url={this.state.user.image_medium_url}
           onPress={() => this.openImagePicker()}
           barWidth={70}
           barHeight={70}

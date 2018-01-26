@@ -136,7 +136,7 @@ export default class ProfileFiveEdit extends Component {
           id={item.id}
           title={item.title}
           location={item.location}
-          image_url={item.image_url}
+          image_url={item.image_medium_url}
           icon={'ios-arrow-forward-outline'}
         />
       )

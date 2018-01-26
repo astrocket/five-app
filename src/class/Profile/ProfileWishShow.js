@@ -148,7 +148,7 @@ export default class ProfileWishShow extends Component {
                     id={data.wish.id}
                     title={data.wish.title}
                     subtitle={data.wish.location}
-                    image_url={data.wish.image_url}
+                    image_url={data.wish.image_medium_url}
                     also_five={data.also_five}
                     updated_at={data.wish.updated_at}
                     icon={'ios-arrow-forward-outline'}

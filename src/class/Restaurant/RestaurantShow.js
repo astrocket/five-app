@@ -239,7 +239,7 @@ export default class RestaurantShow extends Component {
                 id={this.state.restaurant.id}
                 location={this.state.restaurant.location}
                 title={this.state.restaurant.title}
-                image_url={this.state.restaurant.image_url}
+                image_url={this.state.restaurant.image_large_url}
                 onPress={() => navigation.navigate('Map', {
                   lat: '33',
                   lng: '22',

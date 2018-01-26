@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, TouchableOpacity,
+  View, AsyncStorage, Keyboard,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Toast,
@@ -21,18 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class SignUpForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
-    drawerLockMode: 'locked-closed',
+    header: null,
   });
 
   constructor(props) {
@@ -116,7 +105,7 @@ export default class SignUpForm extends Component {
 
     return (
       <Container>
-        <Content padder>
+        <Content padder noHeader>
           <Grid>
             <Row style={{
               marginBottom: 20,
@@ -127,16 +116,21 @@ export default class SignUpForm extends Component {
               <InputSingle
                 placeholder={'닉네임 (영문 또는 숫자 3~10자 입력)'}
                 value={''}
+                autoFocus={true}
                 onChangeText={(input_name) => this.setState({ input_name })}
+                onSubmitEditing={Keyboard.dismiss}
+                keyboardType={'email-address'}
                 returnKeyType={'next'}
                 noButton
               />
             </Row>
             <Row>
               <InputSingle
+                refInner="innerTextInput2"
                 placeholder={'출생년도 두 자리 숫 (예: 92)'}
                 value={''}
                 onChangeText={(input_birth) => this.setState({ input_birth })}
+                onSubmitEditing={Keyboard.dismiss}
                 returnKeyType={'next'}
                 keyboardType={'numeric'}
                 noButton
@@ -157,6 +151,7 @@ export default class SignUpForm extends Component {
                 placeholder={'비밀번호 (6자리 이상)'}
                 value={''}
                 onChangeText={(input_password) => this.setState({ input_password })}
+                onSubmitEditing={() => this.trySignUp()}
                 returnKeyType={'done'}
                 secureTextEntry
                 noButton

@@ -107,7 +107,7 @@ export default class FiveStoryShow extends Component {
                       id={item.id}
                       title={item.title}
                       location={item.subtitle}
-                      image_url={item.image_url}
+                      image_url={item.image_medium_url}
                       onPress={() => navigation.navigate(`${item.klass}Show`, {
                         title: item.title,
                         id: item.id,

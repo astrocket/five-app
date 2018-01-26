@@ -22,7 +22,6 @@ export default class Welcome extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     header: null,
-    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -52,7 +51,7 @@ export default class Welcome extends Component {
           alignItems: 'center',
           backgroundColor: '#fff',
           flex: 1,
-          paddingTop: Platform.OS === 'ios' ? 20 : 0,
+          paddingTop: Constant.globalPaddingTop,
         }}>
           <View style={{
             justifyContent: 'flex-start',

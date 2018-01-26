@@ -220,7 +220,7 @@ export default class RestaurantShow extends Component {
               renderItem={({ item }) => (
                 <FollowUnitBar
                   id={item.id}
-                  image_url={item.image_url}
+                  image_url={item.image_medium_url}
                   name={item.name}
                   onPress={() => navigation.navigate('UserShow', {
                     user: item,

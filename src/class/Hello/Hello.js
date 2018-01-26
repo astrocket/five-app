@@ -21,29 +21,14 @@ import { observer, inject } from 'mobx-react/native';
 export default class Hello extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
-    drawerLockMode: 'locked-closed',
+    header: null,
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      left_clicked: false,
-      center_clicked: false,
-      right_clicked: false,
-      unselected: true,
-      input_category: '',
+      submiting: false,
     };
   }
 
@@ -71,14 +56,6 @@ export default class Hello extends Component {
       return <Spinner size="small" />;
     }
 
-    if (this.state.unselected) {
-      return (
-        <BottomFullButton disabled>
-          FIVE 추가하러가기
-        </BottomFullButton>
-      );
-    }
-
     return (
       <BottomFullButton onPress={() =>
         this.props.navigation.dispatch(
@@ -86,13 +63,12 @@ export default class Hello extends Component {
             index: 0,
             actions: [
               NavigationActions.navigate({
-                routeName: 'AddFive',
-                params: { category: this.state.input_category, title: `${this.state.korean} FIVE 참여` },
+                routeName: 'FiveSelect',
               }),
             ],
           }))
       }>
-        FIVE 추가하러가기
+        확인
       </BottomFullButton>
     );
   }
@@ -123,25 +99,18 @@ export default class Hello extends Component {
                 width: Constant.deviceWidth / 3,
               }}
             />
-            <Text large>주제 선택하기</Text>
-            <Text note style={{ textAlign: 'center' }}>어떤 주제에서{'\n'}좋아하는 아이템을 하나 선택해 볼까요?</Text>
+            <Text large>회원가입 완료</Text>
           </View>
         </View>
-        <View style={{ height: 200 }}>
-          <MultiToggle
-            leftText={'맛집'}
-            leftImage={'restaurant'}
-            leftClicked={this.state.left_clicked}
-            centerText={'음악'}
-            centerImage={'music'}
-            centerClicked={this.state.center_clicked}
-            rightText={'책'}
-            rightClicked={this.state.right_clicked}
-            rightImage={'book'}
-            onLeftPress={() => this.setState({input_category: 'retaurant', korean: '맛집', left_clicked: true, center_clicked: false, right_clicked: false, unselected: false})}
-            onCenterPress={() => this.setState({input_category: 'music', korean: '음악', left_clicked: false, center_clicked: true, right_clicked: false, unselected: false})}
-            onRightPress={() => this.setState({input_category: 'book', korean: '책', left_clicked: false, center_clicked: false, right_clicked: true, unselected: false})}
-          />
+        <View style={{
+          flex: 1,
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+        }}>
+          <Text note style={{ textAlign: 'center', margin: 20 }}>어서오세요!</Text>
+          <Text note style={{ textAlign: 'center', margin: 20 }}>주제별로 다섯개만 공유하는 커뮤니티{'\n'}MYFIVE에 오신 것을 환영합니다.</Text>
+          <Text note style={{ textAlign: 'center', margin: 20 }}>이제 좋아하는 주제를 골라서{'\n'}FIVE를 추가하러 가 볼까요?</Text>
         </View>
         <View style={{ height: 50, }}>
           {this.renderButton()}

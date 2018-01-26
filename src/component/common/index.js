@@ -31,3 +31,4 @@ export * from './InputSingle';
 export * from './InputToggle';
 export * from './BottomFullButton';
 export * from './MultiToggle';
+export * from './SearchFiveUnitBar';

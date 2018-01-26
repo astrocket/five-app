@@ -21,18 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class StartForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
-    drawerLockMode: 'locked-closed',
+    header: null,
   });
 
   constructor(props) {
@@ -172,7 +161,9 @@ export default class StartForm extends Component {
             value={''}
             onChangeText={(input_text) => this.setState({ input_text })}
             onSubmitPress={() => this.sendPin()}
+            onSubmitEditing={() => this.sendPin()}
             keyboardType={'phone-pad'}
+            returnKeyType={'done'}
           />
         );
       case 1:
@@ -185,7 +176,9 @@ export default class StartForm extends Component {
             value={''}
             onChangeText={(input_text) => this.setState({ input_text })}
             onSubmitPress={() => this.verifyPin()}
+            onSubmitEditing={() => this.verifyPin()}
             keyboardType={'phone-pad'}
+            returnKeyType={'done'}
           />
         );
       case 3:
@@ -199,7 +192,9 @@ export default class StartForm extends Component {
               value={''}
               onChangeText={(input_text) => this.setState({ input_text })}
               onSubmitPress={() => this.verifyPin()}
+              onSubmitEditing={() => this.verifyPin()}
               keyboardType={'phone-pad'}
+              returnKeyType={'done'}
             />
             <TouchableOpacity
               onPress={() => this.setState({
@@ -224,7 +219,7 @@ export default class StartForm extends Component {
 
     return (
       <Container>
-        <Content padder keyboardShouldPersistTaps={'always'}>
+        <Content padder noHeader keyboardShouldPersistTaps={'always'}>
           <Grid>
             <Row>
               <Text xlarge>시작하기</Text>

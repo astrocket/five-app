@@ -21,18 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class LogInForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
-    drawerLockMode: 'locked-closed',
+    header: null,
   });
 
   constructor(props) {
@@ -99,14 +88,12 @@ export default class LogInForm extends Component {
               autoFocus={true}
               onChangeText={(input_text) => this.setState({ input_text })}
               onSubmitPress={() => this.tryLogin()}
+              onSubmitEditing={() => this.tryLogin()}
               returnKeyType={'done'}
               secureTextEntry
             />
             <TouchableOpacity
-              onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                url: `${ApiServer.FIVE_STORY}/31`,
-                headerTitle: '비밀번호 찾기'
-              })}
+              onPress={() => this.props.navigation.navigate('FindPassword', { user: this.state.user })}
               style={{ margin: 10 }}
             >
               <Text note>비밀번호가 기억나지 않아요</Text>
@@ -126,7 +113,7 @@ export default class LogInForm extends Component {
 
     return (
       <Container>
-        <Content padder keyboardShouldPersistTaps={'always'}>
+        <Content padder noHeader keyboardShouldPersistTaps={'always'}>
           <Grid>
             <Row>
               <Text xlarge>로그인</Text>

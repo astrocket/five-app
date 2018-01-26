@@ -128,7 +128,7 @@ export default class TabB extends Component {
               <UserUnitRound
                 id={my_profile.id}
                 name={my_profile.name}
-                image_url={my_profile.image_url}
+                image_url={my_profile.image_medium_url}
                 onPress={() => navigation.navigate('Setting')}
                 barWidth={130}
                 barHeight={130}

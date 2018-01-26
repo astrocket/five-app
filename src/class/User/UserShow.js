@@ -127,7 +127,7 @@ export default class UserShow extends Component {
               <UserUnitRound
                 id={this.state.user.id}
                 name={this.state.user.name}
-                image_url={this.state.user.image_url}
+                image_url={this.state.user.image_medium_url}
                 barWidth={130}
                 barHeight={130}
                 borderRadius={65}

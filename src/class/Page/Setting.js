@@ -180,7 +180,7 @@ export default class Setting extends Component {
               <UserUnitRound
                 id={my_profile.id}
                 name={my_profile.name}
-                image_url={my_profile.image_url}
+                image_url={my_profile.image_medium_url}
                 onPress={() => this.openImagePicker()}
                 barWidth={70}
                 barHeight={70}

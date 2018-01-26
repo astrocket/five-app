@@ -72,7 +72,7 @@ const MultiToggle = ({ leftText, leftClicked, leftImage, onLeftPress, centerText
       backgroundColor: '#FFF',
       justifyContent: 'space-around',
       alignItems: 'center',
-      flex: 1,
+      height: null,
     }}>
       <ToggleButton
         onPress={onLeftPress}

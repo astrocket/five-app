@@ -119,7 +119,7 @@ export default class FriendIndex extends Component {
               <UserUnitBar
                 id={item.id}
                 name={item.name}
-                image_url={item.image_url}
+                image_url={item.image_medium_url}
                 onPress={() => navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,

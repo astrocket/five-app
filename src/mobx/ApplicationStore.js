@@ -18,6 +18,12 @@ class ObservableApplicationStore {
     });
   }
 
+  async signIn() {
+    await (
+      this.login = true
+    )
+  }
+
   async setAuthInfo() {
     await AsyncStorage.multiGet([ 'email', 'token', 'key' ], (err, stores) => {
       this.email = stores[0][1];

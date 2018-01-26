@@ -124,7 +124,7 @@ export default class MyItemIndex extends Component {
                 title={item.title}
                 onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
                 location={item.location}
-                image_url={item.image_url}
+                image_url={item.image_medium_url}
                 date_time={item.date_time}
               />
             )}

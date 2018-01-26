@@ -216,7 +216,7 @@ export default class UserFiveShow extends Component {
                 id={item.id}
                 title={item.title}
                 location={item.location}
-                image_url={item.image_url}
+                image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
                   title: item.title,
@@ -239,7 +239,7 @@ export default class UserFiveShow extends Component {
                 id={item.id}
                 location={item.location}
                 title={item.title}
-                image_url={item.image_url}
+                image_url={item.image_large_url}
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
                   title: item.title,
                   id: item.id,

@@ -103,7 +103,7 @@ export default class UserFiveRestaurantModal extends Component {
             id={item.id}
             location={item.location}
             title={item.title}
-            image_url={item.image_url}
+            image_url={item.image_medium_url}
             onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
             onLongPress={() => askDelete(item)}
             barWidth={100}
@@ -140,7 +140,7 @@ export default class UserFiveRestaurantModal extends Component {
             id={item.id}
             location={item.location}
             title={item.title}
-            image_url={item.image_url}
+            image_url={item.image_medium_url}
             onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
             onLongPress={() => askDelete(item)}
             barWidth={100}

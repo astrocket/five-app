@@ -117,7 +117,7 @@ export default class RestaurantList extends Component {
                 location={item.location}
                 five_users_count={item.five_users_count}
                 updated_at={item.updated_at}
-                image_url={item.image_url}
+                image_url={item.image_medium_url}
                 onPress={() => navigation.navigate('RestaurantShow', {
                   title: item.title,
                   id: item.id,
