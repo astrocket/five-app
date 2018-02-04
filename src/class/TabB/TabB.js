@@ -28,6 +28,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class TabB extends Component {
 
   static navigationOptions = ({ navigation }) => ({
+    title: '프로필',
     tabBarLabel: '5',
     tabBarIcon: ({ tintColor }) => (
       <Icon
@@ -84,34 +85,6 @@ export default class TabB extends Component {
       });
   }
 
-/*  renderRestaurantPopUp() {
-    const { navigation } = this.props;
-    return (
-      <PopupDialog
-        width={1}
-        height={1}
-        dismissOnTouchOutside={false}
-        dialogStyle={{
-          position: 'relative',
-          top: -40,
-          backgroundColor: 'transparent',
-        }}
-        ref={(tabBDialog) => {
-          this.tabBDialog = tabBDialog;
-        }}
-      >
-        <MyFiveRestaurantModal
-          marginTop={80}
-          marginLeft={20}
-          marginRight={20}
-          marginBottom={120}
-          navigation={navigation}
-          closePopUp={() => this.tabBDialog.dismiss()}
-        />
-      </PopupDialog>
-    );
-  }*/
-
   render() {
     const { preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -120,56 +93,62 @@ export default class TabB extends Component {
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <Grid>
-          <Row style={{
-            height: 250,
-            alignItems: 'center',
-          }}>
-            <Col style={{ alignItems: 'center' }}>
-              <UserUnitRound
-                id={my_profile.id}
-                name={my_profile.name}
-                image_url={my_profile.image_medium_url}
-                onPress={() => navigation.navigate('Setting')}
-                barWidth={130}
-                barHeight={130}
-                borderRadius={65}
-                marginRight={10}
-                fontSize={25}
-                large
-              />
-              <Text note style={{ width: 250, textAlign: 'center' }}>{my_profile.introduce}</Text>
-            </Col>
-          </Row>
-          <FlatList
-            data={this.state.categories}
-            style={{paddingBottom: 15}}
-            renderItem={({ item }) => (
-              <FivesBar
-                onPress={() => navigation.navigate('ProfileFiveIndex', { five_category: item.klass.toLowerCase() })}
-                category={item.category}
-                followers={item.followers_count}
-                followees={item.followees_count}
-                fives={item.fives}
-                image={Images.findImageOf(item.klass.toLowerCase())}
-              />
-            )}
-            keyExtractor={item => 'five-category-list-' + item.id}
-            ListFooterComponent={
-              <FivesBar
-                onPress={() =>
-                  Toast.show({
-                    text: '더미카테고리',
-                    position: 'bottom',
-                    duration: 1500,
+          <Content>
+            <Row style={{
+              height: 250,
+              alignItems: 'center',
+            }}>
+              <Col style={{ alignItems: 'center' }}>
+                <UserUnitRound
+                  id={my_profile.id}
+                  name={my_profile.name}
+                  image_url={my_profile.image_medium_url}
+                  onPress={() => navigation.navigate('Setting', {
+                    categories: this.state.categories
                   })}
-                category={'더미데이터'}
-                followers={'222'}
-                followees={'242'}
-                fives={[]}
-                image={Images.restaurant_main}
+                  barWidth={130}
+                  barHeight={130}
+                  borderRadius={65}
+                  marginRight={10}
+                  fontSize={25}
+                  large
+                />
+                <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{my_profile.introduce}</Text>
+              </Col>
+            </Row>
+            <Row>
+              <FlatList
+                data={this.state.categories}
+                style={{paddingBottom: 15}}
+                renderItem={({ item }) => (
+                  <FivesBar
+                    onPress={() => navigation.navigate('ProfileFiveIndex', { five_category: item.klass.toLowerCase() })}
+                    category={item.category}
+                    followers={item.followers_count}
+                    followees={item.followees_count}
+                    fives={item.fives}
+                    image={Images.findImageOf(item.klass.toLowerCase())}
+                  />
+                )}
+                keyExtractor={item => 'five-category-list-' + item.id}
+                ListFooterComponent={
+                  <FivesBar
+                    onPress={() =>
+                      Toast.show({
+                        text: '더미카테고리',
+                        position: 'bottom',
+                        duration: 1500,
+                      })}
+                    category={'더미데이터'}
+                    followers={'222'}
+                    followees={'242'}
+                    fives={[]}
+                    image={Images.restaurant_main}
+                  />
+                }
               />
-            }
-          />
+            </Row>
+          </Content>
         </Grid>
 {/*
         {this.renderRestaurantPopUp()}

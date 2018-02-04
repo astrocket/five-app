@@ -126,7 +126,6 @@ export default class SignUpForm extends Component {
             </Row>
             <Row>
               <InputSingle
-                refInner="innerTextInput2"
                 placeholder={'출생년도 두 자리 숫 (예: 92)'}
                 value={''}
                 onChangeText={(input_birth) => this.setState({ input_birth })}

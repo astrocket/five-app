@@ -4,16 +4,10 @@ import {
   FlatList,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
+  Container, Header, Content, Text, Spinner,
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { UserUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';

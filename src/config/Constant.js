@@ -36,3 +36,16 @@ export const KakaoApiCategory = (category) => {
   }
   return category_code
 };
+
+export const CategoryToKorean = (category) => {
+  let korean_category;
+  switch (category) {
+    case 'restaurant':
+      korean_category = '맛집';
+      break;
+    default:
+      korean_category = '';
+      break;
+  }
+  return korean_category
+};

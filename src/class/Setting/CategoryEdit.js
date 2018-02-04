@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import {
-  View,
+  View, FlatList
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
-  Input,
-  Item, Button,
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Toast
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import { FiveUnitBar, EmptyBox, DeleteCategory } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -24,10 +17,10 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class UserInfoNew extends Component {
+export default class CategoryEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '한줄 소개',
+    title: '카테고리 관리',
     ...Constant.FiveNavOptions,
   });
 
@@ -35,35 +28,23 @@ export default class UserInfoNew extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      introduce: ''
+      klass: '',
+      categories: this.props.navigation.state.params.categories,
     };
   }
 
-
-  onUploadSuccess(data) {
-    this.props.ApplicationStore.setMyProfile(data).then(() => {
-      this.setState({
-        loading: false,
-      }, () => this.props.navigation.goBack() );
-    });
-  }
-
-  postUserInfo() {
-    const data = new FormData();
-
-    data.append("user[introduce]", this.state.introduce);
-
+  destroyCategory(klass) {
     const header = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
-        'Content-Type': 'multipart/form-data;',
       },
     };
 
-    axios.post(`${ApiServer.MY_PROFILE}/update_user`, data, header)
-      .then((response) => {
-        this.onUploadSuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
+    axios.post(`${ApiServer.MY_PROFILE}/destroy_category`, {
+      category: klass.toLowerCase(),
+    }, header).then((response) => {
+        this.onDestroySuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
       Toast.show({
         text: JSON.stringify(error.response),
@@ -73,29 +54,35 @@ export default class UserInfoNew extends Component {
     });
   }
 
+  onDestroySuccess(data) {
+    this.props.ApplicationStore.setMyProfile(data).then(() => {
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
 
     return (
       <Container>
         <Content padder>
-          <Item>
-            <Input
-              placeholder={my_profile.introduce}
-              placeholderTextColor={'#eee'}
-              onChangeText={(introduce) => this.setState({ introduce })}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              autoFocus={true}
-              multiline={false}
-              style={{ fontSize: 15, padding: 10 }}
-            />
-          </Item>
-          <Button onPress={() => this.postUserInfo()}>
-            <Text>제출</Text>
-          </Button>
+          <FlatList
+            data={this.state.categories}
+            style={{paddingBottom: 15}}
+            renderItem={({ item }) => (
+              <Button bordered full danger onPress={() => Toast.show({
+                text: '삭제시도(베타이후 작업)',
+                position: 'bottom',
+                duration: 1500,
+              })}>
+                <Text>나의 {item.category} 정보 전체 삭제하기</Text>
+              </Button>
+            )}
+            keyExtractor={item => 'category-name-list-' + item.id}
+          />
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

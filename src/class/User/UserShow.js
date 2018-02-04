@@ -119,109 +119,59 @@ export default class UserShow extends Component {
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <Grid>
-          <Row style={{
-            height: 250,
-            alignItems: 'center',
-          }}>
-            <Col style={{ alignItems: 'center' }}>
-              <UserUnitRound
-                id={this.state.user.id}
-                name={this.state.user.name}
-                image_url={this.state.user.image_medium_url}
-                barWidth={130}
-                barHeight={130}
-                borderRadius={65}
-                marginRight={10}
-                fontSize={25}
-                large
-              />
-              <Text note style={{ width: 250, textAlign: 'center' }}>{this.state.user.introduce}</Text>
-            </Col>
-          </Row>
-          <FlatList
-            data={this.state.categories}
-            style={{paddingBottom: 15}}
-            renderItem={({ item }) => (
-              <FivesBar
-                onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
-                category={item.category}
-                followers={item.followers_count}
-                followees={item.followees_count}
-                fives={item.fives}
-                image={Images.findImageOf(item.klass.toLowerCase())}
-              />
-            )}
-            keyExtractor={item => 'five-category-list-' + item.id}
-            ListFooterComponent={
-              <FivesBar
-                onPress={() =>
-                  Toast.show({
-                  text: '더미카테고리',
-                  position: 'bottom',
-                  duration: 1500,
-                })}
-                category={'더미데이터'}
-                followers={'222'}
-                followees={'242'}
-                fives={[]}
-                image={Images.restaurant_main}
-              />
-            }
-          />
-{/*          <Row style={{
-            height: 100,
-            alignItems: 'center',
-          }}>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FollowerButton
-                onPress={() => this.popupDialog.show()}
-                title={'맛집'}
-                followees={this.state.restaurant_followees_count}
-                followers={this.state.restaurant_followers_count}
-              />
-            </Col>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FollowerButton
-                title={'음악'}
-                followees={'24'}
-                followers={'299'}
-              />
-            </Col>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FollowerButton
-                title={'책'}
-                followees={'27'}
-                followers={'310'}
-              />
-            </Col>
-          </Row>
-          <Row style={{
-            height: 50,
-            alignItems: 'center'
-          }}>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <View>
-                {this.renderRestaurantFollowing()}
-              </View>
-            </Col>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <View>
-                <FollowUserButton
-                  onPress={() => console.log('hi')}
-                  title={'+팔로우 '}
+          <Content>
+            <Row style={{
+              height: 250,
+              alignItems: 'center',
+            }}>
+              <Col style={{ alignItems: 'center' }}>
+                <UserUnitRound
+                  id={this.state.user.id}
+                  name={this.state.user.name}
+                  image_url={this.state.user.image_medium_url}
+                  barWidth={130}
+                  barHeight={130}
+                  borderRadius={65}
+                  marginRight={10}
+                  fontSize={25}
+                  large
                 />
-              </View>
-            </Col>
-            <Col style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <View>
-                <FollowUserButton
-                  onPress={() => console.log('hi')}
-                  title={'+팔로우 '}
-                />
-              </View>
-            </Col>
-          </Row>
-        {this.renderRestaurantPopUp()}*/}
+                <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{this.state.user.introduce}</Text>
+              </Col>
+            </Row>
+            <Row>
+              <FlatList
+                data={this.state.categories}
+                style={{paddingBottom: 15}}
+                renderItem={({ item }) => (
+                  <FivesBar
+                    onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    category={item.category}
+                    followers={item.followers_count}
+                    followees={item.followees_count}
+                    fives={item.fives}
+                    image={Images.findImageOf(item.klass.toLowerCase())}
+                  />
+                )}
+                keyExtractor={item => 'five-category-list-' + item.id}
+                ListFooterComponent={
+                  <FivesBar
+                    onPress={() =>
+                      Toast.show({
+                        text: '더미카테고리',
+                        position: 'bottom',
+                        duration: 1500,
+                      })}
+                    category={'더미데이터'}
+                    followers={'222'}
+                    followees={'242'}
+                    fives={[]}
+                    image={Images.restaurant_main}
+                  />
+                }
+              />
+            </Row>
+          </Content>
         </Grid>
         {this.state.loading &&
         <View style={preLoading}>

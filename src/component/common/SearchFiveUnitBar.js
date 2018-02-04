@@ -11,21 +11,38 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked  }) => {
+const FiveUnitBarImage = ({ image_url }) => {
+  if (image_url) {
+    return (
+      <Image
+        style={{ width: 60, height: 60, borderRadius: 20 }}
+        source={{ uri: image_url }}
+      />
+    )
+  } else {
+    return (
+      <Image
+        style={{ width: 60, height: 60, borderRadius: 20 }}
+        source={Images.restaurant_main}
+      />
+    )
+  }
+};
+
+const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked, image_url  }) => {
   const { container } = BaseStyle;
 
   if (clicked) {
     return (
       <ListItem avatarList>
         <TouchableOpacity onPress={onPressImage}>
-          <Image
-            style={{ width: 60, height: 60, borderRadius: 20 }}
-            source={Images.restaurant_main}
-          />
+          <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <Text normal numberOfLines={1}>{title}</Text>
-        <Text note numberOfLines={1}>{subtitle}</Text>
+        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Text normal numberOfLines={1}>{title}</Text>
+          <Text note numberOfLines={1}>{subtitle}</Text>
+        </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
           <View style={{
@@ -46,14 +63,13 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
     return (
       <ListItem avatarList>
         <TouchableOpacity onPress={onPressImage}>
-          <Image
-            style={{ width: 60, height: 60, borderRadius: 20 }}
-            source={Images.restaurant_main}
-          />
+          <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <Text normal numberOfLines={1}>{title}</Text>
-        <Text note numberOfLines={1}>{subtitle}</Text>
+        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Text normal numberOfLines={1}>{title}</Text>
+          <Text note numberOfLines={1}>{subtitle}</Text>
+        </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
           <View style={{

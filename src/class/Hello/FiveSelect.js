@@ -76,8 +76,8 @@ export default class FiveSelect extends Component {
             index: 0,
             actions: [
               NavigationActions.navigate({
-                routeName: 'AddFive',
-                params: { category: this.state.input_category, korean_category: `${this.state.korean}` },
+                routeName: `AddFive${this.state.klass}`,
+                params: { category: this.state.input_category, klass: this.state.klass },
               }),
             ],
           }))
@@ -133,9 +133,9 @@ export default class FiveSelect extends Component {
             rightText={'책'}
             rightClicked={this.state.right_clicked}
             rightImage={'book'}
-            onLeftPress={() => this.setState({input_category: 'restaurant', korean: '맛집', left_clicked: true, center_clicked: false, right_clicked: false, unselected: false})}
-            onCenterPress={() => this.setState({input_category: 'music', korean: '음악', left_clicked: false, center_clicked: true, right_clicked: false, unselected: false})}
-            onRightPress={() => this.setState({input_category: 'book', korean: '책', left_clicked: false, center_clicked: false, right_clicked: true, unselected: false})}
+            onLeftPress={() => this.setState({input_category: '맛집', klass: 'Restaurant', left_clicked: true, center_clicked: false, right_clicked: false, unselected: false})}
+            onCenterPress={() => this.setState({input_category: '음악', klass: 'Music', left_clicked: false, center_clicked: true, right_clicked: false, unselected: false})}
+            onRightPress={() => this.setState({input_category: '책', klass: 'Book', left_clicked: false, center_clicked: false, right_clicked: true, unselected: false})}
           />
         </View>
         <View style={{ height: 50, }}>

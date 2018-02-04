@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import {
-  View,
-  TouchableOpacity, AsyncStorage,
+  View, TouchableOpacity, AsyncStorage, FlatList, Alert, Keyboard,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button,
+  Item, Input, Icon, Button, Toast,
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
+import { FiveUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -33,7 +33,7 @@ export default class TabC extends Component {
         }}
       />
     ),
-    title: '검색창',
+    title: '검색',
     ...Constant.FiveNavOptions,
   });
 
@@ -41,6 +41,7 @@ export default class TabC extends Component {
     super(props);
     this.state = {
       loading: false,
+      searched: false,
     };
   }
 
@@ -63,26 +64,163 @@ export default class TabC extends Component {
       });
   }
 
-  signOutAction() {
+  searchApi(input_search) {
     this.setState({ loading: true });
-
-    axios.post(`${ApiServer.USERS}/sign_out`, {
+    const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
-      }
-    }).then((response) => {
-      AsyncStorage.multiRemove(['email', 'token', 'key'])
-        .then(() => {
-          this.props.ApplicationStore.signOut();
+      },
+    };
+    axios.get(`${ApiServer.HOME}/search?s=${input_search}`, config)
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          loading: false,
+          searched: true,
+          restaurants: response.data.restaurants,
+          page_loading: false,
         });
-    }).catch((error) => {
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
+      })
+      .catch((error) => {
+        console.log(error.response);
       });
-    });
+  }
+
+  handleInputSearch(input_search) {
+    if (input_search === '') {
+      this.setState({ searched: false });
+      Keyboard.dismiss();
+    } else {
+      this.setState({ input_search });
+    }
+  }
+
+  renderSearchResult() {
+    if (this.state.searched) {
+      return (
+        <Content>
+          <Grid>
+            <Row style={{ marginBottom: 20 }}>
+              <FlatList
+                data={this.state.restaurants}
+                renderItem={({ item, index }) => (
+                  <FiveUnitBar
+                    multiple
+                    id={item.id}
+                    title={item.title}
+                    location={item.location}
+                    image_url={item.image_medium_url}
+                    icon={'ios-arrow-forward-outline'}
+                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                      title: item.title,
+                      id: item.id,
+                      navLoading: true,
+                    })}
+                  />
+                )}
+                keyExtractor={item => 'search-five-list-' + item.id}
+                ListHeaderComponent={() => {
+                  if (this.state.restaurants.length > 0) {
+                    return (
+                      <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                      }}>
+                        <Text small>맛집</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantList', {
+                          restaurants: this.state.restaurants,
+                          search_params: this.state.input_search
+                        })} underlayColor={'#fff'}>
+                          <Text primary>더보기</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )
+                  } else {
+                    return (
+                      <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                      }}>
+                        <Text small>맛집이 없습니다.</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantList', {
+                          restaurants: this.state.restaurants,
+                        })} underlayColor={'#fff'}>
+                          <Text primary>전체보기</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )
+                  }
+                }
+                }
+              />
+            </Row>
+            <View style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}>
+              <Text small>음악</Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
+                  restaurants: this.state.restaurants,
+                })} underlayColor={'#fff'}>
+                <Text primary>더보기</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}>
+              <Text small>책</Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
+                  restaurants: this.state.restaurants,
+                })} underlayColor={'#fff'}>
+                <Text primary>더보기</Text>
+              </TouchableOpacity>
+            </View>
+          </Grid>
+        </Content>
+      );
+    } else {
+      return (
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          flexDirection: 'column',
+        }}>
+          <Text>성수동 맛집</Text>
+          <Text>성수동 맛집</Text>
+          <Text>성수동 맛집</Text>
+          <Text>성수동 맛집</Text>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -91,29 +229,26 @@ export default class TabC extends Component {
 
     return (
       <Container>
-        <Header searchBar rounded style={{paddingTop: 0, height: 56 }}>
+        <Header searchBar rounded style={{
+          paddingTop: 0,
+          height: 56,
+        }}>
           <Item>
-            <Icon name="ios-search" />
+            <Icon name="ios-search"/>
             <Input
-              placeholder="Search"
+              placeholder="검색어를 입력해주세요"
               autoCapitalize={'none'}
               autoCorrect={false}
+              autoFocus={false}
+              multiline={false}
+              returnKeyType={'search'}
+              onSubmitEditing={() => this.searchApi(this.state.input_search)}
+              onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
-            <Icon name="ios-people" />
+            <Icon name="ios-people"/>
           </Item>
-          <Button transparent>
-            <Text>검색</Text>
-          </Button>
         </Header>
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
-          <Text>성수동 맛집</Text>
-          <TouchableOpacity onPress={() => this.signOutAction()}>
-            <Text>로그아웃</Text>
-          </TouchableOpacity>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-        </View>
+        {this.renderSearchResult()}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

@@ -215,7 +215,7 @@ export default class RestaurantIndex extends Component {
             <View style={{
               flex: 1,
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               paddingTop: 10,
               paddingBottom: 10,
@@ -223,11 +223,6 @@ export default class RestaurantIndex extends Component {
               paddingRight: 10,
             }}>
               <Text small>당신의 FIVE에 도전합니다</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('RestaurantList', {
-                restaurants: this.state.challenge_restaurants,
-              })} underlayColor={'#fff'}>
-                <Text primary>더보기</Text>
-              </TouchableOpacity>
             </View>
             <Row style={{ marginBottom: 20 }}>
               <FlatList

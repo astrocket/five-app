@@ -95,9 +95,7 @@ export default class App extends Component<{}> {
       if (this.props.ApplicationStore.login) {
         return (
           <StyleProvider style={getTheme(platform)}>
-            <RootNavigation
-              initialRotueName={'PageB'}
-            />
+            <RootNavigation/>
           </StyleProvider>
         );
       }

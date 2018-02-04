@@ -18,10 +18,10 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class AddFive extends Component {
+export default class AddFiveRestaurant extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.korean_category} FIVE 참여`,
+    title: `${navigation.state.params.category} FIVE 참여`,
     headerStyle: {
       backgroundColor: 'white',
       borderBottomWidth: 0,
@@ -41,7 +41,7 @@ export default class AddFive extends Component {
     this.state = {
       loading: false,
       category: this.props.navigation.state.params.category,
-      korean_category: this.props.navigation.state.params.korean_category,
+      klass: this.props.navigation.state.params.klass,
       page: 1,
       page_loading: false,
       no_more: true,
@@ -56,7 +56,7 @@ export default class AddFive extends Component {
         'Authorization': ApiServer.KAKAO_API_KEY,
       },
     }).then((response) => {
-      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, {
+      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.klass.toLowerCase()}`, {
         zipcode: response.data.documents[0].road_address.zone_no,
         document: document,
       }, {
@@ -85,7 +85,7 @@ export default class AddFive extends Component {
   askAddFive(document, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${document.place_name}을(를) ${this.state.korean_category} FIVE로 선택하시겠어요?`,
+      `${document.place_name}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -106,8 +106,8 @@ export default class AddFive extends Component {
     documentsBefore[index].clicked = true;
     this.setState({ documents: documentsBefore }, () => {
       Alert.alert(
-        `${this.state.korean_category} FIVE 선택됨`,
-        `${document.place_name}이(가) ${this.state.korean_category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        `${this.state.category} FIVE 선택됨`,
+        `${document.place_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
         [
           {
             text: '그만 선택하기',
@@ -130,7 +130,7 @@ export default class AddFive extends Component {
         'Authorization': ApiServer.KAKAO_API_KEY,
       },
     };
-    axios.get(`${ApiServer.KAKAO_API}?query=${input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.category)}`, config)
+    axios.get(`${ApiServer.KAKAO_API}?query=${input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -155,7 +155,7 @@ export default class AddFive extends Component {
           'Authorization': ApiServer.KAKAO_API_KEY,
         },
       };
-      axios.get(`${ApiServer.KAKAO_API}?query=${this.state.input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.category)}`, config)
+      axios.get(`${ApiServer.KAKAO_API}?query=${this.state.input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
         .then((response) => {
           console.log(response);
           this.setState({

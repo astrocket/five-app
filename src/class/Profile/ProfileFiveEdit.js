@@ -32,6 +32,7 @@ export default class ProfileFiveEdit extends Component {
       klass: '',
       category: '',
       fives: [],
+      wishes: []
     };
   }
 
@@ -53,6 +54,7 @@ export default class ProfileFiveEdit extends Component {
           klass: response.data.klass,
           category: response.data.category,
           fives: response.data.fives,
+          wishes: response.data.wishes
         });
       })
       .catch((error) => {
@@ -145,7 +147,9 @@ export default class ProfileFiveEdit extends Component {
         <EmptyBox
           key={rowId}
           barWidth={null}
-          onPress={() => navigation.navigate('RestaurantNew')}
+          onPress={() => navigation.navigate(`ProfileFiveAdd${this.state.klass}`, {
+            category: this.state.category, klass: this.state.klass, wishes: this.state.wishes
+          })}
           barHeight={60}
           borderRadius={10}
           marginRight={0}
@@ -180,8 +184,8 @@ export default class ProfileFiveEdit extends Component {
                     <Icon active name="trash"/>
                   </Button>
                 }
-                leftOpenValue={75}
-                rightOpenValue={-75}
+                leftOpenValue={60}
+                rightOpenValue={-60}
               />
             </Row>
           </Grid>

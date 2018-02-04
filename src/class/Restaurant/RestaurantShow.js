@@ -63,7 +63,7 @@ export default class RestaurantShow extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
-      restaurant: [],
+      restaurant: '',
       flip: false,
       five_users: [],
       five_users_count: '',
@@ -129,12 +129,16 @@ export default class RestaurantShow extends Component {
         .then((response) => {
           this.onCreateFiveCallSuccess(response.data);
         }).catch((error) => {
-        console.log(error.response);
-        Toast.show({
-          text: '에러 : ' + JSON.stringify(error.response.data.errors),
-          position: 'bottom',
-          duration: 1500,
-        });
+        console.log(error.response.data);
+        if (error.response.data.full) {
+          this.handleOnCreateFiveCallFull()
+        } else {
+          Toast.show({
+            text: '에러 : ' + JSON.stringify(error.response.data.errors),
+            position: 'bottom',
+            duration: 1500,
+          });
+        }
       });
     }
   }
@@ -202,10 +206,31 @@ export default class RestaurantShow extends Component {
     });
   }
 
+  handleOnCreateFiveCallFull() {
+    Alert.alert(
+      `FIVE추가 불가능`,
+      `이미 5개의 FIVE가 선택되어서 추가로 담을 수 없습니다.`,
+      [
+        {
+          text: 'FIVE 바꾸기',
+          onPress: () => this.props.navigation.navigate("ProfileFiveEdit", {
+            five_category: 'restaurant'
+          }),
+        },
+        {
+          text: '확인',
+          style: 'cancel',
+        }
+      ],
+      { cancelable: true },
+    );
+  }
+
   onCreateFiveCallSuccess(data) {
     const before_my_five = this.state.my_five;
     const my_five = data.my_five;
     const my_wish = data.my_wish;
+    const fives_count = data.fives_count;
 
     this.setState({
       my_five: my_five,
@@ -215,6 +240,24 @@ export default class RestaurantShow extends Component {
     if (before_my_five !== my_five) {
       this.setState({
         five_users_count: my_five ? this.state.five_users_count += 1 : this.state.five_users_count -= 1,
+      }, () => {
+        var message;
+        if ( fives_count === 5 ) {
+          message = `${this.state.restaurant.title}이(가) 맛집 FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
+        } else {
+          message = `${this.state.restaurant.title}이(가) 맛집 FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
+        }
+        Alert.alert(
+          '맛집 FIVE 선택됨',
+          message,
+          [
+            {
+              text: '확인',
+              style: 'cancel',
+            }
+          ],
+          { cancelable: true },
+        );
       });
     }
 

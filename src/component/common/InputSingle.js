@@ -9,7 +9,7 @@ import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 // keyboardType = default / numeric / email-address / phone-pad
 // returnKeyType = done / go / next / search / send
-const InputSingle = ({ placeholder, autoFocus, submitText, onSubmitPress, onSubmitEditing, onChangeText, secureTextEntry, keyboardType, returnKeyType, noButton }) => {
+const InputSingle = ({ defaultValue, placeholder, autoFocus, submitText, onSubmitPress, onSubmitEditing, onChangeText, secureTextEntry, keyboardType, returnKeyType, noButton }) => {
   const { container } = BaseStyle;
   if (noButton) {
     return (
@@ -29,6 +29,7 @@ const InputSingle = ({ placeholder, autoFocus, submitText, onSubmitPress, onSubm
           autoCorrect={false}
           autoFocus={autoFocus}
           multiline={false}
+          defaultValue={defaultValue}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           returnKeyType={returnKeyType}
@@ -49,6 +50,7 @@ const InputSingle = ({ placeholder, autoFocus, submitText, onSubmitPress, onSubm
         borderWidth: 0,
         borderRadius: 10,
         backgroundColor: '#FAFAFA',
+        flex: 1,
       }}>
         <Input
           placeholder={placeholder}
@@ -58,6 +60,7 @@ const InputSingle = ({ placeholder, autoFocus, submitText, onSubmitPress, onSubm
           autoCorrect={false}
           autoFocus={autoFocus}
           multiline={false}
+          defaultValue={defaultValue}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
           returnKeyType={returnKeyType}

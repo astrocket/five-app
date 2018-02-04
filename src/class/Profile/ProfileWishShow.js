@@ -143,7 +143,10 @@ export default class ProfileWishShow extends Component {
                 }}
                 renderRow={(data, secId, rowId, rowMap) =>
                   <WishUnitBar
-                    multiple
+                    onPressImage={() => navigation.navigate('RestaurantShow', {
+                      id: data.wish.id,
+                      title: data.wish.title,
+                    })}
                     onPress={() => this.createFiveCall(this.state.klass.toLowerCase(), data, rowId)}
                     id={data.wish.id}
                     title={data.wish.title}
@@ -151,7 +154,6 @@ export default class ProfileWishShow extends Component {
                     image_url={data.wish.image_medium_url}
                     also_five={data.also_five}
                     updated_at={data.wish.updated_at}
-                    icon={'ios-arrow-forward-outline'}
                   />
                 }
                 disableRightSwipe={true}

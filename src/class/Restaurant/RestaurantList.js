@@ -41,6 +41,7 @@ export default class RestaurantList extends Component {
       page: 1,
       page_loading: false,
       no_more: false,
+      search_params: this.props.navigation.state.params.search_params ? this.props.navigation.state.params.search_params : '',
     };
   }
 
@@ -55,7 +56,7 @@ export default class RestaurantList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}`, config)
+    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -74,7 +75,7 @@ export default class RestaurantList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}`, config)
+    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         console.log(response);
         if (response.data === undefined || response.data.length === 0) {
@@ -112,16 +113,16 @@ export default class RestaurantList extends Component {
             }}
             renderItem={({ item }) => (
               <FiveUnitBar
+                multiple
                 id={item.id}
                 title={item.title}
                 location={item.location}
-                five_users_count={item.five_users_count}
-                updated_at={item.updated_at}
                 image_url={item.image_medium_url}
-                onPress={() => navigation.navigate('RestaurantShow', {
+                icon={'ios-arrow-forward-outline'}
+                onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
                   title: item.title,
                   id: item.id,
-                  navLoading: true
+                  navLoading: true,
                 })}
               />
             )}

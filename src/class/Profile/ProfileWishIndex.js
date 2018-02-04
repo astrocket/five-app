@@ -57,6 +57,7 @@ export default class ProfileWishIndex extends Component {
   }
 
   renderCategoryTabs() {
+    const { navigation } = this.props;
     return this.state.categories.map(function(category, i) {
       return (
         <Tab key={i} heading={ <TabHeading><Text>{category.category}</Text></TabHeading>}>
@@ -64,6 +65,7 @@ export default class ProfileWishIndex extends Component {
             klass={category.klass}
             category={category.category}
             wishes={category.wishes}
+            navigation={navigation}
           />
         </Tab>
       )

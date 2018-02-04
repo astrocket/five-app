@@ -18,9 +18,10 @@ const FiveUnitBar = ({ id, location, title, image_url, onPress, icon, five_users
           source={{ uri: image_url }}
         />
         <Body>
-        <Text normal numberOfLines={1}>{title}</Text>
-        <Text note numberOfLines={1}>{location}</Text>
-        <Text micro yellow>FIVE {five_users_count}</Text>
+        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Text normal numberOfLines={1}>{title}</Text>
+          <Text note numberOfLines={1}>{location}</Text>
+        </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
           <Text note>{updated_at.split('T')[0]}</Text>
@@ -42,9 +43,10 @@ const FiveUnitBar = ({ id, location, title, image_url, onPress, icon, five_users
           source={{ uri: image_url }}
         />
         <Body>
-        <Text normal numberOfLines={1}>{title}</Text>
-        <Text note numberOfLines={1}>{location}</Text>
-        <Text micro yellow>FIVE {five_users_count}</Text>
+        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Text normal numberOfLines={1}>{title}</Text>
+          <Text note numberOfLines={1}>{location}</Text>
+        </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
           <Icon

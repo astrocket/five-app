@@ -27,9 +27,7 @@ import UserShow from '../class/User/UserShow';
 import Map from '../class/Page/Map';
 import FollowIndex from '../class/Follow/FollowIndex';
 import MyItemIndex from '../class/Item/MyItemIndex';
-import Setting from '../class/Page/Setting';
-import UserInfoNew from '../class/User/UserInfoNew';
-import UserImageNew from '../class/User/UserImageNew';
+import Setting from '../class/Setting/Setting';
 import FriendIndex from '../class/Friend/FriendIndex';
 import NoticeIndex from '../class/Notice/NoticeIndex';
 import NoticeShow from '../class/Notice/NoticeShow';
@@ -40,7 +38,12 @@ import ProfileFiveEdit from '../class/Profile/ProfileFiveEdit';
 import ProfileFollowerIndex from '../class/Profile/ProfileFollowerIndex';
 import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
 import FiveStoryShow from '../class/Page/FiveStoryShow';
-
+import ProfileFiveAddRestaurant from '../class/Profile/ProfileFiveAddRestaurant';
+import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
+import InfoEdit from '../class/Setting/InfoEdit';
+import AccountEdit from '../class/Setting/AccoutEdit';
+import AlarmEdit from '../class/Setting/AlarmEdit';
+import CategoryEdit from '../class/Setting/CategoryEdit';
 
 const StackNavigation = StackNavigator(
   {
@@ -76,7 +79,7 @@ const StackNavigation = StackNavigator(
             style: {
               backgroundColor: '#fff',
             },
-          }
+          },
         }),
     },
     PageA: {
@@ -121,15 +124,6 @@ const StackNavigation = StackNavigator(
     MyItemIndex: {
       screen: MyItemIndex,
     },
-    Setting: {
-      screen: Setting,
-    },
-    UserInfoNew: {
-      screen: UserInfoNew,
-    },
-    UserImageNew: {
-      screen: UserImageNew,
-    },
     FriendIndex: {
       screen: FriendIndex,
     },
@@ -160,40 +154,54 @@ const StackNavigation = StackNavigator(
     FiveStoryShow: {
       screen: FiveStoryShow,
     },
+    ProfileFiveAddRestaurant: {
+      screen: ProfileFiveAddRestaurant,
+    },
+    Setting: {
+      screen: Setting,
+    },
+    InfoEdit: {
+      screen: InfoEdit,
+    },
+    AccountEdit: {
+      screen: AccountEdit,
+    },
+    AlarmEdit: {
+      screen: AlarmEdit,
+    },
+    CategoryEdit: {
+      screen: CategoryEdit,
+    },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
-    mode: 'card'
+    mode: 'card',
   },
 );
 
 const ModalNavigation = StackNavigator(
   {
-    FiveStoryShow: {
-      screen: FiveStoryShow,
-      navigationOptions: {
-        transitionConfig: {
-          isModal: true
-        },
-      },
+    Main: {
+      screen: ({ navigation }) => <StackNavigation screenProps={{ modalNavigation: navigation }}/>,
+    },
+    ModalWebViewShow: {
+      screen: ({ navigation }) => <ModalWebViewShow screenProps={{ modalNavigation: navigation }}/>,
     },
   }, {
-    mode: 'modal'
-  }
+    headerMode: 'none',
+    mode: 'modal',
+  },
 );
 
 const RootNavigation = DrawerNavigator(
   {
     Main: {
-      screen: StackNavigation,
-    },
-/*    Modal: {
       screen: ModalNavigation,
-    }*/
+    },
   },
   {
     drawerWidth: 300,
     drawerPosition: 'right',
-    contentComponent: CustomDrawer
+    contentComponent: CustomDrawer,
   },
 );
 

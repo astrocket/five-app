@@ -32,7 +32,7 @@ export default class TabA extends Component {
         }}
       />
     ),
-    title: 'Home',
+    title: 'MyFive',
     headerRight: (
       <View style={BaseStyle.headerDoubleIconsContainer}>
         <Button onPress={() => navigation.navigate('Setting')} transparent>
