@@ -11,9 +11,9 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FollowSmallButton, FiveUserUnitBar, FiveUnitFull,
+  RowHeaderBar, FollowSmallButton, FiveUserUnitBar, FiveUnitFull,
 } from '../../component/common';
-import { FollowUnitBar } from '../../component/common';
+import { FiveUnitRound } from '../../component/common';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
@@ -70,6 +70,7 @@ export default class RestaurantShow extends Component {
       my_five: false,
       my_wish: false,
       clicked: true,
+      related_fives: [],
     };
   }
 
@@ -105,6 +106,7 @@ export default class RestaurantShow extends Component {
           five_users_count: response.data.five_users_count,
           my_five: response.data.my_five,
           my_wish: response.data.my_wish,
+          related_fives: response.data.related_fives,
         });
       })
       .catch((error) => {
@@ -270,7 +272,7 @@ export default class RestaurantShow extends Component {
   // VIEW
 
   render() {
-    const { container, preLoading } = BaseStyle;
+    const { container, preLoading, rowWrapper } = BaseStyle;
     const { navigation } = this.props;
 
     return (
@@ -302,17 +304,22 @@ export default class RestaurantShow extends Component {
               <Text>레스토랑</Text>
               </Body>
             </ListItem>
-            <Row style={{
-              marginTop: 10,
-              paddingLeft: 10,
-            }}>
-              <Text small>{`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}</Text>
-            </Row>
-            <Row>
+            <RowHeaderBar
+              style={{ backgroundColor: '#fafafa' }}
+              title={`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}
+              onPress={() => navigation.navigate('RestaurantFiveUserList', {
+                users: this.state.users,
+                category: 'restaurant',
+                favorable_id: this.state.restaurant.id,
+              })}
+              moreTitle={'더보기'}
+            />
+            <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
                 data={this.state.five_users}
                 renderItem={({ item }) => (
                   <FiveUserUnitBar
+                    style={{ backgroundColor: '#fafafa' }}
                     user={item}
                     onPress={() => navigation.navigate('UserShow', {
                       user: item,
@@ -323,8 +330,38 @@ export default class RestaurantShow extends Component {
                 keyExtractor={item => 'follower-list-' + item.id}
               />
             </Row>
+            <RowHeaderBar
+              title={'관련 아이템'}
+            />
+            <Row>
+              <FlatList
+                horizontal
+                data={this.state.related_fives}
+                style={rowWrapper}
+                renderItem={({ item }) => (
+                  <FiveUnitRound
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    five_users_count={item.five_users_count}
+                    image_url={item.image_medium_url}
+                    onPress={() => navigation.navigate(`${item.klass}Show`, { title: item.title, id: item.id, navLoading: true })}
+                    barWidth={150}
+                    barHeight={150}
+                    borderRadius={15}
+                    marginRight={10}
+                  />
+                )}
+                keyExtractor={item => `related-${item.klass}-fives-` + item.id}
+              />
+            </Row>
           </Grid>
         </Content>
+        {this.state.loading &&
+        <View style={preLoading}>
+          <Spinner size="large"/>
+        </View>
+        }
       </Container>
     );
   }

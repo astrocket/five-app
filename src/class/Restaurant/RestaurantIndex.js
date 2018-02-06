@@ -3,7 +3,6 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  Image,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Icon, Button, H1,
@@ -12,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitRound, UserUnitRound, FiveStoryFull, UserFivesBar
+  RowHeaderBar, MainLargeTitle, FiveUnitRound, UserUnitRound, FiveStoryFull, UserFivesBar
 } from '../../component/common';
 import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
@@ -26,7 +25,6 @@ import { observer, inject } from 'mobx-react/native';
 export default class RestaurantIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '#맛집',
     headerRight: (
       <Button onPress={() => navigation.navigate('Invitation')} transparent>
         <Icon
@@ -80,39 +78,65 @@ export default class RestaurantIndex extends Component {
       });
   }
 
+  followCall(item, index) {
+    const data = {
+      following: {
+        user_id: item.user.id,
+        following: !item.following,
+      },
+    };
+
+    const header = {
+      headers: {
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
+      },
+    };
+
+    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.klass.toLowerCase()}`, data, header)
+      .then((response) => {
+        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
+      }).catch((error) => {
+      console.log(error.response);
+      Toast.show({
+        text: JSON.stringify(error.response.data),
+        position: 'bottom',
+        duration: 1500,
+      });
+    });
+  }
+
+  onCreateFollowCallSuccess(response, index) {
+    const new_following = response.data;
+    const stateBefore = [...this.state.follow_suggestions];
+    stateBefore[index].following = new_following;
+    this.setState({ follow_suggestions: stateBefore });
+  }
+
   render() {
-    const { container, preLoading } = BaseStyle;
+    const { container, preLoading, rowWrapper } = BaseStyle;
     const { navigation } = this.props;
 
     return (
       <Container>
         <Content>
-          <Grid style={{ marginBottom: 20 }}>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}>
-              <Text small>새로 친구들의 five로 선정 된 맛집</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('RestaurantList', {
+          <Grid>
+            <MainLargeTitle
+              title={'맛집'}
+              rightImage={'restaurant'}
+            />
+            <RowHeaderBar
+              title={'새로 친구들의 five로 선정 된 맛집'}
+              onPress={() => navigation.navigate('RestaurantList', {
                 restaurants: this.state.restaurants,
-              })} underlayColor={'#fff'}>
-                <Text primary>더보기</Text>
-              </TouchableOpacity>
-            </View>
-            <Row style={{ marginBottom: 20 }}>
+              })}
+              moreTitle={'더보기'}
+            />
+            <Row>
               <FlatList
                 horizontal
                 data={this.state.restaurants}
-                style={{
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                }}
+                style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
                     id={item.id}
@@ -130,32 +154,19 @@ export default class RestaurantIndex extends Component {
                 keyExtractor={item => 'restaurant-' + item.id}
               />
             </Row>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}>
-              <Text small>새로 five 를 바꾼 친구</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('UserList', {
+            <RowHeaderBar
+              title={'새로 five 를 바꾼 친구'}
+              onPress={() => navigation.navigate('UserList', {
                 users: this.state.users,
                 category: 'restaurant',
-              })} underlayColor={'#fff'}>
-                <Text primary>더보기</Text>
-              </TouchableOpacity>
-            </View>
-            <Row style={{ marginBottom: 20 }}>
+              })}
+              moreTitle={'더보기'}
+            />
+            <Row>
               <FlatList
                 horizontal
                 data={this.state.users}
-                style={{
-                  paddingLeft: 10,
-                  paddingRight: 20,
-                }}
+                style={rowWrapper}
                 renderItem={({ item }) => (
                   <UserUnitRound
                     id={item.id}
@@ -174,23 +185,14 @@ export default class RestaurantIndex extends Component {
                 keyExtractor={item => 'user-' + item.id}
               />
             </Row>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingLeft: 10,
-            }}>
-              <Text small>FIVE 스토리</Text>
-            </View>
-            <Row style={{ marginBottom: 20 }}>
+            <RowHeaderBar
+              title={'FIVE 스토리'}
+            />
+            <Row>
               <FlatList
                 horizontal
                 data={this.state.five_stories}
-                style={{
-                  paddingRight: 20,
-                }}
+                style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveStoryFull
                     multiple
@@ -206,32 +208,20 @@ export default class RestaurantIndex extends Component {
                     barWidth={null}
                     barHeight={null}
                     borderRadius={15}
-                    marginRight={0}
+                    marginRight={10}
                   />
                 )}
                 keyExtractor={item => 'five-stories-' + item.id}
               />
             </Row>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}>
-              <Text small>당신의 FIVE에 도전합니다</Text>
-            </View>
-            <Row style={{ marginBottom: 20 }}>
+            <RowHeaderBar
+              title={'당신의 FIVE에 도전합니다'}
+            />
+            <Row>
               <FlatList
                 horizontal
                 data={this.state.challenge_restaurants}
-                style={{
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                }}
+                style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
                     id={item.id}
@@ -249,27 +239,20 @@ export default class RestaurantIndex extends Component {
                 keyExtractor={item => 'restaurant-challenge-' + item.id}
               />
             </Row>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-            }}>
-              <Text small>팔로우 추천</Text>
-            </View>
-            <Row style={{ marginBottom: 20 }}>
+            <RowHeaderBar
+              style={{ backgroundColor: '#fafafa' }}
+              title={'팔로우 추천'}
+            />
+            <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
                 horizontal
                 data={this.state.follow_suggestions}
-                style={{
-                  paddingRight: 20,
-                }}
-                renderItem={({ item }) => (
+                style={rowWrapper}
+                renderItem={({ item, index }) => (
                   <UserFivesBar
                     onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    onPressFollow={() => this.followCall(item, index)}
+                    clicked={item.following}
                     category={item.category}
                     followers={item.followers_count}
                     followees={item.followees_count}

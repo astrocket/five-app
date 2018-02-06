@@ -90,7 +90,6 @@ export default class TabC extends Component {
   handleInputSearch(input_search) {
     if (input_search === '') {
       this.setState({ searched: false });
-      Keyboard.dismiss();
     } else {
       this.setState({ input_search });
     }

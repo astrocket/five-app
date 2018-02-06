@@ -32,3 +32,5 @@ export * from './InputToggle';
 export * from './BottomFullButton';
 export * from './MultiToggle';
 export * from './SearchFiveUnitBar';
+export * from './MainLargeTitle';
+export * from './RowHeaderBar';

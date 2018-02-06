@@ -21,9 +21,12 @@ import RestaurantIndex from '../class/Restaurant/RestaurantIndex';
 import RestaurantNew from '../class/Restaurant/RestaurantNew';
 import RestaurantList from '../class/Restaurant/RestaurantList';
 import RestaurantShow from '../class/Restaurant/RestaurantShow';
+import RestaurantFiveUserList from '../class/Restaurant/RestaurantFiveUserList';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
+import UserFollowerIndex from '../class/User/UserFollowerIndex';
+import UserFolloweeIndex from '../class/User/UserFolloweeIndex';
 import Map from '../class/Page/Map';
 import FollowIndex from '../class/Follow/FollowIndex';
 import MyItemIndex from '../class/Item/MyItemIndex';
@@ -106,6 +109,9 @@ const StackNavigation = StackNavigator(
     RestaurantShow: {
       screen: RestaurantShow,
     },
+    RestaurantFiveUserList: {
+      screen: RestaurantFiveUserList,
+    },
     Invitation: {
       screen: Invitation,
     },
@@ -114,6 +120,12 @@ const StackNavigation = StackNavigator(
     },
     UserShow: {
       screen: UserShow,
+    },
+    UserFollowerIndex: {
+      screen: UserFollowerIndex,
+    },
+    UserFolloweeIndex: {
+      screen: UserFolloweeIndex,
     },
     Map: {
       screen: Map,

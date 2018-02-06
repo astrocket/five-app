@@ -277,19 +277,30 @@ export default class UserFiveShow extends Component {
           }}>
             <Col size={2} style={{ justifyContent: 'center' }}>
               <View style={{ flexDirection: 'row' }}>
-                <View style={{
+                <Button transparent style={{
                   flexDirection: 'column',
+                  alignItems: 'flex-start',
                   marginRight: 5,
-                }}>
+                }} onPress={() => navigation.navigate('UserFollowerIndex', {
+                  five_category: navigation.state.params.five_category,
+                  user: navigation.state.params.user,
+                })}>
                   <Text small
                         style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
                   <Text note>{'Follower'}</Text>
-                </View>
-                <View style={{ flexDirection: 'column' }}>
+                </Button>
+                <Button transparent style={{
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  marginRight: 5,
+                }} onPress={() => navigation.navigate('UserFolloweeIndex', {
+                  five_category: navigation.state.params.five_category,
+                  user: navigation.state.params.user,
+                })}>
                   <Text small
                         style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
                   <Text note>{'Following'}</Text>
-                </View>
+                </Button>
               </View>
             </Col>
             <Col size={1} style={{ alignItems: 'flex-end' }}>

@@ -22,6 +22,11 @@ const BaseStyle = StyleSheet.create({
     flex: 1,
     paddingTop: platform.OS === 'ios' ? 20 : 0,
   },
+  rowWrapper: {
+    paddingBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
   headerDoubleIconsContainer: {
     flexDirection: 'row',
     width: null,
@@ -54,7 +59,7 @@ const BaseStyle = StyleSheet.create({
     position: 'absolute',
     top: 15,
     right: 15,
-  }
+  },
 });
 
 export default BaseStyle;

@@ -26,7 +26,6 @@ const FiveStoryFull = ({ id, subtitle, title, image_url, onPress, multiple, bord
           width: null,
           height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
           marginRight: marginRight,
-          padding: 10,
           marginBottom: 10,
         }}>
           <Button transparent style={{

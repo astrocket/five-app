@@ -27,7 +27,6 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
     ...Constant.FiveNavOptions,
   });
 

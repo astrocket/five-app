@@ -64,7 +64,7 @@ export default class ProfileFollowerIndex extends Component {
 
     return (
       <Container>
-        <Header searchBar noShadow rounded style={{paddingTop: 0, height: 56 }}>
+{/*        <Header searchBar noShadow rounded style={{paddingTop: 0, height: 56 }}>
           <Item>
             <Icon name="ios-search" />
             <Input
@@ -77,7 +77,7 @@ export default class ProfileFollowerIndex extends Component {
           <Button transparent>
             <Text>검색</Text>
           </Button>
-        </Header>
+        </Header>*/}
         <Content>
           <FlatList
             data={this.state.followers_followings}

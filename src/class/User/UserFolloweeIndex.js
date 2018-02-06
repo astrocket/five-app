@@ -18,10 +18,10 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class ProfileFolloweeIndex extends Component {
+export default class UserFolloweeIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '내 팔로잉',
+    title: '팔로잉',
     ...Constant.FiveNavOptions,
   });
 
@@ -29,7 +29,7 @@ export default class ProfileFolloweeIndex extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      followees_followings: [],
+      followees: [],
       flip: false
     };
   }
@@ -45,12 +45,12 @@ export default class ProfileFolloweeIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.MY_PROFILE}/followees?category=${this.props.navigation.state.params.five_category}`, config)
+    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followees?category=${this.props.navigation.state.params.five_category}`, config)
       .then((response) => {
         console.log(response);
         this.setState({
           loading: false,
-          followees_followings: response.data.followees_followings,
+          followees: response.data,
         });
       })
       .catch((error) => {
@@ -80,18 +80,17 @@ export default class ProfileFolloweeIndex extends Component {
         </Header>*/}
         <Content>
           <FlatList
-            data={this.state.followees_followings}
+            data={this.state.followees}
             renderItem={({ item }) => (
               <FollowUnitBar
-                user={item.followee}
-                following={item}
+                user={item}
                 onPress={() => navigation.navigate('UserShow', {
-                  user: item.followee,
-                  title: item.followee.name,
+                  user: item,
+                  title: item.name,
                 })}
               />
             )}
-            keyExtractor={item => 'followees_followings-list-' + item.id}
+            keyExtractor={item => 'followees-list-' + item.id}
           />
         </Content>
         {this.state.loading &&

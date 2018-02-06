@@ -16,10 +16,10 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveUserUnitBar = ({ user, onPress }) => {
+const FiveUserUnitBar = ({ user, onPress, style }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress}>
+    <ListItem avatar button onPress={onPress} style={style}>
       <Left>
         <Thumbnail small source={{ uri: user.image_thumb_url }}/>
       </Left>

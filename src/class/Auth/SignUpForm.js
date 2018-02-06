@@ -9,7 +9,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation';
-import { InputSingle, InputToggle, BottomFullButton } from '../../component/common';
+import { MainLargeTitle, InputSingle, InputToggle, BottomFullButton } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -107,11 +107,9 @@ export default class SignUpForm extends Component {
       <Container>
         <Content padder noHeader>
           <Grid>
-            <Row style={{
-              marginBottom: 20,
-            }}>
-              <Text xlarge>가입</Text>
-            </Row>
+            <MainLargeTitle
+              title={'가입'}
+            />
             <Row>
               <InputSingle
                 placeholder={'닉네임 (영문 또는 숫자 3~10자 입력)'}

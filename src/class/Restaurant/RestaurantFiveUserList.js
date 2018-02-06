@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { UserUnitBar, ShowMore } from '../../component/common';
+import { FiveUserUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -18,7 +18,7 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class UserList extends Component {
+export default class RestaurantFiveUserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: '최근 유저들',
@@ -28,6 +28,8 @@ export default class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      category: this.props.navigation.state.params.category,
+      favorable_id: this.props.navigation.state.params.favorable_id,
       loading: true, //실서비스에서는 로딩 true로
       users: [],
       page: 1,
@@ -47,7 +49,7 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${Constant.CategoryToApi(this.props.navigation.state.params.category)}/users?page=${this.state.page}`, config)
+    axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -66,7 +68,7 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${Constant.CategoryToApi(this.props.navigation.state.params.category)}/users?page=${this.state.page}`, config)
+    axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
       .then((response) => {
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });
@@ -102,14 +104,9 @@ export default class UserList extends Component {
               paddingTop: 10,
             }}
             renderItem={({ item }) => (
-              <UserUnitBar
-                id={item.id}
-                name={item.name}
-                image_url={item.image_medium_url}
-                introduce={item.introduce}
-                updated_at={item.updated_at}
-                followers_count={item.followers_count}
-                followees_count={item.followees_count}
+              <FiveUserUnitBar
+                style={{ backgroundColor: '#fafafa' }}
+                user={item}
                 onPress={() => navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,
