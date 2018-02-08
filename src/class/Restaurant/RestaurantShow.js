@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, Alert, FlatList,
+  View, Alert, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -63,6 +63,7 @@ export default class RestaurantShow extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       restaurant: '',
       flip: false,
       five_users: [],
@@ -84,7 +85,7 @@ export default class RestaurantShow extends Component {
 
   // API CALLS
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
@@ -92,7 +93,7 @@ export default class RestaurantShow extends Component {
       },
     };
     console.log(this.props.navigation.state.params.id);
-    axios.get(`${ApiServer.RESTAURANTS}/${this.props.navigation.state.params.id}`, config)
+    await axios.get(`${ApiServer.RESTAURANTS}/${this.props.navigation.state.params.id}`, config)
       .then((response) => {
         this.props.navigation.setParams({
           my_five: response.data.my_five,
@@ -112,6 +113,13 @@ export default class RestaurantShow extends Component {
       .catch((error) => {
         console.log('에러 : ' + JSON.stringify(error.response));
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   createFiveCall(url) {
@@ -277,7 +285,12 @@ export default class RestaurantShow extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <Grid>
             <Row>
               <FiveUnitFull

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList
+  View, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Card,
@@ -34,6 +34,7 @@ export default class UserShow extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       user: '',
       categories: [],
     };
@@ -43,14 +44,14 @@ export default class UserShow extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}?category=restaurant`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}?category=restaurant`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -63,6 +64,12 @@ export default class UserShow extends Component {
       });
   }
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
 
 /*  renderRestaurantPopUp(item) {
     const { navigation } = this.props;
@@ -118,7 +125,12 @@ export default class UserShow extends Component {
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <Grid>
-          <Content>
+          <Content refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }>
             <Row style={{
               height: 250,
               alignItems: 'center',

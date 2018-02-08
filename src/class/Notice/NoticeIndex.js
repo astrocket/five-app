@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View,
-  FlatList,
+  View, FlatList, RefreshControl
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
+  Container, Header, Content, Text, Spinner,
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
   NoticeUnitBar,
@@ -37,6 +30,7 @@ export default class NoticeIndex extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      refreshing: false,
       notices: [
         {
           id: 1,
@@ -227,14 +221,14 @@ export default class NoticeIndex extends Component {
     };
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+    await axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -246,13 +240,25 @@ export default class NoticeIndex extends Component {
       });
   }
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <FlatList
             data={this.state.notices}
             renderItem={({ item }) => (

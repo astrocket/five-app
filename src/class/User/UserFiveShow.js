@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, Alert, FlatList,
+  View, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -61,6 +61,7 @@ export default class UserFiveShow extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       user: this.props.navigation.state.params.user,
       flip: false,
       clicked: false,
@@ -79,14 +80,14 @@ export default class UserFiveShow extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.props.navigation.state.params.five_category}`, config)
       .then((response) => {
         this.props.navigation.setParams({
           following: response.data.following,
@@ -105,6 +106,13 @@ export default class UserFiveShow extends Component {
       .catch((error) => {
         console.log('에러 : ' + error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   openShareActionSheet() {
@@ -263,7 +271,12 @@ export default class UserFiveShow extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <Row style={{
             flexDirection: 'column',
             padding: 10,

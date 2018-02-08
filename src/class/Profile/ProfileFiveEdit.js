@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Alert, ListView
+  View, Alert, ListView, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Toast
@@ -29,6 +29,7 @@ export default class ProfileFiveEdit extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       klass: '',
       category: '',
       fives: [],
@@ -40,14 +41,14 @@ export default class ProfileFiveEdit extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.props.navigation.state.params.five_category}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -60,6 +61,13 @@ export default class ProfileFiveEdit extends Component {
       .catch((error) => {
         console.log('에러 : ' + error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   deleteCall(url, data, onSuccess) {
@@ -164,7 +172,12 @@ export default class ProfileFiveEdit extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <Grid>
             <Row>
               <List

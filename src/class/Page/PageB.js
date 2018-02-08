@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View,
+  View, RefreshControl
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
+  Container, Header, Content, Text, Spinner,
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -33,17 +27,18 @@ export default class PageB extends Component {
     super(props);
     this.state = {
       loading: true,
+      refreshing: false,
     };
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(ApiServer.HOME_INDEX, config)
+    await axios.get(ApiServer.HOME_INDEX, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -55,13 +50,25 @@ export default class PageB extends Component {
       });
   }
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <Text>안녕하세요</Text>
         </Content>
         {this.state.loading &&
