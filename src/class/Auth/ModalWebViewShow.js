@@ -8,7 +8,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { NavBar } from '../../component/common/index';
+import { NavBar } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -18,11 +18,6 @@ import { observer, inject } from 'mobx-react/native';
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
 export default class ModalWebViewShow extends Component {
-
-  static navigationOptions = ({ navigation }) => ({
-    title: 'SignUpForm',
-    ...Constant.FiveNavOptions,
-  });
 
   constructor(props) {
     super(props);

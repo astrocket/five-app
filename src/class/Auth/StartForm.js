@@ -54,7 +54,7 @@ export default class StartForm extends Component {
         this.onSendPin(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
       Toast.show({
-        text: JSON.stringify(error.response.data),
+        text: JSON.stringify(error.response),
         position: 'bottom',
         duration: 1500,
       });

@@ -310,9 +310,10 @@ export default class ProfileFiveAddRestaurant extends Component {
                   subtitle={item.address_name}
                   clicked={item.clicked}
                   onPress={() => this.askAddFive(item, index)}
-                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                    url: item.place_url,
-                    headerTitle: item.place_name,
+                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('Map', {
+                    lng: item.x,
+                    lat: item.y,
+                    title: item.place_name,
                   })}
                 />
               )}

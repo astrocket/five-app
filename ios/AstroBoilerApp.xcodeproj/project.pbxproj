@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -35,6 +36,7 @@
 		9559F0D3F3504482ADDCB61D /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7CCB5A517804190B0FFAEF4 /* rubicon-icon-font.ttf */; };
 		98B2E51DD8F84AF4A54BB8BB /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD856AF310CB4A43B4BEA09E /* Roboto.ttf */; };
 		A391BBAFBBC248E081716E96 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA83B6831FC54ACAB18F2CDE /* MaterialCommunityIcons.ttf */; };
+		A5AE1EF5692F36BD2426A4B7 /* libPods-AstroBoilerApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 120E257A38D889F745BC0707 /* libPods-AstroBoilerApp.a */; };
 		A7EE9DCC0BDF4780859FEDBE /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 687F8A6519EA40FD8F829230 /* Ionicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B17A00F1CA55438E86005D09 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77DDA0FC595B4850B0723823 /* Foundation.ttf */; };
@@ -318,6 +320,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* AstroBoilerAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AstroBoilerAppTests.m; sourceTree = "<group>"; };
 		0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
+		120E257A38D889F745BC0707 /* libPods-AstroBoilerApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AstroBoilerApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AstroBoilerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AstroBoilerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,6 +360,8 @@
 		D7CCB5A517804190B0FFAEF4 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		EF3B68408E2848069817C32F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
+		F9E2F3A26BC418F5003501E2 /* Pods-AstroBoilerApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AstroBoilerApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp.debug.xcconfig"; sourceTree = "<group>"; };
+		FC17295C9AE3DA46829D68E0 /* Pods-AstroBoilerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AstroBoilerApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +392,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				E4ADF95ACF3E4C25971C5C1E /* libRNImagePicker.a in Frameworks */,
 				C44110B304BF4F6384A9576C /* libRNVectorIcons.a in Frameworks */,
+				A5AE1EF5692F36BD2426A4B7 /* libPods-AstroBoilerApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +536,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		5B98189BC55A3942A2ED68FE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9E2F3A26BC418F5003501E2 /* Pods-AstroBoilerApp.debug.xcconfig */,
+				FC17295C9AE3DA46829D68E0 /* Pods-AstroBoilerApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -587,6 +602,8 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				8C2D012577054C86AC8ECF8B /* Resources */,
 				043BAC7A1FE3C81D008740D3 /* Recovered References */,
+				5B98189BC55A3942A2ED68FE /* Pods */,
+				83EBF33BE3698C465F0D004C /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -600,6 +617,14 @@
 				00E356EE1AD99517003FC87E /* AstroBoilerAppTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		83EBF33BE3698C465F0D004C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				120E257A38D889F745BC0707 /* libPods-AstroBoilerApp.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		8C2D012577054C86AC8ECF8B /* Resources */ = {
@@ -666,10 +691,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AstroBoilerApp" */;
 			buildPhases = (
+				518BD803635004EE15CCB42E /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				86DCC1B87644908F0EDDE3FC /* [CP] Embed Pods Frameworks */,
+				DAF26B2ED9FF871605AA4903 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1081,6 +1109,57 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		518BD803635004EE15CCB42E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AstroBoilerApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86DCC1B87644908F0EDDE3FC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DAF26B2ED9FF871605AA4903 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1185,6 +1264,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9E2F3A26BC418F5003501E2 /* Pods-AstroBoilerApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1209,6 +1289,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC17295C9AE3DA46829D68E0 /* Pods-AstroBoilerApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
