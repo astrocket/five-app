@@ -19,7 +19,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class PageB extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'PageB',
+    title: 'PageB2',
     ...Constant.FiveNavOptions,
   });
 
