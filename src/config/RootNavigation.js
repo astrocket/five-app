@@ -127,9 +127,6 @@ const StackNavigation = StackNavigator(
     UserFolloweeIndex: {
       screen: UserFolloweeIndex,
     },
-    Map: {
-      screen: Map,
-    },
     FollowIndex: {
       screen: FollowIndex,
     },
@@ -197,6 +194,9 @@ const ModalNavigation = StackNavigator(
     },
     ModalWebViewShow: {
       screen: ({ navigation }) => <ModalWebViewShow screenProps={{ modalNavigation: navigation }}/>,
+    },
+    Map: {
+      screen: ({ navigation }) => <Map screenProps={{ modalNavigation: navigation }}/>,
     },
   }, {
     headerMode: 'none',

@@ -22,6 +22,8 @@ export const FiveNavOptions = {
 };
 
 export const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
+
 export const globalPaddingTop = platform === "ios" ? (variable.isIphoneX ? 39 : 15) : 0;
 
 export const KakaoApiCategory = (category) => {
