@@ -28,10 +28,7 @@ import UserShow from '../class/User/UserShow';
 import UserFollowerIndex from '../class/User/UserFollowerIndex';
 import UserFolloweeIndex from '../class/User/UserFolloweeIndex';
 import Map from '../class/Page/Map';
-import FollowIndex from '../class/Follow/FollowIndex';
-import MyItemIndex from '../class/Item/MyItemIndex';
 import Setting from '../class/Setting/Setting';
-import FriendIndex from '../class/Friend/FriendIndex';
 import NoticeIndex from '../class/Notice/NoticeIndex';
 import NoticeShow from '../class/Notice/NoticeShow';
 import UserFiveShow from '../class/User/UserFiveShow';
@@ -126,15 +123,6 @@ const StackNavigation = StackNavigator(
     },
     UserFolloweeIndex: {
       screen: UserFolloweeIndex,
-    },
-    FollowIndex: {
-      screen: FollowIndex,
-    },
-    MyItemIndex: {
-      screen: MyItemIndex,
-    },
-    FriendIndex: {
-      screen: FriendIndex,
     },
     NoticeIndex: {
       screen: NoticeIndex,

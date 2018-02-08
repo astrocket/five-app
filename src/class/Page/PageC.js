@@ -27,18 +27,18 @@ export default class PageC extends Component {
     super(props);
     this.state = {
       loading: true,
+      refreshing: false,
     };
   }
 
-
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.HOME_INDEX}?category=restaurant`, config)
+    await axios.get(`${ApiServer.HOME_INDEX}?category=restaurant`, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -62,7 +62,12 @@ export default class PageC extends Component {
           onPressRight={() => navigation.goBack()}
           headerText="커스텀 헤더"
         />
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <Text>안녕하세요</Text>
         </Content>
         {this.state.loading &&

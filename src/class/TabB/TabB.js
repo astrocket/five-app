@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList
+  View, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text,
@@ -57,6 +57,7 @@ export default class TabB extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       categories: [],
     };
   }
@@ -65,14 +66,14 @@ export default class TabB extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.MY_PROFILE}?category=restaurant`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}?category=restaurant`, config)
       .then((response) => {
         this.props.ApplicationStore.setMyProfile(response.data.user);
         this.setState({
@@ -85,6 +86,13 @@ export default class TabB extends Component {
       });
   }
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
   render() {
     const { preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -93,7 +101,12 @@ export default class TabB extends Component {
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <Grid>
-          <Content>
+          <Content refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }>
             <Row style={{
               height: 250,
               alignItems: 'center',

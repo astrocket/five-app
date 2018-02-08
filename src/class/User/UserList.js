@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  FlatList,
+  FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -29,6 +29,7 @@ export default class UserList extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       users: [],
       page: 1,
       page_loading: false,
@@ -40,14 +41,14 @@ export default class UserList extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${Constant.CategoryToApi(this.props.navigation.state.params.category)}/users?page=${this.state.page}`, config)
+    await axios.get(`${Constant.CategoryToApi(this.props.navigation.state.params.category)}/users?page=${this.state.page}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -57,6 +58,13 @@ export default class UserList extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true, page: 1 });
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   pageCall() {
@@ -95,7 +103,12 @@ export default class UserList extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <FlatList
             data={this.state.users}
             style={{

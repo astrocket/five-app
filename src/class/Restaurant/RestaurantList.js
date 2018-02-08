@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View,
-  FlatList,
+  View, FlatList, RefreshControl,
 } from 'react-native';
 import {
   Container,
@@ -37,6 +36,7 @@ export default class RestaurantList extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       restaurants: [],
       page: 1,
       page_loading: false,
@@ -49,14 +49,14 @@ export default class RestaurantList extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    await axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -66,6 +66,13 @@ export default class RestaurantList extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true, page: 1});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   pageCall() {
@@ -105,7 +112,12 @@ export default class RestaurantList extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <FlatList
             data={this.state.restaurants}
             style={{

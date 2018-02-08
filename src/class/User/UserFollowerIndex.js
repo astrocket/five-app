@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList,
+  View, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -29,6 +29,7 @@ export default class UserFollowerIndex extends Component {
     super(props);
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      refreshing: false,
       followers: [],
     };
   }
@@ -37,14 +38,14 @@ export default class UserFollowerIndex extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followers?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followers?category=${this.props.navigation.state.params.five_category}`, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -55,6 +56,13 @@ export default class UserFollowerIndex extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   render() {
@@ -77,7 +85,12 @@ export default class UserFollowerIndex extends Component {
             <Text>검색</Text>
           </Button>
         </Header>*/}
-        <Content>
+        <Content refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
           <FlatList
             data={this.state.followers}
             renderItem={({ item }) => (

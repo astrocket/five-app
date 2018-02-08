@@ -10,6 +10,8 @@ export const GreyColor = '#A1A1A1';
 export const FiveNavOptions = {
   headerStyle: {
     backgroundColor: 'white',
+    borderBottomWidth: 0,
+    elevation:0
   },
   headerTintColor: '#FA3F97',
   headerBackTitleStyle: {
