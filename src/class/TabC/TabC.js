@@ -45,25 +45,6 @@ export default class TabC extends Component {
     };
   }
 
-
-  apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(ApiServer.HOME_INDEX, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-
   searchApi(input_search) {
     this.setState({ loading: true });
     const config = {

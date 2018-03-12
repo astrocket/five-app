@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, Keyboard,
+  View, AsyncStorage, Keyboard, TouchableOpacity, Alert,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Icon, Button, Toast,
@@ -20,18 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class FindPassword extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
-    drawerLockMode: 'locked-closed',
+    header: null,
   });
 
   constructor(props) {
@@ -46,28 +35,55 @@ export default class FindPassword extends Component {
       input_password_confirmation: '',
       authenticated: false,
       reset_token: '',
+      misTypeCounter: 0,
     };
   }
 
   authCheck() {
+    var regExp = /^[(0-9)]{2}$/;
+    if ( !regExp.test( this.state.input_birth ) ) {
+      Toast.show({
+        text:'잘못된 출생년도 입니다. 2자리 숫자만 입력하세요.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false
+    }
+
+    if ( this.state.input_gender === '') {
+      Toast.show({
+        text:'성별이 선택되지 않았습니다.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false
+    }
+
     this.setState({ submiting: true });
 
     // rails server 에 로그인 시도하는 부분. 로그인 시도하고 서버에서 나온 결과값에 따라서 토스트메세지를 띄운다.
     axios.post(`${ApiServer.PHONE}/authorize_reset_password`, {
       user: {
-        email: '01011112223@myfive.users',//this.state.user.email,
+        email: this.state.user.email,
         birthyear: this.state.input_birth,
         gender: this.state.input_gender,
       },
     }).then((response) => {
       this.onAuthCheckSuccess(response.data);
     }).catch((error) => {
-      this.setState({ submiting: false });
-      Toast.show({
-        text: JSON.stringify(error.response.data.errors),
-        position: 'bottom',
-        duration: 1500,
-      });
+      if (this.state.misTypeCounter > 0) {
+        this.askCustomerCenter();
+      } else {
+        this.setState({
+          submiting: false,
+          misTypeCounter: this.state.misTypeCounter + 1,
+        });
+        Toast.show({
+          text: JSON.stringify(error.response.data.errors),
+          position: 'bottom',
+          duration: 1500,
+        });
+      }
     });
   }
 
@@ -77,6 +93,35 @@ export default class FindPassword extends Component {
       authenticated: true,
       submiting: false,
     });
+  }
+
+  askCustomerCenter() {
+    this.setState({
+      submiting: false,
+    });
+    Alert.alert(
+      '일치하는 회원정보가 없습니다.',
+      '회원정보 문의를 위해 고객 센터로 연결합니다.',
+      [
+        {
+          text: '아니요',
+          style: 'cancel',
+        },
+        {
+          text: '네',
+          onPress: () => this.openCustomerCenter('help_password'),
+        },
+      ],
+      { cancelable: true },
+    );
+  }
+
+
+  openCustomerCenter(type) {
+    this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+      url: `${ApiServer.CUSTOMER_INQUERY}/new?type=${type}&user=${JSON.stringify(this.state.user)}`,
+      headerTitle: '고객센터',
+    })
   }
 
   passwordUpdate() {
@@ -94,7 +139,7 @@ export default class FindPassword extends Component {
     }).catch((error) => {
       this.setState({ submiting: false });
       Toast.show({
-        text: JSON.stringify(error.response.data.password_confirmation[0]),
+        text: JSON.stringify(error.response.data.password_confirmation[ 0 ]),
         position: 'bottom',
         duration: 1500,
       });
@@ -183,6 +228,22 @@ export default class FindPassword extends Component {
               })}
             />
           </Row>
+          <Row>
+            <TouchableOpacity
+              onPress={() => this.openCustomerCenter('not_me')}
+              style={{ margin: 10 }}
+            >
+              <Text note>{`혹시 ${this.state.user.name}님이 아니신가요 ?`}</Text>
+            </TouchableOpacity>
+          </Row>
+          <Row>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+              style={{ margin: 10 }}
+            >
+              <Text note>뒤로가기</Text>
+            </TouchableOpacity>
+          </Row>
         </View>
       );
     }
@@ -214,12 +275,12 @@ export default class FindPassword extends Component {
 
     return (
       <Container>
-        <Content padder>
+        <Content padder noHeader>
           <Grid>
-            <Row>
+            <Row style={{marginBottom: 20}}>
               <Text xlarge>본인 확인</Text>
             </Row>
-            <Row style={{
+{/*            <Row style={{
               justifyContent: 'flex-end',
               marginBottom: 20,
             }}>
@@ -229,7 +290,7 @@ export default class FindPassword extends Component {
               }}>
                 {this.renderMessage()}
               </View>
-            </Row>
+            </Row>*/}
             {this.renderPasswordForm()}
           </Grid>
         </Content>

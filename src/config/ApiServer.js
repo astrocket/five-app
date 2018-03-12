@@ -1,4 +1,4 @@
-export const DOMAIN = '172.30.1.42:3000';
+export const DOMAIN = '10.130.110.83:3000';
 export const API = 'http://' + DOMAIN;
 //export const DOMAIN = "five_api.insomenia.com";
 //export const API = "http://" + DOMAIN;
@@ -17,6 +17,7 @@ export const NOTIFICATIONS = API + '/notifications';
 export const FIVE_STORY = API + '/five_stories';
 export const PHONE = API + '/phone_numbers';
 export const COMPANY = API + '/company';
+export const CUSTOMER_INQUERY = API + '/customer_inqueries';
 
 export const KAKAO_API = "https://dapi.kakao.com/v2/local/search/keyword.json";
 export const KAKAO_GEO_API = "https://dapi.kakao.com/v2/local/geo/coord2address.json";

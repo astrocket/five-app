@@ -38,10 +38,40 @@ export default class SignUpForm extends Component {
       input_gender: '',
       message: 0,
       status: 0,
+      disableButton: true,
     };
   }
 
   trySignUp() {
+    var regId = /^[a-zA-Z]{3,10}$/;
+    if ( !regId.test( this.state.input_name ) ) {
+      Toast.show({
+        text:'잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false
+    }
+
+    var regExp = /^[(0-9)]{2}$/;
+    if ( !regExp.test( this.state.input_birth ) ) {
+      Toast.show({
+        text:'잘못된 출생년도 입니다. 2자리 숫자만 입력하세요.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false
+    }
+
+    if ( this.state.input_gender === '') {
+      Toast.show({
+        text:'성별이 선택되지 않았습니다.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false
+    }
+
     this.setState({ submiting: true });
 
     // rails server 에 로그인 시도하는 부분. 로그인 시도하고 서버에서 나온 결과값에 따라서 토스트메세지를 띄운다.
@@ -59,8 +89,9 @@ export default class SignUpForm extends Component {
       this.onSignUpSuccess(response.data);
     }).catch((error) => {
       this.setState({ submiting: false });
+
       Toast.show({
-        text: JSON.stringify(error.response.data.errors),
+        text: JSON.stringify(error.response.data.errors.password),
         position: 'bottom',
         duration: 1500,
       });
@@ -86,13 +117,45 @@ export default class SignUpForm extends Component {
     });
   }
 
+  readyToSubmit() {
+    var regId = /^[a-zA-Z]{3,10}$/;
+    if ( !regId.test( this.state.input_name ) ) {
+      this.setState({
+        disableButton: true,
+      });
+      return false
+    }
+
+    var regExp = /^[(0-9)]{2}$/;
+    if ( !regExp.test( this.state.input_birth ) ) {
+      this.setState({
+        disableButton: true,
+      });
+      return false
+    }
+
+    if ( this.state.input_gender === '') {
+      this.setState({
+        disableButton: true,
+      });
+      return false
+    }
+
+    this.setState({
+      disableButton: false,
+    })
+  }
+
   renderButton() {
     if (this.state.submiting) {
       return <Spinner size="small" />;
     }
 
     return (
-      <BottomFullButton onPress={() => this.trySignUp()}>
+      <BottomFullButton
+        onPress={() => this.trySignUp()}
+        disabled={this.state.disableButton}
+      >
         완료
       </BottomFullButton>
     );
@@ -115,7 +178,10 @@ export default class SignUpForm extends Component {
                 placeholder={'닉네임 (영문 또는 숫자 3~10자 입력)'}
                 value={''}
                 autoFocus={true}
-                onChangeText={(input_name) => this.setState({ input_name })}
+                onChangeText={(input_name) => {
+                  this.setState({ input_name });
+                  this.readyToSubmit();
+                }}
                 onSubmitEditing={Keyboard.dismiss}
                 keyboardType={'email-address'}
                 returnKeyType={'next'}
@@ -126,7 +192,10 @@ export default class SignUpForm extends Component {
               <InputSingle
                 placeholder={'출생년도 두 자리 숫 (예: 92)'}
                 value={''}
-                onChangeText={(input_birth) => this.setState({ input_birth })}
+                onChangeText={(input_birth) => {
+                  this.setState({ input_birth });
+                  this.readyToSubmit();
+                }}
                 onSubmitEditing={Keyboard.dismiss}
                 returnKeyType={'next'}
                 keyboardType={'numeric'}
@@ -139,16 +208,25 @@ export default class SignUpForm extends Component {
                 leftClicked={this.state.left_clicked}
                 rightText={'남자'}
                 rightClicked={this.state.right_clicked}
-                onLeftPress={() => this.setState({input_gender: 'F', left_clicked: true, right_clicked: false})}
-                onRightPress={() => this.setState({input_gender: 'M', left_clicked: false, right_clicked: true})}
+                onLeftPress={() => {
+                    this.setState({input_gender: 'F', left_clicked: true, right_clicked: false});
+                    this.readyToSubmit();
+                }}
+                onRightPress={() => {
+                  this.setState({input_gender: 'M', left_clicked: false, right_clicked: true});
+                  this.readyToSubmit();
+                }}
               />
             </Row>
             <Row style={{ marginTop: 20}}>
               <InputSingle
                 placeholder={'비밀번호 (6자리 이상)'}
                 value={''}
-                onChangeText={(input_password) => this.setState({ input_password })}
-                onSubmitEditing={() => this.trySignUp()}
+                onChangeText={(input_password) => {
+                  this.setState({ input_password });
+                  this.readyToSubmit()
+                }}
+                onSubmitEditing={() => Keyboard.dismiss}
                 returnKeyType={'done'}
                 secureTextEntry
                 noButton

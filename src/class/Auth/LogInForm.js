@@ -50,7 +50,7 @@ export default class LogInForm extends Component {
     }).catch((error) => {
       this.setState({ loading: false });
         Toast.show({
-          text: JSON.stringify(error.response.data.errors.title),
+          text: JSON.stringify(error.response.data.errors),
           position: 'bottom',
           duration: 1500,
         });
@@ -83,11 +83,10 @@ export default class LogInForm extends Component {
           <View key={0}>
             <InputSingle
               placeholder={'비밀번호를 다시 입력해 주세요'}
-              submitText={'확인'}
+              noButton
               value={''}
               autoFocus={true}
               onChangeText={(input_text) => this.setState({ input_text })}
-              onSubmitPress={() => this.tryLogin()}
               onSubmitEditing={() => this.tryLogin()}
               returnKeyType={'done'}
               secureTextEntry
@@ -115,10 +114,10 @@ export default class LogInForm extends Component {
       <Container>
         <Content padder noHeader keyboardShouldPersistTaps={'always'}>
           <Grid>
-            <Row>
+            <Row style={{marginBottom: 20}}>
               <Text xlarge>로그인</Text>
             </Row>
-            <Row style={{
+{/*            <Row style={{
               justifyContent: 'flex-end',
               marginBottom: 20,
             }}>
@@ -128,7 +127,7 @@ export default class LogInForm extends Component {
               }}>
                 {this.renderMessage()}
               </View>
-            </Row>
+            </Row>*/}
           </Grid>
           {this.renderInput()}
         </Content>

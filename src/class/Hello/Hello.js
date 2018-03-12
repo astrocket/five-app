@@ -3,7 +3,7 @@ import {
   View, Platform, Image,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner,
+  Container, Header, Content, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -32,38 +32,20 @@ export default class Hello extends Component {
     };
   }
 
-  apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(ApiServer.HOME_INDEX, config)
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-
   renderButton() {
     if (this.state.submiting) {
       return <Spinner size="small" />;
     }
 
     return (
-      <BottomFullButton onPress={() =>
+      <BottomFullButton
+        onPress={() =>
         this.props.navigation.dispatch(
           NavigationActions.reset({
             index: 0,
             actions: [
               NavigationActions.navigate({
-                routeName: 'FiveSelect',
+                routeName: 'Tutorial',
               }),
             ],
           }))
@@ -95,22 +77,66 @@ export default class Hello extends Component {
             <Image
               source={require('../../assets/images/five_logo.png')}
               style={{
-                height: (Constant.deviceWidth / 3) + 5,
-                width: Constant.deviceWidth / 3,
+                height: (Constant.deviceWidth / 4) + 5,
+                width: Constant.deviceWidth / 4,
               }}
             />
             <Text large>회원가입 완료</Text>
           </View>
         </View>
         <View style={{
-          flex: 1,
-          justifyContent: 'flex-start',
-          alignItems: 'center',
+          flex: 2,
+          padding: 20,
+          alignSelf: 'stretch',
           backgroundColor: '#fff',
         }}>
-          <Text note style={{ textAlign: 'center', margin: 20 }}>어서오세요!</Text>
+          <List>
+            <ListItem noBorder style={{ justifyContent: 'center'}}>
+              <Text small>앱 접근 권한 안내</Text>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+              </Left>
+              <Body style={{ borderBottomWidth: 0 }}>
+              <Text normal>알림</Text>
+              <Text micro grey>이벤트 및 각종 알림 수신</Text>
+              </Body>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+              </Left>
+              <Body style={{ borderBottomWidth: 0 }}>
+              <Text normal>연락처</Text>
+              <Text micro grey>신규 회원 가입 안내 및 팔로우 추천</Text>
+              </Body>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+              </Left>
+              <Body style={{ borderBottomWidth: 0 }}>
+              <Text normal>카메라</Text>
+              <Text micro grey>프로필 사진 기타 이미지 촬영</Text>
+              </Body>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+              </Left>
+              <Body style={{ borderBottomWidth: 0 }}>
+              <Text normal>사진첩</Text>
+              <Text micro grey>프로필 사진 기타 이미지 등록</Text>
+              </Body>
+            </ListItem>
+            <ListItem noBorder style={{ justifyContent: 'center'}}>
+              <Text micro grey>이용자 설정 메뉴를 통해 언제든지 권한 재설정이 가능하며,{'\n'}선택적 접근 권한을 허용하지 않아도 해당 기능 외의 서비스{'\n'}이용은 가능합니다 (정보통신망법에 의한 권한 고지).</Text>
+            </ListItem>
+          </List>
+{/*          <Text note style={{ textAlign: 'center', margin: 20 }}>어서오세요!</Text>
           <Text note style={{ textAlign: 'center', margin: 20 }}>주제별로 다섯개만 공유하는 커뮤니티{'\n'}MYFIVE에 오신 것을 환영합니다.</Text>
-          <Text note style={{ textAlign: 'center', margin: 20 }}>이제 좋아하는 주제를 골라서{'\n'}FIVE를 추가하러 가 볼까요?</Text>
+          <Text note style={{ textAlign: 'center', margin: 20 }}>이제 좋아하는 주제를 골라서{'\n'}FIVE를 추가하러 가 볼까요?</Text>*/}
         </View>
         <View style={{ height: 50, }}>
           {this.renderButton()}

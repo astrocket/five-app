@@ -1,289 +1,132 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl,
+  View, Platform,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Text, Button, Icon, List, ListItem, Thumbnail, Body,
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import HomeIndex from './HomeIndex';
+import RestaurantIndex from '../Restaurant/RestaurantIndex';
 import * as Constant from '../../config/Constant';
-import { RowHeaderBar, MainLargeTitle, HomeCategoryBar, FiveStoryFull, FiveUnitRound, UserFivesBar } from '../../component/common';
 import * as ApiServer from '../../config/ApiServer';
-import * as Images from '../../assets/images/Images'
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class TabA extends Component {
 
-  static navigationOptions = ({ navigation }) => ({
+export default class TabA extends Component {
+  static navigationOptions = ({ navigation, screenProps }) => ({
+    header: null
+    ,
     tabBarLabel: '홈',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        name="ios-list-outline"
+        name="ios-home"
         style={{
           fontSize: 25,
           color: tintColor,
         }}
       />
     ),
-    headerRight: (
-      <View style={BaseStyle.headerDoubleIconsContainer}>
-        <Button onPress={() => navigation.navigate('Setting')} transparent>
-          <Icon
-            name="ios-settings"
-            style={{
-              fontSize: 25,
-              color: Constant.FiveColor,
-            }}
-          />
-        </Button>
-        <Button onPress={() => navigation.navigate('DrawerOpen')} transparent>
-          <Icon
-            name="ios-notifications"
-            style={{
-              fontSize: 25,
-              color: Constant.FiveColor,
-            }}
-          />
-        </Button>
-      </View>
-    ),
-    headerStyle: {
-      backgroundColor: 'white',
-      borderBottomWidth: 0,
-      elevation:0
-    },
-    headerTintColor: '#FA3F97',
-    headerBackTitleStyle: {
-      color: '#FA3F97',
-    },
-    headerTitleStyle: {
-      color: 'black',
-    },
+    ...Constant.FiveNavOptions,
   });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true, //실서비스에서는 로딩 true로
-      categories: [],
-      five_stories: [],
-      challenge_fives: [],
-      follow_suggestions: [],
-      refreshing: false,
-    };
-  }
+  state = {
+    loading: true,
+    categories: [],
+    headerShow: true,
+  };
 
   componentDidMount() {
     this.apiCall();
   }
 
-  async apiCall() {
+  apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.HOME_INDEX}?category=restaurant`, config)
+    axios.get(`${ApiServer.MY_PROFILE}/wishes?category=restaurant`, config)
       .then((response) => {
         this.setState({
           loading: false,
           categories: response.data.categories,
-          five_stories: response.data.five_stories,
-          challenge_fives: response.data.challenge_fives,
-          follow_suggestions: response.data.follow_suggestions,
         });
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log('에러 : ' + error.response);
       });
   }
 
-  followCall(item, index) {
-
-    const data = {
-      following: {
-        user_id: item.user.id,
-        following: !item.following,
-      },
-    };
-
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.klass.toLowerCase()}`, data, header)
-      .then((response) => {
-        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
+  handleScroll(e) {
+    var currentOffset = e.nativeEvent.contentOffset.y;
+    var headerShow = currentOffset <= this.offset;
+    this.offset = currentOffset;
+    this.props.navigation.setParams({ headerShow });
+    this.setState({ headerShow });
   }
-
-  onCreateFollowCallSuccess(response, index) {
-    const new_following = response.data;
-    const stateBefore = [...this.state.follow_suggestions];
-    stateBefore[index].following = new_following;
-    this.setState({ follow_suggestions: stateBefore });
-  }
-
-  _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
 
   render() {
-    const { container, preLoading, rowWrapper } = BaseStyle;
+    const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
 
     return (
       <Container>
-        <Content refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}
-          />
-        }>
-          <Grid>
-            <MainLargeTitle
-              title={'MyFive'}
-            />
-            <RowHeaderBar
-              title={''}
-              onPress={() => console.log('hi')}
-              moreTitle={'추가'}
-            />
-            <Row>
-              <FlatList
-                data={this.state.categories}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <HomeCategoryBar
-                    onPress={() => navigation.navigate('RestaurantIndex')}
-                    image={Images.findImageOf(item.klass.toLowerCase())}
-                    title={item.category}
-                    people={item.users_count}
-                    new_people={item.new_users_count}
-                  />
-                )}
-                keyExtractor={item => 'five-category-list-' + item.id}
-                ListFooterComponent={
-                  <List>
-                    <HomeCategoryBar
-                      onPress={() => console.log('hi')}
-                      image={Images.music_main}
-                      title={'음악 더미데이터'}
-                      people={'11932'}
-                      new_people={'2'}
-                    />
-                    <HomeCategoryBar
-                      onPress={() => console.log('hi')}
-                      image={Images.book_main}
-                      title={'책 더미데이터'}
-                      people={'8360'}
-                      new_people={'7'}
-                    />
-                  </List>
-                }
-              />
-            </Row>
-            <RowHeaderBar
-              title={'FIVE 스토리'}
-            />
-            <Row>
-              <FlatList
-                horizontal
-                data={this.state.five_stories}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveStoryFull
-                    multiple
-                    id={item.id}
-                    title={item.title}
-                    subtitle={item.subtitle}
-                    image_url={item.image_large_url}
-                    onPress={() => navigation.navigate('FiveStoryShow', {
-                      title: item.title,
-                      id: item.id,
-                      five_story: item,
-                    })}
-                    barWidth={null}
-                    barHeight={null}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => 'user-' + item.id}
-              />
-            </Row>
-            <RowHeaderBar
-              title={'당신의 FIVE에 도전합니다'}
-            />
-            <Row>
-              <FlatList
-                horizontal
-                data={this.state.challenge_fives}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveUnitRound
-                    id={item.five.id}
-                    title={item.five.title}
-                    subtitle={item.five.subtitle}
-                    five_users_count={item.five.five_users_count}
-                    image_url={item.five.image_medium_url}
-                    onPress={() => navigation.navigate(`${item.klass}Show`, { title: item.five.title, id: item.five.id, navLoading: true })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => `challenge-${item.five.klass}-fives-` + item.five.id}
-              />
-            </Row>
-            <RowHeaderBar
-              style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 추천'}
-            />
-            <Row style={{ backgroundColor: '#fafafa' }}>
-              <FlatList
-                horizontal
-                data={this.state.follow_suggestions}
-                style={rowWrapper}
-                renderItem={({ item, index }) => (
-                  <UserFivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
-                    onPressFollow={() => this.followCall(item, index)}
-                    category={item.category}
-                    followers={item.followers_count}
-                    followees={item.followees_count}
-                    fives={item.fives}
-                    clicked={item.following}
-                    user={item.user}
-                  />
-                )}
-                keyExtractor={item => 'user-fives-' + item.id}
-              />
-            </Row>
-          </Grid>
-        </Content>
+        {this.state.headerShow ?
+          <Header hasTabs>
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              flex: 1,
+            }}>
+              <View style={{
+                width: 130,
+                margin: 5,
+              }}>
+                <Text xlarge>{'Myfive'}</Text>
+                <View style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}>
+                  <Text micro grey>β</Text>
+                </View>
+              </View>
+            </View>
+          </Header>
+          : null
+        }
+        <Tabs locked tabBarUnderlineStyle={{
+          backgroundColor: Constant.FiveColor,
+        }}>
+          <Tab heading="홈" activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
+            <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+          </Tab>
+          <Tab heading="맛집" activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
+            <RestaurantIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+          </Tab>
+          <Tab heading="음악" activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
+            <Text>hi</Text>
+          </Tab>
+          <Tab heading="책" activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
+            <Text>hi</Text>
+          </Tab>
+        </Tabs>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
@@ -292,4 +135,5 @@ export default class TabA extends Component {
       </Container>
     );
   }
+
 }

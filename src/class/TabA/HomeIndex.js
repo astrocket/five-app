@@ -1,45 +1,48 @@
 import React, { Component } from 'react';
 import {
-  View,
-  TouchableOpacity, RefreshControl,
-  FlatList,
+  View, FlatList, RefreshControl,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Icon, Button, H1,
+  Container, Content, Spinner, Text, Button, Icon, List, ListItem, Thumbnail, Body,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import {
-  RowHeaderBar, MainLargeTitle, FiveUnitRound, UserUnitRound, FiveStoryFull, UserFivesBar
-} from '../../component/common';
-import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
+import {
+  RowHeaderBar, MainLargeTitle, HomeCategoryBar, FiveStoryFull, FiveUnitRound, UserFivesBar,
+} from '../../component/common';
 import * as ApiServer from '../../config/ApiServer';
+import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class RestaurantIndex extends Component {
+export default class HomeIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: '맛집',
+    header: null,
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
-      refreshing: false,
-      restaurants: [],
-      users: [],
+      categories: [],
       five_stories: [],
-      challenge_restaurants: [],
+      challenge_fives: [],
       follow_suggestions: [],
+      refreshing: false,
     };
   }
+
+/*  componentWillMount() {
+    this.props.navigation.setParams({
+      openDrawerAction: () => this.openDrawerAction(),
+    });
+  }*/
 
   componentDidMount() {
     this.apiCall();
@@ -52,28 +55,24 @@ export default class RestaurantIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(ApiServer.RESTAURANTS, config)
+    await axios.get(`${ApiServer.HOME_INDEX}?category=restaurant`, config)
       .then((response) => {
         this.setState({
           loading: false,
-          restaurants: response.data.restaurants,
-          users: response.data.users,
+          categories: response.data.categories,
           five_stories: response.data.five_stories,
-          challenge_restaurants: response.data.challenge_restaurants,
+          challenge_fives: response.data.challenge_fives,
           follow_suggestions: response.data.follow_suggestions,
-        })
+        });
       })
       .catch((error) => {
         console.log(error.response);
       });
   }
 
-  _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
+/*  openDrawerAction() {
+    this.props.screenProps.modalNavigation.navigate('DrawerOpen');
+  }*/
 
   followCall(item, index) {
     const data = {
@@ -105,9 +104,16 @@ export default class RestaurantIndex extends Component {
 
   onCreateFollowCallSuccess(response, index) {
     const new_following = response.data;
-    const stateBefore = [...this.state.follow_suggestions];
-    stateBefore[index].following = new_following;
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].following = new_following;
     this.setState({ follow_suggestions: stateBefore });
+  }
+
+  _onRefresh() {
+    this.setState({ refreshing: true });
+    this.apiCall().then(() => {
+      this.setState({ refreshing: false });
+    });
   }
 
   render() {
@@ -123,70 +129,45 @@ export default class RestaurantIndex extends Component {
           />
         }>
           <Grid>
-            <MainLargeTitle
-              title={'맛집'}
-              rightImage={'restaurant'}
-            />
-            <RowHeaderBar
-              title={'새로 친구들의 five로 선정 된 맛집'}
-              onPress={() => navigation.navigate('RestaurantList', {
-                restaurants: this.state.restaurants,
-              })}
-              moreTitle={'더보기'}
+ {/*           <RowHeaderBar
+              title={''}
+              onPress={() => console.log('hi')}
+              moreTitle={'추가'}
             />
             <Row>
               <FlatList
-                horizontal
-                data={this.state.restaurants}
+                data={this.state.categories}
                 style={rowWrapper}
                 renderItem={({ item }) => (
-                  <FiveUnitRound
-                    id={item.id}
-                    subtitle={item.location}
-                    title={item.title}
-                    five_users_count={item.five_users_count}
-                    image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
+                  <HomeCategoryBar
+                    onPress={() => navigation.navigate('RestaurantIndex')}
+                    image={Images.findImageOf(item.klass.toLowerCase())}
+                    title={item.category}
+                    people={item.users_count}
+                    new_people={item.new_users_count}
                   />
                 )}
-                keyExtractor={item => 'restaurant-' + item.id}
+                keyExtractor={item => 'five-category-list-' + item.id}
+                ListFooterComponent={
+                  <List>
+                    <HomeCategoryBar
+                      onPress={() => console.log('hi')}
+                      image={Images.music_main}
+                      title={'음악 더미데이터'}
+                      people={'11932'}
+                      new_people={'2'}
+                    />
+                    <HomeCategoryBar
+                      onPress={() => console.log('hi')}
+                      image={Images.book_main}
+                      title={'책 더미데이터'}
+                      people={'8360'}
+                      new_people={'7'}
+                    />
+                  </List>
+                }
               />
-            </Row>
-            <RowHeaderBar
-              title={'새로 five 를 바꾼 친구'}
-              onPress={() => navigation.navigate('UserList', {
-                users: this.state.users,
-                category: 'restaurant',
-              })}
-              moreTitle={'더보기'}
-            />
-            <Row>
-              <FlatList
-                horizontal
-                data={this.state.users}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <UserUnitRound
-                    id={item.id}
-                    name={item.name}
-                    image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate('UserShow', {
-                      user: item,
-                      title: item.name,
-                    })}
-                    barWidth={90}
-                    barHeight={90}
-                    borderRadius={45}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => 'user-' + item.id}
-              />
-            </Row>
+            </Row>*/}
             <RowHeaderBar
               title={'FIVE 스토리'}
             />
@@ -213,7 +194,7 @@ export default class RestaurantIndex extends Component {
                     marginRight={10}
                   />
                 )}
-                keyExtractor={item => 'five-stories-' + item.id}
+                keyExtractor={item => 'user-' + item.id}
               />
             </Row>
             <RowHeaderBar
@@ -222,23 +203,27 @@ export default class RestaurantIndex extends Component {
             <Row>
               <FlatList
                 horizontal
-                data={this.state.challenge_restaurants}
+                data={this.state.challenge_fives}
                 style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
-                    id={item.id}
-                    subtitle={item.location}
-                    title={item.title}
-                    five_users_count={item.five_users_count}
-                    image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                    id={item.five.id}
+                    title={item.five.title}
+                    subtitle={item.five.subtitle}
+                    five_users_count={item.five.five_users_count}
+                    image_url={item.five.image_medium_url}
+                    onPress={() => navigation.navigate(`${item.klass}Show`, {
+                      title: item.five.title,
+                      id: item.five.id,
+                      navLoading: true,
+                    })}
                     barWidth={150}
                     barHeight={150}
                     borderRadius={15}
                     marginRight={10}
                   />
                 )}
-                keyExtractor={item => 'restaurant-challenge-' + item.id}
+                keyExtractor={item => `challenge-${item.five.klass}-fives-` + item.five.id}
               />
             </Row>
             <RowHeaderBar
@@ -252,13 +237,18 @@ export default class RestaurantIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item, index }) => (
                   <UserFivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    onPress={() => navigation.navigate('UserFiveShow', {
+                      user: item.user,
+                      category_data: item,
+                      five_category: item.klass.toLowerCase(),
+                      navLoading: true,
+                    })}
                     onPressFollow={() => this.followCall(item, index)}
-                    clicked={item.following}
                     category={item.category}
                     followers={item.followers_count}
                     followees={item.followees_count}
                     fives={item.fives}
+                    clicked={item.following}
                     user={item.user}
                   />
                 )}

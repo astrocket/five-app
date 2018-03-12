@@ -1,8 +1,9 @@
+/*
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import {
   Button,
-  Icon, Text
+  Icon,
 } from 'native-base';
 import {
   StackNavigator,
@@ -45,11 +46,8 @@ import AccountEdit from '../class/Setting/AccoutEdit';
 import AlarmEdit from '../class/Setting/AlarmEdit';
 import CategoryEdit from '../class/Setting/CategoryEdit';
 
-const StackNavigation = StackNavigator(
+const Drawer = DrawerNavigator(
   {
-    /*    Main: {
-          screen: ({ navigation }) => <TabNavigation screenProps={{ rootNavigation: navigation }}/>,
-        },*/
     Main: {
       screen: TabNavigator(
         {
@@ -81,6 +79,23 @@ const StackNavigation = StackNavigator(
             },
           },
         })
+    }
+  },
+  {
+    headerMode: 'screen',
+    drawerWidth: 300,
+    drawerPosition: 'right',
+    contentComponent: CustomDrawer,
+  },
+);
+
+const StackNavigation = StackNavigator(
+  {
+    /!*    Main: {
+          screen: ({ navigation }) => <TabNavigation screenProps={{ rootNavigation: navigation }}/>,
+        },*!/
+    Main: {
+      screen: Drawer,
     },
     PageA: {
       screen: PageA,
@@ -175,24 +190,10 @@ const StackNavigation = StackNavigator(
   },
 );
 
-const DrawerNavigation = DrawerNavigator(
-  {
-    Main: {
-      screen: StackNavigation
-    }
-  },
-  {
-    headerMode: 'none',
-    drawerWidth: 300,
-    drawerPosition: 'right',
-    contentComponent: CustomDrawer,
-  },
-);
-
 const RootNavigation = StackNavigator(
   {
     Main: {
-      screen: ({ navigation }) => <DrawerNavigation screenProps={{ modalNavigation: navigation }}/>,
+      screen: ({ navigation }) => <StackNavigation screenProps={{ modalNavigation: navigation }}/>,
     },
     ModalWebViewShow: {
       screen: ({ navigation }) => <ModalWebViewShow screenProps={{ modalNavigation: navigation }}/>,
@@ -207,3 +208,4 @@ const RootNavigation = StackNavigator(
 );
 
 export default RootNavigation;
+*/

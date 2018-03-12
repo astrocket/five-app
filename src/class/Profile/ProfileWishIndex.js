@@ -60,7 +60,9 @@ export default class ProfileWishIndex extends Component {
     const { navigation } = this.props;
     return this.state.categories.map(function(category, i) {
       return (
-        <Tab key={i} heading={ <TabHeading><Text>{category.category}</Text></TabHeading>}>
+        <Tab key={i} heading={ <TabHeading><Text>{category.category}</Text></TabHeading>} activeTextStyle={{
+          color: Constant.FiveColor,
+        }}>
           <ProfileWishShow
             klass={category.klass}
             category={category.category}
@@ -78,12 +80,18 @@ export default class ProfileWishIndex extends Component {
 
     return (
       <Container>
-        <Tabs locked>
+        <Tabs locked tabBarUnderlineStyle={{
+          backgroundColor: Constant.FiveColor,
+        }}>
           {this.renderCategoryTabs()}
-          <Tab heading={ <TabHeading><Text>음악</Text></TabHeading>}>
+          <Tab heading={ <TabHeading><Text>음악</Text></TabHeading>} activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
             <Text>hi</Text>
           </Tab>
-          <Tab heading={ <TabHeading><Text>책</Text></TabHeading>}>
+          <Tab heading={ <TabHeading><Text>책</Text></TabHeading>} activeTextStyle={{
+            color: Constant.FiveColor,
+          }}>
             <Text>hi</Text>
           </Tab>
         </Tabs>

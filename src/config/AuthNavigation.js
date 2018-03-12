@@ -13,8 +13,10 @@ import FindPassword from '../class/Auth/FindPassword';
 import SignUpForm from '../class/Auth/SignUpForm';
 import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import Hello from '../class/Hello/Hello';
+import Tutorial from '../class/Hello/Tutorial';
 import FiveSelect from '../class/Hello/FiveSelect';
 import AddFiveRestaurant from '../class/Search/AddFiveRestaurant';
+import Map from '../class/Page/Map';
 
 const CardNavigation = StackNavigator(
   {
@@ -36,6 +38,9 @@ const CardNavigation = StackNavigator(
     Hello: {
       screen: Hello,
     },
+    Tutorial: {
+      screen: Tutorial,
+    },
     FiveSelect: {
       screen: FiveSelect,
     },
@@ -55,7 +60,10 @@ const AuthNavigation = StackNavigator(
     },
     ModalWebViewShow: {
       screen: ({ navigation }) => <ModalWebViewShow screenProps={{ modalNavigation: navigation }}/>,
-    }
+    },
+    Map: {
+      screen: ({ navigation }) => <Map screenProps={{ modalNavigation: navigation }}/>,
+    },
   }, {
     headerMode: 'none',
     mode: 'modal',

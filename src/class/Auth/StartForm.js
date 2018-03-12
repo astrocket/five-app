@@ -33,10 +33,21 @@ export default class StartForm extends Component {
       pin_number: '',
       message: 0,
       status: 0,
+      misTypeCounter: 0,
     };
   }
 
   sendPin() {
+    var regExp = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+    if (!regExp.test(this.state.input_text)) {
+      Toast.show({
+        text: '잘못된 휴대폰 번호입니다. 01012341234 와 같은 숫자만 입력하세요.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false;
+    }
+
     this.setState({ status: -1 });
     const url = `${ApiServer.PHONE}/send_sms`;
     const data = {
@@ -54,22 +65,39 @@ export default class StartForm extends Component {
         this.onSendPin(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
       Toast.show({
-        text: JSON.stringify(error.response),
+        text: JSON.stringify(error.response.data),
         position: 'bottom',
         duration: 1500,
       });
     });
   }
 
+  d;
+
   onSendPin(data) {
-    const { message, success, phone_number } = data;
+    const { message, success, phone_number, exist } = data;
     if (success) {
-      this.setState({
-        status: 1,
-        message: 1,
-        phone_number: phone_number,
-        input_text: '',
-      });
+      var goTo = '';
+      if (exist) {
+        goTo = 'LogInForm';
+        this.props.navigation.dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: goTo,
+                params: { data: data },
+              }),
+            ],
+          }));
+      } else {
+        this.setState({
+          status: 1,
+          message: 1,
+          phone_number: phone_number,
+          input_text: '',
+        });
+      }
     } else {
       this.setState({
         status: 0,
@@ -80,6 +108,16 @@ export default class StartForm extends Component {
   }
 
   verifyPin() {
+    var regExp = /^[(0-9)]{4}$/;
+    if (!regExp.test(this.state.input_text)) {
+      Toast.show({
+        text: '잘못된 핀 번호입니다. 4자리 숫자만 입력하세요.',
+        position: 'bottom',
+        duration: 1500,
+      });
+      return false;
+    }
+
     this.setState({ status: -1 });
     const url = `${ApiServer.PHONE}/verify`;
     const data = {
@@ -111,28 +149,35 @@ export default class StartForm extends Component {
     const { navigation } = this.props;
 
     if (success) {
-      var goTo = '';
-      if (exist) {
-        goTo = 'LogInForm';
-      } else {
-        goTo = 'SignUpForm';
-      }
       navigation.dispatch(
         NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({
-            routeName: goTo,
-            params: { data: data },
-          }),
-        ],
-      }))
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'SignUpForm',
+              params: { data: data },
+            }),
+          ],
+        }));
     } else {
-      this.setState({
-        status: 3,
-        message: message,
-        pin_number: '',
-      });
+      if (this.state.misTypeCounter > 0) {
+        navigation.dispatch(
+          NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Main',
+              }),
+            ],
+          }));
+      } else {
+        this.setState({
+          status: 3,
+          misTypeCounter: this.state.misTypeCounter + 1,
+          message: message,
+          pin_number: '',
+        });
+      }
     }
   }
 
@@ -155,12 +200,11 @@ export default class StartForm extends Component {
         return (
           <InputSingle
             key={this.state.status}
-            placeholder={'휴대폰 번호를 입력해 주세요'}
-            submitText={'확인'}
+            placeholder={`휴대폰 번호를 입력해 주세요('-' 제외)`}
+            noButton
             autoFocus={true}
             value={''}
             onChangeText={(input_text) => this.setState({ input_text })}
-            onSubmitPress={() => this.sendPin()}
             onSubmitEditing={() => this.sendPin()}
             keyboardType={'phone-pad'}
             returnKeyType={'done'}
@@ -168,18 +212,30 @@ export default class StartForm extends Component {
         );
       case 1:
         return (
-          <InputSingle
-            key={this.state.status}
-            placeholder={'핀 번호를 입력해 주세요'}
-            submitText={'확인'}
-            autoFocus={true}
-            value={''}
-            onChangeText={(input_text) => this.setState({ input_text })}
-            onSubmitPress={() => this.verifyPin()}
-            onSubmitEditing={() => this.verifyPin()}
-            keyboardType={'phone-pad'}
-            returnKeyType={'done'}
-          />
+          <View>
+            <InputSingle
+              key={this.state.status}
+              placeholder={'핀 번호를 입력해 주세요'}
+              noButton
+              autoFocus={true}
+              value={''}
+              onChangeText={(input_text) => this.setState({ input_text })}
+              onSubmitEditing={() => this.verifyPin()}
+              keyboardType={'phone-pad'}
+              returnKeyType={'done'}
+            />
+            <TouchableOpacity
+              onPress={() => this.setState({
+                message: 0,
+                status: 0,
+                phone_number: '',
+                text_input: '',
+              })}
+              style={{ margin: 10 }}
+            >
+              <Text note>인증번호를 받지 못했습니다</Text>
+            </TouchableOpacity>
+          </View>
         );
       case 3:
         return (
@@ -187,22 +243,24 @@ export default class StartForm extends Component {
             <InputSingle
               key={this.state.status}
               placeholder={'핀 번호를 다시 입력해 주세요'}
-              submitText={'확인'}
+              noButton
               autoFocus={true}
               value={''}
               onChangeText={(input_text) => this.setState({ input_text })}
-              onSubmitPress={() => this.verifyPin()}
               onSubmitEditing={() => this.verifyPin()}
               keyboardType={'phone-pad'}
               returnKeyType={'done'}
             />
             <TouchableOpacity
               onPress={() => this.setState({
-                message: 0, status: 0, phone_number: '', text_input: ''
+                message: 0,
+                status: 0,
+                phone_number: '',
+                text_input: '',
               })}
               style={{ margin: 10 }}
             >
-              <Text note>전화번호 다시 입력</Text>
+              <Text note>인증번호를 받지 못했습니다</Text>
             </TouchableOpacity>
           </View>
         );
@@ -221,10 +279,10 @@ export default class StartForm extends Component {
       <Container>
         <Content padder noHeader keyboardShouldPersistTaps={'always'}>
           <Grid>
-            <Row>
+            <Row style={{marginBottom: 20}}>
               <Text xlarge>시작하기</Text>
             </Row>
-            <Row style={{
+{/*            <Row style={{
               justifyContent: 'flex-end',
               marginBottom: 20,
             }}>
@@ -234,7 +292,7 @@ export default class StartForm extends Component {
               }}>
                 {this.renderMessage()}
               </View>
-            </Row>
+            </Row>*/}
           </Grid>
           {this.renderInput()}
         </Content>

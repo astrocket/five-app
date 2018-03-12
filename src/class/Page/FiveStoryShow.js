@@ -93,7 +93,7 @@ export default class FiveStoryShow extends Component {
               style={{ flex: 1 }}
             />
           </Row>
-          <Row style={{ height: 90, backgroundColor: '#fff'}}>
+          <Row style={{ height: 80, backgroundColor: '#FFF', borderTopWidth: 1, borderTopColor: '#eee'}}>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -102,7 +102,7 @@ export default class FiveStoryShow extends Component {
             >
               {this.state.five_story.fives.map((item) => {
                 return (
-                  <View key={item.id} style={{ width: deviceWidth, padding: 5 }}>
+                  <View key={item.id} style={{ width: deviceWidth, paddingTop: 10, paddingBottom: 10 }}>
                     <FiveUnitBar
                       id={item.id}
                       title={item.title}

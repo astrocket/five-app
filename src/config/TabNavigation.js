@@ -7,7 +7,7 @@ import {
 } from 'native-base';
 import { TabNavigator } from 'react-navigation';
 import * as Constant from './Constant';
-import TabA from '../class/TabA/TabA';
+import TabA from '../class/TabA/HomeIndex';
 import TabB from '../class/TabB/TabB';
 import TabC from '../class/TabC/TabC';
 

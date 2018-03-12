@@ -71,14 +71,6 @@ export default class Setting extends Component {
             borderBottomWidth: 1,
             borderBottomColor: '#eee',
           }}>
-            <ListItem>
-              <Body>
-              <Text>알림 허용</Text>
-              </Body>
-              <Right>
-                <Switch value={true}/>
-              </Right>
-            </ListItem>
             <ListItem button
                       onPress={() => navigation.navigate('Invitation')}>
               <Body>

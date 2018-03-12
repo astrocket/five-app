@@ -724,6 +724,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 4YCR8M2TJY;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1267,6 +1268,8 @@
 			baseConfigurationReference = F9E2F3A26BC418F5003501E2 /* Pods-AstroBoilerApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4YCR8M2TJY;
@@ -1283,6 +1286,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = AstroBoilerApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1292,6 +1296,8 @@
 			baseConfigurationReference = FC17295C9AE3DA46829D68E0 /* Pods-AstroBoilerApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4YCR8M2TJY;
 				HEADER_SEARCH_PATHS = (
@@ -1307,6 +1313,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = AstroBoilerApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
