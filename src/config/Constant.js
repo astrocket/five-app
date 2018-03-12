@@ -7,6 +7,7 @@ export const platform = variable.platform;
 export const FiveColor = '#FA3F97';
 export const GreyColor = '#A1A1A1';
 
+export const isIphoneX = platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 export const FiveNavOptions = {
   headerStyle: {
     backgroundColor: 'white',
@@ -26,7 +27,7 @@ export const FiveNavOptions = {
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
-export const globalPaddingTop = platform === "ios" ? (variable.isIphoneX ? 39 : 15) : 0;
+export const globalPaddingTop = platform === "ios" ? (variable.isIphoneX ? 39 : 20) : 0;
 
 export const KakaoApiCategory = (category) => {
   let category_code;

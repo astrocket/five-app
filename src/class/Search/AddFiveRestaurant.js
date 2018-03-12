@@ -9,6 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
+import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 import { SearchFiveUnitBar, ShowMore } from '../../component/common';
 import * as Constant from '../../config/Constant';
@@ -111,7 +112,18 @@ export default class AddFiveRestaurant extends Component {
         [
           {
             text: '그만 선택하기',
-            onPress: () => this.props.ApplicationStore.signIn(),
+            onPress: () => {
+              this.props.navigation.dispatch(
+                NavigationActions.reset({
+                  index: 0,
+                  actions: [
+                    NavigationActions.navigate({
+                      routeName: 'Main',
+                      params: {},
+                    }),
+                  ],
+                }))
+            },
           },
           {
             text: '더 선택하기',

@@ -34,3 +34,4 @@ export * from './MultiToggle';
 export * from './SearchFiveUnitBar';
 export * from './MainLargeTitle';
 export * from './RowHeaderBar';
+export * from './ElevenHeader';

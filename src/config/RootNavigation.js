@@ -12,6 +12,7 @@ import {
 import * as Constant from './Constant';
 import TabA from '../class/TabA/TabA';
 import TabB from '../class/TabB/TabB';
+import TabD from '../class/TabD/TabD';
 import TabC from '../class/TabC/TabC';
 import CustomDrawer from './CustomDrawer';
 import PageA from '../class/Page/PageA';
@@ -22,6 +23,7 @@ import RestaurantNew from '../class/Restaurant/RestaurantNew';
 import RestaurantList from '../class/Restaurant/RestaurantList';
 import RestaurantShow from '../class/Restaurant/RestaurantShow';
 import RestaurantFiveUserList from '../class/Restaurant/RestaurantFiveUserList';
+import AddFiveRestaurant from '../class/Search/AddFiveRestaurant';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
@@ -45,42 +47,48 @@ import AccountEdit from '../class/Setting/AccoutEdit';
 import AlarmEdit from '../class/Setting/AlarmEdit';
 import CategoryEdit from '../class/Setting/CategoryEdit';
 
+const TabNavigation = TabNavigator(
+    {
+      TabA: {
+        screen: TabA,
+      },
+      TabC: {
+        screen: TabC,
+      },
+      TabD: {
+        screen: TabD,
+      },
+      TabB: {
+        screen: TabB,
+      },
+    }, {
+      swipeEnabled: false,
+      tabBarPosition: 'bottom',
+      tabBarOptions: {
+        activeTintColor: Constant.FiveColor,
+        inactiveTintColor: '#9e9e9e',
+        indicatorStyle: {
+          backgroundColor: 'transparent',
+        },
+        showIcon: true,
+        showLabel: Platform.OS === 'ios',
+        labelStyle: {
+          fontSize: 12,
+        },
+        style: {
+          backgroundColor: '#fff',
+        },
+      },
+    }
+);
+
 const StackNavigation = StackNavigator(
   {
     /*    Main: {
           screen: ({ navigation }) => <TabNavigation screenProps={{ rootNavigation: navigation }}/>,
         },*/
     Main: {
-      screen: TabNavigator(
-        {
-          TabA: {
-            screen: TabA,
-          },
-          TabB: {
-            screen: TabB,
-          },
-          TabC: {
-            screen: TabC,
-          },
-        }, {
-          swipeEnabled: false,
-          tabBarPosition: 'bottom',
-          tabBarOptions: {
-            activeTintColor: Constant.FiveColor,
-            inactiveTintColor: '#9e9e9e',
-            indicatorStyle: {
-              backgroundColor: 'transparent',
-            },
-            showIcon: true,
-            showLabel: Platform.OS === 'ios',
-            labelStyle: {
-              fontSize: 12,
-            },
-            style: {
-              backgroundColor: '#fff',
-            },
-          },
-        })
+      screen: TabNavigation
     },
     PageA: {
       screen: PageA,
@@ -169,6 +177,9 @@ const StackNavigation = StackNavigator(
     CategoryEdit: {
       screen: CategoryEdit,
     },
+    AddFiveRestaurant: {
+      screen: AddFiveRestaurant,
+    },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
     mode: 'card',
@@ -185,7 +196,7 @@ const DrawerNavigation = DrawerNavigator(
     headerMode: 'none',
     drawerWidth: 300,
     drawerPosition: 'right',
-    contentComponent: CustomDrawer,
+   // contentComponent: CustomDrawer,
   },
 );
 

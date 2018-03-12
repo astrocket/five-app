@@ -161,6 +161,7 @@ export default class ProfileFiveIndex extends Component {
   }
 
   renderCard(flip) {
+    const { rowWrapper } = BaseStyle;
     const { navigation } = this.props;
 
     if (flip) {
@@ -168,6 +169,7 @@ export default class ProfileFiveIndex extends Component {
         <Row key={1}>
           <FlatList
             data={this.state.fives}
+            style={rowWrapper}
             renderItem={({ item }) => (
               <FiveUnitBar
                 multiple
@@ -192,6 +194,7 @@ export default class ProfileFiveIndex extends Component {
         <Row key={2}>
           <FlatList
             data={this.state.fives}
+            style={rowWrapper}
             renderItem={({ item }) => (
               <FiveUnitFull
                 multiple

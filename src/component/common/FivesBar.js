@@ -12,47 +12,47 @@ import {
   Badge
 } from 'native-base';
 import * as Images from '../../assets/images/Images';
+import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveImages = ({ fives, image }) => {
-  let dice = Math.floor(Math.random() *  (fives.length - 1));
-
-  return [0,1,2,3,4].map(function(index, i) {
-    const five = fives[ index ];
-    const five_next = fives[ index + 1 ];
-    if (five) {
-      if (i === dice && fives.length > 1 ) {
-        return (
-          <View key={9999} style={{ height: 100, width: null, flex: 1, marginRight: 4 }}>
-            <Image key={i} source={{ uri: five.image_medium_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10, marginBottom: 2 }}/>
-            <Image key={i + 1} source={{ uri: five_next.image_medium_url }} style={{height: 49, width: null, flex: 1, borderRadius: 10 }}/>
-          </View>
-        )
-      } else if ((i !== dice && i === dice + 1) || fives.length === 2) {
-        return null;
-      } else {
-        return (
-          <Image key={i} source={{ uri: five.image_medium_url }} style={{height: 100, width: null, flex: 1, marginRight: 4, borderRadius: 10 }}/>
-        )
-      }
-    } else {
-      return (
-        <Image key={i} source={Images.restaurant_main} style={{height: 100, width: null, flex: 1, marginRight: 4 }}/>
-      )
-    }
-  });
+const UnitImage = ({ five, image, width, height }) => {
+  if (five) {
+    return (
+      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 4, width: width - 4, marginRight: 4, marginBottom: 4, borderRadius: 10 }}/>
+    )
+  } else {
+    return (
+      <Image key={2} source={image} style={{height: height - 4, width: width - 4, marginRight: 4, marginBottom: 4}}/>
+    )
+  }
 };
 
+const FiveImages = ({ fives, image, pureWidth }) => {
+  return(
+    <View style={{ flexDirection: 'row', flex: 1, height: pureWidth / 2, width: pureWidth}}>
+      <View style={{ flex: 1, marginRight: 4 }}>
+        <UnitImage five={fives[0]} image={image} height={pureWidth / 2} width={pureWidth / 2} />
+      </View>
+      <View style={{ flex: 1, flexWrap: 'wrap' }}>
+        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+      </View>
+    </View>
+  )
+};
 
 const FivesBar = ({ image, onPress, category, followers, followees, fives }) => {
   const { container } = BaseStyle;
+  let cardPadding = 5;
+  let cardMargin = 20;
+  let pureWidth = Constant.deviceWidth - cardMargin * 2 - cardPadding * 2;
 
   return (
-    <View>
+    <View style={{ width: pureWidth + cardPadding * 2, margin: cardMargin, padding: cardPadding}}>
       <TouchableOpacity onPress={onPress}>
-        <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight: 10 }}>
-          <FiveImages fives={fives} image={image} />
-        </View>
+        <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
       </TouchableOpacity>
       <ListItem cardStyle transparent button onPress={onPress}>
         <Thumbnail size={50} source={image}/>

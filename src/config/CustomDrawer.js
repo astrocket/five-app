@@ -33,9 +33,9 @@ export default class CustomDrawer extends Component {
     };
   }
 
-  componentDidMount() {
+/*  componentDidMount() {
     this.apiCall();
-  }
+  }*/
 
   apiCall() {
     const config = {
