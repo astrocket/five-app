@@ -13,9 +13,7 @@ const ShowMore = ({ overText, no_more, page_loading, moreText, onPress }) => {
   const { container } = BaseStyle;
   if (no_more) {
     return (
-      <Button full primary disabled>
-        <Text>{overText}</Text>
-      </Button>
+      null
     );
   }
 

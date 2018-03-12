@@ -31,8 +31,8 @@ export default class HomeIndex extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       categories: [],
-      five_stories: [],
-      challenge_fives: [],
+      five_story: [],
+      popular_fives: [],
       follow_suggestions: [],
       refreshing: false,
     };
@@ -60,8 +60,8 @@ export default class HomeIndex extends Component {
         this.setState({
           loading: false,
           categories: response.data.categories,
-          five_stories: response.data.five_stories,
-          challenge_fives: response.data.challenge_fives,
+          five_story: response.data.five_story,
+          popular_fives: response.data.popular_fives,
           follow_suggestions: response.data.follow_suggestions,
         });
       })
@@ -172,58 +172,21 @@ export default class HomeIndex extends Component {
               title={'FIVE 스토리'}
             />
             <Row>
-              <FlatList
-                horizontal
-                data={this.state.five_stories}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveStoryFull
-                    multiple
-                    id={item.id}
-                    title={item.title}
-                    subtitle={item.subtitle}
-                    image_url={item.image_large_url}
-                    onPress={() => navigation.navigate('FiveStoryShow', {
-                      title: item.title,
-                      id: item.id,
-                      five_story: item,
-                    })}
-                    barWidth={null}
-                    barHeight={null}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => 'user-' + item.id}
-              />
-            </Row>
-            <RowHeaderBar
-              title={'당신의 FIVE에 도전합니다'}
-            />
-            <Row>
-              <FlatList
-                horizontal
-                data={this.state.challenge_fives}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveUnitRound
-                    id={item.five.id}
-                    title={item.five.title}
-                    subtitle={item.five.subtitle}
-                    five_users_count={item.five.five_users_count}
-                    image_url={item.five.image_medium_url}
-                    onPress={() => navigation.navigate(`${item.klass}Show`, {
-                      title: item.five.title,
-                      id: item.five.id,
-                      navLoading: true,
-                    })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => `challenge-${item.five.klass}-fives-` + item.five.id}
+              <FiveStoryFull
+                singleClickable
+                id={this.state.five_story.id}
+                title={this.state.five_story.title}
+                subtitle={this.state.five_story.subtitle}
+                image_url={this.state.five_story.image_large_url}
+                onPress={() => navigation.navigate('FiveStoryShow', {
+                  title: this.state.five_story.title,
+                  id: this.state.five_story.id,
+                  five_story: this.state.five_story,
+                })}
+                barWidth={null}
+                barHeight={null}
+                borderRadius={15}
+                marginRight={10}
               />
             </Row>
             <RowHeaderBar
@@ -253,6 +216,35 @@ export default class HomeIndex extends Component {
                   />
                 )}
                 keyExtractor={item => 'user-fives-' + item.id}
+              />
+            </Row>
+            <RowHeaderBar
+              title={'요즘 뜨는 아이템'}
+            />
+            <Row>
+              <FlatList
+                horizontal
+                data={this.state.popular_fives}
+                style={rowWrapper}
+                renderItem={({ item }) => (
+                  <FiveUnitRound
+                    id={item.five.id}
+                    title={item.five.title}
+                    subtitle={item.five.subtitle}
+                    five_users_count={item.five.five_users_count}
+                    image_url={item.five.image_medium_url}
+                    onPress={() => navigation.navigate(`${item.klass}Show`, {
+                      title: item.five.title,
+                      id: item.five.id,
+                      navLoading: true,
+                    })}
+                    barWidth={150}
+                    barHeight={150}
+                    borderRadius={15}
+                    marginRight={10}
+                  />
+                )}
+                keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
               />
             </Row>
           </Grid>

@@ -13,7 +13,7 @@ import {
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveUnitFull = ({ id, location, title, image_url, five_users_count, onPress, multiple, borderRadius, marginRight }) => {
+const FiveUnitFull = ({ id, location, title, image_url, friends_info, onPress, multiple, borderRadius, marginRight, cardCut }) => {
   const { container } = BaseStyle;
   const deviceWidth = Dimensions.get('window').width;
 
@@ -26,7 +26,6 @@ const FiveUnitFull = ({ id, location, title, image_url, five_users_count, onPres
           width: null,
           height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
           marginRight: marginRight,
-          padding: 10,
           marginBottom: 10,
         }}>
           <Button transparent style={{
@@ -36,8 +35,8 @@ const FiveUnitFull = ({ id, location, title, image_url, five_users_count, onPres
             marginBottom: 5,
           }} onPress={onPress}>
             <Image source={{ uri: image_url }} style={{
-              height: deviceWidth - 20,
-              width: deviceWidth - 20,
+              height: deviceWidth - (cardCut ? cardCut : 20),
+              width: deviceWidth - (cardCut ? cardCut : 20),
               borderRadius: borderRadius,
               marginBottom: 10,
               flex: 1,
@@ -48,6 +47,7 @@ const FiveUnitFull = ({ id, location, title, image_url, five_users_count, onPres
               <Text large numberOfLines={1}>{title}</Text>
             </View>
             <Text note numberOfLines={1}>{location}</Text>
+            <Text micro yellow>{friends_info}</Text>
           </View>
         </View>
       </View>
@@ -61,7 +61,6 @@ const FiveUnitFull = ({ id, location, title, image_url, five_users_count, onPres
           width: null,
           height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
           marginRight: marginRight,
-          padding: 10,
           marginBottom: 10,
         }}>
           <View style={{

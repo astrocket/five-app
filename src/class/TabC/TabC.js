@@ -4,14 +4,14 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button, Toast,
+  Item, Input, Icon, Button, Toast, Left, Body, Title, Right
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ShowMore } from '../../component/common';
+import { FiveUnitBar, ElevenHeader } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -33,7 +33,7 @@ export default class TabC extends Component {
         }}
       />
     ),
-    title: '검색',
+    header: null,
     ...Constant.FiveNavOptions,
   });
 
@@ -42,6 +42,7 @@ export default class TabC extends Component {
     this.state = {
       loading: false,
       searched: false,
+      headerShow: true,
     };
   }
 
@@ -76,10 +77,16 @@ export default class TabC extends Component {
     }
   }
 
+  handleScroll(e) {
+    var currentOffset = e.nativeEvent.contentOffset.y;
+    var headerShow = currentOffset < 100;
+    this.setState({ headerShow });
+  }
+
   renderSearchResult() {
     if (this.state.searched) {
       return (
-        <Content>
+        <Content onScroll={(e) => this.handleScroll(e)}>
           <Grid>
             <Row style={{ marginBottom: 20 }}>
               <FlatList
@@ -90,6 +97,7 @@ export default class TabC extends Component {
                     id={item.id}
                     title={item.title}
                     location={item.location}
+                    friends_info={item.friends_info}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
                     onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
@@ -114,14 +122,15 @@ export default class TabC extends Component {
                         paddingRight: 10,
                       }}>
                         <Text small>맛집</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantList', {
-                          restaurants: this.state.restaurants,
-                          search_params: this.state.input_search
-                        })} underlayColor={'#fff'}>
+                        <TouchableOpacity
+                          onPress={() => this.props.navigation.navigate('RestaurantList', {
+                            restaurants: this.state.restaurants,
+                            search_params: this.state.input_search,
+                          })} underlayColor={'#fff'}>
                           <Text primary>더보기</Text>
                         </TouchableOpacity>
                       </View>
-                    )
+                    );
                   } else {
                     return (
                       <View style={{
@@ -135,13 +144,14 @@ export default class TabC extends Component {
                         paddingRight: 10,
                       }}>
                         <Text small>맛집이 없습니다.</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('RestaurantList', {
-                          restaurants: this.state.restaurants,
-                        })} underlayColor={'#fff'}>
+                        <TouchableOpacity
+                          onPress={() => this.props.navigation.navigate('RestaurantList', {
+                            restaurants: this.state.restaurants,
+                          })} underlayColor={'#fff'}>
                           <Text primary>전체보기</Text>
                         </TouchableOpacity>
                       </View>
-                    )
+                    );
                   }
                 }
                 }
@@ -209,6 +219,11 @@ export default class TabC extends Component {
 
     return (
       <Container>
+        <ElevenHeader
+          headerShow={this.state.headerShow}
+          title={'검색'}
+        >
+        </ElevenHeader>
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,

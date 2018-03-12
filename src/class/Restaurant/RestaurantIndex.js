@@ -11,7 +11,8 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  RowHeaderBar, MainLargeTitle, FiveUnitRound, UserUnitRound, FiveStoryFull, UserFivesBar
+  RowHeaderBar, MainLargeTitle, FiveUnitRound, UserUnitRound, FiveStoryFull, UserFivesBar,
+  FiveUnitFull
 } from '../../component/common';
 import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
@@ -35,9 +36,9 @@ export default class RestaurantIndex extends Component {
       refreshing: false,
       restaurants: [],
       users: [],
-      five_stories: [],
-      challenge_restaurants: [],
+      my_wish_restaurants: [],
       follow_suggestions: [],
+      challenge_restaurants: [],
     };
   }
 
@@ -58,9 +59,9 @@ export default class RestaurantIndex extends Component {
           loading: false,
           restaurants: response.data.restaurants,
           users: response.data.users,
-          five_stories: response.data.five_stories,
-          challenge_restaurants: response.data.challenge_restaurants,
+          my_wish_restaurants: response.data.my_wish_restaurants,
           follow_suggestions: response.data.follow_suggestions,
+          challenge_restaurants: response.data.challenge_restaurants,
         })
       })
       .catch((error) => {
@@ -123,10 +124,10 @@ export default class RestaurantIndex extends Component {
           />
         }>
           <Grid>
-            <MainLargeTitle
+{/*            <MainLargeTitle
               title={'맛집'}
               rightImage={'restaurant'}
-            />
+            />*/}
             <RowHeaderBar
               title={'새로 친구들의 five로 선정 된 맛집'}
               onPress={() => navigation.navigate('RestaurantList', {
@@ -140,23 +141,47 @@ export default class RestaurantIndex extends Component {
                 data={this.state.restaurants}
                 style={rowWrapper}
                 renderItem={({ item }) => (
-                  <FiveUnitRound
+                  <FiveUnitFull
+                    multiple
                     id={item.id}
-                    subtitle={item.location}
                     title={item.title}
-                    five_users_count={item.five_users_count}
-                    image_url={item.image_medium_url}
+                    location={item.location}
+                    friends_info={item.friends_info}
+                    image_url={item.image_large_url}
                     onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
-                    barWidth={150}
-                    barHeight={150}
                     borderRadius={15}
                     marginRight={10}
+                    cardCut={60}
                   />
                 )}
                 keyExtractor={item => 'restaurant-' + item.id}
               />
             </Row>
             <RowHeaderBar
+              style={{ backgroundColor: '#fafafa' }}
+              title={'팔로우 추천'}
+            />
+            <Row style={{ backgroundColor: '#fafafa' }}>
+              <FlatList
+                horizontal
+                data={this.state.follow_suggestions}
+                style={rowWrapper}
+                renderItem={({ item, index }) => (
+                  <UserFivesBar
+                    onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    onPressFollow={() => this.followCall(item, index)}
+                    clicked={item.following}
+                    category={item.category}
+                    followers={item.followers_count}
+                    followees={item.followees_count}
+                    fives={item.fives}
+                    user={item.user}
+                  />
+                )}
+                keyExtractor={item => 'user-fives-' + item.id}
+              />
+            </Row>
+{/*            <RowHeaderBar
               title={'새로 five 를 바꾼 친구'}
               onPress={() => navigation.navigate('UserList', {
                 users: this.state.users,
@@ -186,38 +211,36 @@ export default class RestaurantIndex extends Component {
                 )}
                 keyExtractor={item => 'user-' + item.id}
               />
-            </Row>
+            </Row>*/}
             <RowHeaderBar
-              title={'FIVE 스토리'}
+              title={'내가 클립해 둔 맛집'}
+              onPress={() => navigation.navigate('ProfileWishIndex')}
+              moreTitle={'모두보기'}
             />
             <Row>
               <FlatList
                 horizontal
-                data={this.state.five_stories}
+                data={this.state.my_wish_restaurants}
                 style={rowWrapper}
                 renderItem={({ item }) => (
-                  <FiveStoryFull
-                    multiple
+                  <FiveUnitRound
                     id={item.id}
+                    subtitle={item.location}
                     title={item.title}
-                    subtitle={item.subtitle}
-                    image_url={item.image_large_url}
-                    onPress={() => navigation.navigate('FiveStoryShow', {
-                      title: item.title,
-                      id: item.id,
-                      five_story: item,
-                    })}
-                    barWidth={null}
-                    barHeight={null}
+                    five_users_count={item.five_users_count}
+                    image_url={item.image_medium_url}
+                    onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                    barWidth={150}
+                    barHeight={150}
                     borderRadius={15}
                     marginRight={10}
                   />
                 )}
-                keyExtractor={item => 'five-stories-' + item.id}
+                keyExtractor={item => 'wish-restaurant-' + item.id}
               />
             </Row>
             <RowHeaderBar
-              title={'당신의 FIVE에 도전합니다'}
+              title={'추천 맛집(당신의 FIVE에 도전)'}
             />
             <Row>
               <FlatList
@@ -239,30 +262,6 @@ export default class RestaurantIndex extends Component {
                   />
                 )}
                 keyExtractor={item => 'restaurant-challenge-' + item.id}
-              />
-            </Row>
-            <RowHeaderBar
-              style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 추천'}
-            />
-            <Row style={{ backgroundColor: '#fafafa' }}>
-              <FlatList
-                horizontal
-                data={this.state.follow_suggestions}
-                style={rowWrapper}
-                renderItem={({ item, index }) => (
-                  <UserFivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
-                    onPressFollow={() => this.followCall(item, index)}
-                    clicked={item.following}
-                    category={item.category}
-                    followers={item.followers_count}
-                    followees={item.followees_count}
-                    fives={item.fives}
-                    user={item.user}
-                  />
-                )}
-                keyExtractor={item => 'user-fives-' + item.id}
               />
             </Row>
           </Grid>

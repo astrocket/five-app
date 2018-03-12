@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
+  ScrollableTab, ActionSheet,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -21,8 +22,7 @@ import { observer, inject } from 'mobx-react/native';
 
 export default class TabA extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
-    header: null
-    ,
+    header: null,
     tabBarLabel: '홈',
     tabBarIcon: ({ tintColor }) => (
       <Icon
@@ -65,11 +65,29 @@ export default class TabA extends Component {
       });
   }
 
+  onClickAdd() {
+    const { navigation } = this.props;
+    var BUTTONS = ['맛집 추가', '음악 추가', '책 추가', '취소'];
+    var pages = ['AddFiveRestaurant', 'AddFiveMusic', 'AddFiveBook'];
+    var klasses = ['restaurant', 'music', 'book'];
+    var categories = ['맛집', '음악',' 책'];
+    var CANCEL_INDEX = 3;
+
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+        cancelButtonIndex: CANCEL_INDEX,
+        title: "새로운 파이브 시작하기"
+      },
+      buttonIndex => {
+        navigation.navigate(pages[buttonIndex], {klass: klasses[buttonIndex],category: categories[buttonIndex] })
+      }
+    )
+  }
+
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset <= this.offset;
-    this.offset = currentOffset;
-    this.props.navigation.setParams({ headerShow });
+    var headerShow = currentOffset < 100;
     this.setState({ headerShow });
   }
 
@@ -80,15 +98,16 @@ export default class TabA extends Component {
     return (
       <Container>
         {this.state.headerShow ?
-          <Header hasTabs>
+          <Header hasTabs style={{ height: Constant.globalPaddingTop + 35 + 40, paddingRight: 0 }}>
             <View style={{
-              justifyContent: 'center',
-              alignItems: 'flex-start',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               flex: 1,
+              marginTop: Constant.globalPaddingTop + 25,
             }}>
               <View style={{
                 width: 130,
-                margin: 5,
               }}>
                 <Text xlarge>{'Myfive'}</Text>
                 <View style={{
@@ -99,9 +118,23 @@ export default class TabA extends Component {
                   <Text micro grey>β</Text>
                 </View>
               </View>
+              <View>
+                <Button onPress={() => this.onClickAdd()} transparent>
+                  <Icon
+                    name="md-add-circle"
+                    style={{
+                      fontSize: 25,
+                      color: Constant.FiveColor,
+                    }}
+                  />
+                </Button>
+              </View>
             </View>
           </Header>
-          : null
+          : <View style={{
+            paddingTop: Platform.OS === 'ios' ? 20 : 0,
+            backgroundColor: '#F8F8F8',
+          }}></View>
         }
         <Tabs locked tabBarUnderlineStyle={{
           backgroundColor: Constant.FiveColor,

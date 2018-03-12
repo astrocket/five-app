@@ -60,7 +60,7 @@ export default class ProfileWishIndex extends Component {
     const { navigation } = this.props;
     return this.state.categories.map(function(category, i) {
       return (
-        <Tab key={i} heading={ <TabHeading><Text>{category.category}</Text></TabHeading>} activeTextStyle={{
+        <Tab key={i} heading={category.category} activeTextStyle={{
           color: Constant.FiveColor,
         }}>
           <ProfileWishShow
@@ -84,12 +84,12 @@ export default class ProfileWishIndex extends Component {
           backgroundColor: Constant.FiveColor,
         }}>
           {this.renderCategoryTabs()}
-          <Tab heading={ <TabHeading><Text>음악</Text></TabHeading>} activeTextStyle={{
+          <Tab heading="음악" activeTextStyle={{
             color: Constant.FiveColor,
           }}>
             <Text>hi</Text>
           </Tab>
-          <Tab heading={ <TabHeading><Text>책</Text></TabHeading>} activeTextStyle={{
+          <Tab heading="책" activeTextStyle={{
             color: Constant.FiveColor,
           }}>
             <Text>hi</Text>

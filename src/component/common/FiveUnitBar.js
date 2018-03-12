@@ -7,7 +7,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveUnitBar = ({ id, location, title, image_url, onPress, icon, five_users_count, updated_at }) => {
+const FiveUnitBar = ({ id, location, title, image_url, onPress, icon, five_users_count, updated_at, friends_info }) => {
   const { container } = BaseStyle;
 
   if (updated_at) {
@@ -46,6 +46,7 @@ const FiveUnitBar = ({ id, location, title, image_url, onPress, icon, five_users
         <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{location}</Text>
+          <Text micro yellow>{friends_info}</Text>
         </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>

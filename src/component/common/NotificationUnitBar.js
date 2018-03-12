@@ -23,11 +23,11 @@ import BaseStyle from '../../config/BaseStyle';
 const NotificationUnitBar = ({ id, user, title, created_at, onPress }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress} transparent style={{ marginLeft: 0, paddingLeft: 20, width: 300, paddingTop: 10, paddingBottom: 10}}>
+    <ListItem avatar button onPress={onPress} transparent style={{ marginLeft: 0}}>
       <Left>
         <Thumbnail small source={{ uri: user.image_url }}/>
       </Left>
-      <Body>
+      <Body style={{borderBottomWidth: 0}}>
       <Grid>
         <Row>
           <Text numberOfLines={2}>{title}</Text>
