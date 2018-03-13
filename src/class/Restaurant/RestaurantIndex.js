@@ -17,6 +17,7 @@ import {
 import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
+import * as Images from '../../assets/images/Images';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
@@ -145,7 +146,7 @@ export default class RestaurantIndex extends Component {
                     multiple
                     id={item.id}
                     title={item.title}
-                    location={item.location}
+                    subtitle={item.subtitle}
                     friends_info={item.friends_info}
                     image_url={item.image_large_url}
                     onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
@@ -170,6 +171,7 @@ export default class RestaurantIndex extends Component {
                   <UserFivesBar
                     onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
                     onPressFollow={() => this.followCall(item, index)}
+                    image={Images.findImageOf(item.category)}
                     clicked={item.following}
                     category={item.category}
                     followers={item.followers_count}
@@ -225,7 +227,7 @@ export default class RestaurantIndex extends Component {
                 renderItem={({ item }) => (
                   <FiveUnitRound
                     id={item.id}
-                    subtitle={item.location}
+                    subtitle={item.subtitle}
                     title={item.title}
                     five_users_count={item.five_users_count}
                     image_url={item.image_medium_url}
@@ -250,7 +252,7 @@ export default class RestaurantIndex extends Component {
                 renderItem={({ item }) => (
                   <FiveUnitRound
                     id={item.id}
-                    subtitle={item.location}
+                    subtitle={item.subtitle}
                     title={item.title}
                     five_users_count={item.five_users_count}
                     image_url={item.image_medium_url}

@@ -20,7 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileFiveEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '파이브수정',
+    title: '내 FIVE 관리',
     ...Constant.FiveNavOptions,
   });
 
@@ -115,12 +115,13 @@ export default class ProfileFiveEdit extends Component {
         '알림',
         '해당 파이브를 삭제하시겠어요?',
         [
+          { text: '아니요',
+            style: 'cancel'
+          },
           {
             text: '네',
             onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
-            style: 'cancel',
           },
-          { text: '아니요' },
         ],
         { cancelable: true },
       );
@@ -145,9 +146,10 @@ export default class ProfileFiveEdit extends Component {
           multiple
           id={item.id}
           title={item.title}
-          location={item.location}
+          friends_info={`FIVE ${item.five_users_count}`}
+          subtitle={item.subtitle}
           image_url={item.image_medium_url}
-          icon={'ios-arrow-forward-outline'}
+          new_label={item.new_label}
         />
       )
     } else {
@@ -158,7 +160,7 @@ export default class ProfileFiveEdit extends Component {
           onPress={() => navigation.navigate(`ProfileFiveAdd${this.state.klass}`, {
             category: this.state.category, klass: this.state.klass, wishes: this.state.wishes
           })}
-          barHeight={60}
+          barHeight={50}
           borderRadius={10}
           marginRight={0}
         />

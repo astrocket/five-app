@@ -206,6 +206,7 @@ export default class HomeIndex extends Component {
                       five_category: item.klass.toLowerCase(),
                       navLoading: true,
                     })}
+                    image={Images.findImageOf(item.category)}
                     onPressFollow={() => this.followCall(item, index)}
                     category={item.category}
                     followers={item.followers_count}

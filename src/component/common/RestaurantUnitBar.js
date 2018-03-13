@@ -16,7 +16,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const RestaurantUnitBar = ({ id, location, title, image_url, onPress, barWidth, barHeight, borderRadius }) => {
+const RestaurantUnitBar = ({ id, subtitle, title, image_url, onPress, barWidth, barHeight, borderRadius }) => {
   const { container } = BaseStyle;
   return (
     <ListItem avatarList button onPress={onPress}>
@@ -27,7 +27,7 @@ const RestaurantUnitBar = ({ id, location, title, image_url, onPress, barWidth, 
       <Body>
         <View style={{ flex: 1 }}>
           <Text normal numberOfLines={1}>{title}</Text>
-          <Text note numberOfLines={1}>{location}</Text>
+          <Text note numberOfLines={1}>{subtitle}</Text>
         </View>
       </Body>
       <Right>

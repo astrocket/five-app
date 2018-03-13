@@ -153,7 +153,7 @@ export default class ProfileWishShow extends Component {
                     subtitle={data.wish.location}
                     image_url={data.wish.image_medium_url}
                     also_five={data.also_five}
-                    updated_at={data.wish.updated_at}
+                    five_users_count={data.wish.five_users_count}
                   />
                 }
                 disableRightSwipe={true}

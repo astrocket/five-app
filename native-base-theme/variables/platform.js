@@ -154,9 +154,9 @@ export default {
   tabActiveBgColor: platform === 'ios' ? '#cde1f9' : '#3F51B5',
 
   // Tab
-  tabDefaultBg: platform === 'ios' ? '#F8F8F8' : '#3F51B5',
-  topTabBarTextColor: platform === 'ios' ? '#6b6b6b' : '#b3c7f9',
-  topTabBarActiveTextColor: platform === 'ios' ? '#007aff' : '#fff',
+  tabDefaultBg: platform === 'ios' ? '#F8F8F8' : '#F8F8F8',
+  topTabBarTextColor: platform === 'ios' ? '#6b6b6b' : '#6b6b6b',
+  topTabBarActiveTextColor: platform === 'ios' ? '#007aff' : '#007aff',
   topTabActiveBgColor: platform === 'ios' ? '#cde1f9' : undefined,
   topTabBarBorderColor: platform === 'ios' ? '#a7a6ab' : '#fff',
   topTabBarActiveBorderColor: platform === 'ios' ? '#007aff' : '#fff',
@@ -170,7 +170,7 @@ export default {
   toolbarInputColor: platform === 'ios' ? '#CECDD2' : '#fff',
   searchBarHeight: platform === 'ios' ? 30 : 40,
   toolbarInverseBg: '#222',
-  toolbarTextColor: platform === 'ios' ? '#000' : '#fff',
+  toolbarTextColor: platform === 'ios' ? '#000' : '#000',
   toolbarDefaultBorder: platform === 'ios' ? '#a7a6ab' : '#3F51B5',
   iosStatusbar: platform === 'ios' ? 'dark-content' : 'light-content',
   get statusBarColor() {
@@ -270,7 +270,7 @@ export default {
   subtitleColor: platform === 'ios' ? '#8e8e93' : '#FFF',
 
   // New Variable
-  titleFontColor: platform === 'ios' ? '#000' : '#FFF',
+  titleFontColor: platform === 'ios' ? '#000' : '#000',
 
   // Other
   borderRadiusBase: platform === 'ios' ? 5 : 2,

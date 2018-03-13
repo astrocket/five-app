@@ -35,9 +35,9 @@ const FiveImages = ({ fives, image, pureWidth }) => {
       </View>
       <View style={{ flex: 1, flexWrap: 'wrap' }}>
         <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[2]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[3]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[4]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
       </View>
     </View>
   )

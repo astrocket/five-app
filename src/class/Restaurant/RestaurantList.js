@@ -128,7 +128,8 @@ export default class RestaurantList extends Component {
                 multiple
                 id={item.id}
                 title={item.title}
-                location={item.location}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
                 onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {

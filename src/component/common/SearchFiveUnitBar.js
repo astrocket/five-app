@@ -29,7 +29,7 @@ const FiveUnitBarImage = ({ image_url }) => {
   }
 };
 
-const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked, image_url  }) => {
+const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked, image_url, friends_info  }) => {
   const { container } = BaseStyle;
 
   if (clicked) {
@@ -42,6 +42,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
         <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
+          <Text micro yellow>{friends_info}</Text>
         </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
@@ -69,6 +70,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
         <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
+          <Text micro yellow>{friends_info}</Text>
         </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>

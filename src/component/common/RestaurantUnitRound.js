@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const RestaurantUnitRound = ({ id, location, title, image_url, five_users_count, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
+const RestaurantUnitRound = ({ id, subtitle, title, image_url, five_users_count, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
   const { container } = BaseStyle;
   return (
     <TouchableHighlight onPress={onPress} onLongPress={onLongPress} underlayColor={'#fff'}>
@@ -35,7 +35,7 @@ const RestaurantUnitRound = ({ id, location, title, image_url, five_users_count,
         </View>
         <View>
           <Text small numberOfLines={1}>{title}</Text>
-          <Text note numberOfLines={1}>{location}</Text>
+          <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>FIVE {five_users_count}</Text>
         </View>
       </View>

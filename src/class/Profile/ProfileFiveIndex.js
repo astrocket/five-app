@@ -31,15 +31,6 @@ export default class ProfileFiveIndex extends Component {
       navigation.state.params.navLoading ?
         null :
         <View style={BaseStyle.headerDoubleIconsContainer}>
-          <Button onPress={() => navigation.navigate('ProfileFiveEdit', { five_category: navigation.state.params.five_category })} transparent>
-            <Icon
-              name="md-create"
-              style={{
-                fontSize: 25,
-                color: Constant.FiveColor,
-              }}
-            />
-          </Button>
           <Button onPress={navigation.state.params.openShareActionSheet} transparent>
             <Icon
               name="ios-share-outline"
@@ -59,7 +50,7 @@ export default class ProfileFiveIndex extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      flip: false,
+      flip: true,
       clicked: false,
       fives: [],
       followers_count: '',
@@ -169,13 +160,12 @@ export default class ProfileFiveIndex extends Component {
         <Row key={1}>
           <FlatList
             data={this.state.fives}
-            style={rowWrapper}
             renderItem={({ item }) => (
               <FiveUnitBar
-                multiple
                 id={item.id}
                 title={item.title}
-                location={item.location}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
@@ -199,7 +189,7 @@ export default class ProfileFiveIndex extends Component {
               <FiveUnitFull
                 multiple
                 id={item.id}
-                location={item.location}
+                subtitle={item.subtitle}
                 title={item.title}
                 image_url={item.image_large_url}
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
@@ -233,46 +223,61 @@ export default class ProfileFiveIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <Row style={{
-            flexDirection: 'column',
-            padding: 10,
-          }}>
-            <Text style={{ marginBottom: 5 }}>{my_profile.name}의</Text>
-            <Text large>{this.state.category} 파이브</Text>
-          </Row>
-          <Row style={{
-            padding: 10,
-            marginBottom: 5,
-          }}>
-            <Col size={2} style={{ justifyContent: 'center' }}>
-              <View style={{ flexDirection: 'row' }}>
-                <Button transparent style={{
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  marginRight: 5,
-                }} onPress={() => navigation.navigate('ProfileFollowerIndex', { five_category: navigation.state.params.five_category })}>
-                  <Text small
-                        style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
-                  <Text note>{'Follower'}</Text>
-                </Button>
-                <Button transparent style={{
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  marginRight: 5,
-                }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { five_category: navigation.state.params.five_category })}>
-                  <Text small
-                        style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
-                  <Text note>{'Following'}</Text>
-                </Button>
-              </View>
-            </Col>
-            <Col size={1} style={{ alignItems: 'flex-end' }}>
+          <Grid>
+            <Row style={{
+              flexDirection: 'column',
+              padding: 10,
+            }}>
+              <Text style={{ marginBottom: 5 }}>{my_profile.name}의</Text>
+              <Text large>{this.state.category} 파이브</Text>
+            </Row>
+            <Row style={{
+              paddingBottom: 10,
+              marginBottom: 5,
+            }}>
+              <Col size={2} style={{ justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Button transparent style={{
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    marginRight: 5,
+                  }} onPress={() => navigation.navigate('ProfileFollowerIndex', { five_category: navigation.state.params.five_category })}>
+                    <Text small
+                          style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
+                    <Text note>{'Follower'}</Text>
+                  </Button>
+                  <Button transparent style={{
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    marginRight: 5,
+                  }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { five_category: navigation.state.params.five_category })}>
+                    <Text small
+                          style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
+                    <Text note>{'Following'}</Text>
+                  </Button>
+                </View>
+              </Col>
+              <Col size={1} style={{ alignItems: 'flex-end' }}>
+                <View>
+                  <Button onPress={() => navigation.navigate('ProfileFiveEdit', { five_category: navigation.state.params.five_category })} transparent>
+                    <Icon
+                      name="md-create"
+                      style={{
+                        fontSize: 25,
+                        color: Constant.FiveColor,
+                      }}
+                    />
+                  </Button>
+                </View>
+              </Col>
+              {/*<Col size={1} style={{ alignItems: 'flex-end' }}>
               <View>
                 {this.renderFlipButton(this.state.flip)}
               </View>
-            </Col>
-          </Row>
-          {this.renderCard(this.state.flip)}
+            </Col>*/}
+            </Row>
+            {this.renderCard(this.state.flip)}
+          </Grid>
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

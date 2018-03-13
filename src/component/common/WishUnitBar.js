@@ -10,7 +10,7 @@ import {
 } from './FollowSmallButton';
 import BaseStyle from '../../config/BaseStyle';
 
-const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, icon, also_five, updated_at }) => {
+const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, icon, also_five, five_users_count }) => {
   const { container } = BaseStyle;
 
   return (
@@ -23,9 +23,9 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
       </TouchableOpacity>
       <Body>
       <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-        <Text note numberOfLines={1}>{updated_at.split('T')[0]}</Text>
         <Text normal numberOfLines={1} style={{ marginBottom: 0 }}>{title}</Text>
         <Text note numberOfLines={1}>{subtitle}</Text>
+        <Text micro yellow>FIVE {five_users_count}</Text>
       </View>
       </Body>
       <Right style={{ alignItems: 'center', alignSelf: 'center' }}>

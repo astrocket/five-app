@@ -106,7 +106,8 @@ export default class FiveStoryShow extends Component {
                     <FiveUnitBar
                       id={item.id}
                       title={item.title}
-                      location={item.subtitle}
+                      subtitle={item.subtitle}
+                      friends_info={`FIVE ${item.five_users_count}`}
                       image_url={item.image_medium_url}
                       onPress={() => navigation.navigate(`${item.klass}Show`, {
                         title: item.title,

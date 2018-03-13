@@ -63,7 +63,7 @@ export default class UserFiveShow extends Component {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
       user: this.props.navigation.state.params.user,
-      flip: false,
+      flip: true,
       clicked: false,
       fives: [],
       followers_count: '',
@@ -212,6 +212,7 @@ export default class UserFiveShow extends Component {
 
   renderCard(flip) {
     const { navigation } = this.props;
+    const { rowWrapper } = BaseStyle;
 
     if (flip) {
       return (
@@ -241,6 +242,7 @@ export default class UserFiveShow extends Component {
         <Row key={2}>
           <FlatList
             data={this.state.fives}
+            style={rowWrapper}
             renderItem={({ item }) => (
               <FiveUnitFull
                 multiple
@@ -285,7 +287,7 @@ export default class UserFiveShow extends Component {
             <Text large>{this.state.category} 파이브</Text>
           </Row>
           <Row style={{
-            padding: 10,
+            paddingBottom: 10,
             marginBottom: 5,
           }}>
             <Col size={2} style={{ justifyContent: 'center' }}>
@@ -316,11 +318,11 @@ export default class UserFiveShow extends Component {
                 </Button>
               </View>
             </Col>
-            <Col size={1} style={{ alignItems: 'flex-end' }}>
+            {/*<Col size={1} style={{ alignItems: 'flex-end' }}>
               <View>
                 {this.renderFlipButton(this.state.flip)}
               </View>
-            </Col>
+            </Col>*/}
           </Row>
           {this.renderCard(this.state.flip)}
         </Content>

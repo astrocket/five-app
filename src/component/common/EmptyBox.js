@@ -29,7 +29,7 @@ const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWid
         <Icon
           name="ios-add-circle-outline"
           style={{
-            fontSize: 50,
+            fontSize: 40,
             color: '#FFF',
           }}
         />

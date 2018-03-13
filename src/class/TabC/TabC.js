@@ -4,14 +4,14 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button, Toast, Left, Body, Title, Right
+  Item, Input, Icon, Button, Toast, Left, Body, Title, Right,
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ElevenHeader } from '../../component/common';
+import { FiveUnitBar, ElevenHeader, RowHeaderBar } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -111,88 +111,44 @@ export default class TabC extends Component {
                 ListHeaderComponent={() => {
                   if (this.state.restaurants.length > 0) {
                     return (
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}>
-                        <Text small>맛집</Text>
-                        <TouchableOpacity
-                          onPress={() => this.props.navigation.navigate('RestaurantList', {
-                            restaurants: this.state.restaurants,
-                            search_params: this.state.input_search,
-                          })} underlayColor={'#fff'}>
-                          <Text primary>더보기</Text>
-                        </TouchableOpacity>
-                      </View>
+                      <RowHeaderBar
+                        title={'맛집'}
+                        onPress={() => this.props.navigation.navigate('RestaurantList', {
+                          restaurants: this.state.restaurants,
+                          search_params: this.state.input_search,
+                        })}
+                        moreTitle={'더보기'}
+                      />
                     );
                   } else {
                     return (
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}>
-                        <Text small>맛집이 없습니다.</Text>
-                        <TouchableOpacity
-                          onPress={() => this.props.navigation.navigate('RestaurantList', {
-                            restaurants: this.state.restaurants,
-                          })} underlayColor={'#fff'}>
-                          <Text primary>전체보기</Text>
-                        </TouchableOpacity>
-                      </View>
+                      <RowHeaderBar
+                        title={'맛집이 없습니다'}
+                        onPress={() => this.props.navigation.navigate('RestaurantList', {
+                          restaurants: this.state.restaurants,
+                        })}
+                        moreTitle={'전체보기'}
+                      />
                     );
                   }
                 }
                 }
               />
             </Row>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}>
-              <Text small>음악</Text>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
-                  restaurants: this.state.restaurants,
-                })} underlayColor={'#fff'}>
-                <Text primary>더보기</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}>
-              <Text small>책</Text>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
-                  restaurants: this.state.restaurants,
-                })} underlayColor={'#fff'}>
-                <Text primary>더보기</Text>
-              </TouchableOpacity>
-            </View>
+            <RowHeaderBar
+              title={'음악'}
+              onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
+                restaurants: this.state.restaurants,
+              })}
+              moreTitle={'전체보기'}
+            />
+            <RowHeaderBar
+              title={'책'}
+              onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
+                restaurants: this.state.restaurants,
+              })}
+              moreTitle={'전체보기'}
+            />
           </Grid>
         </Content>
       );
