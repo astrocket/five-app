@@ -154,7 +154,6 @@ export default class SignUpForm extends Component {
     return (
       <BottomFullButton
         onPress={() => this.trySignUp()}
-        disabled={this.state.disableButton}
       >
         완료
       </BottomFullButton>
@@ -180,7 +179,6 @@ export default class SignUpForm extends Component {
                 autoFocus={true}
                 onChangeText={(input_name) => {
                   this.setState({ input_name });
-                  this.readyToSubmit();
                 }}
                 onSubmitEditing={Keyboard.dismiss}
                 keyboardType={'email-address'}
@@ -194,7 +192,6 @@ export default class SignUpForm extends Component {
                 value={''}
                 onChangeText={(input_birth) => {
                   this.setState({ input_birth });
-                  this.readyToSubmit();
                 }}
                 onSubmitEditing={Keyboard.dismiss}
                 returnKeyType={'next'}
@@ -210,11 +207,9 @@ export default class SignUpForm extends Component {
                 rightClicked={this.state.right_clicked}
                 onLeftPress={() => {
                     this.setState({input_gender: 'F', left_clicked: true, right_clicked: false});
-                    this.readyToSubmit();
                 }}
                 onRightPress={() => {
                   this.setState({input_gender: 'M', left_clicked: false, right_clicked: true});
-                  this.readyToSubmit();
                 }}
               />
             </Row>
@@ -224,7 +219,6 @@ export default class SignUpForm extends Component {
                 value={''}
                 onChangeText={(input_password) => {
                   this.setState({ input_password });
-                  this.readyToSubmit()
                 }}
                 onSubmitEditing={() => Keyboard.dismiss}
                 returnKeyType={'done'}

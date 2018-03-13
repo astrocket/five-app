@@ -129,45 +129,6 @@ export default class HomeIndex extends Component {
           />
         }>
           <Grid>
- {/*           <RowHeaderBar
-              title={''}
-              onPress={() => console.log('hi')}
-              moreTitle={'추가'}
-            />
-            <Row>
-              <FlatList
-                data={this.state.categories}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <HomeCategoryBar
-                    onPress={() => navigation.navigate('RestaurantIndex')}
-                    image={Images.findImageOf(item.klass.toLowerCase())}
-                    title={item.category}
-                    people={item.users_count}
-                    new_people={item.new_users_count}
-                  />
-                )}
-                keyExtractor={item => 'five-category-list-' + item.id}
-                ListFooterComponent={
-                  <List>
-                    <HomeCategoryBar
-                      onPress={() => console.log('hi')}
-                      image={Images.music_main}
-                      title={'음악 더미데이터'}
-                      people={'11932'}
-                      new_people={'2'}
-                    />
-                    <HomeCategoryBar
-                      onPress={() => console.log('hi')}
-                      image={Images.book_main}
-                      title={'책 더미데이터'}
-                      people={'8360'}
-                      new_people={'7'}
-                    />
-                  </List>
-                }
-              />
-            </Row>*/}
             <RowHeaderBar
               title={'FIVE 스토리'}
             />
@@ -206,7 +167,7 @@ export default class HomeIndex extends Component {
                       five_category: item.klass.toLowerCase(),
                       navLoading: true,
                     })}
-                    image={Images.findImageOf(item.category)}
+                    defaultImage={Images.findImageOf(item.category)}
                     onPressFollow={() => this.followCall(item, index)}
                     category={item.category}
                     followers={item.followers_count}

@@ -25,29 +25,13 @@ export default class TabD extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     tabBarLabel: '소식',
     tabBarIcon: ({ tintColor }) => (
-      <View style={{ height: 30 }}>
-        <Icon
-          name="md-megaphone"
-          style={{
-            fontSize: 25,
-            color: tintColor,
-          }}
-        />
-        {/*{navigation.state.params.noticeCount ?
-         <View style={{
-            position:'absolute',
-            top:-3,
-            right:-10,
-            minWidth:20,
-            height:20,
-            borderRadius:15,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: Constant.FiveColor,
-          }}><Text micro style={{color: '#FFF', textAlign: 'center'}}>{screenProps.noticeCount}</Text>
-         </View> : null
-        }*/}
-      </View>
+      <Icon
+        name="md-megaphone"
+        style={{
+          fontSize: 25,
+          color: tintColor,
+        }}
+      />
     ),
     header: null,
     ...Constant.FiveNavOptions,

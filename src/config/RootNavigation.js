@@ -22,7 +22,6 @@ import RestaurantIndex from '../class/Restaurant/RestaurantIndex';
 import RestaurantList from '../class/Restaurant/RestaurantList';
 import RestaurantShow from '../class/Restaurant/RestaurantShow';
 import RestaurantFiveUserList from '../class/Restaurant/RestaurantFiveUserList';
-import AddFiveRestaurant from '../class/Search/AddFiveRestaurant';
 import MusicIndex from '../class/Music/MusicIndex';
 import MusicList from '../class/Music/MusicList';
 import MusicShow from '../class/Music/MusicShow';
@@ -44,6 +43,7 @@ import ProfileFollowerIndex from '../class/Profile/ProfileFollowerIndex';
 import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
 import FiveStoryShow from '../class/Page/FiveStoryShow';
 import ProfileFiveAddRestaurant from '../class/Profile/ProfileFiveAddRestaurant';
+import ProfileFiveAddMusic from '../class/Profile/ProfileFiveAddMusic';
 import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import InfoEdit from '../class/Setting/InfoEdit';
 import AccountEdit from '../class/Setting/AccoutEdit';
@@ -174,6 +174,9 @@ const StackNavigation = StackNavigator(
     ProfileFiveAddRestaurant: {
       screen: ProfileFiveAddRestaurant,
     },
+    ProfileFiveAddMusic: {
+      screen: ProfileFiveAddMusic,
+    },
     Setting: {
       screen: Setting,
     },
@@ -188,9 +191,6 @@ const StackNavigation = StackNavigator(
     },
     CategoryEdit: {
       screen: CategoryEdit,
-    },
-    AddFiveRestaurant: {
-      screen: AddFiveRestaurant,
     },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',

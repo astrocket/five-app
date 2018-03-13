@@ -1,3 +1,4 @@
+/*
 import React, { Component } from 'react';
 import {
   View, FlatList, Alert,
@@ -259,3 +260,4 @@ export default class AddFiveRestaurant extends Component {
     );
   }
 }
+*/

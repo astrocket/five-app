@@ -37,7 +37,7 @@ export default class ProfileFiveAddRestaurant extends Component {
       page_loading: false,
       input_search: '',
       no_more: true,
-      documents: [],
+      tracks: [],
       clicked: [],
       searched: false,
       wishes: this.props.navigation.state.params.wishes,
@@ -91,50 +91,37 @@ export default class ProfileFiveAddRestaurant extends Component {
 
   onCreateFiveCallSuccess(data, index) {
     const stateBefore = [ ...this.state.wishes ];
-    //documentsBefore.splice(index, 1);
+    //tracksBefore.splice(index, 1);
     stateBefore[ index ].clicked = true;
     this.setState({ wishes: stateBefore });
   }
 
   // 보관함 담기 끝
 
-  // 카카오 검색결과 추가 하기 시작
-  addFive(document, index) {
-    axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, {
+  // 뮤직스 검색결과 추가 하기 시작
+  addFive(track, index) {
+    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.klass.toLowerCase()}`, {
+      track: track,
+    }, {
       headers: {
-        'Authorization': ApiServer.KAKAO_API_KEY,
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
       },
     }).then((response) => {
-      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.klass.toLowerCase()}`, {
-        zipcode: response.data.documents[ 0 ].road_address.zone_no,
-        document: document,
-      }, {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      }).then((response) => {
-        this.onAddFiveSuccess(response.data, document, index);
-      }).catch((error) => {
-        Toast.show({
-          text: JSON.stringify(error.response.data.errors),
-          position: 'bottom',
-          duration: 1500,
-        });
-      });
+      this.onAddFiveSuccess(response.data, track, index);
     }).catch((error) => {
       Toast.show({
-        text: JSON.stringify(error.response.data),
+        text: JSON.stringify(error.response.data.errors),
         position: 'bottom',
         duration: 1500,
       });
     });
   }
 
-  askAddFive(document, index) {
+  askAddFive(track, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${document.place_name}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${track.title}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -142,21 +129,21 @@ export default class ProfileFiveAddRestaurant extends Component {
         },
         {
           text: '네',
-          onPress: () => this.addFive(document, index),
+          onPress: () => this.addFive(track, index),
         },
       ],
       { cancelable: true },
     );
   }
 
-  onAddFiveSuccess(data, document, index) {
-    const documentsBefore = [ ...this.state.documents ];
-    //documentsBefore.splice(index, 1);
-    documentsBefore[ index ].clicked = true;
-    this.setState({ documents: documentsBefore }, () => {
+  onAddFiveSuccess(data, track, index) {
+    const tracksBefore = [ ...this.state.tracks ];
+    //tracksBefore.splice(index, 1);
+    tracksBefore[ index ].clicked = true;
+    this.setState({ tracks: tracksBefore }, () => {
       Alert.alert(
         `${this.state.category} FIVE 선택됨`,
-        `${document.place_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        `${track.title}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
         [
           {
             text: '그만 선택하기',
@@ -184,10 +171,10 @@ export default class ProfileFiveAddRestaurant extends Component {
     });
   }
 
-  // 카카오 검색 결과 추가하기 끝
+  // 뮤직스 검색 결과 추가하기 끝
 
-  // 백엔드 단 카카오 검색 관련 시작
-  searchApiKakao(input_search) {
+  // 백엔드 단 뮤직스 검색 관련 시작
+  searchApiMusix(input_search) {
     this.setState({ loading: true });
     const config = {
       headers: {
@@ -195,15 +182,15 @@ export default class ProfileFiveAddRestaurant extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/search_kakao?s=${input_search}&page=${this.state.page}`, config)
+    axios.get(`${ApiServer.MUSICS}/search_musix?s=${input_search}&page=${this.state.page}`, config)
       .then((response) => {
-        if (response.data.documents.length > 0) {
+        if (response.data.tracks.length > 0) {
           this.setState({
             loading: false,
             no_result: false,
             searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
+            tracks: response.data.tracks,
+            no_more: response.data.no_more,
             page_loading: false,
           });
         } else {
@@ -211,8 +198,8 @@ export default class ProfileFiveAddRestaurant extends Component {
             loading: false,
             no_result: true,
             searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
+            tracks: response.data.tracks,
+            no_more: response.data.no_more,
             page_loading: false,
           });
         }
@@ -233,13 +220,13 @@ export default class ProfileFiveAddRestaurant extends Component {
           'X-User-Token': this.props.ApplicationStore.token,
         },
       };
-      axios.get(`${ApiServer.RESTAURANTS}/search_kakao?s=${input_search}&page=${this.state.page}`, config)
+      axios.get(`${ApiServer.MUSICS}/search_musix?s=${input_search}&page=${this.state.page}`, config)
         .then((response) => {
           console.log(response);
           this.setState({
             loading: false,
-            documents: [ ...this.state.documents, ...response.data.documents ],
-            no_more: response.data.meta.is_end,
+            tracks: [ ...this.state.tracks, ...response.data.tracks ],
+            no_more: response.data.no_more,
             page_loading: false,
           });
         })
@@ -250,67 +237,6 @@ export default class ProfileFiveAddRestaurant extends Component {
   }
 
   // 백엔드 단 카카오 검색 관련
-
-  // 프론트 단 카카오 검색 관련 시작
-  searchKakao(input_search) {
-    this.setState({ loading: true });
-    const config = {
-      headers: {
-        'Authorization': ApiServer.KAKAO_API_KEY,
-      },
-    };
-    axios.get(`${ApiServer.KAKAO_API}?query=${input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
-      .then((response) => {
-        if (response.data.documents.length > 0) {
-          this.setState({
-            loading: false,
-            no_result: false,
-            searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        } else {
-          this.setState({
-            loading: false,
-            no_result: true,
-            searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-
-  nextPageOld() {
-    this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
-    }, () => {
-      const config = {
-        headers: {
-          'Authorization': ApiServer.KAKAO_API_KEY,
-        },
-      };
-      axios.get(`${ApiServer.KAKAO_API}?query=${this.state.input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
-        .then((response) => {
-          console.log(response);
-          this.setState({
-            loading: false,
-            documents: [ ...this.state.documents, ...response.data.documents ],
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-    });
-  }
 
   handleInputSearch(input_search) {
     if (input_search === '') {
@@ -343,7 +269,7 @@ export default class ProfileFiveAddRestaurant extends Component {
     );
   }
 
-  // 카카오 검색 관련 끝
+  // 뮤직스 검색 관련 끝
 
   renderSearchResult() {
     if (this.state.searched) {
@@ -362,24 +288,23 @@ export default class ProfileFiveAddRestaurant extends Component {
         return (
           <Content onScroll={(e) => this.handleScroll(e)}>
             <FlatList
-              data={this.state.documents}
+              data={this.state.tracks}
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
                   id={item.id}
                   image_url={item.image_medium_url}
-                  title={item.place_name}
-                  subtitle={item.subtitle || item.address_name}
+                  title={item.track_name}
+                  subtitle={`${item.artist_name} / ${item.album_name}`}
                   friends_info={item.five_users_count ? `FIVE ${item.five_users_count}` : null}
                   clicked={item.clicked}
                   onPress={() => this.askAddFive(item, index)}
-                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('Map', {
-                    lng: item.x,
-                    lat: item.y,
-                    title: item.place_name,
+                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                    url: item.track_share_url.split('?')[0],
+                    headerTitle: item.track_name
                   })}
                 />
               )}
-              keyExtractor={item => 'search-five-list-' + item.id}
+              keyExtractor={item => 'search-five-list-' + item.track_id}
               ListFooterComponent={
                 this.renderNextPageButton()
               }
@@ -411,7 +336,7 @@ export default class ProfileFiveAddRestaurant extends Component {
               keyExtractor={item => 'five-wish-list-' + item.id}
               ListHeaderComponent={
                 <RowHeaderBar
-                  title={'클립해 둔 아래 맛집들 중에서도 선택할 수 있어요.'}
+                  title={'클립해 둔 아래 음악들 중에서도 선택할 수 있어요.'}
                 />
               }
             />
@@ -454,13 +379,13 @@ export default class ProfileFiveAddRestaurant extends Component {
           <Item>
             <Icon name="ios-search"/>
             <Input
-              placeholder="좋아하는 맛집을 검색해서 FIVE로 추가하세요"
+              placeholder="좋아하는 음악을 검색해서 FIVE로 추가하세요"
               autoCapitalize={'none'}
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
               returnKeyType={'search'}
-              onSubmitEditing={() => this.searchApiKakao(this.state.input_search)}
+              onSubmitEditing={() => this.searchApiMusix(this.state.input_search)}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
             <Icon name="ios-people"/>

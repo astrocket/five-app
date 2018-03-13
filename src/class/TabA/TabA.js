@@ -69,7 +69,7 @@ export default class TabA extends Component {
   onClickAdd() {
     const { navigation } = this.props;
     var BUTTONS = ['맛집 추가', '음악 추가', '책 추가', '취소'];
-    var pages = ['AddFiveRestaurant', 'AddFiveMusic', 'AddFiveBook'];
+    var pages = ['ProfileFiveAddRestaurant', 'ProfileFiveAddMusic', 'ProfileFiveAddBook'];
     var klasses = ['restaurant', 'music', 'book'];
     var categories = ['맛집', '음악',' 책'];
     var CANCEL_INDEX = 3;
@@ -92,7 +92,7 @@ export default class TabA extends Component {
     this.setState({ headerShow });
   }
 
-  renderCategoryTabs() {
+  renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
     return this.state.categories.map(function(category, i) {
       switch (category.klass.toLowerCase()) {
@@ -101,7 +101,7 @@ export default class TabA extends Component {
             <Tab key={i} heading="맛집" activeTextStyle={{
                   color: Constant.FiveColor,
                 }}>
-              <RestaurantIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+              <RestaurantIndex navigation={navigation} onScroll={onScroll}/>
             </Tab>
           );
         case 'music':
@@ -109,7 +109,7 @@ export default class TabA extends Component {
             <Tab key={i} heading="음악" activeTextStyle={{
               color: Constant.FiveColor,
             }}>
-              <MusicIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+              <MusicIndex navigation={navigation} onScroll={onScroll}/>
             </Tab>
           );
       }
@@ -169,7 +169,7 @@ export default class TabA extends Component {
           }}>
             <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
           </Tab>
-          {this.renderCategoryTabs()}
+          {this.renderCategoryTabs((e) => this.handleScroll(e))}
         </Tabs>
         {this.state.loading &&
         <View style={preLoading}>

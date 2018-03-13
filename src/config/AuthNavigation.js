@@ -15,7 +15,6 @@ import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import Hello from '../class/Hello/Hello';
 import Tutorial from '../class/Hello/Tutorial';
 import FiveSelect from '../class/Hello/FiveSelect';
-import AddFiveRestaurant from '../class/Search/AddFiveRestaurant';
 import Map from '../class/Page/Map';
 
 const CardNavigation = StackNavigator(
@@ -43,9 +42,6 @@ const CardNavigation = StackNavigator(
     },
     FiveSelect: {
       screen: FiveSelect,
-    },
-    AddFiveRestaurant: {
-      screen: AddFiveRestaurant,
     },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
