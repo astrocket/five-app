@@ -12,6 +12,7 @@ export const HOME = API + '/home';
 export const USERS = API + '/users';
 export const MY_PROFILE = API + '/profiles';
 export const RESTAURANTS = API + '/restaurants';
+export const MUSICS = API + '/musics';
 export const FOLLOWINGS = API + '/followings';
 export const NOTIFICATIONS = API + '/notifications';
 export const FIVE_STORY = API + '/five_stories';

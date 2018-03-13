@@ -44,7 +44,7 @@ export default class ProfileWishIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.MY_PROFILE}/wishes?category=restaurant`, config)
+    axios.get(`${ApiServer.MY_PROFILE}/wishes`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -84,16 +84,6 @@ export default class ProfileWishIndex extends Component {
           backgroundColor: Constant.FiveColor,
         }}>
           {this.renderCategoryTabs()}
-          <Tab heading="음악" activeTextStyle={{
-            color: Constant.FiveColor,
-          }}>
-            <Text>hi</Text>
-          </Tab>
-          <Tab heading="책" activeTextStyle={{
-            color: Constant.FiveColor,
-          }}>
-            <Text>hi</Text>
-          </Tab>
         </Tabs>
         {this.state.loading &&
         <View style={preLoading}>

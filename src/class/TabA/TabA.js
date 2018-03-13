@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import HomeIndex from './HomeIndex';
 import RestaurantIndex from '../Restaurant/RestaurantIndex';
+import MusicIndex from '../Music/MusicIndex';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -53,7 +54,7 @@ export default class TabA extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.MY_PROFILE}/wishes?category=restaurant`, config)
+    axios.get(`${ApiServer.MY_PROFILE}/categories`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -89,6 +90,30 @@ export default class TabA extends Component {
     var currentOffset = e.nativeEvent.contentOffset.y;
     var headerShow = currentOffset < 100;
     this.setState({ headerShow });
+  }
+
+  renderCategoryTabs() {
+    const { navigation } = this.props;
+    return this.state.categories.map(function(category, i) {
+      switch (category.klass.toLowerCase()) {
+        case 'restaurant':
+          return (
+            <Tab key={i} heading="맛집" activeTextStyle={{
+                  color: Constant.FiveColor,
+                }}>
+              <RestaurantIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+            </Tab>
+          );
+        case 'music':
+          return (
+            <Tab key={i} heading="음악" activeTextStyle={{
+              color: Constant.FiveColor,
+            }}>
+              <MusicIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
+            </Tab>
+          );
+      }
+    });
   }
 
   render() {
@@ -144,21 +169,7 @@ export default class TabA extends Component {
           }}>
             <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
           </Tab>
-          <Tab heading="맛집" activeTextStyle={{
-            color: Constant.FiveColor,
-          }}>
-            <RestaurantIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
-          </Tab>
-          <Tab heading="음악" activeTextStyle={{
-            color: Constant.FiveColor,
-          }}>
-            <Text>hi</Text>
-          </Tab>
-          <Tab heading="책" activeTextStyle={{
-            color: Constant.FiveColor,
-          }}>
-            <Text>hi</Text>
-          </Tab>
+          {this.renderCategoryTabs()}
         </Tabs>
         {this.state.loading &&
         <View style={preLoading}>

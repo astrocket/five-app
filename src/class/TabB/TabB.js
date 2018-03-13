@@ -62,7 +62,7 @@ export default class TabB extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.MY_PROFILE}?category=restaurant`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}`, config)
       .then((response) => {
         this.props.ApplicationStore.setMyProfile(response.data.user);
         this.setState({
@@ -130,7 +130,7 @@ export default class TabB extends Component {
               image={Images.findImageOf(item.klass.toLowerCase())}
             />
           )}
-          keyExtractor={item => 'five-category-list-' + item.id}
+          keyExtractor={item => 'five-category-list-' + item.klass}
           ListHeaderComponent={
             <Row style={{
               height: 250,
@@ -180,53 +180,7 @@ export default class TabB extends Component {
               </Col>
             </Row>
           }
-          ListFooterComponent={
-            <View>
-              <FivesBar
-                onPress={() =>
-                  Toast.show({
-                    text: '더미카테고리',
-                    position: 'bottom',
-                    duration: 1500,
-                  })}
-                category={'더미데이터'}
-                followers={'222'}
-                followees={'242'}
-                fives={[]}
-                image={Images.restaurant_main}
-              />
-              <FivesBar
-                onPress={() =>
-                  Toast.show({
-                    text: '더미카테고리',
-                    position: 'bottom',
-                    duration: 1500,
-                  })}
-                category={'더미데이터'}
-                followers={'222'}
-                followees={'242'}
-                fives={[]}
-                image={Images.restaurant_main}
-              />
-              <FivesBar
-                onPress={() =>
-                  Toast.show({
-                    text: '더미카테고리',
-                    position: 'bottom',
-                    duration: 1500,
-                  })}
-                category={'더미데이터'}
-                followers={'222'}
-                followees={'242'}
-                fives={[]}
-                image={Images.restaurant_main}
-              />
-            </View>
-          }
         />
-{/*
-        {this.renderRestaurantPopUp()}
-*/}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

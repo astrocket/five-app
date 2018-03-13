@@ -43,6 +43,8 @@ export default class TabC extends Component {
       loading: false,
       searched: false,
       headerShow: true,
+      restaurants: [],
+      musics: [],
     };
   }
 
@@ -61,6 +63,7 @@ export default class TabC extends Component {
           loading: false,
           searched: true,
           restaurants: response.data.restaurants,
+          musics: response.data.musics,
           page_loading: false,
         });
       })
@@ -135,13 +138,52 @@ export default class TabC extends Component {
                 }
               />
             </Row>
-            <RowHeaderBar
-              title={'음악'}
-              onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
-                restaurants: this.state.restaurants,
-              })}
-              moreTitle={'전체보기'}
-            />
+            <Row>
+              <FlatList
+                data={this.state.musics}
+                renderItem={({ item, index }) => (
+                  <FiveUnitBar
+                    multiple
+                    id={item.id}
+                    title={item.title}
+                    location={item.location}
+                    friends_info={item.friends_info}
+                    image_url={item.image_medium_url}
+                    icon={'ios-arrow-forward-outline'}
+                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                      title: item.title,
+                      id: item.id,
+                      navLoading: true,
+                    })}
+                  />
+                )}
+                keyExtractor={item => 'search-music-list-' + item.id}
+                ListHeaderComponent={() => {
+                  if (this.state.musics.length > 0) {
+                    return (
+                      <RowHeaderBar
+                        title={'음악'}
+                        onPress={() => this.props.navigation.navigate('MusicList', {
+                          musics: this.state.musics,
+                        })}
+                        moreTitle={'더보기'}
+                      />
+                    );
+                  } else {
+                    return (
+                      <RowHeaderBar
+                        title={'음악이 없습니다'}
+                        onPress={() => this.props.navigation.navigate('MusicList', {
+                          musics: this.state.musics,
+                        })}
+                        moreTitle={'전체보기'}
+                      />
+                    );
+                  }
+                }
+                }
+              />
+            </Row>
             <RowHeaderBar
               title={'책'}
               onPress={() => this.props.navigation.navigate('RestaurantSearchList', {

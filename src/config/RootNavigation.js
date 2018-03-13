@@ -19,11 +19,14 @@ import PageA from '../class/Page/PageA';
 import PageB from '../class/Page/PageB';
 import PageC from '../class/Page/PageC';
 import RestaurantIndex from '../class/Restaurant/RestaurantIndex';
-import RestaurantNew from '../class/Restaurant/RestaurantNew';
 import RestaurantList from '../class/Restaurant/RestaurantList';
 import RestaurantShow from '../class/Restaurant/RestaurantShow';
 import RestaurantFiveUserList from '../class/Restaurant/RestaurantFiveUserList';
 import AddFiveRestaurant from '../class/Search/AddFiveRestaurant';
+import MusicIndex from '../class/Music/MusicIndex';
+import MusicList from '../class/Music/MusicList';
+import MusicShow from '../class/Music/MusicShow';
+import MusicFiveUserList from '../class/Music/MusicFiveUserList';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
@@ -102,9 +105,6 @@ const StackNavigation = StackNavigator(
         header: null,
       },
     },
-    RestaurantNew: {
-      screen: RestaurantNew,
-    },
     RestaurantIndex: {
       screen: RestaurantIndex,
     },
@@ -116,6 +116,18 @@ const StackNavigation = StackNavigator(
     },
     RestaurantFiveUserList: {
       screen: RestaurantFiveUserList,
+    },
+    MusicIndex: {
+      screen: MusicIndex,
+    },
+    MusicList: {
+      screen: MusicList,
+    },
+    MusicShow: {
+      screen: MusicShow,
+    },
+    MusicFiveUserList: {
+      screen: MusicFiveUserList,
     },
     Invitation: {
       screen: Invitation,

@@ -48,6 +48,9 @@ export const CategoryToKorean = (category) => {
     case 'restaurant':
       korean_category = '맛집';
       break;
+    case 'music':
+      korean_category = '음악';
+      break;
     default:
       korean_category = '';
       break;
@@ -60,6 +63,9 @@ export const CategoryToApi = (category) => {
   switch (category) {
     case 'restaurant':
       api_suffix = ApiServer.RESTAURANTS;
+      break;
+    case 'music':
+      api_suffix = ApiServer.MUSICS;
       break;
     default:
       api_suffix = ApiServer.API;

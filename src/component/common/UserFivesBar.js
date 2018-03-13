@@ -8,36 +8,36 @@ import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
-const UnitImage = ({ five, image, width, height }) => {
+const UnitImage = ({ five, defaultImage, width, height }) => {
   if (five) {
     return (
       <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 4, width: width - 4, margin: 2, borderRadius: 10 }}/>
     )
   } else {
     return (
-      <Image key={2} source={image} style={{height: height - 4, width: width - 4, margin: 2}}/>
+      <Image key={2} source={defaultImage} style={{height: height - 4, width: width - 4, margin: 2}}/>
     )
   }
 };
 
-const FiveImages = ({ fives, image, pureWidth }) => {
+const FiveImages = ({ fives, defaultImage, pureWidth }) => {
   return(
     <View style={{ flexDirection: 'row', flex: 1, height: pureWidth / 2, width: pureWidth}}>
       <View style={{ flex: 1 }}>
-        <UnitImage five={fives[0]} image={image} height={pureWidth / 2} width={pureWidth / 2} />
+        <UnitImage five={fives[0]} defaultImage={defaultImage} height={pureWidth / 2} width={pureWidth / 2} />
       </View>
       <View style={{ flex: 1, flexWrap: 'wrap' }}>
-        <UnitImage five={fives[1]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[2]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[3]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
-        <UnitImage five={fives[4]} image={image} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[1]} defaultImage={defaultImage} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[2]} defaultImage={defaultImage} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[3]} defaultImage={defaultImage} height={pureWidth / 4} width={pureWidth / 4} />
+        <UnitImage five={fives[4]} defaultImage={defaultImage} height={pureWidth / 4} width={pureWidth / 4} />
       </View>
     </View>
   )
 };
 
 
-const UserFivesBar = ({ image, onPress, onPressFollow, category, followers, followees, fives, user, clicked }) => {
+const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, followers, followees, fives, user, clicked }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
   let cardMargin = 20;
@@ -51,7 +51,7 @@ const UserFivesBar = ({ image, onPress, onPressFollow, category, followers, foll
           marginBottom: 10,
           padding: 10,
           flex: 1, }}>
-          <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
+          <FiveImages fives={fives} defaultImage={defaultImage} pureWidth={pureWidth} />
         </View>
       </TouchableOpacity>
       <ListItem cardStyle style={{ borderRadius: 10, backgroundColor: 'transparent' }}>

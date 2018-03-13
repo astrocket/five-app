@@ -24,10 +24,10 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class RestaurantList extends Component {
+export default class MusicList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '새로 선정된 맛집',
+    title: '새로 친구들이 좋아하는 음악',
     ...Constant.FiveNavOptions,
   });
 
@@ -36,7 +36,7 @@ export default class RestaurantList extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      restaurants: [],
+      musics: [],
       page: 1,
       page_loading: false,
       no_more: false,
@@ -55,11 +55,11 @@ export default class RestaurantList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    await axios.get(`${ApiServer.MUSICS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         this.setState({
           loading: false,
-          restaurants: response.data,
+          musics: response.data,
         });
       })
       .catch((error) => {
@@ -81,14 +81,14 @@ export default class RestaurantList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.RESTAURANTS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    axios.get(`${ApiServer.MUSICS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         console.log(response);
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });
         }
         this.setState({
-          restaurants: [ ...this.state.restaurants, ...response.data ],
+          musics: [ ...this.state.musics, ...response.data ],
           page_loading: false,
         });
       }).catch((error) => {
@@ -118,7 +118,7 @@ export default class RestaurantList extends Component {
           />
         }>
           <FlatList
-            data={this.state.restaurants}
+            data={this.state.musics}
             style={{
               paddingTop: 10,
             }}
@@ -138,7 +138,7 @@ export default class RestaurantList extends Component {
                 })}
               />
             )}
-            keyExtractor={item => 'restaurant-list-' + item.id}
+            keyExtractor={item => 'music-list-' + item.id}
             ListFooterComponent={
               () =>
                 <ShowMore

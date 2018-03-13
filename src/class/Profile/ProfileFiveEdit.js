@@ -30,6 +30,7 @@ export default class ProfileFiveEdit extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      five_category: this.props.navigation.state.params.five_category,
       klass: '',
       category: '',
       fives: [],
@@ -48,7 +49,7 @@ export default class ProfileFiveEdit extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.five_category}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -92,7 +93,7 @@ export default class ProfileFiveEdit extends Component {
   }
 
   askRestaurantDelete(secId, rowId, rowMap, five_data) {
-    const url = `${ApiServer.MY_PROFILE}/destroy_five?category=restaurant`;
+    const url = `${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.five_category}`;
     const item = this.state.fives[ rowId ];
     const data = {
       favorable_id: item.id
