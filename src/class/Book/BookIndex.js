@@ -5,16 +5,14 @@ import {
   FlatList,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Toast
+  Container, Content, Spinner, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  RowHeaderBar, FiveUnitRound, UserFivesBar,
-  FiveUnitFull, EmptyBox
+  RowHeaderBar, FiveUnitRound, UserFivesBar, FiveUnitFull, EmptyBox,
 } from '../../component/common';
-import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as Images from '../../assets/images/Images';
@@ -24,46 +22,20 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class RestaurantIndex extends Component {
+export default class BookIndex extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true, //실서비스에서는 로딩 true로
-      refreshing: false,
-      restaurants: [],
-      users: [],
-      my_wish_restaurants: [],
-      follow_suggestions: [],
-      challenge_restaurants: [],
-    };
-  }
+  state = {
+    loading: true,
+    refreshing: false,
+    books: [],
+    users: [],
+    my_wish_books: [],
+    follow_suggestions: [],
+    challenge_books: []
+  };
 
   componentDidMount() {
     this.apiCall();
-  }
-
-  async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(ApiServer.RESTAURANTS, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          restaurants: response.data.restaurants,
-          users: response.data.users,
-          my_wish_restaurants: response.data.my_wish_restaurants,
-          follow_suggestions: response.data.follow_suggestions,
-          challenge_restaurants: response.data.challenge_restaurants,
-        })
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
   }
 
   _onRefresh() {
@@ -71,6 +43,21 @@ export default class RestaurantIndex extends Component {
     this.apiCall().then(() => {
       this.setState({refreshing: false});
     });
+  }
+
+  async apiCall() {
+    const config = { headers: {
+      'X-User-Email': this.props.ApplicationStore.email,
+      'X-User-Token': this.props.ApplicationStore.token}};
+    await axios.get(ApiServer.BOOKS, config)
+      .then((response) => {
+        const { books, users, my_wish_books, follow_suggestions, challenge_books } = response.data;
+        this.setState({
+          loading: false, books, users, my_wish_books, follow_suggestions, challenge_books
+        })
+      }).catch((error) => {
+        console.log(error.response);
+      });
   }
 
   followCall(item, index) {
@@ -81,16 +68,13 @@ export default class RestaurantIndex extends Component {
       },
     };
 
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
+    const header = { headers: {
+      'X-User-Email': this.props.ApplicationStore.email,
+      'X-User-Token': this.props.ApplicationStore.token}};
 
     axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.klass.toLowerCase()}`, data, header)
       .then((response) => {
-        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
+        this.onCreateFollowCallSuccess(response, index);
       }).catch((error) => {
       console.log(error.response);
       Toast.show({
@@ -121,23 +105,19 @@ export default class RestaurantIndex extends Component {
           />
         }>
           <Grid>
-{/*            <MainLargeTitle
-              title={'맛집'}
-              rightImage={'restaurant'}
-            />*/}
             <RowHeaderBar
               title={'친구들의 five'}
-              onPress={() => navigation.navigate('RestaurantList', {
-                restaurants: this.state.restaurants,
+              onPress={() => navigation.navigate('BookList', {
+                books: this.state.books,
                 title: '친구들의 five'
               })}
               moreTitle={'모두보기'}
             />
             <Row>
-              {this.state.restaurants.length > 0 ?
+              {this.state.books.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.restaurants}
+                  data={this.state.books}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitFull
@@ -147,23 +127,22 @@ export default class RestaurantIndex extends Component {
                       subtitle={item.subtitle}
                       friends_info={item.friends_info}
                       image_url={item.image_large_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('BookShow', { title: item.title, id: item.id, navLoading: true })}
                       borderRadius={15}
                       marginRight={10}
                       cardCut={80}
                     />
                   )}
-                  keyExtractor={item => 'restaurant-' + item.id}
+                  keyExtractor={item => 'book-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`맛집 친구를 팔로우하면${'\n'}이 곳에서 친구들의 맛집 FIVE를 확인할 수 있어요.`}
+                  message={`책 친구를 팔로우하면${'\n'}이 곳에서 친구들의 책 FIVE를 확인할 수 있어요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
                 />
               }
-
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
@@ -192,24 +171,23 @@ export default class RestaurantIndex extends Component {
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 추천 해드릴 음악 팔로워가 없네요.`}
+                  message={`아직 추천 해드릴 책 팔로워가 없네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
                 />
               }
-
             </Row>
             <RowHeaderBar
-              title={'내가 클립해 둔 맛집'}
+              title={'내가 클립해 둔 책'}
               onPress={() => navigation.navigate('ProfileWishIndex')}
               moreTitle={'모두보기'}
             />
             <Row>
-              {this.state.my_wish_restaurants.length > 0 ?
+              {this.state.my_wish_books.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.my_wish_restaurants}
+                  data={this.state.my_wish_books}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
@@ -218,33 +196,32 @@ export default class RestaurantIndex extends Component {
                       title={item.title}
                       five_users_count={item.five_users_count}
                       image_url={item.image_medium_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('BookShow', { title: item.title, id: item.id, navLoading: true })}
                       barWidth={150}
                       barHeight={150}
                       borderRadius={15}
                       marginRight={10}
                     />
                   )}
-                  keyExtractor={item => 'wish-restaurant-' + item.id}
+                  keyExtractor={item => 'wish-book-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 클립에 담은 음악이 없으시네요.`}
+                  message={`아직 클립에 담은 책이 없으시네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
                 />
               }
-
             </Row>
             <RowHeaderBar
-              title={'추천 맛집(당신의 FIVE에 도전)'}
+              title={'추천 책(당신의 FIVE에 도전)'}
             />
             <Row>
-              {this.state.challenge_restaurants.length > 0 ?
+              {this.state.challenge_books.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.challenge_restaurants}
+                  data={this.state.challenge_books}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
@@ -253,14 +230,14 @@ export default class RestaurantIndex extends Component {
                       title={item.title}
                       five_users_count={item.five_users_count}
                       image_url={item.image_medium_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('BookShow', { title: item.title, id: item.id, navLoading: true })}
                       barWidth={150}
                       barHeight={150}
                       borderRadius={15}
                       marginRight={10}
                     />
                   )}
-                  keyExtractor={item => 'restaurant-challenge-' + item.id}
+                  keyExtractor={item => 'book-challenge-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
@@ -270,7 +247,6 @@ export default class RestaurantIndex extends Component {
                   marginRight={0}
                 />
               }
-
             </Row>
           </Grid>
         </Content>

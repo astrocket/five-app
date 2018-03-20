@@ -9,7 +9,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
-import { WishUnitBar } from '../../component/common';
+import { WishUnitBar, EmptyBox } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -150,38 +150,47 @@ export default class ProfileWishShow extends Component {
         <Content>
           <Grid>
             <Row>
-              <List
-                dataSource={this.ds.cloneWithRows(this.state.wishes)}
-                style={{
-                  paddingTop: 2.5,
-                }}
-                renderRow={(data, secId, rowId, rowMap) =>
-                  <WishUnitBar
-                    onPressImage={() => navigation.navigate('RestaurantShow', {
-                      id: data.wish.id,
-                      title: data.wish.title,
-                    })}
-                    onPress={() => this.createFiveCall(this.state.klass.toLowerCase(), data, rowId)}
-                    id={data.wish.id}
-                    title={data.wish.title}
-                    subtitle={data.wish.location}
-                    image_url={data.wish.image_medium_url}
-                    also_five={data.also_five}
-                    five_users_count={data.wish.five_users_count}
-                  />
-                }
-                disableRightSwipe={true}
-                renderLeftHiddenRow={data =>
-                  null
-                }
-                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                  <Button full danger onPress={_ => this.askRestaurantDelete(secId, rowId, rowMap, data)}>
-                    <Icon active name="trash"/>
-                  </Button>
-                }
-                leftOpenValue={75}
-                rightOpenValue={-75}
-              />
+              {this.state.wishes.length > 0 ?
+                <List
+                  dataSource={this.ds.cloneWithRows(this.state.wishes)}
+                  style={{
+                    paddingTop: 2.5,
+                  }}
+                  renderRow={(data, secId, rowId, rowMap) =>
+                    <WishUnitBar
+                      onPressImage={() => navigation.navigate('RestaurantShow', {
+                        id: data.wish.id,
+                        title: data.wish.title,
+                      })}
+                      onPress={() => this.createFiveCall(this.state.klass.toLowerCase(), data, rowId)}
+                      id={data.wish.id}
+                      title={data.wish.title}
+                      subtitle={data.wish.location}
+                      image_url={data.wish.image_medium_url}
+                      also_five={data.also_five}
+                      five_users_count={data.wish.five_users_count}
+                    />
+                  }
+                  disableRightSwipe={true}
+                  renderLeftHiddenRow={data =>
+                    null
+                  }
+                  renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                    <Button full danger onPress={_ => this.askRestaurantDelete(secId, rowId, rowMap, data)}>
+                      <Icon active name="trash"/>
+                    </Button>
+                  }
+                  leftOpenValue={75}
+                  rightOpenValue={-75}
+                />
+                :<EmptyBox
+                  barWidth={Constant.deviceWidth - 20}
+                  message={`아직 클립에 담긴 FIVE가 없네요.`}
+                  barHeight={100}
+                  borderRadius={10}
+                  marginRight={0}
+                />
+              }
             </Row>
           </Grid>
         </Content>

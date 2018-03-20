@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  RowHeaderBar, FiveUnitRound, UserFivesBar, FiveUnitFull
+  RowHeaderBar, FiveUnitRound, UserFivesBar, FiveUnitFull, EmptyBox,
 } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -114,51 +114,69 @@ export default class MusicIndex extends Component {
               moreTitle={'모두보기'}
             />
             <Row>
-              <FlatList
-                horizontal
-                data={this.state.musics}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveUnitFull
-                    multiple
-                    id={item.id}
-                    title={item.title}
-                    subtitle={item.subtitle}
-                    friends_info={item.friends_info}
-                    image_url={item.image_large_url}
-                    onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
-                    borderRadius={15}
-                    marginRight={10}
-                    cardCut={80}
-                  />
-                )}
-                keyExtractor={item => 'music-' + item.id}
-              />
+              {this.state.musics.length > 0 ?
+                <FlatList
+                  horizontal
+                  data={this.state.musics}
+                  style={rowWrapper}
+                  renderItem={({ item }) => (
+                    <FiveUnitFull
+                      multiple
+                      id={item.id}
+                      title={item.title}
+                      subtitle={item.subtitle}
+                      friends_info={item.friends_info}
+                      image_url={item.image_large_url}
+                      onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
+                      borderRadius={15}
+                      marginRight={10}
+                      cardCut={80}
+                    />
+                  )}
+                  keyExtractor={item => 'music-' + item.id}
+                />
+                :<EmptyBox
+                  barWidth={Constant.deviceWidth - 20}
+                  message={`음악 친구를 팔로우하면${'\n'}이 곳에서 친구들의 음악 FIVE를 확인할 수 있어요.`}
+                  barHeight={100}
+                  borderRadius={10}
+                  marginRight={0}
+                />
+              }
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={'팔로우 추천'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
-              <FlatList
-                horizontal
-                data={this.state.follow_suggestions}
-                style={rowWrapper}
-                renderItem={({ item, index }) => (
-                  <UserFivesBar
-                    onPress={() => navigation.navigate('UserShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
-                    onPressFollow={() => this.followCall(item, index)}
-                    defaultImage={Images.findImageOf(item.category)}
-                    clicked={item.following}
-                    category={item.category}
-                    followers={item.followers_count}
-                    followees={item.followees_count}
-                    fives={item.fives}
-                    user={item.user}
-                  />
-                )}
-                keyExtractor={item => 'user-fives-' + item.id}
-              />
+              {this.state.follow_suggestions.length > 0 ?
+                <FlatList
+                  horizontal
+                  data={this.state.follow_suggestions}
+                  style={rowWrapper}
+                  renderItem={({ item, index }) => (
+                    <UserFivesBar
+                      onPress={() => navigation.navigate('UserShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                      onPressFollow={() => this.followCall(item, index)}
+                      defaultImage={Images.findImageOf(item.category)}
+                      clicked={item.following}
+                      category={item.category}
+                      followers={item.followers_count}
+                      followees={item.followees_count}
+                      fives={item.fives}
+                      user={item.user}
+                    />
+                  )}
+                  keyExtractor={item => 'user-fives-' + item.id}
+                />
+                : <EmptyBox
+                  barWidth={Constant.deviceWidth - 20}
+                  message={`아직 추천 해드릴 음악 팔로워가 없네요.`}
+                  barHeight={100}
+                  borderRadius={10}
+                  marginRight={0}
+                />
+              }
             </Row>
             <RowHeaderBar
               title={'내가 클립해 둔 음악'}
@@ -166,51 +184,71 @@ export default class MusicIndex extends Component {
               moreTitle={'모두보기'}
             />
             <Row>
-              <FlatList
-                horizontal
-                data={this.state.my_wish_musics}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveUnitRound
-                    id={item.id}
-                    subtitle={item.subtitle}
-                    title={item.title}
-                    five_users_count={item.five_users_count}
-                    image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => 'wish-music-' + item.id}
-              />
+              {this.state.my_wish_musics.length > 0 ?
+                <FlatList
+                  horizontal
+                  data={this.state.my_wish_musics}
+                  style={rowWrapper}
+                  renderItem={({ item }) => (
+                    <FiveUnitRound
+                      id={item.id}
+                      subtitle={item.subtitle}
+                      title={item.title}
+                      five_users_count={item.five_users_count}
+                      image_url={item.image_medium_url}
+                      onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
+                      barWidth={150}
+                      barHeight={150}
+                      borderRadius={15}
+                      marginRight={10}
+                    />
+                  )}
+                  keyExtractor={item => 'wish-music-' + item.id}
+                />
+                :<EmptyBox
+                  barWidth={Constant.deviceWidth - 20}
+                  message={`아직 클립에 담은 음악이 없으시네요.`}
+                  barHeight={100}
+                  borderRadius={10}
+                  marginRight={0}
+                />
+              }
+
             </Row>
             <RowHeaderBar
               title={'추천 음악(당신의 FIVE에 도전)'}
             />
             <Row>
-              <FlatList
-                horizontal
-                data={this.state.challenge_musics}
-                style={rowWrapper}
-                renderItem={({ item }) => (
-                  <FiveUnitRound
-                    id={item.id}
-                    subtitle={item.subtitle}
-                    title={item.title}
-                    five_users_count={item.five_users_count}
-                    image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
-                  />
-                )}
-                keyExtractor={item => 'music-challenge-' + item.id}
-              />
+              {this.state.challenge_musics.length > 0 ?
+                <FlatList
+                  horizontal
+                  data={this.state.challenge_musics}
+                  style={rowWrapper}
+                  renderItem={({ item }) => (
+                    <FiveUnitRound
+                      id={item.id}
+                      subtitle={item.subtitle}
+                      title={item.title}
+                      five_users_count={item.five_users_count}
+                      image_url={item.image_medium_url}
+                      onPress={() => navigation.navigate('MusicShow', { title: item.title, id: item.id, navLoading: true })}
+                      barWidth={150}
+                      barHeight={150}
+                      borderRadius={15}
+                      marginRight={10}
+                    />
+                  )}
+                  keyExtractor={item => 'music-challenge-' + item.id}
+                />
+                :<EmptyBox
+                  barWidth={Constant.deviceWidth - 20}
+                  message={`아직 추천 해드릴 도전 FIVE가 없네요.`}
+                  barHeight={100}
+                  borderRadius={10}
+                  marginRight={0}
+                />
+              }
+
             </Row>
           </Grid>
         </Content>

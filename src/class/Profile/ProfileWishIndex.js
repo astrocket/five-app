@@ -21,7 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileWishIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '나의 보관함',
+    title: '나의 클립함',
     ...Constant.FiveNavOptions,
   });
 

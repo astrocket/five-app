@@ -11,7 +11,7 @@ import {
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ElevenHeader, RowHeaderBar } from '../../component/common';
+import { FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, UserUnitBar } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -45,6 +45,8 @@ export default class TabC extends Component {
       headerShow: true,
       restaurants: [],
       musics: [],
+      books: [],
+      users: [],
     };
   }
 
@@ -64,6 +66,8 @@ export default class TabC extends Component {
           searched: true,
           restaurants: response.data.restaurants,
           musics: response.data.musics,
+          books: response.data.books,
+          users: response.data.users,
           page_loading: false,
         });
       })
@@ -91,7 +95,7 @@ export default class TabC extends Component {
       return (
         <Content onScroll={(e) => this.handleScroll(e)}>
           <Grid>
-            <Row style={{ marginBottom: 20 }}>
+            <Row style={{ marginBottom: 10 }}>
               <FlatList
                 data={this.state.restaurants}
                 renderItem={({ item, index }) => (
@@ -99,8 +103,8 @@ export default class TabC extends Component {
                     multiple
                     id={item.id}
                     title={item.title}
-                    location={item.location}
-                    friends_info={item.friends_info}
+                    subtitle={item.subtitle}
+                    friends_info={`FIVE ${item.five_users_count}`}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
                     onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
@@ -119,26 +123,32 @@ export default class TabC extends Component {
                         onPress={() => this.props.navigation.navigate('RestaurantList', {
                           restaurants: this.state.restaurants,
                           search_params: this.state.input_search,
+                          title: `${this.state.input_search} 맛집 검색 결과`
                         })}
                         moreTitle={'더보기'}
                       />
                     );
                   } else {
                     return (
-                      <RowHeaderBar
-                        title={'맛집이 없습니다'}
-                        onPress={() => this.props.navigation.navigate('RestaurantList', {
-                          restaurants: this.state.restaurants,
-                        })}
-                        moreTitle={'전체보기'}
-                      />
+                      <View>
+                        <RowHeaderBar
+                          title={'맛집'}
+                        />
+                        <EmptyBox
+                          barWidth={Constant.deviceWidth - 20}
+                          message={`${this.state.input_search} 맛집 검색 결과가 없습니다`}
+                          barHeight={100}
+                          borderRadius={10}
+                          marginRight={0}
+                        />
+                      </View>
                     );
                   }
                 }
                 }
               />
             </Row>
-            <Row>
+            <Row style={{ marginBottom: 10 }}>
               <FlatList
                 data={this.state.musics}
                 renderItem={({ item, index }) => (
@@ -146,8 +156,8 @@ export default class TabC extends Component {
                     multiple
                     id={item.id}
                     title={item.title}
-                    location={item.location}
-                    friends_info={item.friends_info}
+                    subtitle={item.subtitle}
+                    friends_info={`FIVE ${item.five_users_count}`}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
                     onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
@@ -165,32 +175,136 @@ export default class TabC extends Component {
                         title={'음악'}
                         onPress={() => this.props.navigation.navigate('MusicList', {
                           musics: this.state.musics,
+                          search_params: this.state.input_search,
+                          title: `${this.state.input_search} 음악 검색 결과`
                         })}
                         moreTitle={'더보기'}
                       />
                     );
                   } else {
                     return (
-                      <RowHeaderBar
-                        title={'음악이 없습니다'}
-                        onPress={() => this.props.navigation.navigate('MusicList', {
-                          musics: this.state.musics,
-                        })}
-                        moreTitle={'전체보기'}
-                      />
+                      <View>
+                        <RowHeaderBar
+                          title={'음악'}
+                        />
+                        <EmptyBox
+                          barWidth={Constant.deviceWidth - 20}
+                          message={`${this.state.input_search} 음악 검색 결과가 없습니다`}
+                          barHeight={100}
+                          borderRadius={10}
+                          marginRight={0}
+                        />
+                      </View>
                     );
                   }
                 }
                 }
               />
             </Row>
-            <RowHeaderBar
-              title={'책'}
-              onPress={() => this.props.navigation.navigate('RestaurantSearchList', {
-                restaurants: this.state.restaurants,
-              })}
-              moreTitle={'전체보기'}
-            />
+            <Row style={{ marginBottom: 10 }}>
+              <FlatList
+                data={this.state.books}
+                renderItem={({ item, index }) => (
+                  <FiveUnitBar
+                    multiple
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    friends_info={`FIVE ${item.five_users_count}`}
+                    image_url={item.image_medium_url}
+                    icon={'ios-arrow-forward-outline'}
+                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                      title: item.title,
+                      id: item.id,
+                      navLoading: true,
+                    })}
+                  />
+                )}
+                keyExtractor={item => 'search-book-list-' + item.id}
+                ListHeaderComponent={() => {
+                  if (this.state.books.length > 0) {
+                    return (
+                      <RowHeaderBar
+                        title={'책'}
+                        onPress={() => this.props.navigation.navigate('BookList', {
+                          books: this.state.books,
+                          search_params: this.state.input_search,
+                          title: `${this.state.input_search} 책 검색 결과`
+                        })}
+                        moreTitle={'더보기'}
+                      />
+                    );
+                  } else {
+                    return (
+                      <View>
+                        <RowHeaderBar
+                          title={'책'}
+                        />
+                        <EmptyBox
+                          barWidth={Constant.deviceWidth - 20}
+                          message={`${this.state.input_search} 책 검색 결과가 없습니다`}
+                          barHeight={100}
+                          borderRadius={10}
+                          marginRight={0}
+                        />
+                      </View>
+                    );
+                  }
+                }
+                }
+              />
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <FlatList
+                data={this.state.users}
+                renderItem={({ item, index }) => (
+                  <FiveUnitBar
+                    multiple
+                    id={item.id}
+                    title={item.name}
+                    subtitle={item.introduce}
+                    image_url={item.image_medium_url}
+                    icon={'ios-arrow-forward-outline'}
+                    onPress={() => this.props.navigation.navigate('UserShow', {
+                      user: item,
+                      title: item.name,
+                    })}
+                  />
+                )}
+                keyExtractor={item => 'search-user-list-' + item.id}
+                ListHeaderComponent={() => {
+                  if (this.state.users.length > 0) {
+                    return (
+                      <RowHeaderBar
+                        title={'유저'}
+                        onPress={() => this.props.navigation.navigate('UserList', {
+                          users: this.state.users,
+                          search_params: this.state.input_search,
+                          title: `${this.state.input_search} 유저 검색 결과`
+                        })}
+                        moreTitle={'더보기'}
+                      />
+                    );
+                  } else {
+                    return (
+                      <View>
+                        <RowHeaderBar
+                          title={'유저'}
+                        />
+                        <EmptyBox
+                          barWidth={Constant.deviceWidth - 20}
+                          message={`${this.state.input_search} 유저 검색 결과가 없습니다`}
+                          barHeight={100}
+                          borderRadius={10}
+                          marginRight={0}
+                        />
+                      </View>
+                    );
+                  }
+                }
+                }
+              />
+            </Row>
           </Grid>
         </Content>
       );

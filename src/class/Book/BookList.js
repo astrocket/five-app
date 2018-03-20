@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import {
-  View,
-  FlatList, RefreshControl
+  View, FlatList, RefreshControl,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner,
+  Container,
+  Header,
+  Content,
+  Text,
+  Spinner,
+  Button,
 } from 'native-base';
 import {
-  Col, Row, Grid,
+  Col,
+  Row,
+  Grid,
 } from 'react-native-easy-grid';
 import { FiveUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';
@@ -18,7 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class UserList extends Component {
+export default class BookList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.title,
@@ -30,7 +36,7 @@ export default class UserList extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      users: [],
+      books: [],
       page: 1,
       page_loading: false,
       no_more: false,
@@ -49,11 +55,11 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    await axios.get(`${ApiServer.BOOKS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
         this.setState({
           loading: false,
-          users: response.data,
+          books: response.data,
         });
       })
       .catch((error) => {
@@ -62,7 +68,7 @@ export default class UserList extends Component {
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, page: 1 });
+    this.setState({refreshing: true, page: 1});
     this.apiCall().then(() => {
       this.setState({refreshing: false});
     });
@@ -75,13 +81,14 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    axios.get(`${ApiServer.BOOKS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
       .then((response) => {
+        console.log(response);
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });
         }
         this.setState({
-          users: [ ...this.state.users, ...response.data ],
+          books: [ ...this.state.books, ...response.data ],
           page_loading: false,
         });
       }).catch((error) => {
@@ -111,7 +118,7 @@ export default class UserList extends Component {
           />
         }>
           <FlatList
-            data={this.state.users}
+            data={this.state.books}
             style={{
               paddingTop: 10,
             }}
@@ -119,17 +126,19 @@ export default class UserList extends Component {
               <FiveUnitBar
                 multiple
                 id={item.id}
-                title={item.name}
-                subtitle={item.introduce}
+                title={item.title}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
-                onPress={() => navigation.navigate('UserShow', {
-                  user: item,
-                  title: item.name,
+                onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                  title: item.title,
+                  id: item.id,
+                  navLoading: true,
                 })}
               />
             )}
-            keyExtractor={item => 'user-list-' + item.id}
+            keyExtractor={item => 'book-list-' + item.id}
             ListFooterComponent={
               () =>
                 <ShowMore
@@ -144,7 +153,7 @@ export default class UserList extends Component {
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large" />
+          <Spinner size="large"/>
         </View>
         }
       </Container>

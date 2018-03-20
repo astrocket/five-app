@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight }) => {
+const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight, message }) => {
   const { container } = BaseStyle;
   return (
     <TouchableOpacity onPress={onPress} style={{ padding: 10 }}>
@@ -26,13 +26,16 @@ const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWid
         borderRadius: borderRadius,
         marginRight: marginRight
       }}>
-        <Icon
-          name="ios-add-circle-outline"
-          style={{
-            fontSize: 40,
-            color: '#FFF',
-          }}
-        />
+        {message ?
+          <Text grey>{message}</Text>
+          : <Icon
+            name="ios-add-circle-outline"
+            style={{
+              fontSize: 40,
+              color: '#FFF',
+            }}
+          />
+        }
       </View>
     </TouchableOpacity>
   );

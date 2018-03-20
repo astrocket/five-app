@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  FlatList, RefreshControl
+  FlatList, RefreshControl,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ShowMore } from '../../component/common';
+import { FiveUserUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -18,23 +18,24 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class UserList extends Component {
+export default class BookFiveUserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
+    title: '최근 유저들',
     ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
     super(props);
     this.state = {
+      category: this.props.navigation.state.params.category,
+      favorable_id: this.props.navigation.state.params.favorable_id,
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
       users: [],
       page: 1,
       page_loading: false,
       no_more: false,
-      search_params: this.props.navigation.state.params.search_params ? this.props.navigation.state.params.search_params : '',
     };
   }
 
@@ -49,7 +50,7 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    await axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
       .then((response) => {
         this.setState({
           loading: false,
@@ -62,7 +63,7 @@ export default class UserList extends Component {
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, page: 1 });
+    this.setState({refreshing: true, page: 1});
     this.apiCall().then(() => {
       this.setState({refreshing: false});
     });
@@ -75,7 +76,7 @@ export default class UserList extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
       .then((response) => {
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });
@@ -116,13 +117,9 @@ export default class UserList extends Component {
               paddingTop: 10,
             }}
             renderItem={({ item }) => (
-              <FiveUnitBar
-                multiple
-                id={item.id}
-                title={item.name}
-                subtitle={item.introduce}
-                image_url={item.image_medium_url}
-                icon={'ios-arrow-forward-outline'}
+              <FiveUserUnitBar
+                style={{ backgroundColor: '#fafafa' }}
+                user={item}
                 onPress={() => navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,

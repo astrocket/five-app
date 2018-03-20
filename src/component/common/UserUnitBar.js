@@ -31,7 +31,9 @@ const UserUnitBar = ({ id, name, image_url, onPress, introduce, followees_count,
       </View>
       </Body>
       <Right style={{ borderBottomWidth: 0 }}>
-        <Text note>{updated_at.split('T')[0]}</Text>
+        {updated_at ?
+          <Text note>{updated_at.split('T')[0]}</Text>
+        :null}
       </Right>
     </ListItem>
   );

@@ -397,7 +397,7 @@ export default class ProfileFiveAddRestaurant extends Component {
               autoFocus={true}
               multiline={false}
               returnKeyType={'search'}
-              onSubmitEditing={() => this.searchApiMusix(this.state.input_search)}
+              onSubmitEditing={() => this.setState({page:1},() => this.searchApiMusix(this.state.input_search))}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
           </Item>

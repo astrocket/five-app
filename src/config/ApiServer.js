@@ -1,4 +1,4 @@
-export const DOMAIN = '10.130.108.86:3000';
+export const DOMAIN = '192.168.0.3:3000';
 export const API = 'http://' + DOMAIN;
 //export const DOMAIN = "five_api.insomenia.com";
 //export const API = "http://" + DOMAIN;
@@ -13,6 +13,7 @@ export const USERS = API + '/users';
 export const MY_PROFILE = API + '/profiles';
 export const RESTAURANTS = API + '/restaurants';
 export const MUSICS = API + '/musics';
+export const BOOKS = API + '/books';
 export const FOLLOWINGS = API + '/followings';
 export const NOTIFICATIONS = API + '/notifications';
 export const FIVE_STORY = API + '/five_stories';

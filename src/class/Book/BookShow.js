@@ -24,7 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class MusicShow extends Component {
+export default class BookShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: null,//navigation.state.params.title,
@@ -64,7 +64,7 @@ export default class MusicShow extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      music: '',
+      book: '',
       flip: false,
       five_users: [],
       five_users_count: '',
@@ -93,7 +93,7 @@ export default class MusicShow extends Component {
       },
     };
     console.log(this.props.navigation.state.params.id);
-    await axios.get(`${ApiServer.MUSICS}/${this.props.navigation.state.params.id}`, config)
+    await axios.get(`${ApiServer.BOOKS}/${this.props.navigation.state.params.id}`, config)
       .then((response) => {
         this.props.navigation.setParams({
           my_five: response.data.my_five,
@@ -102,7 +102,7 @@ export default class MusicShow extends Component {
         });
         this.setState({
           loading: false,
-          music: response.data.music,
+          book: response.data.book,
           five_users: response.data.five_users,
           five_users_count: response.data.five_users_count,
           my_five: response.data.my_five,
@@ -123,10 +123,10 @@ export default class MusicShow extends Component {
   }
 
   createWishCall() {
-    var url = `${ApiServer.MY_PROFILE}/create_wish?category=music`;
+    var url = `${ApiServer.MY_PROFILE}/create_wish?category=book`;
 
     const data = {
-      favorable_id: this.state.music.id,
+      favorable_id: this.state.book.id,
     };
 
     const header = {
@@ -156,10 +156,10 @@ export default class MusicShow extends Component {
   }
 
   createFiveCall() {
-    var url = `${ApiServer.MY_PROFILE}/create_five?category=music`;
+    var url = `${ApiServer.MY_PROFILE}/create_five?category=book`;
 
     const data = {
-      favorable_id: this.state.music.id,
+      favorable_id: this.state.book.id,
     };
 
     const header = {
@@ -213,17 +213,17 @@ export default class MusicShow extends Component {
 
     if (!my_five && !my_wish) {
       BUTTONS = [ '보관함으로 추가', '나만의 FIVE 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=music`, `${ApiServer.MY_PROFILE}/create_five?category=music`, false ];
+      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=book`, `${ApiServer.MY_PROFILE}/create_five?category=book`, false ];
       CANCEL_INDEX = 2;
       message = '보관함 또는 나만의 FIVE에 담아보세요.';
     } else if (!my_five && my_wish) {
       BUTTONS = [ '나만의 FIVE 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_five?category=music`, false ];
+      URLS = [ `${ApiServer.MY_PROFILE}/create_five?category=book`, false ];
       CANCEL_INDEX = 1;
       message = '이미 보관함에 있는 아이템 입니다.';
     } else if (my_five && !my_wish) {
       BUTTONS = [ '보관함으로 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=music`, false ];
+      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=book`, false ];
       CANCEL_INDEX = 1;
       message = '이미 FIVE에 있는 아이템 입니다.';
     } else {
@@ -259,7 +259,7 @@ export default class MusicShow extends Component {
         {
           text: 'FIVE 바꾸기',
           onPress: () => this.props.navigation.navigate('ProfileFiveEdit', {
-            five_category: 'music',
+            five_category: 'book',
           }),
         },
         {
@@ -289,12 +289,12 @@ export default class MusicShow extends Component {
       }, () => {
         var message;
         if (fives_count === 5) {
-          message = `${this.state.music.title}이(가) 음악 FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
+          message = `${this.state.book.title}이(가) 책 FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
         } else {
-          message = `${this.state.music.title}이(가) 음악 FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
+          message = `${this.state.book.title}이(가) 책 FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
         }
         Alert.alert(
-          '음악 FIVE 선택됨',
+          '책 FIVE 선택됨',
           message,
           [
             {
@@ -308,7 +308,7 @@ export default class MusicShow extends Component {
     } else if (before_my_wish !== my_wish) {
       Alert.alert(
         '성공',
-        `${this.state.music.title}이(가) 음악 클립에 추가되었습니다.`,
+        `${this.state.book.title}이(가) 책 클립에 추가되었습니다.`,
         [
           {
             text: '확인',
@@ -319,7 +319,7 @@ export default class MusicShow extends Component {
       );
     } else if (before_my_wish === my_wish) {
       Toast.show({
-        text: '이미 클립에 담긴 음악 입니다.',
+        text: '이미 클립에 담긴 책 입니다.',
         position: 'bottom',
         duration: 1500,
       });
@@ -351,10 +351,10 @@ export default class MusicShow extends Component {
               paddingRight: 10,
             }}>
               <FiveUnitFull
-                id={this.state.music.id}
-                subtitle={this.state.music.subtitle}
-                title={this.state.music.title}
-                image_url={this.state.music.image_large_url}
+                id={this.state.book.id}
+                subtitle={this.state.book.subtitle}
+                title={this.state.book.title}
+                image_url={this.state.book.image_large_url}
                 barWidth={null}
                 barHeight={null}
                 borderRadius={15}
@@ -364,45 +364,45 @@ export default class MusicShow extends Component {
             <List style={{ paddingBottom: 20 }}>
               <ListItem avatar>
                 <Left>
-                  <Thumbnail small source={Images.music_main}/>
+                  <Thumbnail small source={Images.book_main}/>
                 </Left>
                 <Body style={{ borderBottomWidth: 0 }}>
-                <Text>음악</Text>
+                <Text>책</Text>
                 </Body>
               </ListItem>
               <ListItemIconClick
                 icon={'md-map'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('Map', {
-                  lat: this.state.music.lat,
-                  lng: this.state.music.lng,
-                  title: this.state.music.title,
+                  lat: this.state.book.lat,
+                  lng: this.state.book.lng,
+                  title: this.state.book.title,
                 })}
-                target={this.state.music.address}
-                title={this.state.music.address}
+                target={this.state.book.address}
+                title={this.state.book.address}
               />
               <ListItemIconClick
                 icon={'md-call'}
-                onPress={() => Linking.openURL(`tel:${this.state.music.phone}`)}
-                target={this.state.music.phone}
-                title={this.state.music.phone}
+                onPress={() => Linking.openURL(`tel:${this.state.book.phone}`)}
+                target={this.state.book.phone}
+                title={this.state.book.phone}
               />
               <ListItemIconClick
                 icon={'md-globe'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                  url: this.state.music.related_link,
-                  headerTitle: this.state.music.related_link
+                  url: this.state.book.related_link,
+                  headerTitle: this.state.book.related_link
                 })}
-                target={this.state.music.related_link}
-                title={this.state.music.related_link}
+                target={this.state.book.related_link}
+                title={this.state.book.related_link}
               />
             </List>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}
-              onPress={() => navigation.navigate('MusicFiveUserList', {
+              onPress={() => navigation.navigate('BookFiveUserList', {
                 users: this.state.users,
-                category: 'music',
-                favorable_id: this.state.music.id,
+                category: 'book',
+                favorable_id: this.state.book.id,
               })}
               moreTitle={'더보기'}
             />
@@ -430,7 +430,7 @@ export default class MusicShow extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'비슷한 종류의 FIVE 음악'}
+              title={'비슷한 종류의 FIVE 책'}
             />
             <Row>
               <FlatList

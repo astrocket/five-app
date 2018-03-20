@@ -77,7 +77,7 @@ export default class CategoryEdit extends Component {
                 text: '삭제시도(베타이후 작업)',
                 position: 'bottom',
                 duration: 1500,
-              })}>
+              })} style={{ marginBottom: 10 }}>
                 <Text>나의 {item.category} 정보 전체 삭제하기</Text>
               </Button>
             )}

@@ -161,11 +161,11 @@ export default class HomeIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item, index }) => (
                   <UserFivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', {
+                    onPress={() => navigation.navigate('UserShow', {
                       user: item.user,
-                      category_data: item,
+/*                      category_data: item,
                       five_category: item.klass.toLowerCase(),
-                      navLoading: true,
+                      navLoading: true,*/
                     })}
                     defaultImage={Images.findImageOf(item.category)}
                     onPressFollow={() => this.followCall(item, index)}

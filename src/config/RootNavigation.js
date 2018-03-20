@@ -26,6 +26,10 @@ import MusicIndex from '../class/Music/MusicIndex';
 import MusicList from '../class/Music/MusicList';
 import MusicShow from '../class/Music/MusicShow';
 import MusicFiveUserList from '../class/Music/MusicFiveUserList';
+import BookIndex from '../class/Book/BookIndex';
+import BookList from '../class/Book/BookList';
+import BookShow from '../class/Book/BookShow';
+import BookFiveUserList from '../class/Book/BookFiveUserList';
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
@@ -44,6 +48,7 @@ import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
 import FiveStoryShow from '../class/Page/FiveStoryShow';
 import ProfileFiveAddRestaurant from '../class/Profile/ProfileFiveAddRestaurant';
 import ProfileFiveAddMusic from '../class/Profile/ProfileFiveAddMusic';
+import ProfileFiveAddBook from '../class/Profile/ProfileFiveAddBook';
 import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import InfoEdit from '../class/Setting/InfoEdit';
 import AccountEdit from '../class/Setting/AccoutEdit';
@@ -129,6 +134,18 @@ const StackNavigation = StackNavigator(
     MusicFiveUserList: {
       screen: MusicFiveUserList,
     },
+    BookIndex: {
+      screen: BookIndex,
+    },
+    BookList: {
+      screen: BookList,
+    },
+    BookShow: {
+      screen: BookShow,
+    },
+    BookFiveUserList: {
+      screen: BookFiveUserList,
+    },
     Invitation: {
       screen: Invitation,
     },
@@ -177,6 +194,9 @@ const StackNavigation = StackNavigator(
     ProfileFiveAddMusic: {
       screen: ProfileFiveAddMusic,
     },
+    ProfileFiveAddBook: {
+      screen: ProfileFiveAddBook,
+    },
     Setting: {
       screen: Setting,
     },
@@ -193,7 +213,7 @@ const StackNavigation = StackNavigator(
       screen: CategoryEdit,
     },
   }, {
-    headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
+    headerMode: 'screen',
     mode: 'card',
   },
 );

@@ -23,15 +23,15 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
         <View style={{
           flex: 1,
           flexDirection: 'column',
-          width: null,
-          height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
+          height: null,
+          width: deviceWidth - (cardCut ? cardCut : 20) - marginRight,
           marginRight: marginRight,
           marginBottom: 10,
         }}>
           <Button transparent style={{
             flex: 1,
-            width: null,
             height: null,
+            width: deviceWidth - (cardCut ? cardCut : 20) - marginRight,
             marginBottom: 5,
           }} onPress={onPress}>
             <Image source={{ uri: image_url }} style={{
