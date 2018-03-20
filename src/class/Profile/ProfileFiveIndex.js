@@ -50,7 +50,7 @@ export default class ProfileFiveIndex extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      flip: true,
+      flip: false,
       clicked: false,
       fives: [],
       followers_count: '',
@@ -167,12 +167,12 @@ export default class ProfileFiveIndex extends Component {
                 subtitle={item.subtitle}
                 friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
-                icon={'ios-arrow-forward-outline'}
                 onPress={() => navigation.navigate(`${this.state.klass}Show`, {
                   title: item.title,
                   id: item.id,
                   navLoading: true,
                 })}
+                new_label={item.new_label}
               />
             )}
             keyExtractor={item => 'five-bar-list-' + item.id}
@@ -183,6 +183,7 @@ export default class ProfileFiveIndex extends Component {
       return (
         <Row key={2}>
           <FlatList
+            horizontal
             data={this.state.fives}
             style={rowWrapper}
             renderItem={({ item }) => (
@@ -197,10 +198,9 @@ export default class ProfileFiveIndex extends Component {
                   id: item.id,
                   navLoading: true,
                 })}
-                barWidth={null}
-                barHeight={null}
                 borderRadius={15}
-                marginRight={0}
+                marginRight={10}
+                cardCut={80}
               />
             )}
             keyExtractor={item => 'five-full-list-' + item.id}
@@ -257,7 +257,7 @@ export default class ProfileFiveIndex extends Component {
                   </Button>
                 </View>
               </Col>
-              <Col size={1} style={{ alignItems: 'flex-end' }}>
+              <Col size={1} style={{ justifyContent: 'flex-end', flexDirection: 'row'}}>
                 <View>
                   <Button onPress={() => navigation.navigate('ProfileFiveEdit', { five_category: navigation.state.params.five_category })} transparent>
                     <Icon
@@ -269,12 +269,10 @@ export default class ProfileFiveIndex extends Component {
                     />
                   </Button>
                 </View>
+                <View style={{ width: 50 }}>
+                  {this.renderFlipButton(this.state.flip)}
+                </View>
               </Col>
-              {/*<Col size={1} style={{ alignItems: 'flex-end' }}>
-              <View>
-                {this.renderFlipButton(this.state.flip)}
-              </View>
-            </Col>*/}
             </Row>
             {this.renderCard(this.state.flip)}
           </Grid>

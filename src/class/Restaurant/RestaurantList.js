@@ -27,7 +27,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class RestaurantList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '새로 선정된 맛집',
+    title: navigation.state.params.title,
     ...Constant.FiveNavOptions,
   });
 

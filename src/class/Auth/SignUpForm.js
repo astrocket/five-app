@@ -14,6 +14,7 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
+import { ErrorHandler} from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
@@ -43,32 +44,25 @@ export default class SignUpForm extends Component {
   }
 
   trySignUp() {
-    var regId = /^[a-zA-Z]{3,10}$/;
+    let regId = /^[a-zA-Z]{3,10}$/;
     if ( !regId.test( this.state.input_name ) ) {
-      Toast.show({
-        text:'잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
-        position: 'bottom',
-        duration: 1500,
-      });
+      ErrorHandler(
+        '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
+        () => this.setState({ input_name: '' })
+      );
       return false
     }
 
-    var regExp = /^[(0-9)]{2}$/;
+    let regExp = /^[(0-9)]{2}$/;
     if ( !regExp.test( this.state.input_birth ) ) {
-      Toast.show({
-        text:'잘못된 출생년도 입니다. 2자리 숫자만 입력하세요.',
-        position: 'bottom',
-        duration: 1500,
-      });
+      ErrorHandler('잘못된 출생년도 입니다. 2자리 숫자만 입력하세요',
+        () => this.setState({ input_birth: '' }));
       return false
     }
 
     if ( this.state.input_gender === '') {
-      Toast.show({
-        text:'성별이 선택되지 않았습니다.',
-        position: 'bottom',
-        duration: 1500,
-      });
+      ErrorHandler('성별이 선택되지 않았습니다.',
+        () => this.setState({ input_gender: '' }));
       return false
     }
 
@@ -89,12 +83,7 @@ export default class SignUpForm extends Component {
       this.onSignUpSuccess(response.data);
     }).catch((error) => {
       this.setState({ submiting: false });
-
-      Toast.show({
-        text: JSON.stringify(error.response.data.errors.password),
-        position: 'bottom',
-        duration: 1500,
-      });
+      ErrorHandler(JSON.stringify(error.response.data.errors.password));
     });
   }
 
@@ -118,7 +107,7 @@ export default class SignUpForm extends Component {
   }
 
   readyToSubmit() {
-    var regId = /^[a-zA-Z]{3,10}$/;
+    let regId = /^[a-zA-Z]{3,10}$/;
     if ( !regId.test( this.state.input_name ) ) {
       this.setState({
         disableButton: true,
@@ -126,7 +115,7 @@ export default class SignUpForm extends Component {
       return false
     }
 
-    var regExp = /^[(0-9)]{2}$/;
+    let regExp = /^[(0-9)]{2}$/;
     if ( !regExp.test( this.state.input_birth ) ) {
       this.setState({
         disableButton: true,
@@ -160,6 +149,30 @@ export default class SignUpForm extends Component {
     );
   }
 
+  handleInputName(input_name) {
+    let regId = /^[a-zA-Z]{0,10}$/;
+    if ( !regId.test( input_name ) ) {
+      ErrorHandler(
+        '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
+        () => this.setState({ input_name: '' })
+      );
+      return false
+    } else {
+      this.setState({ input_name })
+    }
+  }
+
+  handleInputBirth(input_birth) {
+    let regExp = /^[(0-9)]{0,2}$/;
+    if ( !regExp.test( input_birth ) ) {
+      ErrorHandler('잘못된 출생년도 입니다. 2자리 숫자만 입력하세요',
+        () => this.setState({ input_birth: '' }));
+      return false
+    } else {
+      this.setState({ input_birth })
+    }
+  }
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -175,11 +188,9 @@ export default class SignUpForm extends Component {
             <Row>
               <InputSingle
                 placeholder={'닉네임 (영문 또는 숫자 3~10자 입력)'}
-                value={''}
+                value={this.state.input_name}
                 autoFocus={true}
-                onChangeText={(input_name) => {
-                  this.setState({ input_name });
-                }}
+                onChangeText={(input_name) => this.handleInputName(input_name)}
                 onSubmitEditing={Keyboard.dismiss}
                 keyboardType={'email-address'}
                 returnKeyType={'next'}
@@ -189,10 +200,8 @@ export default class SignUpForm extends Component {
             <Row>
               <InputSingle
                 placeholder={'출생년도 두 자리 숫 (예: 92)'}
-                value={''}
-                onChangeText={(input_birth) => {
-                  this.setState({ input_birth });
-                }}
+                value={this.state.input_birth}
+                onChangeText={(input_birth) => this.handleInputBirth(input_birth)}
                 onSubmitEditing={Keyboard.dismiss}
                 returnKeyType={'next'}
                 keyboardType={'numeric'}
@@ -216,7 +225,7 @@ export default class SignUpForm extends Component {
             <Row style={{ marginTop: 20}}>
               <InputSingle
                 placeholder={'비밀번호 (6자리 이상)'}
-                value={''}
+                value={this.state.input_password}
                 onChangeText={(input_password) => {
                   this.setState({ input_password });
                 }}

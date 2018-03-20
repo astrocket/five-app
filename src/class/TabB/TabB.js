@@ -144,7 +144,6 @@ export default class TabB extends Component {
                 >
                   <UserUnitRound
                     id={my_profile.id}
-                    name={my_profile.name}
                     image_url={my_profile.image_medium_url}
                     onPress={() => navigation.navigate('Setting', {
                       categories: this.state.categories
@@ -153,8 +152,6 @@ export default class TabB extends Component {
                     barHeight={130}
                     borderRadius={65}
                     marginRight={0}
-                    fontSize={25}
-                    large
                   />
                   <View style={{
                     position:'absolute',
@@ -176,6 +173,10 @@ export default class TabB extends Component {
                     />
                   </View>
                 </TouchableOpacity>
+                <Text style={{
+                  textAlign: 'center',
+                  fontSize: 25,
+                }} large numberOfLines={1}>{my_profile.name}</Text>
                 <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{my_profile.introduce}</Text>
               </Col>
             </Row>

@@ -121,7 +121,7 @@ export default class ProfileFiveAddRestaurant extends Component {
   askAddFive(track, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${track.title}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${track.track_name}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -141,31 +141,43 @@ export default class ProfileFiveAddRestaurant extends Component {
     //tracksBefore.splice(index, 1);
     tracksBefore[ index ].clicked = true;
     this.setState({ tracks: tracksBefore }, () => {
-      Alert.alert(
-        `${this.state.category} FIVE 선택됨`,
-        `${track.title}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
-        [
-          {
-            text: '그만 선택하기',
-            onPress: () => this.props.navigation.dispatch(
-              NavigationActions.reset({
-                index: 1,
-                actions: [
-                  NavigationActions.navigate({
-                    routeName: 'Main',
-                  }),
-                  NavigationActions.navigate({
-                    routeName: 'ProfileFiveIndex',
-                    params: { five_category: this.state.klass.toLowerCase() },
-                  }),
-                ],
-              })),
-          },
+      let message;
+      let options;
+      const cancel = {
+        text: '그만 선택하기',
+        onPress: () => this.props.navigation.dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Main',
+              }),
+              NavigationActions.navigate({
+                routeName: 'ProfileFiveIndex',
+                params: { five_category: this.state.klass.toLowerCase() },
+              }),
+            ],
+          })),
+      };
+      if (data.fives_count === 5) {
+        message = `${this.state.category} FIVE를 모두 선택했어요. 축하해요!`;
+        options = [
+          cancel
+        ]
+      } else {
+        message = `${track.track_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        options = [
+          cancel,
           {
             text: '더 선택하기',
             style: 'cancel',
           },
-        ],
+        ]
+      }
+      Alert.alert(
+        `${this.state.category} FIVE 선택됨`,
+        message,
+        options,
         { cancelable: true },
       );
     });
@@ -197,7 +209,7 @@ export default class ProfileFiveAddRestaurant extends Component {
           this.setState({
             loading: false,
             no_result: true,
-            searched: true,
+            searched: false,
             tracks: response.data.tracks,
             no_more: response.data.no_more,
             page_loading: false,
@@ -298,10 +310,10 @@ export default class ProfileFiveAddRestaurant extends Component {
                   friends_info={item.five_users_count ? `FIVE ${item.five_users_count}` : null}
                   clicked={item.clicked}
                   onPress={() => this.askAddFive(item, index)}
-                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                  onPressImage={() => null /*this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                     url: item.track_share_url.split('?')[0],
                     headerTitle: item.track_name
-                  })}
+                  })*/}
                 />
               )}
               keyExtractor={item => 'search-five-list-' + item.track_id}
@@ -354,11 +366,11 @@ export default class ProfileFiveAddRestaurant extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'검색'} custom rightButton
+          title={'음악 FIVE 추가'} custom rightButton
           onPressRight={() => navigation.goBack()} buttonIcon={'md-close-circle'}>
           <Left/>
           <Body>
-          <Title>{'검색'}</Title>
+          <Title>{'음악 FIVE 추가'}</Title>
           </Body>
           <Right>
             <Button onPress={() => navigation.goBack()} transparent>
@@ -388,7 +400,6 @@ export default class ProfileFiveAddRestaurant extends Component {
               onSubmitEditing={() => this.searchApiMusix(this.state.input_search)}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
-            <Icon name="ios-people"/>
           </Item>
         </Header>
         {this.renderSearchResult()}

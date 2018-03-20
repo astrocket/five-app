@@ -36,3 +36,4 @@ export * from './MainLargeTitle';
 export * from './RowHeaderBar';
 export * from './ElevenHeader';
 export * from './ListItemIconClick';
+export * from './ErrorHandler';

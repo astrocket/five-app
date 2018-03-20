@@ -126,11 +126,12 @@ export default class RestaurantIndex extends Component {
               rightImage={'restaurant'}
             />*/}
             <RowHeaderBar
-              title={'새로 친구들의 five로 선정 된 맛집'}
+              title={'친구들의 five'}
               onPress={() => navigation.navigate('RestaurantList', {
                 restaurants: this.state.restaurants,
+                title: '친구들의 five'
               })}
-              moreTitle={'더보기'}
+              moreTitle={'모두보기'}
             />
             <Row>
               <FlatList
@@ -165,7 +166,7 @@ export default class RestaurantIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item, index }) => (
                   <UserFivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    onPress={() => navigation.navigate('UserShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
                     onPressFollow={() => this.followCall(item, index)}
                     defaultImage={Images.findImageOf(item.category)}
                     clicked={item.following}

@@ -68,17 +68,17 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-    var BUTTONS = ['맛집 추가', '음악 추가', '책 추가', '취소'];
-    var pages = ['ProfileFiveAddRestaurant', 'ProfileFiveAddMusic', 'ProfileFiveAddBook'];
-    var klasses = ['restaurant', 'music', 'book'];
-    var categories = ['맛집', '음악',' 책'];
+    var BUTTONS = ['요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소'];
+    var pages = ['ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook'];
+    var klasses = ['music', 'restaurant', 'book'];
+    var categories = ['음악', '맛집', ' 책'];
     var CANCEL_INDEX = 3;
 
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: "새로운 파이브 시작하기"
+        title: "나의 FIVE에 아이템 추가하기"
       },
       buttonIndex => {
         navigation.navigate(pages[buttonIndex], {klass: klasses[buttonIndex],category: categories[buttonIndex] })

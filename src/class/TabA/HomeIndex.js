@@ -220,3 +220,4 @@ export default class HomeIndex extends Component {
     );
   }
 }
+

@@ -149,36 +149,48 @@ export default class ProfileFiveAddRestaurant extends Component {
     );
   }
 
-  onAddFiveSuccess(data, document, index) {
+  onAddFiveSuccess(data, track, index) {
     const documentsBefore = [ ...this.state.documents ];
-    //documentsBefore.splice(index, 1);
+    //tracksBefore.splice(index, 1);
     documentsBefore[ index ].clicked = true;
     this.setState({ documents: documentsBefore }, () => {
-      Alert.alert(
-        `${this.state.category} FIVE 선택됨`,
-        `${document.place_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
-        [
-          {
-            text: '그만 선택하기',
-            onPress: () => this.props.navigation.dispatch(
-              NavigationActions.reset({
-                index: 1,
-                actions: [
-                  NavigationActions.navigate({
-                    routeName: 'Main',
-                  }),
-                  NavigationActions.navigate({
-                    routeName: 'ProfileFiveIndex',
-                    params: { five_category: this.state.klass.toLowerCase() },
-                  }),
-                ],
-              })),
-          },
+      let message;
+      let options;
+      const cancel = {
+        text: '그만 선택하기',
+        onPress: () => this.props.navigation.dispatch(
+          NavigationActions.reset({
+            index: 1,
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'Main',
+              }),
+              NavigationActions.navigate({
+                routeName: 'ProfileFiveIndex',
+                params: { five_category: this.state.klass.toLowerCase() },
+              }),
+            ],
+          })),
+      };
+      if (data.fives_count === 5) {
+        message = `${this.state.category} FIVE를 모두 선택했어요. 축하해요!`;
+        options = [
+          cancel
+        ]
+      } else {
+        message = `${document.place_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        options = [
+          cancel,
           {
             text: '더 선택하기',
             style: 'cancel',
           },
-        ],
+        ]
+      }
+      Alert.alert(
+        `${this.state.category} FIVE 선택됨`,
+        message,
+        options,
         { cancelable: true },
       );
     });
@@ -210,7 +222,7 @@ export default class ProfileFiveAddRestaurant extends Component {
           this.setState({
             loading: false,
             no_result: true,
-            searched: true,
+            searched: false,
             documents: response.data.documents,
             no_more: response.data.meta.is_end,
             page_loading: false,
@@ -233,7 +245,7 @@ export default class ProfileFiveAddRestaurant extends Component {
           'X-User-Token': this.props.ApplicationStore.token,
         },
       };
-      axios.get(`${ApiServer.RESTAURANTS}/search_kakao?s=${input_search}&page=${this.state.page}`, config)
+      axios.get(`${ApiServer.RESTAURANTS}/search_kakao?s=${this.state.input_search}&page=${this.state.page}`, config)
         .then((response) => {
           console.log(response);
           this.setState({
@@ -429,11 +441,11 @@ export default class ProfileFiveAddRestaurant extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'검색'} custom rightButton
+          title={'맛집 FIVE 추가'} custom rightButton
           onPressRight={() => navigation.goBack()} buttonIcon={'md-close-circle'}>
           <Left/>
           <Body>
-          <Title>{'검색'}</Title>
+          <Title>{'맛집 FIVE 추가'}</Title>
           </Body>
           <Right>
             <Button onPress={() => navigation.goBack()} transparent>
@@ -463,7 +475,6 @@ export default class ProfileFiveAddRestaurant extends Component {
               onSubmitEditing={() => this.searchApiKakao(this.state.input_search)}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
-            <Icon name="ios-people"/>
           </Item>
         </Header>
         {this.renderSearchResult()}

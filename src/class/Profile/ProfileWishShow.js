@@ -73,10 +73,16 @@ export default class ProfileWishShow extends Component {
     };
 
     if (wish_data.also_five) {
-      Toast.show({
-        text: '이미 Five 입니다.',
-        position: 'bottom',
-        duration: 1500,
+      axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${category}`, data, header)
+        .then((response) => {
+          this.onDestroyFiveCallSuccess(response.data, index);
+        }).catch((error) => {
+        console.log(error.response);
+        Toast.show({
+          text: '에러 : ' + JSON.stringify(error.response.data.errors),
+          position: 'bottom',
+          duration: 1500,
+        });
       });
     } else {
       axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${category}`, data, header)
@@ -99,6 +105,12 @@ export default class ProfileWishShow extends Component {
     this.setState({ wishes: stateBefore });
   }
 
+  onDestroyFiveCallSuccess(data, index) {
+    const stateBefore = [...this.state.wishes];
+    stateBefore[index].also_five = false;
+    this.setState({ wishes: stateBefore });
+  }
+
   askRestaurantDelete(secId, rowId, rowMap, item) {
     const url = `${ApiServer.MY_PROFILE}/destroy_wish?category=${this.state.klass.toLowerCase()}`;
     const data = {
@@ -110,11 +122,13 @@ export default class ProfileWishShow extends Component {
       '해당 아이템을 삭제하시겠어요?',
       [
         {
-          text: '네',
-          onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
+          text: '아니요',
           style: 'cancel',
         },
-        { text: '아니요' },
+        {
+          text: '네',
+          onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
+        },
       ],
       { cancelable: true },
     );

@@ -138,15 +138,15 @@ export default class UserShow extends Component {
               <Col style={{ alignItems: 'center' }}>
                 <UserUnitRound
                   id={this.state.user.id}
-                  name={this.state.user.name}
                   image_url={this.state.user.image_medium_url}
                   barWidth={130}
                   barHeight={130}
                   borderRadius={65}
-                  marginRight={10}
-                  fontSize={25}
-                  large
                 />
+                <Text style={{
+                  textAlign: 'center',
+                  fontSize: 25,
+                }} large numberOfLines={1}>{this.state.user.name}</Text>
                 <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{this.state.user.introduce}</Text>
               </Col>
             </Row>
@@ -164,22 +164,7 @@ export default class UserShow extends Component {
                     image={Images.findImageOf(item.klass.toLowerCase())}
                   />
                 )}
-                keyExtractor={item => 'five-category-list-' + item.id}
-                ListFooterComponent={
-                  <FivesBar
-                    onPress={() =>
-                      Toast.show({
-                        text: '더미카테고리',
-                        position: 'bottom',
-                        duration: 1500,
-                      })}
-                    category={'더미데이터'}
-                    followers={'222'}
-                    followees={'242'}
-                    fives={[]}
-                    image={Images.restaurant_main}
-                  />
-                }
+                keyExtractor={item => 'five-category-list-' + item.klass}
               />
             </Row>
           </Content>

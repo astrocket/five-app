@@ -27,7 +27,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class MusicList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '새로 친구들이 좋아하는 음악',
+    title: navigation.state.params.title,
     ...Constant.FiveNavOptions,
   });
 

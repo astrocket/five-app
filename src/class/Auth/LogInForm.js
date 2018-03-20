@@ -14,6 +14,7 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
+import { ErrorHandler } from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
@@ -49,12 +50,11 @@ export default class LogInForm extends Component {
       this.onLoginSuccess(response.data);
     }).catch((error) => {
       this.setState({ loading: false });
-        Toast.show({
-          text: JSON.stringify(error.response.data.errors),
-          position: 'bottom',
-          duration: 1500,
-        });
-      });
+      ErrorHandler(
+        JSON.stringify(error.response.data.errors.title),
+        () => this.setState({ input_text: '' })
+      );
+    });
   }
 
   onLoginSuccess(data) {
@@ -84,7 +84,7 @@ export default class LogInForm extends Component {
             <InputSingle
               placeholder={'비밀번호를 다시 입력해 주세요'}
               noButton
-              value={''}
+              value={this.state.input_text}
               autoFocus={true}
               onChangeText={(input_text) => this.setState({ input_text })}
               onSubmitEditing={() => this.tryLogin()}

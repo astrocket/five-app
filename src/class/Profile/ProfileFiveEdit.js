@@ -113,8 +113,8 @@ export default class ProfileFiveEdit extends Component {
       rowMap[`${secId}${rowId}`].props.closeRow();
     } else {
       Alert.alert(
-        '알림',
         '해당 파이브를 삭제하시겠어요?',
+        '삭제해도 클립 리스트에서 확인할 수 있습니다.',
         [
           { text: '아니요',
             style: 'cancel'
