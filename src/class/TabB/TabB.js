@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl, TouchableOpacity
+  View, FlatList, TouchableOpacity
 } from 'react-native';
 import {
   Container, Header, Content, Text,
   Spinner, Button, Icon, Left, Body, Title,
-  Right, Toast
+  Right, ActionSheet,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FivesBar, ElevenHeader,
+  UserUnitRound, FivesBar, ElevenHeader, EmptyBox,
 } from '../../component/common';
 import axios from 'axios';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import PopupDialog from 'react-native-popup-dialog';
-import MyFiveRestaurantModal from '../Restaurant/MyFiveRestaurantModal';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
@@ -46,6 +44,12 @@ export default class TabB extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
       categories: [],
       headerShow: true,
     };
@@ -56,13 +60,7 @@ export default class TabB extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.MY_PROFILE}`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}`, this.state.header)
       .then((response) => {
         this.props.ApplicationStore.setMyProfile(response.data.user);
         this.setState({
@@ -80,6 +78,31 @@ export default class TabB extends Component {
     this.apiCall().then(() => {
       this.setState({refreshing: false});
     });
+  }
+
+  onClickAdd() {
+    const { navigation } = this.props;
+    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
+    const category_koreans = [ '음악', '맛집', ' 책' ];
+    const categories = [ 'music', 'restaurant', 'book'];
+    const klasses = ['Music', 'Restaurnt', 'Book'];
+    const CANCEL_INDEX = 3;
+
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+        cancelButtonIndex: CANCEL_INDEX,
+        title: '나의 FIVE에 아이템 추가하기',
+      },
+      buttonIndex => {
+        navigation.navigate(pages[ buttonIndex ], {
+          klass: klasses[ buttonIndex ],
+          category_korean: category_koreans[ buttonIndex ],
+          category: categories[ buttonIndex ],
+        });
+      },
+    );
   }
 
   handleScroll(e) {
@@ -114,74 +137,85 @@ export default class TabB extends Component {
             </Button>
           </Right>
         </ElevenHeader>
-        <FlatList
-          data={this.state.categories}
-          style={{paddingBottom: 15}}
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh.bind(this)}
-          onScroll={(e) => {this.handleScroll(e)}}
-          renderItem={({ item }) => (
-            <FivesBar
-              onPress={() => navigation.navigate('ProfileFiveIndex', { five_category: item.klass.toLowerCase() })}
-              category={item.category}
-              followers={item.followers_count}
-              followees={item.followees_count}
-              fives={item.fives}
-              image={Images.findImageOf(item.klass.toLowerCase())}
-            />
-          )}
-          keyExtractor={item => 'five-category-list-' + item.klass}
-          ListHeaderComponent={
-            <Row style={{
-              height: 250,
-              alignItems: 'center',
-            }}>
-              <Col style={{ alignItems: 'center' }}>
-                <TouchableOpacity style={{ width: 140, height: 130}}
-                                  onPress={() => navigation.navigate('Setting', {
-                                    categories: this.state.categories
-                                  })}
-                >
-                  <UserUnitRound
-                    id={my_profile.id}
-                    image_url={my_profile.image_medium_url}
-                    onPress={() => navigation.navigate('Setting', {
-                      categories: this.state.categories
-                    })}
-                    barWidth={130}
-                    barHeight={130}
-                    borderRadius={65}
-                    marginRight={0}
-                  />
-                  <View style={{
-                    position:'absolute',
-                    bottom:10,
-                    right:10,
-                    minWidth:40,
-                    height:40,
-                    borderRadius:20,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#FFF',
-                  }}>
-                    <Icon
-                      name="md-create"
-                      style={{
-                        fontSize: 25,
-                        color: Constant.FiveColor,
-                      }}
+          <FlatList
+            data={this.state.categories}
+            style={{paddingBottom: 15}}
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+            onScroll={(e) => {this.handleScroll(e)}}
+            renderItem={({ item }) => (
+              <FivesBar
+                onPress={() => navigation.navigate('ProfileFiveIndex', { category: item.category })}
+                category={item.category}
+                followers={item.followers_count}
+                followees={item.followees_count}
+                fives={item.fives}
+                image={Images.findImageOf(item.category)}
+              />
+            )}
+            keyExtractor={item => 'five-category-list-' + item.klass}
+            ListHeaderComponent={
+              <Row style={{
+                height: 250,
+                alignItems: 'center',
+              }}>
+                <Col style={{ alignItems: 'center' }}>
+                  <TouchableOpacity style={{ width: 140, height: 130}}
+                                    onPress={() => navigation.navigate('Setting', {
+                                      categories: this.state.categories
+                                    })}
+                  >
+                    <UserUnitRound
+                      id={my_profile.id}
+                      image_url={my_profile.image_medium_url}
+                      onPress={() => navigation.navigate('Setting', {
+                        categories: this.state.categories
+                      })}
+                      barWidth={130}
+                      barHeight={130}
+                      borderRadius={65}
+                      marginRight={0}
                     />
-                  </View>
-                </TouchableOpacity>
-                <Text style={{
-                  textAlign: 'center',
-                  fontSize: 25,
-                }} large numberOfLines={1}>{my_profile.name}</Text>
-                <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{my_profile.introduce}</Text>
-              </Col>
-            </Row>
-          }
-        />
+                    <View style={{
+                      position:'absolute',
+                      bottom:10,
+                      right:10,
+                      minWidth:40,
+                      height:40,
+                      borderRadius:20,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#FFF',
+                    }}>
+                      <Icon
+                        name="md-create"
+                        style={{
+                          fontSize: 25,
+                          color: Constant.FiveColor,
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={{
+                    textAlign: 'center',
+                    fontSize: 25,
+                  }} large numberOfLines={1}>{my_profile.name}</Text>
+                  <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{my_profile.introduce}</Text>
+                </Col>
+              </Row>
+            }
+          />
+        { this.state.categories.length > 0 ?
+          null
+          : <EmptyBox
+            barWidth={Constant.deviceWidth - 20}
+            onPress={() => this.onClickAdd()}
+            message={`아직 담은 FIVE가 없으시네요. ${'\n'}여기를 눌러서 카테고리를 추가하세요`}
+            barHeight={100}
+            borderRadius={10}
+            marginRight={0}
+          />
+        }
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

@@ -11,9 +11,7 @@ import {
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import HomeIndex from './HomeIndex';
-import RestaurantIndex from '../Restaurant/RestaurantIndex';
-import BookIndex from '../Book/BookIndex';
-import MusicIndex from '../Music/MusicIndex';
+import FiveIndex from '../Five/FiveIndex';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -71,7 +69,9 @@ export default class TabA extends Component {
     const { navigation } = this.props;
     const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
     const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
-    const categories = [ '음악', '맛집', ' 책' ];
+    const category_koreans = [ '음악', '맛집', ' 책' ];
+    const categories = [ 'music', 'restaurant', 'book'];
+    const klasses = ['Music', 'Restaurnt', 'Book'];
     const CANCEL_INDEX = 3;
 
     ActionSheet.show(
@@ -82,7 +82,8 @@ export default class TabA extends Component {
       },
       buttonIndex => {
         navigation.navigate(pages[ buttonIndex ], {
-          klass: Constant.Klasses[ buttonIndex ],
+          klass: klasses[ buttonIndex ],
+          category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],
         });
       },
@@ -98,27 +99,13 @@ export default class TabA extends Component {
   renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
 
-    return this.state.categories.map(function (category, i) {
-      switch (category.klass.toLowerCase()) {
-        case 'restaurant':
-          return (
-            <Tab key={i} heading="맛집" activeTextStyle={{ color: Constant.FiveColor }}>
-              <RestaurantIndex navigation={navigation} onScroll={onScroll}/>
-            </Tab>
-          );
-        case 'music':
-          return (
-            <Tab key={i} heading="음악" activeTextStyle={{ color: Constant.FiveColor }}>
-              <MusicIndex navigation={navigation} onScroll={onScroll}/>
-            </Tab>
-          );
-        case 'book':
-          return (
-            <Tab key={i} heading="책" activeTextStyle={{ color: Constant.FiveColor }}>
-              <BookIndex navigation={navigation} onScroll={onScroll}/>
-            </Tab>
-          );
-      }
+    return this.state.categories.map(function (chunk, i) {
+      const { category, category_korean } = chunk;
+      return (
+        <Tab key={i} heading={category_korean} activeTextStyle={{ color: Constant.FiveColor }}>
+          <FiveIndex category={category} navigation={navigation} onScroll={onScroll}/>
+        </Tab>
+      )
     });
   }
 

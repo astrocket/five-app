@@ -6,7 +6,6 @@ import * as ApiServer from './ApiServer';
 export const platform = variable.platform;
 export const FiveColor = '#FA3F97';
 export const GreyColor = '#A1A1A1';
-export const Klasses = ['music', 'restaurant', 'book'];
 
 export const isIphoneX = platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 export const FiveNavOptions = {
@@ -52,6 +51,9 @@ export const CategoryToKorean = (category) => {
     case 'music':
       korean_category = '음악';
       break;
+    case 'book':
+      korean_category = '책';
+      break;
     default:
       korean_category = '';
       break;
@@ -67,6 +69,9 @@ export const CategoryToApi = (category) => {
       break;
     case 'music':
       api_suffix = ApiServer.MUSICS;
+      break;
+    case 'book':
+      api_suffix = ApiServer.BOOKS;
       break;
     default:
       api_suffix = ApiServer.API;

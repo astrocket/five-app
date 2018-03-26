@@ -3,23 +3,19 @@ import {
   View, FlatList, RefreshControl
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Card,
-  CardItem, Thumbnail, Button, Icon, Left, Body,
-  Right, Segment, H1, Toast,
+  Container, Content, Text, Spinner,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import {
-  FollowUserButton, UserUnitRound, FollowerButton, FivesBar
+  UserUnitRound, FivesBar
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import PopupDialog from 'react-native-popup-dialog';
-import UserFiveRestaurantModal from '../User/UserFiveRestaurantModal';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
@@ -35,6 +31,12 @@ export default class UserShow extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
       user: '',
       categories: [],
     };
@@ -45,13 +47,7 @@ export default class UserShow extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}?category=restaurant`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
@@ -70,53 +66,6 @@ export default class UserShow extends Component {
       this.setState({refreshing: false});
     });
   }
-
-/*  renderRestaurantPopUp(item) {
-    const { navigation } = this.props;
-    return (
-      <PopupDialog
-        width={1}
-        height={1}
-        dismissOnTouchOutside={false}
-        dialogStyle={{
-          position: 'relative',
-          top: -40,
-          backgroundColor: 'transparent',
-        }}
-        ref={(popupDialog) => {
-          this.popupDialog = popupDialog;
-        }}
-      >
-        <UserFiveRestaurantModal
-          marginTop={80}
-          marginLeft={20}
-          marginRight={20}
-          marginBottom={120}
-          navigation={navigation}
-          closePopUp={() => this.popupDialog.dismiss()}
-        />
-      </PopupDialog>
-    );
-  }*/
-
-/*  renderRestaurantFollowing() {
-    if (this.state.restaurant_following) {
-      return (
-        <FollowUserButton
-          onPress={() => this.toggleRestaurantFollow()}
-          title={' 팔로잉'}
-          clicked
-        />
-      );
-    } else {
-      return (
-        <FollowUserButton
-          onPress={() => this.toggleRestaurantFollow()}
-          title={'+팔로우 '}
-        />
-      );
-    }
-  }*/
 
   render() {
     const { preLoading } = BaseStyle;
@@ -156,7 +105,7 @@ export default class UserShow extends Component {
                 style={{paddingBottom: 15}}
                 renderItem={({ item }) => (
                   <FivesBar
-                    onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                    onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user, category_data: item, category: item.category, navLoading: true })}
                     category={item.category}
                     followers={item.followers_count}
                     followees={item.followees_count}

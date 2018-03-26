@@ -107,8 +107,9 @@ export default class TabC extends Component {
                     friends_info={`FIVE ${item.five_users_count}`}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
-                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                    onPress={() => this.props.navigation.navigate('FiveShow', {
                       title: item.title,
+                      category: item.category,
                       id: item.id,
                       navLoading: true,
                     })}
@@ -120,8 +121,8 @@ export default class TabC extends Component {
                     return (
                       <RowHeaderBar
                         title={'맛집'}
-                        onPress={() => this.props.navigation.navigate('RestaurantList', {
-                          restaurants: this.state.restaurants,
+                        onPress={() => this.props.navigation.navigate('FiveList', {
+                          category: 'restaurant',
                           search_params: this.state.input_search,
                           title: `${this.state.input_search} 맛집 검색 결과`
                         })}
@@ -160,8 +161,9 @@ export default class TabC extends Component {
                     friends_info={`FIVE ${item.five_users_count}`}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
-                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                    onPress={() => this.props.navigation.navigate('FiveShow', {
                       title: item.title,
+                      category: item.category,
                       id: item.id,
                       navLoading: true,
                     })}
@@ -173,8 +175,8 @@ export default class TabC extends Component {
                     return (
                       <RowHeaderBar
                         title={'음악'}
-                        onPress={() => this.props.navigation.navigate('MusicList', {
-                          musics: this.state.musics,
+                        onPress={() => this.props.navigation.navigate('FiveList', {
+                          category: 'music',
                           search_params: this.state.input_search,
                           title: `${this.state.input_search} 음악 검색 결과`
                         })}
@@ -213,8 +215,9 @@ export default class TabC extends Component {
                     friends_info={`FIVE ${item.five_users_count}`}
                     image_url={item.image_medium_url}
                     icon={'ios-arrow-forward-outline'}
-                    onPress={() => this.props.navigation.navigate(`${item.klass}Show`, {
+                    onPress={() => this.props.navigation.navigate('FiveShow', {
                       title: item.title,
+                      category: item.category,
                       id: item.id,
                       navLoading: true,
                     })}
@@ -226,8 +229,8 @@ export default class TabC extends Component {
                     return (
                       <RowHeaderBar
                         title={'책'}
-                        onPress={() => this.props.navigation.navigate('BookList', {
-                          books: this.state.books,
+                        onPress={() => this.props.navigation.navigate('FiveList', {
+                          category: 'book',
                           search_params: this.state.input_search,
                           title: `${this.state.input_search} 책 검색 결과`
                         })}
@@ -278,7 +281,6 @@ export default class TabC extends Component {
                       <RowHeaderBar
                         title={'유저'}
                         onPress={() => this.props.navigation.navigate('UserList', {
-                          users: this.state.users,
                           search_params: this.state.input_search,
                           title: `${this.state.input_search} 유저 검색 결과`
                         })}

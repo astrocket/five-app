@@ -57,7 +57,7 @@ const FivesBar = ({ image, onPress, category, followers, followees, fives }) => 
       <ListItem cardStyle transparent button onPress={onPress}>
         <Thumbnail size={50} source={image}/>
         <Body>
-          <Text medium>{category}</Text>
+          <Text medium>{Constant.CategoryToKorean(category)}</Text>
           <View style={{ flexDirection: 'row'}}>
             <Text small style={{ marginRight: 0 }}>{Number(followers).toLocaleString()}</Text>
             <Text note>{'Follower'}</Text>

@@ -18,18 +18,12 @@ import CustomDrawer from './CustomDrawer';
 import PageA from '../class/Page/PageA';
 import PageB from '../class/Page/PageB';
 import PageC from '../class/Page/PageC';
-import RestaurantIndex from '../class/Restaurant/RestaurantIndex';
-import RestaurantList from '../class/Restaurant/RestaurantList';
-import RestaurantShow from '../class/Restaurant/RestaurantShow';
-import RestaurantFiveUserList from '../class/Restaurant/RestaurantFiveUserList';
-import MusicIndex from '../class/Music/MusicIndex';
-import MusicList from '../class/Music/MusicList';
-import MusicShow from '../class/Music/MusicShow';
-import MusicFiveUserList from '../class/Music/MusicFiveUserList';
-import BookIndex from '../class/Book/BookIndex';
-import BookList from '../class/Book/BookList';
-import BookShow from '../class/Book/BookShow';
-import BookFiveUserList from '../class/Book/BookFiveUserList';
+
+import FiveIndex from '../class/Five/FiveIndex';
+import FiveShow from '../class/Five/FiveShow';
+import FiveList from '../class/Five/FiveList';
+import FiveUserList from '../class/Five/FiveUserList';
+
 import Invitation from '../class/Invitation/Invitation';
 import UserList from '../class/User/UserList';
 import UserShow from '../class/User/UserShow';
@@ -110,41 +104,17 @@ const StackNavigation = StackNavigator(
         header: null,
       },
     },
-    RestaurantIndex: {
-      screen: RestaurantIndex,
+    FiveIndex: {
+      screen: FiveIndex,
     },
-    RestaurantList: {
-      screen: RestaurantList,
+    FiveShow: {
+      screen: FiveShow,
     },
-    RestaurantShow: {
-      screen: RestaurantShow,
+    FiveUserList: {
+      screen: FiveUserList,
     },
-    RestaurantFiveUserList: {
-      screen: RestaurantFiveUserList,
-    },
-    MusicIndex: {
-      screen: MusicIndex,
-    },
-    MusicList: {
-      screen: MusicList,
-    },
-    MusicShow: {
-      screen: MusicShow,
-    },
-    MusicFiveUserList: {
-      screen: MusicFiveUserList,
-    },
-    BookIndex: {
-      screen: BookIndex,
-    },
-    BookList: {
-      screen: BookList,
-    },
-    BookShow: {
-      screen: BookShow,
-    },
-    BookFiveUserList: {
-      screen: BookFiveUserList,
+    FiveList: {
+      screen: FiveList,
     },
     Invitation: {
       screen: Invitation,

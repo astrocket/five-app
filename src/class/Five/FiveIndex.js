@@ -5,16 +5,14 @@ import {
   FlatList,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Toast
+  Container, Content, Spinner, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  RowHeaderBar, FiveUnitRound, UserFivesBar,
-  FiveUnitFull, EmptyBox
+  RowHeaderBar, FiveUnitRound, UserFivesBar, FiveUnitFull, EmptyBox,
 } from '../../component/common';
-import RestaurantShow from './RestaurantModal';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as Images from '../../assets/images/Images';
@@ -24,46 +22,28 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class RestaurantIndex extends Component {
+export default class FiveIndex extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true, //실서비스에서는 로딩 true로
-      refreshing: false,
-      restaurants: [],
-      users: [],
-      my_wish_restaurants: [],
-      follow_suggestions: [],
-      challenge_restaurants: [],
-    };
-  }
-
-  componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    const config = {
+  state = {
+    loading: true,
+    refreshing: false,
+    category: this.props.category,
+    category_korean: Constant.CategoryToKorean(this.props.category),
+    header: {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
-    };
-    await axios.get(ApiServer.RESTAURANTS, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          restaurants: response.data.restaurants,
-          users: response.data.users,
-          my_wish_restaurants: response.data.my_wish_restaurants,
-          follow_suggestions: response.data.follow_suggestions,
-          challenge_restaurants: response.data.challenge_restaurants,
-        })
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    },
+    fives: [],
+    users: [],
+    my_wish_fives: [],
+    follow_suggestions: [],
+    challenge_fives: []
+  };
+
+  componentDidMount() {
+    this.apiCall();
   }
 
   _onRefresh() {
@@ -71,6 +51,18 @@ export default class RestaurantIndex extends Component {
     this.apiCall().then(() => {
       this.setState({refreshing: false});
     });
+  }
+
+  async apiCall() {
+    await axios.get(Constant.CategoryToApi(this.state.category), this.state.header)
+      .then((response) => {
+        const { fives, users, my_wish_fives, follow_suggestions, challenge_fives } = response.data;
+        this.setState({
+          loading: false, fives, users, my_wish_fives, follow_suggestions, challenge_fives
+        })
+      }).catch((error) => {
+        console.log(error.response);
+      });
   }
 
   followCall(item, index) {
@@ -81,16 +73,9 @@ export default class RestaurantIndex extends Component {
       },
     };
 
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.klass.toLowerCase()}`, data, header)
+    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, this.state.header)
       .then((response) => {
-        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
+        this.onCreateFollowCallSuccess(response, index);
       }).catch((error) => {
       console.log(error.response);
       Toast.show({
@@ -121,23 +106,20 @@ export default class RestaurantIndex extends Component {
           />
         }>
           <Grid>
-{/*            <MainLargeTitle
-              title={'맛집'}
-              rightImage={'restaurant'}
-            />*/}
             <RowHeaderBar
               title={'친구들의 five'}
-              onPress={() => navigation.navigate('RestaurantList', {
-                restaurants: this.state.restaurants,
+              onPress={() => navigation.navigate('FiveList', {
+                category: this.state.category,
+                fives: this.state.fives,
                 title: '친구들의 five'
               })}
               moreTitle={'모두보기'}
             />
             <Row>
-              {this.state.restaurants.length > 0 ?
+              {this.state.fives.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.restaurants}
+                  data={this.state.fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitFull
@@ -147,23 +129,26 @@ export default class RestaurantIndex extends Component {
                       subtitle={item.subtitle}
                       friends_info={item.friends_info}
                       image_url={item.image_large_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('FiveShow', {
+                        category: this.state.category, title: item.title,
+                        suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
+                        id: item.id, navLoading: true
+                      })}
                       borderRadius={15}
                       marginRight={10}
                       cardCut={80}
                     />
                   )}
-                  keyExtractor={item => 'restaurant-' + item.id}
+                  keyExtractor={item => 'five-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`맛집 친구를 팔로우하면${'\n'}이 곳에서 친구들의 맛집 FIVE를 확인할 수 있어요.`}
+                  message={`${this.state.category_korean} 친구를 팔로우하면${'\n'}이 곳에서 친구들의 ${this.state.category_korean} FIVE를 확인할 수 있어요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
                 />
               }
-
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
@@ -190,26 +175,25 @@ export default class RestaurantIndex extends Component {
                   )}
                   keyExtractor={item => 'user-fives-' + item.id}
                 />
-                :<EmptyBox
+                : <EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 추천 해드릴 음악 팔로워가 없네요.`}
+                  message={`아직 추천 해드릴 ${this.state.category_korean} 팔로워가 없네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
                 />
               }
-
             </Row>
             <RowHeaderBar
-              title={'내가 클립해 둔 맛집'}
+              title={`내가 클립해 둔 ${this.state.category_korean}`}
               onPress={() => navigation.navigate('ProfileWishIndex')}
               moreTitle={'모두보기'}
             />
             <Row>
-              {this.state.my_wish_restaurants.length > 0 ?
+              {this.state.my_wish_fives.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.my_wish_restaurants}
+                  data={this.state.my_wish_fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
@@ -218,18 +202,22 @@ export default class RestaurantIndex extends Component {
                       title={item.title}
                       five_users_count={item.five_users_count}
                       image_url={item.image_medium_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('FiveShow', {
+                        category: this.state.category, title: item.title,
+                        suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
+                        id: item.id, navLoading: true
+                      })}
                       barWidth={150}
                       barHeight={150}
                       borderRadius={15}
                       marginRight={10}
                     />
                   )}
-                  keyExtractor={item => 'wish-restaurant-' + item.id}
+                  keyExtractor={item => 'wish-five-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 클립에 담은 음악이 없으시네요.`}
+                  message={`아직 클립에 담은 ${this.state.category_korean}이 없으시네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
@@ -238,13 +226,13 @@ export default class RestaurantIndex extends Component {
 
             </Row>
             <RowHeaderBar
-              title={'추천 맛집(당신의 FIVE에 도전)'}
+              title={`추천 ${this.state.category_korean}(당신의 FIVE에 도전)`}
             />
             <Row>
-              {this.state.challenge_restaurants.length > 0 ?
+              {this.state.challenge_fives.length > 0 ?
                 <FlatList
                   horizontal
-                  data={this.state.challenge_restaurants}
+                  data={this.state.challenge_fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
@@ -253,14 +241,18 @@ export default class RestaurantIndex extends Component {
                       title={item.title}
                       five_users_count={item.five_users_count}
                       image_url={item.image_medium_url}
-                      onPress={() => navigation.navigate('RestaurantShow', { title: item.title, id: item.id, navLoading: true })}
+                      onPress={() => navigation.navigate('FiveShow', {
+                        category: this.state.category, title: item.title,
+                        suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
+                        id: item.id, navLoading: true
+                      })}
                       barWidth={150}
                       barHeight={150}
                       borderRadius={15}
                       marginRight={10}
                     />
                   )}
-                  keyExtractor={item => 'restaurant-challenge-' + item.id}
+                  keyExtractor={item => 'five-challenge-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}

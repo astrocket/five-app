@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View,
-  FlatList, RefreshControl,
+  View, FlatList, RefreshControl,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner,
+  Container, Content, Spinner,
 } from 'native-base';
-import {
-  Col, Row, Grid,
-} from 'react-native-easy-grid';
-import { FiveUserUnitBar, ShowMore } from '../../component/common';
+import { FiveUnitBar, ShowMore } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -18,24 +14,31 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class BookFiveUserList extends Component {
+export default class FiveList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '최근 유저들',
+    title: navigation.state.params.title,
     ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
     super(props);
     this.state = {
-      category: this.props.navigation.state.params.category,
-      favorable_id: this.props.navigation.state.params.favorable_id,
       loading: true, //실서비스에서는 로딩 true로
+      category: this.props.navigation.state.params.category,
+      category_korean: Constant.CategoryToKorean(this.props.navigation.state.params.category),
       refreshing: false,
-      users: [],
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      fives: [],
       page: 1,
       page_loading: false,
       no_more: false,
+      search_params: this.props.navigation.state.params.search_params ? this.props.navigation.state.params.search_params : '',
     };
   }
 
@@ -44,17 +47,11 @@ export default class BookFiveUserList extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
+    await axios.get(`${Constant.CategoryToApi(this.state.category)}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
-          users: response.data,
+          fives: response.data,
         });
       })
       .catch((error) => {
@@ -70,19 +67,14 @@ export default class BookFiveUserList extends Component {
   }
 
   pageCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
+    axios.get(`${Constant.CategoryToApi(this.state.category)}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
       .then((response) => {
+        console.log(response);
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });
         }
         this.setState({
-          users: [ ...this.state.users, ...response.data ],
+          fives: [ ...this.state.fives, ...response.data ],
           page_loading: false,
         });
       }).catch((error) => {
@@ -112,21 +104,28 @@ export default class BookFiveUserList extends Component {
           />
         }>
           <FlatList
-            data={this.state.users}
+            data={this.state.fives}
             style={{
               paddingTop: 10,
             }}
             renderItem={({ item }) => (
-              <FiveUserUnitBar
-                style={{ backgroundColor: '#fafafa' }}
-                user={item}
-                onPress={() => navigation.navigate('UserShow', {
-                  user: item,
-                  title: item.name,
+              <FiveUnitBar
+                multiple
+                id={item.id}
+                title={item.title}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
+                image_url={item.image_medium_url}
+                icon={'ios-arrow-forward-outline'}
+                onPress={() => this.props.navigation.navigate('FiveShow', {
+                  category: item.category,
+                  title: item.title,
+                  id: item.id,
+                  navLoading: true,
                 })}
               />
             )}
-            keyExtractor={item => 'user-list-' + item.id}
+            keyExtractor={item => 'five-list-' + item.id}
             ListFooterComponent={
               () =>
                 <ShowMore
@@ -141,7 +140,7 @@ export default class BookFiveUserList extends Component {
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large" />
+          <Spinner size="large"/>
         </View>
         }
       </Container>

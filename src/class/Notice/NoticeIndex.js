@@ -34,7 +34,7 @@ export default class NoticeIndex extends Component {
       notices: [
         {
           id: 1,
-          title: '마이파이브 공지사항 입니다.',
+          title: '마이파이브 공지사항 입니다..',
           content: '죽는 날까지 하늘을 우러러\n' +
           '\n' +
           '한 점 부끄럼이 없기를,\n' +

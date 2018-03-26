@@ -32,6 +32,7 @@ export default class ProfileFiveAddRestaurant extends Component {
     this.state = {
       loading: false,
       category: this.props.navigation.state.params.category,
+      category_korean: this.props.navigation.state.params.category_korean,
       klass: this.props.navigation.state.params.klass,
       page: 1,
       page_loading: false,
@@ -49,7 +50,7 @@ export default class ProfileFiveAddRestaurant extends Component {
   askAddWishToFive(item, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${item.title}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${item.title}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -76,7 +77,7 @@ export default class ProfileFiveAddRestaurant extends Component {
       },
     };
 
-    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.klass.toLowerCase()}`, data, header)
+    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, header)
       .then((response) => {
         this.onCreateFiveCallSuccess(response.data, index);
       }).catch((error) => {
@@ -100,7 +101,7 @@ export default class ProfileFiveAddRestaurant extends Component {
 
   // 뮤직스 검색결과 추가 하기 시작
   addFive(track, index) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.klass.toLowerCase()}`, {
+    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, {
       track: track,
     }, {
       headers: {
@@ -121,7 +122,7 @@ export default class ProfileFiveAddRestaurant extends Component {
   askAddFive(track, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${track.track_name}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${track.track_name}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -154,18 +155,18 @@ export default class ProfileFiveAddRestaurant extends Component {
               }),
               NavigationActions.navigate({
                 routeName: 'ProfileFiveIndex',
-                params: { five_category: this.state.klass.toLowerCase() },
+                params: { category: this.state.category },
               }),
             ],
           })),
       };
       if (data.fives_count === 5) {
-        message = `${this.state.category} FIVE를 모두 선택했어요. 축하해요!`;
+        message = `${this.state.category_korean} FIVE를 모두 선택했어요. 축하해요!`;
         options = [
           cancel
         ]
       } else {
-        message = `${track.track_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        message = `${track.track_name}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
         options = [
           cancel,
           {
@@ -175,7 +176,7 @@ export default class ProfileFiveAddRestaurant extends Component {
         ]
       }
       Alert.alert(
-        `${this.state.category} FIVE 선택됨`,
+        `${this.state.category_korean} FIVE 선택됨`,
         message,
         options,
         { cancelable: true },
@@ -339,7 +340,8 @@ export default class ProfileFiveAddRestaurant extends Component {
                   clicked={item.clicked}
                   friends_info={`FIVE ${item.five_users_count}`}
                   onPress={() => this.askAddWishToFive(item, index)}
-                  onPressImage={() => this.props.navigation.navigate('RestaurantShow', {
+                  onPressImage={() => this.props.navigation.navigate('FiveShow', {
+                    category: this.state.category,
                     id: item.id,
                     title: item.title,
                   })}

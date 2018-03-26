@@ -30,6 +30,13 @@ export default class UserFolloweeIndex extends Component {
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      category: this.props.navigation.state.params.category,
       followees: [],
       flip: false
     };
@@ -46,7 +53,7 @@ export default class UserFolloweeIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followees?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followees?category=${this.state.category}`, config)
       .then((response) => {
         console.log(response);
         this.setState({
