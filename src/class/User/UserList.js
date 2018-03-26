@@ -30,6 +30,12 @@ export default class UserList extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
       users: [],
       page: 1,
       page_loading: false,
@@ -43,13 +49,7 @@ export default class UserList extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    await axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
@@ -69,13 +69,7 @@ export default class UserList extends Component {
   }
 
   pageCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, config)
+    axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
       .then((response) => {
         if (response.data === undefined || response.data.length === 0) {
           this.setState({ no_more: true });

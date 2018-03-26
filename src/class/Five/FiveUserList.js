@@ -18,10 +18,10 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class MusicFiveUserList extends Component {
+export default class FiveUserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '최근 유저들',
+    title: navigation.state.params.title,
     ...Constant.FiveNavOptions,
   });
 

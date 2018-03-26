@@ -32,6 +32,7 @@ export default class ProfileFiveAddRestaurant extends Component {
     this.state = {
       loading: false,
       category: this.props.navigation.state.params.category,
+      category_korean: this.props.navigation.state.params.category_korean,
       klass: this.props.navigation.state.params.klass,
       page: 1,
       page_loading: false,
@@ -49,7 +50,7 @@ export default class ProfileFiveAddRestaurant extends Component {
   askAddWishToFive(item, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${item.title}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${item.title}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -76,7 +77,7 @@ export default class ProfileFiveAddRestaurant extends Component {
       },
     };
 
-    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.klass.toLowerCase()}`, data, header)
+    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, header)
       .then((response) => {
         this.onCreateFiveCallSuccess(response.data, index);
       }).catch((error) => {
@@ -105,7 +106,7 @@ export default class ProfileFiveAddRestaurant extends Component {
         'Authorization': ApiServer.KAKAO_API_KEY,
       },
     }).then((response) => {
-      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.klass.toLowerCase()}`, {
+      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, {
         zipcode: response.data.documents[ 0 ].road_address.zone_no,
         document: document,
       }, {
@@ -134,7 +135,7 @@ export default class ProfileFiveAddRestaurant extends Component {
   askAddFive(document, index) {
     Alert.alert(
       'FIVE 선택 확인',
-      `${document.place_name}을(를) ${this.state.category} FIVE로 선택하시겠어요?`,
+      `${document.place_name}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
       [
         {
           text: '아니요',
@@ -167,18 +168,18 @@ export default class ProfileFiveAddRestaurant extends Component {
               }),
               NavigationActions.navigate({
                 routeName: 'ProfileFiveIndex',
-                params: { five_category: this.state.klass.toLowerCase() },
+                params: { category: this.state.category },
               }),
             ],
           })),
       };
       if (data.fives_count === 5) {
-        message = `${this.state.category} FIVE를 모두 선택했어요. 축하해요!`;
+        message = `${this.state.category_korean} FIVE를 모두 선택했어요. 축하해요!`;
         options = [
           cancel
         ]
       } else {
-        message = `${document.place_name}이(가) ${this.state.category} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
+        message = `${document.place_name}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
         options = [
           cancel,
           {
@@ -188,7 +189,7 @@ export default class ProfileFiveAddRestaurant extends Component {
         ]
       }
       Alert.alert(
-        `${this.state.category} FIVE 선택됨`,
+        `${this.state.category_korean} FIVE 선택됨`,
         message,
         options,
         { cancelable: true },
@@ -262,67 +263,6 @@ export default class ProfileFiveAddRestaurant extends Component {
   }
 
   // 백엔드 단 카카오 검색 관련
-
-  // 프론트 단 카카오 검색 관련 시작
-  searchKakao(input_search) {
-    this.setState({ loading: true });
-    const config = {
-      headers: {
-        'Authorization': ApiServer.KAKAO_API_KEY,
-      },
-    };
-    axios.get(`${ApiServer.KAKAO_API}?query=${input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
-      .then((response) => {
-        if (response.data.documents.length > 0) {
-          this.setState({
-            loading: false,
-            no_result: false,
-            searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        } else {
-          this.setState({
-            loading: false,
-            no_result: true,
-            searched: true,
-            documents: response.data.documents,
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-
-  nextPageOld() {
-    this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
-    }, () => {
-      const config = {
-        headers: {
-          'Authorization': ApiServer.KAKAO_API_KEY,
-        },
-      };
-      axios.get(`${ApiServer.KAKAO_API}?query=${this.state.input_search}&page=${this.state.page}&size=15&category_group_code=${Constant.KakaoApiCategory(this.state.klass.toLowerCase())}`, config)
-        .then((response) => {
-          console.log(response);
-          this.setState({
-            loading: false,
-            documents: [ ...this.state.documents, ...response.data.documents ],
-            no_more: response.data.meta.is_end,
-            page_loading: false,
-          });
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-    });
-  }
 
   handleInputSearch(input_search) {
     if (input_search === '') {
@@ -414,7 +354,8 @@ export default class ProfileFiveAddRestaurant extends Component {
                   clicked={item.clicked}
                   friends_info={`FIVE ${item.five_users_count}`}
                   onPress={() => this.askAddWishToFive(item, index)}
-                  onPressImage={() => this.props.navigation.navigate('RestaurantShow', {
+                  onPressImage={() => this.props.navigation.navigate('FiveShow', {
+                    category: this.state.category,
                     id: item.id,
                     title: item.title,
                   })}

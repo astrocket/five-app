@@ -62,8 +62,15 @@ export default class UserFiveShow extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      category: this.props.navigation.state.params.category,
       user: this.props.navigation.state.params.user,
-      flip: true,
+      flip: false,
       clicked: false,
       fives: [],
       followers_count: '',
@@ -81,13 +88,7 @@ export default class UserFiveShow extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.state.category}`, this.state.header)
       .then((response) => {
         this.props.navigation.setParams({
           following: response.data.following,
@@ -96,7 +97,7 @@ export default class UserFiveShow extends Component {
         this.setState({
           loading: false,
           klass: response.data.klass,
-          category: response.data.category,
+          category_korean: response.data.category_korean,
           fives: response.data.fives,
           followers_count: response.data.followers_count,
           followees_count: response.data.followees_count,
@@ -137,14 +138,8 @@ export default class UserFiveShow extends Component {
   }
 
   followCall(category, data, onSuccess) {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
 
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, header)
+    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, this.state.header)
       .then((response) => {
         onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -164,7 +159,7 @@ export default class UserFiveShow extends Component {
         following: !this.state.following,
       },
     };
-    this.followCall(this.state.klass.toLowerCase(), data, (response) => this.onFollowSuccess(response));
+    this.followCall(this.state.category, data, (response) => this.onFollowSuccess(response));
   }
 
   onFollowSuccess(response) {
@@ -227,7 +222,8 @@ export default class UserFiveShow extends Component {
                 location={item.location}
                 image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
-                onPress={() => navigation.navigate(`${this.state.klass}Show`, {
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: item.category,
                   title: item.title,
                   id: item.id,
                 })}
@@ -250,7 +246,8 @@ export default class UserFiveShow extends Component {
                 location={item.location}
                 title={item.title}
                 image_url={item.image_large_url}
-                onPress={() => navigation.navigate(`${this.state.klass}Show`, {
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: item.category,
                   title: item.title,
                   id: item.id,
                 })}
@@ -297,7 +294,7 @@ export default class UserFiveShow extends Component {
                   alignItems: 'flex-start',
                   marginRight: 5,
                 }} onPress={() => navigation.navigate('UserFollowerIndex', {
-                  five_category: navigation.state.params.five_category,
+                  category: this.state.category,
                   user: navigation.state.params.user,
                 })}>
                   <Text small
@@ -309,7 +306,7 @@ export default class UserFiveShow extends Component {
                   alignItems: 'flex-start',
                   marginRight: 5,
                 }} onPress={() => navigation.navigate('UserFolloweeIndex', {
-                  five_category: navigation.state.params.five_category,
+                  category: this.state.category,
                   user: navigation.state.params.user,
                 })}>
                   <Text small
@@ -318,11 +315,11 @@ export default class UserFiveShow extends Component {
                 </Button>
               </View>
             </Col>
-            {/*<Col size={1} style={{ alignItems: 'flex-end' }}>
+            <Col size={1} style={{ alignItems: 'flex-end' }}>
               <View>
                 {this.renderFlipButton(this.state.flip)}
               </View>
-            </Col>*/}
+            </Col>
           </Row>
           {this.renderCard(this.state.flip)}
         </Content>

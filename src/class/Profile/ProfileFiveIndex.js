@@ -50,6 +50,13 @@ export default class ProfileFiveIndex extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      category: this.props.navigation.state.params.category,
       flip: false,
       clicked: false,
       fives: [],
@@ -67,18 +74,12 @@ export default class ProfileFiveIndex extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.props.navigation.state.params.five_category}`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.category}`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
           klass: response.data.klass,
-          category: response.data.category,
+          category_korean: response.data.category_korean,
           fives: response.data.fives,
           followers_count: response.data.followers_count,
           followees_count: response.data.followees_count,
@@ -167,7 +168,8 @@ export default class ProfileFiveIndex extends Component {
                 subtitle={item.subtitle}
                 friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
-                onPress={() => navigation.navigate(`${this.state.klass}Show`, {
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: this.state.category,
                   title: item.title,
                   id: item.id,
                   navLoading: true,
@@ -193,7 +195,8 @@ export default class ProfileFiveIndex extends Component {
                 subtitle={item.subtitle}
                 title={item.title}
                 image_url={item.image_large_url}
-                onPress={() => navigation.navigate(`${this.state.klass}Show`, {
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: this.state.category,
                   title: item.title,
                   id: item.id,
                   navLoading: true,
@@ -229,7 +232,7 @@ export default class ProfileFiveIndex extends Component {
               padding: 10,
             }}>
               <Text style={{ marginBottom: 5 }}>{my_profile.name}의</Text>
-              <Text large>{this.state.category} 파이브</Text>
+              <Text large>{this.state.category_korean} 파이브</Text>
             </Row>
             <Row style={{
               paddingBottom: 10,
@@ -241,7 +244,7 @@ export default class ProfileFiveIndex extends Component {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     marginRight: 5,
-                  }} onPress={() => navigation.navigate('ProfileFollowerIndex', { five_category: navigation.state.params.five_category })}>
+                  }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
                     <Text small
                           style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
                     <Text note>{'Follower'}</Text>
@@ -250,7 +253,7 @@ export default class ProfileFiveIndex extends Component {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     marginRight: 5,
-                  }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { five_category: navigation.state.params.five_category })}>
+                  }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
                     <Text small
                           style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
                     <Text note>{'Following'}</Text>
@@ -259,7 +262,7 @@ export default class ProfileFiveIndex extends Component {
               </Col>
               <Col size={1} style={{ justifyContent: 'flex-end', flexDirection: 'row'}}>
                 <View>
-                  <Button onPress={() => navigation.navigate('ProfileFiveEdit', { five_category: navigation.state.params.five_category })} transparent>
+                  <Button onPress={() => navigation.navigate('ProfileFiveEdit', { category: this.state.category })} transparent>
                     <Icon
                       name="md-create"
                       style={{

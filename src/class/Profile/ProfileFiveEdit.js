@@ -30,9 +30,14 @@ export default class ProfileFiveEdit extends Component {
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      five_category: this.props.navigation.state.params.five_category,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      category: this.props.navigation.state.params.category,
       klass: '',
-      category: '',
       fives: [],
       wishes: []
     };
@@ -43,18 +48,11 @@ export default class ProfileFiveEdit extends Component {
   }
 
   async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.five_category}`, config)
+    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.category}`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
           klass: response.data.klass,
-          category: response.data.category,
           fives: response.data.fives,
           wishes: response.data.wishes
         });
@@ -72,14 +70,7 @@ export default class ProfileFiveEdit extends Component {
   }
 
   deleteCall(url, data, onSuccess) {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token
-      }
-    };
-
-    axios.post(url, data, header)
+    axios.post(url, data, this.state.header)
       .then((response) => {
         onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -93,7 +84,7 @@ export default class ProfileFiveEdit extends Component {
   }
 
   askRestaurantDelete(secId, rowId, rowMap, five_data) {
-    const url = `${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.five_category}`;
+    const url = `${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`;
     const item = this.state.fives[ rowId ];
     const data = {
       favorable_id: item.id

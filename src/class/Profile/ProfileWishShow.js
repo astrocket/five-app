@@ -29,8 +29,15 @@ export default class ProfileWishShow extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
+      headers: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token
+        }
+      },
       klass: this.props.klass,
       category: this.props.category,
+      category_korean: this.props.category_korean,
       wishes: this.props.wishes,
     };
   }
@@ -39,14 +46,7 @@ export default class ProfileWishShow extends Component {
   }
 
   deleteCall(url, data, onSuccess) {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token
-      }
-    };
-
-    axios.post(url, data, header)
+    axios.post(url, data, this.state.header)
       .then((response) => {
         onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -65,15 +65,8 @@ export default class ProfileWishShow extends Component {
       favorable_id: wish.id,
     };
 
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
     if (wish_data.also_five) {
-      axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${category}`, data, header)
+      axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${category}`, data, this.state.header)
         .then((response) => {
           this.onDestroyFiveCallSuccess(response.data, index);
         }).catch((error) => {
@@ -85,7 +78,7 @@ export default class ProfileWishShow extends Component {
         });
       });
     } else {
-      axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${category}`, data, header)
+      axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${category}`, data, this.state.header)
         .then((response) => {
           this.onCreateFiveCallSuccess(response.data, index);
         }).catch((error) => {
@@ -112,7 +105,7 @@ export default class ProfileWishShow extends Component {
   }
 
   askRestaurantDelete(secId, rowId, rowMap, item) {
-    const url = `${ApiServer.MY_PROFILE}/destroy_wish?category=${this.state.klass.toLowerCase()}`;
+    const url = `${ApiServer.MY_PROFILE}/destroy_wish?category=${this.state.category}`;
     const data = {
       favorable_id: item.wish.id
     };
@@ -158,11 +151,12 @@ export default class ProfileWishShow extends Component {
                   }}
                   renderRow={(data, secId, rowId, rowMap) =>
                     <WishUnitBar
-                      onPressImage={() => navigation.navigate('RestaurantShow', {
+                      onPressImage={() => navigation.navigate('FiveShow', {
+                        category: this.state.category,
                         id: data.wish.id,
                         title: data.wish.title,
                       })}
-                      onPress={() => this.createFiveCall(this.state.klass.toLowerCase(), data, rowId)}
+                      onPress={() => this.createFiveCall(this.state.category, data, rowId)}
                       id={data.wish.id}
                       title={data.wish.title}
                       subtitle={data.wish.location}
