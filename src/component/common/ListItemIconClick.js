@@ -8,26 +8,28 @@ import {
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
-const ListItemIconClick = ({ icon, onPress, target, title }) => {
+const ListItemIconClick = ({ icon, label, onPress, target, title }) => {
   const { container } = BaseStyle;
 
   return (
     target ?
       <ListItem avatar button onPress={onPress}>
         <Left>
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: 36, width: 36 }}>
-            <Icon
-              name={icon}
-              style={{
-                fontSize: 25,
-                borderRadius: 0,
-                color: Constant.FiveColor,
-              }}
-            />
+          <View style={{ alignItems: 'center' }}>
+            {icon ?
+              <Icon
+                name={icon}
+                style={{
+                  fontSize: 23,
+                  borderRadius: 0,
+                  color: Constant.FiveColor,
+                }}
+              /> : <Text small>{label}</Text>
+            }
           </View>
         </Left>
-        <Body style={{ borderBottomWidth: 0 }}>
-        <Text>{title}</Text>
+        <Body style={{ borderBottomWidth: 0, flex: 1, alignItems: 'flex-end'}}>
+          <Text small grey>{title}</Text>
         </Body>
       </ListItem> : null
   );

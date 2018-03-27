@@ -1,16 +1,17 @@
 import React from 'react';
 import {
-  View,
+  View, Image
 } from 'react-native';
 import {
   Text, Header, Left, Body, Right, Title, Button, Icon,
 } from 'native-base';
+import { ImageCon } from './';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
 const ElevenHeader = (props) => {
   const { container } = BaseStyle;
-  const { headerShow, title, custom, rightButton, onPressRight, buttonIcon } = props;
+  const { headerShow, title, custom, rightButton, onPressRight, buttonIcon, rightAsImage } = props;
   const bigHeader = {
     paddingBottom: 10, paddingTop: Constant.globalPaddingTop + 35,
     paddingLeft: 10, paddingRight: 10,
@@ -29,13 +30,19 @@ const ElevenHeader = (props) => {
           {rightButton ?
             <View>
               <Button onPress={onPressRight} transparent>
-                <Icon
-                  name={buttonIcon}
-                  style={{
-                    fontSize: 25,
-                    color: Constant.FiveColor,
-                  }}
-                />
+                {rightAsImage ?
+                  <ImageCon
+                    image={buttonIcon}
+                  />
+                  :<Icon
+                    name={buttonIcon}
+                    style={{
+                      fontSize: 25,
+                      color: Constant.FiveColor,
+                    }}
+                  />
+                }
+
               </Button>
             </View> : null
           }

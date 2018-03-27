@@ -7,18 +7,18 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, five_users_count, updated_at, friends_info, new_label }) => {
+const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBottom, updated_at, friends_info, new_label }) => {
   const { container } = BaseStyle;
 
   if (updated_at) {
     return (
-      <ListItem avatarList button onPress={onPress}>
+      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 5}}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}
         />
-        <Body>
-        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <Body style={{ flex: 1, height: 60, alignSelf: 'stretch', justifyContent: 'center' }}>
+        <View>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>
@@ -43,17 +43,17 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, five_users
     );
   } else {
     return (
-      <ListItem avatarList button onPress={onPress}>
+      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 5}}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}
         />
-        <Body>
-        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-          <Text normal numberOfLines={1}>{title}</Text>
-          <Text note numberOfLines={1}>{subtitle}</Text>
-          <Text micro yellow>{friends_info}</Text>
-        </View>
+        <Body style={{ flex: 1, height: 60, alignSelf: 'stretch', justifyContent: 'center' }}>
+          <View>
+            <Text normal numberOfLines={1}>{title}</Text>
+            <Text note numberOfLines={1}>{subtitle}</Text>
+            <Text micro yellow>{friends_info}</Text>
+          </View>
         </Body>
         <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
           {icon ?

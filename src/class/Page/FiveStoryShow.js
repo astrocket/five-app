@@ -17,7 +17,7 @@ import {
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
-import { FiveUnitBar } from '../../component/common';
+import { FiveUnitBar, NavBar } from '../../component/common';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
@@ -25,7 +25,7 @@ import { observer, inject } from 'mobx-react/native';
 @observer
 export default class FiveStoryShow extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
+    /*title: navigation.state.params.title,
     headerRight: (
       navigation.state.params.navLoading ?
         null :
@@ -41,7 +41,8 @@ export default class FiveStoryShow extends Component {
           </Button>
         </View>
     ),
-    ...Constant.FiveNavOptions,
+    ...Constant.FiveNavOptions,*/
+    header: null,
   });
 
   constructor(props) {
@@ -86,6 +87,17 @@ export default class FiveStoryShow extends Component {
 
     return (
       <Container>
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/cancel_icon_grey.png')}
+          onPressLeft={() => navigation.goBack()}
+          rightButton
+          rightAsImage
+          rightIcon={require('../../assets/images/share_icon_pink.png')}
+          onPressRight={() => navigation.goBack()}
+          headerText="커스텀 헤더"
+        />
         <Grid>
           <Row>
             <WebView
@@ -114,6 +126,7 @@ export default class FiveStoryShow extends Component {
                         id: item.id,
                         navLoading: true,
                       })}
+                      paddingBottom={0}
                     />
                   </View>
                 )

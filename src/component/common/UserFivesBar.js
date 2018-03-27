@@ -37,7 +37,7 @@ const FiveImages = ({ fives, defaultImage, pureWidth }) => {
 };
 
 
-const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, followers, followees, fives, user, clicked }) => {
+const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, user, clicked }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
   let cardMargin = 20;
@@ -59,7 +59,7 @@ const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, follower
         <Body>
         <View style={{ flexDirection: 'column'}}>
           <Text note>{user.name}의</Text>
-          <Text medium>{category}</Text>
+          <Text medium>{Constant.CategoryToKorean(category)}</Text>
         </View>
         </Body>
         <Right>

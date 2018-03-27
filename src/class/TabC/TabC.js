@@ -4,14 +4,16 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button, Toast, Left, Body, Title, Right,
+  Item, Input, Icon, List, ListItem,
 } from 'native-base';
 import {
   Col,
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, UserUnitBar } from '../../component/common';
+import {
+  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, UserUnitBar,
+} from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -47,7 +49,14 @@ export default class TabC extends Component {
       musics: [],
       books: [],
       users: [],
+      suggestions: [],
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      suggestions: [ '비가 오는 날에', '아이유', '크라잉넛' ],
+    });
   }
 
   searchApi(input_search) {
@@ -78,7 +87,10 @@ export default class TabC extends Component {
 
   handleInputSearch(input_search) {
     if (input_search === '') {
-      this.setState({ searched: false });
+      this.setState({
+        searched: false,
+        input_search: input_search,
+      });
     } else {
       this.setState({ input_search });
     }
@@ -124,7 +136,7 @@ export default class TabC extends Component {
                         onPress={() => this.props.navigation.navigate('FiveList', {
                           category: 'restaurant',
                           search_params: this.state.input_search,
-                          title: `${this.state.input_search} 맛집 검색 결과`
+                          title: `${this.state.input_search} 맛집 검색 결과`,
                         })}
                         moreTitle={'더보기'}
                       />
@@ -178,7 +190,7 @@ export default class TabC extends Component {
                         onPress={() => this.props.navigation.navigate('FiveList', {
                           category: 'music',
                           search_params: this.state.input_search,
-                          title: `${this.state.input_search} 음악 검색 결과`
+                          title: `${this.state.input_search} 음악 검색 결과`,
                         })}
                         moreTitle={'더보기'}
                       />
@@ -232,7 +244,7 @@ export default class TabC extends Component {
                         onPress={() => this.props.navigation.navigate('FiveList', {
                           category: 'book',
                           search_params: this.state.input_search,
-                          title: `${this.state.input_search} 책 검색 결과`
+                          title: `${this.state.input_search} 책 검색 결과`,
                         })}
                         moreTitle={'더보기'}
                       />
@@ -282,7 +294,7 @@ export default class TabC extends Component {
                         title={'유저'}
                         onPress={() => this.props.navigation.navigate('UserList', {
                           search_params: this.state.input_search,
-                          title: `${this.state.input_search} 유저 검색 결과`
+                          title: `${this.state.input_search} 유저 검색 결과`,
                         })}
                         moreTitle={'더보기'}
                       />
@@ -312,17 +324,25 @@ export default class TabC extends Component {
       );
     } else {
       return (
-        <View style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flex: 1,
-          flexDirection: 'column',
-        }}>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-          <Text>성수동 맛집</Text>
-        </View>
+        <Content>
+          <Grid>
+            <RowHeaderBar
+              title={'인기 검색어'}
+            />
+            <Row>
+              <FlatList
+                data={this.state.suggestions}
+                renderItem={({ item, index }) => (
+                  <ListItem onPress={() => this.setState({ input_search: item },
+                    () => this.searchApi())}>
+                    <Text primary>{item}</Text>
+                  </ListItem>
+                )}
+                keyExtractor={item => 'suggestions' + item}
+              />
+            </Row>
+          </Grid>
+        </Content>
       );
     }
   }
@@ -350,11 +370,17 @@ export default class TabC extends Component {
               autoCorrect={false}
               autoFocus={false}
               multiline={false}
+              value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.searchApi(this.state.input_search)}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
-            <Icon name="ios-people"/>
+            <TouchableOpacity onPress={() => this.setState({
+              input_search: '',
+              searched: false,
+            })}>
+              <Icon name="md-close"/>
+            </TouchableOpacity>
           </Item>
         </Header>
         {this.renderSearchResult()}

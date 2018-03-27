@@ -45,6 +45,9 @@ export default (variables = variable) => {
     ".yellow": {
       color: '#F9D764',
     },
+    ".thin": {
+      fontWeight: "200"
+    },
     ".primary": {
       color: variables.primaryColor,
     },

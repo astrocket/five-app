@@ -61,7 +61,7 @@ export default class Welcome extends Component {
             <Image
               source={require('../../assets/images/five_logo.png')}
               style={{
-                height: (Constant.deviceWidth / 3) + 5,
+                height: (Constant.deviceWidth / 3),
                 width: Constant.deviceWidth / 3,
                 margin: 20,
               }}

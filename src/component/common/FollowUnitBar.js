@@ -36,11 +36,6 @@ const FollowUnitBar = ({ user, onPress, following }) => {
           {following.book &&
           <Image style={{ width: 25, height: 25, borderRadius: 12.5 }} source={Images.book_main}/>
           }
-          <View style={BaseStyle.topRightLabel}>
-            <Badge primary round_micro>
-              <Text>+0</Text>
-            </Badge>
-          </View>
         </Right>
       </ListItem>
     );

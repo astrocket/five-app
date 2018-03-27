@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Alert, FlatList, RefreshControl, Linking,
+  View, Alert, FlatList, RefreshControl, Linking, StatusBar,
 } from 'react-native';
 import {
   Container, Content, Text, Spinner, Thumbnail, Button, Icon, Left,
@@ -10,7 +10,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  RowHeaderBar, FollowSmallButton, UserUnitRound, FiveUnitFull, ListItemIconClick,
+  RowHeaderBar, NavBar, UserUnitRound, AddSmallButton, ListItemIconClick,
 } from '../../component/common';
 import { FiveUnitRound } from '../../component/common';
 import axios from 'axios';
@@ -26,36 +26,8 @@ import { observer, inject } from 'mobx-react/native';
 export default class FiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: null,//navigation.state.params.title,
-
-    headerRight: (
-      navigation.state.params.navLoading ?
-        null :
-        <View style={BaseStyle.headerDoubleIconsContainer}>
-          <Button onPress={navigation.state.params.createWishCall} transparent>
-            <Icon
-              name="md-attach"
-              style={{
-                fontSize: 25,
-                color: Constant.FiveColor,
-              }}
-            />
-          </Button>
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingRight: 5,
-          }}>
-            <FollowSmallButton
-              onPress={navigation.state.params.createFiveCall}
-              textTrue={'담김'}
-              textFalse={'+ 담기'}
-              clicked={navigation.state.params.my_five && navigation.state.params.my_wish}
-            />
-          </View>
-        </View>
-    ),
-    ...Constant.FiveNavOptions,
+    header: null,
+    statusBarStyle: 'dark-content',
   });
 
   constructor(props) {
@@ -83,10 +55,6 @@ export default class FiveShow extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({
-      createWishCall: () => this.createWishCall(),
-      createFiveCall: () => this.createFiveCall(),
-    });
     this.apiCall();
   }
 
@@ -96,11 +64,6 @@ export default class FiveShow extends Component {
     console.log(this.props.navigation.state.params.id);
     await axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.props.navigation.state.params.id}`, this.state.header)
       .then((response) => {
-        this.props.navigation.setParams({
-          my_five: response.data.my_five,
-          my_wish: response.data.my_wish,
-          navLoading: false,
-        });
         this.setState({
           loading: false,
           five: response.data.five,
@@ -246,7 +209,7 @@ export default class FiveShow extends Component {
         {
           text: 'FIVE 바꾸기',
           onPress: () => this.props.navigation.navigate('ProfileFiveEdit', {
-            five_category: this.state.category,
+            category: this.state.category,
           }),
         },
         {
@@ -332,21 +295,57 @@ export default class FiveShow extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
+          <NavBar
+            statusBar={'light-content'}
+            backgroundImage={{url: this.state.five.image_large_url}}
+            leftButton
+            leftAsImage
+            leftIcon={require('../../assets/images/arrow_icon_white.png')}
+            onPressLeft={() => navigation.goBack()}
+          />
           <Grid>
             <Row style={{
-              paddingLeft: 10,
-              paddingRight: 10,
+              padding: 10,
+              marginBottom: 10,
             }}>
-              <FiveUnitFull
-                id={this.state.five.id}
-                subtitle={this.state.five.subtitle}
-                title={this.state.five.title}
-                image_url={this.state.five.image_large_url}
-                barWidth={null}
-                barHeight={null}
-                borderRadius={15}
-                marginRight={0}
-              />
+              <View style={{
+                flex: 1,
+                flexDirection: 'column',
+              }}>
+                <View>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <Text large numberOfLines={1} style={{ width: Constant.deviceWidth/3*2}}>{this.state.five.title}</Text>
+                    <View style={BaseStyle.headerDoubleIconsContainer}>
+                      <Button onPress={() => this.createWishCall()} transparent>
+                        <Icon
+                          name="md-attach"
+                          style={{
+                            fontSize: 25,
+                            color: Constant.FiveColor,
+                          }}
+                        />
+                      </Button>
+                      <View style={{
+                        alignItems: 'flex-end',
+                        justifyContent: 'center',
+                        paddingRight: 5,
+                      }}>
+                        <AddSmallButton
+                          onPress={() => this.createFiveCall()}
+                          textTrue={'담김'}
+                          textFalse={'+ 담기'}
+                          clicked={this.state.my_five && this.state.my_wish}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                  <Text note numberOfLines={1}>{this.state.five.subtitle}</Text>
+                </View>
+              </View>
             </Row>
             <List style={{ paddingBottom: 20 }}>
               <ListItem avatar>
@@ -377,18 +376,29 @@ export default class FiveShow extends Component {
               />
               {/* 링크 */}
               <ListItemIconClick
-                icon={'md-globe'}
+                label={'가사'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.related_link,
                   headerTitle: this.state.five.related_link
                 })}
                 target={this.state.five.related_link}
-                title={this.state.five.related_link}
+                title={'링크 열어보기'}
+              />
+              {/* 유튜브 링크 */}
+              <ListItemIconClick
+                label={'유튜브'}
+                onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                  url: this.state.five.youtube_link,
+                  headerTitle: this.state.five.track_name
+                })}
+                target={this.state.five.youtube_link}
+                title={'음악 감상하기'}
               />
             </List>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={`${Number(this.state.five_users_count).toLocaleString()}명의 FIVE`}
+              title={`Five 리스트   `}
+              yellowLabel={`${Number(this.state.five_users_count).toLocaleString()}`}
               onPress={() => navigation.navigate('FiveUserList', {
                 users: this.state.users, title: `FIVE 유저들`,
                 category: this.state.category,
@@ -434,7 +444,8 @@ export default class FiveShow extends Component {
                     subtitle={item.subtitle}
                     five_users_count={item.five_users_count}
                     image_url={item.image_medium_url}
-                    onPress={() => navigation.navigate(`${item.klass}Show`, {
+                    onPress={() => navigation.navigate('FiveShow', {
+                      category: item.category,
                       title: item.title,
                       id: item.id,
                       navLoading: true,

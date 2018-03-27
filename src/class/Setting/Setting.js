@@ -72,9 +72,9 @@ export default class Setting extends Component {
             borderBottomColor: '#eee',
           }}>
             <ListItem button
-                      onPress={() => navigation.navigate('Invitation')}>
+                      onPress={() => navigation.navigate('NoticeIndex')}>
               <Body>
-              <Text>친구초대</Text>
+              <Text>공지사항</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward"/>
@@ -122,11 +122,23 @@ export default class Setting extends Component {
             </ListItem>
             <ListItem button
                       onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                        url: `${ApiServer.COMPANY}/inquery?user=${JSON.stringify(this.props.ApplicationStore.my_profile)}`,
+                        headerTitle: '고객센터',
+                      })}>
+              <Body>
+              <Text>고객센터</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward"/>
+              </Right>
+            </ListItem>
+            <ListItem button
+                      onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                         url: `${ApiServer.COMPANY}/policy`,
                         headerTitle: '이용약관',
                       })}>
               <Body>
-              <Text>고객센터</Text>
+              <Text>이용약관</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward"/>
@@ -138,7 +150,7 @@ export default class Setting extends Component {
                         headerTitle: '개인정보보호정책',
                       })}>
               <Body>
-              <Text>이용약관 및 개인정보보호정책</Text>
+              <Text>개인정보보호정책</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward"/>

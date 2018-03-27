@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View, Platform, Image, ScrollView,
+  View, Platform, Image, ScrollView, TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {
-  Container, Header, Content, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem,
+  Container, Text, Spinner,
   Button, Fab
 } from 'native-base';
 import {
@@ -70,6 +72,14 @@ export default class Tutorial extends Component {
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
+    const startAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'StartForm',
+        }),
+      ]
+    });
 
     return (
       <Container>
@@ -87,23 +97,52 @@ export default class Tutorial extends Component {
             showsVerticalScrollIndicator={false}
           >
             <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>회원 가입 완료</Text>
+              <Text>안녕하세요</Text>
             </View>
             <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>튜토리얼 1</Text>
+              <Text>튜토리얼 입니다</Text>
             </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>튜토리얼 2</Text>
-            </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>튜토리얼 3</Text>
-            </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <View style={{ flex: 1 }}>
-                <Text>튜토리얼 4</Text>
+            <View style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              flex: 1,
+              paddingTop: Constant.globalPaddingTop,
+            }}>
+              <View style={{
+                justifyContent: 'flex-start',
+                flex: 1,
+                width: Constant.deviceWidth
+              }}>
+                <Image
+                  source={require('../../assets/images/five_logo.png')}
+                  style={{
+                    height: (Constant.deviceWidth / 3),
+                    width: Constant.deviceWidth / 3,
+                    margin: 20,
+                  }}
+                />
               </View>
-              <View style={{ height: 50, }}>
-                {this.renderButton()}
+              <View style={{
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                flex: 1,
+                width: Constant.deviceWidth
+              }}>
+                <TouchableOpacity
+                  onPress={() => navigation.dispatch(startAction)}
+                  style={{ margin: 20, flexDirection: 'row' }}>
+                  <Text large style={{ marginRight: 5 }}>
+                    시작하기
+                  </Text>
+                  <Icon
+                    name={'chevron-right'}
+                    style={{
+                      fontSize: 25,
+                      color: '#EEE',
+                    }}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
@@ -112,7 +151,7 @@ export default class Tutorial extends Component {
             direction="up"
             style={{ backgroundColor: Constant.FiveColor }}
             position="bottomLeft"
-            onPress={() => this.props.ApplicationStore.signIn()}>
+            onPress={() => navigation.dispatch(startAction)}>
             <Text micro note>생략</Text>
           </Fab>
         </View>

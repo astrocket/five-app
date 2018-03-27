@@ -82,12 +82,19 @@ export default class TabB extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
+/*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
     const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
     const category_koreans = [ '음악', '맛집', ' 책' ];
     const categories = [ 'music', 'restaurant', 'book'];
-    const klasses = ['Music', 'Restaurnt', 'Book'];
-    const CANCEL_INDEX = 3;
+    const klasses = ['Music', 'Restaurant', 'Book'];
+    const CANCEL_INDEX = 3;*/
+
+    const BUTTONS = [ '요즘 좋은 음악', '재미 있는 책', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddBook' ];
+    const category_koreans = [ '음악', ' 책' ];
+    const categories = [ 'music', 'book'];
+    const klasses = ['Music', 'Book'];
+    const CANCEL_INDEX = 2;
 
     ActionSheet.show(
       {

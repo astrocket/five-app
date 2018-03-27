@@ -6,8 +6,8 @@ import {
   Card, CardItem, Text, Thumbnail, ListItem,  Left,  Body,  Right, Icon
 } from 'native-base';
 import {
-  FollowSmallButton
-} from './FollowSmallButton';
+  AddSmallButton
+} from './AddSmallButton';
 import BaseStyle from '../../config/BaseStyle';
 
 const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, icon, also_five, five_users_count }) => {
@@ -34,7 +34,7 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
           justifyContent: 'center',
           paddingRight: 5,
         }}>
-          <FollowSmallButton
+          <AddSmallButton
             onPress={onPress}
             textTrue={'담김'}
             textFalse={'+ 담기'}

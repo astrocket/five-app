@@ -3,7 +3,7 @@ import {
   View, FlatList, RefreshControl,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Text, Button, Icon, List, ListItem, Thumbnail, Body,
+  Container, Content, Spinner, Toast
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import {
-  RowHeaderBar, MainLargeTitle, HomeCategoryBar, FiveStoryFull, FiveUnitRound, UserFivesBar,
+  RowHeaderBar, FiveStoryFull, FiveUnitRound, UserFivesBar,
 } from '../../component/common';
 import * as ApiServer from '../../config/ApiServer';
 import * as Images from '../../assets/images/Images';
@@ -30,19 +30,12 @@ export default class HomeIndex extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
-      categories: [],
       five_story: [],
       popular_fives: [],
       follow_suggestions: [],
       refreshing: false,
     };
   }
-
-/*  componentWillMount() {
-    this.props.navigation.setParams({
-      openDrawerAction: () => this.openDrawerAction(),
-    });
-  }*/
 
   componentDidMount() {
     this.apiCall();
@@ -55,11 +48,10 @@ export default class HomeIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.HOME_INDEX}?category=restaurant`, config)
+    await axios.get(`${ApiServer.HOME_INDEX}`, config)
       .then((response) => {
         this.setState({
           loading: false,
-          categories: response.data.categories,
           five_story: response.data.five_story,
           popular_fives: response.data.popular_fives,
           follow_suggestions: response.data.follow_suggestions,
@@ -89,7 +81,7 @@ export default class HomeIndex extends Component {
       },
     };
 
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.klass.toLowerCase()}`, data, header)
+    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
       .then((response) => {
         this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -163,21 +155,16 @@ export default class HomeIndex extends Component {
                   <UserFivesBar
                     onPress={() => navigation.navigate('UserShow', {
                       user: item.user,
-/*                      category_data: item,
-                      five_category: item.klass.toLowerCase(),
-                      navLoading: true,*/
                     })}
                     defaultImage={Images.findImageOf(item.category)}
                     onPressFollow={() => this.followCall(item, index)}
                     category={item.category}
-                    followers={item.followers_count}
-                    followees={item.followees_count}
                     fives={item.fives}
                     clicked={item.following}
                     user={item.user}
                   />
                 )}
-                keyExtractor={item => 'user-fives-' + item.id}
+                keyExtractor={item => 'user-fives-' + item.category + item.user.id}
               />
             </Row>
             <RowHeaderBar
@@ -195,7 +182,8 @@ export default class HomeIndex extends Component {
                     subtitle={item.five.subtitle}
                     five_users_count={item.five.five_users_count}
                     image_url={item.five.image_medium_url}
-                    onPress={() => navigation.navigate(`${item.klass}Show`, {
+                    onPress={() => navigation.navigate('FiveShow', {
+                      category: item.five.category,
                       title: item.five.title,
                       id: item.five.id,
                       navLoading: true,

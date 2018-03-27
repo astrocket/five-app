@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, Alert, FlatList, RefreshControl
+  View, Image, TouchableOpacity, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -27,7 +27,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileFiveIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerRight: (
+/*    headerRight: (
       navigation.state.params.navLoading ?
         null :
         <View style={BaseStyle.headerDoubleIconsContainer}>
@@ -41,7 +41,7 @@ export default class ProfileFiveIndex extends Component {
             />
           </Button>
         </View>
-    ),
+    ),*/
     ...Constant.FiveNavOptions,
   });
 
@@ -194,6 +194,7 @@ export default class ProfileFiveIndex extends Component {
                 id={item.id}
                 subtitle={item.subtitle}
                 title={item.title}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_large_url}
                 onPress={() => navigation.navigate('FiveShow', {
                   category: this.state.category,
@@ -214,7 +215,7 @@ export default class ProfileFiveIndex extends Component {
   }
 
   render() {
-    const { container, preLoading } = BaseStyle;
+    const { container, preLoading, rowFlexCenterCenter } = BaseStyle;
     const { navigation } = this.props;
     const { my_profile } = this.props.ApplicationStore;
 
@@ -227,56 +228,32 @@ export default class ProfileFiveIndex extends Component {
           />
         }>
           <Grid>
-            <Row style={{
-              flexDirection: 'column',
-              padding: 10,
-            }}>
-              <Text style={{ marginBottom: 5 }}>{my_profile.name}의</Text>
-              <Text large>{this.state.category_korean} 파이브</Text>
-            </Row>
-            <Row style={{
-              paddingBottom: 10,
-              marginBottom: 5,
-            }}>
-              <Col size={2} style={{ justifyContent: 'center' }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Button transparent style={{
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    marginRight: 5,
-                  }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
-                    <Text small
-                          style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
-                    <Text note>{'Follower'}</Text>
-                  </Button>
-                  <Button transparent style={{
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    marginRight: 5,
-                  }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
-                    <Text small
-                          style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
-                    <Text note>{'Following'}</Text>
-                  </Button>
-                </View>
-              </Col>
-              <Col size={1} style={{ justifyContent: 'flex-end', flexDirection: 'row'}}>
-                <View>
-                  <Button onPress={() => navigation.navigate('ProfileFiveEdit', { category: this.state.category })} transparent>
-                    <Icon
-                      name="md-create"
-                      style={{
-                        fontSize: 25,
-                        color: Constant.FiveColor,
-                      }}
-                    />
-                  </Button>
-                </View>
+            <View>
+              <View style={rowFlexCenterCenter}>
+                <Text grey>{my_profile.name}의</Text>
+              </View>
+              <View style={rowFlexCenterCenter}>
+                <Text large>{this.state.category_korean} </Text>
+                <Text large thin>파이브</Text>
+              </View>
+              <View style={rowFlexCenterCenter}>
+                <TouchableOpacity transparent style={{
+                  flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
+                }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
+                  <Text small grey>{'Follower '}</Text>
+                  <Text small primary>{Number(this.state.followers_count).toLocaleString()}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity transparent style={{
+                  flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
+                }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
+                  <Text small grey>{'Following '}</Text>
+                  <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
+                </TouchableOpacity>
                 <View style={{ width: 50 }}>
                   {this.renderFlipButton(this.state.flip)}
                 </View>
-              </Col>
-            </Row>
+              </View>
+            </View>
             {this.renderCard(this.state.flip)}
           </Grid>
         </Content>

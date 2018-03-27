@@ -1,4 +1,4 @@
-export const DOMAIN = '192.168.1.37:3000';
+export const DOMAIN = '127.0.0.1:3000';
 export const API = 'http://' + DOMAIN;
 //export const DOMAIN = "five_api.insomenia.com";
 //export const API = "http://" + DOMAIN;

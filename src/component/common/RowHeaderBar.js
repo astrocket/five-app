@@ -8,7 +8,7 @@ import {
 import { Row } from 'react-native-easy-grid';
 import BaseStyle from '../../config/BaseStyle';
 
-const RowHeaderBar = ({ title, onPress, moreTitle, style }) => {
+const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
   const { container } = BaseStyle;
   if (onPress) {
     return (
@@ -19,7 +19,12 @@ const RowHeaderBar = ({ title, onPress, moreTitle, style }) => {
         alignItems: 'center',
         padding: 10
       }]}>
-        <Text small>{title}</Text>
+        <View style={{ flexDirection: 'row'}}>
+          <Text small>{title}</Text>
+          {yellowLabel ?
+            <Text small yellow>{yellowLabel}</Text>
+            :null}
+        </View>
         <TouchableOpacity onPress={onPress} underlayColor={'#fff'}>
           <Text primary>{moreTitle}</Text>
         </TouchableOpacity>

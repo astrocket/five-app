@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View,
-  TouchableOpacity, RefreshControl,
-  FlatList,
+  View, RefreshControl, FlatList,
 } from 'react-native';
 import {
   Container, Content, Spinner, Toast,
@@ -36,7 +34,6 @@ export default class FiveIndex extends Component {
       },
     },
     fives: [],
-    users: [],
     my_wish_fives: [],
     follow_suggestions: [],
     challenge_fives: []
@@ -56,9 +53,9 @@ export default class FiveIndex extends Component {
   async apiCall() {
     await axios.get(Constant.CategoryToApi(this.state.category), this.state.header)
       .then((response) => {
-        const { fives, users, my_wish_fives, follow_suggestions, challenge_fives } = response.data;
+        const { fives, my_wish_fives, follow_suggestions, challenge_fives } = response.data;
         this.setState({
-          loading: false, fives, users, my_wish_fives, follow_suggestions, challenge_fives
+          loading: false, fives, my_wish_fives, follow_suggestions, challenge_fives
         })
       }).catch((error) => {
         console.log(error.response);
@@ -162,18 +159,16 @@ export default class FiveIndex extends Component {
                   style={rowWrapper}
                   renderItem={({ item, index }) => (
                     <UserFivesBar
-                      onPress={() => navigation.navigate('UserShow', { user: item.user ,category_data: item, five_category: item.klass.toLowerCase(), navLoading: true })}
+                      onPress={() => navigation.navigate('UserShow', { user: item.user })}
                       onPressFollow={() => this.followCall(item, index)}
                       defaultImage={Images.findImageOf(item.category)}
-                      clicked={item.following}
                       category={item.category}
-                      followers={item.followers_count}
-                      followees={item.followees_count}
                       fives={item.fives}
+                      clicked={item.following}
                       user={item.user}
                     />
                   )}
-                  keyExtractor={item => 'user-fives-' + item.id}
+                  keyExtractor={item => 'user-fives-' + item.user.id}
                 />
                 : <EmptyBox
                   barWidth={Constant.deviceWidth - 20}

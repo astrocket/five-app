@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FollowUnitBar } from '../../component/common';
+import { FollowUnitBar, EmptyBox } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -30,6 +30,7 @@ export default class UserFolloweeIndex extends Component {
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       refreshing: false,
+      user: this.props.navigation.state.params.user,
       header: {
         headers: {
           'X-User-Email': this.props.ApplicationStore.email,
@@ -53,7 +54,7 @@ export default class UserFolloweeIndex extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/followees?category=${this.state.category}`, config)
+    await axios.get(`${ApiServer.USERS}/${this.state.user.id}/followees?category=${this.state.category}`, config)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -99,19 +100,27 @@ export default class UserFolloweeIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <FlatList
-            data={this.state.followees}
-            renderItem={({ item }) => (
-              <FollowUnitBar
-                user={item}
-                onPress={() => navigation.navigate('UserShow', {
-                  user: item,
-                  title: item.name,
-                })}
-              />
-            )}
-            keyExtractor={item => 'followees-list-' + item.id}
-          />
+          {this.state.followees.length > 0 ?
+            <FlatList
+              data={this.state.followees}
+              renderItem={({ item }) => (
+                <FollowUnitBar
+                  user={item}
+                  onPress={() => navigation.navigate('UserShow', {
+                    user: item,
+                    title: item.name,
+                  })}
+                />
+              )}
+              keyExtractor={item => 'followees-list-' + item.id}
+            />
+          :<EmptyBox
+              barWidth={Constant.deviceWidth - 20}
+              message={`아직 ${this.state.user.name}님이 팔로우 하는 친구가 없어요.`}
+              barHeight={100}
+              borderRadius={10}
+              marginRight={0}
+            />}
         </Content>
         {this.state.loading &&
         <View style={preLoading}>

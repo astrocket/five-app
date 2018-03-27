@@ -72,7 +72,7 @@ export default class NoticeShow extends Component {
               </Body>
             </CardItem>
             <CardItem footer>
-              <Text note>{this.state.notice.created_at} by 마이파이브 운영팀</Text>
+              <Text note>{this.state.notice.created_at.split('T')[0]} by 마이파이브 운영팀</Text>
             </CardItem>
           </Card>
         </Content>

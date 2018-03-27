@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Platform,
+  View, Image,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
@@ -9,6 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
+import { ImageCon } from '../../component/common';
 import axios from 'axios';
 import HomeIndex from './HomeIndex';
 import FiveIndex from '../Five/FiveIndex';
@@ -67,12 +68,19 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
+/*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
     const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
     const category_koreans = [ '음악', '맛집', ' 책' ];
     const categories = [ 'music', 'restaurant', 'book'];
-    const klasses = ['Music', 'Restaurnt', 'Book'];
-    const CANCEL_INDEX = 3;
+    const klasses = ['Music', 'Restaurant', 'Book'];
+    const CANCEL_INDEX = 3;*/
+    const BUTTONS = [ '요즘 좋은 음악', '재미 있는 책', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddBook' ];
+    const category_koreans = [ '음악', ' 책' ];
+    const categories = [ 'music', 'book'];
+    const klasses = ['Music', 'Book'];
+    const CANCEL_INDEX = 2;
+
 
     ActionSheet.show(
       {
@@ -125,7 +133,7 @@ export default class TabA extends Component {
               justifyContent: 'space-between',
               alignItems: 'center',
               flex: 1,
-              marginTop: Constant.globalPaddingTop + 25,
+              marginTop: Constant.globalPaddingTop,
             }}>
               <View style={{
                 width: 130,
@@ -140,20 +148,16 @@ export default class TabA extends Component {
                 </View>
               </View>
               <View>
-                <Button onPress={() => this.onClickAdd()} transparent>
-                  <Icon
-                    name="md-add-circle"
-                    style={{
-                      fontSize: 25,
-                      color: Constant.FiveColor,
-                    }}
+                <Button onPress={() => this.onClickAdd()} transparent style={{ marginRight: 10 }}>
+                  <ImageCon
+                    image={require('../../assets/images/add_icon_pink.png')}
                   />
                 </Button>
               </View>
             </View>
           </Header>
           : <View style={{
-            paddingTop: Platform.OS === 'ios' ? 20 : 0,
+            paddingTop: Constant.globalPaddingTop,
             backgroundColor: '#F8F8F8',
           }}></View>
         }

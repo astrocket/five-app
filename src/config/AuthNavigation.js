@@ -20,7 +20,7 @@ import Map from '../class/Page/Map';
 const CardNavigation = StackNavigator(
   {
     Main: {
-      screen: Welcome,
+      screen: Tutorial,
     },
     StartForm: {
       screen: StartForm,

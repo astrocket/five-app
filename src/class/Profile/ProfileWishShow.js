@@ -159,7 +159,7 @@ export default class ProfileWishShow extends Component {
                       onPress={() => this.createFiveCall(this.state.category, data, rowId)}
                       id={data.wish.id}
                       title={data.wish.title}
-                      subtitle={data.wish.location}
+                      subtitle={data.wish.subtitle}
                       image_url={data.wish.image_medium_url}
                       also_five={data.also_five}
                       five_users_count={data.wish.five_users_count}

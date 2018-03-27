@@ -1,21 +1,21 @@
-export const restaurant_main = require('./restaurant_main.jpg');
-export const music_main = require('./restaurant_main.jpg');
-export const book_main = require('./restaurant_main.jpg');
+export const restaurant_main = require('./restaurant_main.png');
+export const music_main = require('./music_main.png');
+export const book_main = require('./book_main.png');
 
 export const findImageOf = (name) => {
   let image;
   switch (name) {
     case 'restaurant':
-      image = require('./restaurant_main.jpg');
+      image = require('./restaurant_main.png');
       break;
     case 'music':
-      image = require('./restaurant_main.jpg');
+      image = require('./music_main.png');
       break;
     case 'book':
-      image = require('./restaurant_main.jpg');
+      image = require('./book_main.png');
       break;
     default:
-      image = require('./restaurant_main.jpg');
+      image = require('./restaurant_main.png');
       break;
   }
 

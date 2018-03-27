@@ -7,14 +7,14 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const FollowSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
+const AddSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
   const { container } = BaseStyle;
   const {width, height} = Image.resolveAssetSource(require('../../assets/images/add_green.png'));
   if (clicked) {
     return (
       <Button transparent onPress={onPress}>
         <Image
-          source={require('../../assets/images/follow_green.png')}
+          source={require('../../assets/images/add_green.png')}
           style={{
             height: 25,
             width: 25 * (width / height) + 1,
@@ -26,7 +26,7 @@ const FollowSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
     return (
       <Button transparent onPress={onPress}>
         <Image
-          source={require('../../assets/images/follow_pink.png')}
+          source={require('../../assets/images/add_pink.png')}
           style={{
             height: 25,
             width: 25 * (width / height) + 1,
@@ -37,4 +37,4 @@ const FollowSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
   }
 };
 
-export { FollowSmallButton };
+export { AddSmallButton };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl
+  View, FlatList, RefreshControl, TouchableOpacity
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -31,7 +31,7 @@ export default class UserFiveShow extends Component {
       navigation.state.params.navLoading ?
         null :
         <View style={BaseStyle.headerDoubleIconsContainer}>
-          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
+{/*          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
             <Icon
               name="ios-share-outline"
               style={{
@@ -39,7 +39,7 @@ export default class UserFiveShow extends Component {
                 color: Constant.FiveColor,
               }}
             />
-          </Button>
+          </Button>*/}
           <View style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -219,7 +219,8 @@ export default class UserFiveShow extends Component {
                 multiple
                 id={item.id}
                 title={item.title}
-                location={item.location}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
                 icon={'ios-arrow-forward-outline'}
                 onPress={() => navigation.navigate('FiveShow', {
@@ -237,24 +238,25 @@ export default class UserFiveShow extends Component {
       return (
         <Row key={2}>
           <FlatList
+            horizontal
             data={this.state.fives}
             style={rowWrapper}
             renderItem={({ item }) => (
               <FiveUnitFull
                 multiple
                 id={item.id}
-                location={item.location}
+                subtitle={item.subtitle}
                 title={item.title}
+                friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_large_url}
                 onPress={() => navigation.navigate('FiveShow', {
                   category: item.category,
                   title: item.title,
                   id: item.id,
                 })}
-                barWidth={null}
-                barHeight={null}
                 borderRadius={15}
-                marginRight={0}
+                marginRight={10}
+                cardCut={80}
               />
             )}
             keyExtractor={item => 'five-full-list-' + item.id}
@@ -265,7 +267,7 @@ export default class UserFiveShow extends Component {
   }
 
   render() {
-    const { container, preLoading } = BaseStyle;
+    const { container, preLoading, rowFlexCenterCenter } = BaseStyle;
     const { navigation } = this.props;
 
     return (
@@ -276,51 +278,32 @@ export default class UserFiveShow extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <Row style={{
-            flexDirection: 'column',
-            padding: 10,
-          }}>
-            <Text style={{ marginBottom: 5 }}>{this.state.user.name}의</Text>
-            <Text large>{this.state.category} 파이브</Text>
-          </Row>
-          <Row style={{
-            paddingBottom: 10,
-            marginBottom: 5,
-          }}>
-            <Col size={2} style={{ justifyContent: 'center' }}>
-              <View style={{ flexDirection: 'row' }}>
-                <Button transparent style={{
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  marginRight: 5,
-                }} onPress={() => navigation.navigate('UserFollowerIndex', {
-                  category: this.state.category,
-                  user: navigation.state.params.user,
-                })}>
-                  <Text small
-                        style={{ marginRight: 0 }}>{Number(this.state.followers_count).toLocaleString()}</Text>
-                  <Text note>{'Follower'}</Text>
-                </Button>
-                <Button transparent style={{
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  marginRight: 5,
-                }} onPress={() => navigation.navigate('UserFolloweeIndex', {
-                  category: this.state.category,
-                  user: navigation.state.params.user,
-                })}>
-                  <Text small
-                        style={{ marginRight: 0 }}>{Number(this.state.followees_count).toLocaleString()}</Text>
-                  <Text note>{'Following'}</Text>
-                </Button>
-              </View>
-            </Col>
-            <Col size={1} style={{ alignItems: 'flex-end' }}>
-              <View>
+          <View>
+            <View style={rowFlexCenterCenter}>
+              <Text grey>{this.state.user.name}의</Text>
+            </View>
+            <View style={rowFlexCenterCenter}>
+              <Text large>{this.state.category_korean} </Text>
+              <Text large thin>파이브</Text>
+            </View>
+            <View style={rowFlexCenterCenter}>
+              <TouchableOpacity transparent style={{
+                flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
+              }} onPress={() => navigation.navigate('UserFollowerIndex', { category: this.state.category, user: navigation.state.params.user})}>
+                <Text small grey>{'Follower '}</Text>
+                <Text small primary>{Number(this.state.followers_count).toLocaleString()}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity transparent style={{
+                flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
+              }} onPress={() => navigation.navigate('UserFolloweeIndex', { category: this.state.category, user: navigation.state.params.user})}>
+                <Text small grey>{'Following '}</Text>
+                <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
+              </TouchableOpacity>
+              <View style={{ width: 50 }}>
                 {this.renderFlipButton(this.state.flip)}
               </View>
-            </Col>
-          </Row>
+            </View>
+          </View>
           {this.renderCard(this.state.flip)}
         </Content>
         {this.state.loading &&

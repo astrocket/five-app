@@ -35,7 +35,8 @@ export default class ModalWebViewShow extends Component {
       <Container>
         <NavBar
           rightButton
-          rightIcon="ios-close-outline"
+          rightAsImage
+          rightIcon={require('../../assets/images/cancel_icon_grey.png')}
           onPressRight={() => modalNavigation.goBack()}
           headerText={headerTitle}
         />

@@ -3,7 +3,7 @@ import {
   View, Platform, Image,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem
+  Container, Header, Icon, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -39,17 +39,7 @@ export default class Hello extends Component {
 
     return (
       <BottomFullButton
-        onPress={() =>
-        this.props.navigation.dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'Tutorial',
-              }),
-            ],
-          }))
-      }>
+        onPress={() => this.props.ApplicationStore.signIn()}>
         확인
       </BottomFullButton>
     );
@@ -62,22 +52,22 @@ export default class Hello extends Component {
     return (
       <Container>
         <View style={{
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#fff',
           flex: 1,
-          paddingTop: Platform.OS === 'ios' ? 20 : 0,
+          paddingTop: Constant.globalPaddingTop,
         }}>
           <View style={{
-            justifyContent: 'space-around',
+            justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
             width: Constant.deviceWidth
           }}>
             <Image
-              source={require('../../assets/images/five_logo.png')}
+              source={require('../../assets/images/sign_up_done.png')}
               style={{
-                height: (Constant.deviceWidth / 4) + 5,
+                height: (Constant.deviceWidth / 4),
                 width: Constant.deviceWidth / 4,
               }}
             />
@@ -85,7 +75,7 @@ export default class Hello extends Component {
           </View>
         </View>
         <View style={{
-          flex: 2,
+          flex: 1,
           padding: 20,
           alignSelf: 'stretch',
           backgroundColor: '#fff',
@@ -96,36 +86,60 @@ export default class Hello extends Component {
             </ListItem>
             <ListItem avatar>
               <Left>
-                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+                <Icon
+                  name="md-checkmark"
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
+                />
               </Left>
-              <Body style={{ borderBottomWidth: 0 }}>
+              <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
               <Text normal>알림</Text>
               <Text micro grey>이벤트 및 각종 알림 수신</Text>
               </Body>
             </ListItem>
             <ListItem avatar>
               <Left>
-                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+                <Icon
+                  name="md-checkmark"
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
+                />
               </Left>
-              <Body style={{ borderBottomWidth: 0 }}>
+              <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
               <Text normal>연락처</Text>
               <Text micro grey>신규 회원 가입 안내 및 팔로우 추천</Text>
               </Body>
             </ListItem>
             <ListItem avatar>
               <Left>
-                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+                <Icon
+                  name="md-checkmark"
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
+                />
               </Left>
-              <Body style={{ borderBottomWidth: 0 }}>
+              <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
               <Text normal>카메라</Text>
               <Text micro grey>프로필 사진 기타 이미지 촬영</Text>
               </Body>
             </ListItem>
             <ListItem avatar>
               <Left>
-                <Thumbnail small source={require('../../assets/images/five_logo.png')} />
+                <Icon
+                  name="md-checkmark"
+                  style={{
+                    fontSize: 25,
+                    color: Constant.FiveColor,
+                  }}
+                />
               </Left>
-              <Body style={{ borderBottomWidth: 0 }}>
+              <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
               <Text normal>사진첩</Text>
               <Text micro grey>프로필 사진 기타 이미지 등록</Text>
               </Body>

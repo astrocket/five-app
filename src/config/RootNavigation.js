@@ -205,7 +205,7 @@ const DrawerNavigation = DrawerNavigator(
 const RootNavigation = StackNavigator(
   {
     Main: {
-      screen: ({ navigation }) => <DrawerNavigation screenProps={{ modalNavigation: navigation }}/>,
+      screen: ({ navigation }) => <StackNavigation screenProps={{ modalNavigation: navigation }}/>,
     },
     ModalWebViewShow: {
       screen: ({ navigation }) => <ModalWebViewShow screenProps={{ modalNavigation: navigation }}/>,

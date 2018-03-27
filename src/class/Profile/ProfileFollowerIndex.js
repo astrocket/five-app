@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FollowUnitBar } from '../../component/common';
+import { FollowUnitBar, EmptyBox } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -93,20 +93,28 @@ export default class ProfileFollowerIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <FlatList
-            data={this.state.followers_followings}
-            renderItem={({ item }) => (
-              <FollowUnitBar
-                user={item.follower}
-                following={item}
-                onPress={() => navigation.navigate('UserShow', {
-                  user: item.follower,
-                  title: item.follower.name,
-                })}
-              />
-            )}
-            keyExtractor={item => 'followers_followings-list-' + item.id}
-          />
+          {this.state.followers_followings.length > 0 ?
+            <FlatList
+              data={this.state.followers_followings}
+              renderItem={({ item }) => (
+                <FollowUnitBar
+                  user={item.follower}
+                  following={item}
+                  onPress={() => navigation.navigate('UserShow', {
+                    user: item.follower,
+                    title: item.follower.name,
+                  })}
+                />
+              )}
+              keyExtractor={item => 'followers_followings-list-' + item.id}
+            />
+          :<EmptyBox
+              barWidth={Constant.deviceWidth - 20}
+              message={'아직 나를 팔로우 하는 친구가 없어요. 먼저 다른 친구를 팔로우 해보세요.'}
+              barHeight={100}
+              borderRadius={10}
+              marginRight={0}
+            />}
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
