@@ -88,13 +88,13 @@ export default class FiveStoryShow extends Component {
     return (
       <Container>
         <NavBar
-          leftButton
+/*          leftButton
           leftAsImage
           leftIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressLeft={() => navigation.goBack()}
+          onPressLeft={() => navigation.goBack()}*/
           rightButton
           rightAsImage
-          rightIcon={require('../../assets/images/share_icon_pink.png')}
+          rightIcon={require('../../assets/images/cancel_icon_grey.png')}
           onPressRight={() => navigation.goBack()}
           headerText="커스텀 헤더"
         />

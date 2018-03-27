@@ -54,6 +54,9 @@ export default (variables = variable) => {
     ".grey": {
       color: "#a7a7a7",
     },
+    ".black": {
+      color: '#000000',
+    },
   };
 
   return textTheme;
