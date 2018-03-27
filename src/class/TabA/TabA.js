@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image,
+  View, FlatList,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
@@ -37,11 +37,15 @@ export default class TabA extends Component {
     ...Constant.FiveNavOptions,
   });
 
-  state = {
-    loading: true,
-    categories: [],
-    headerShow: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      categories: [],
+      headerShow: true,
+    };
+
+  }
 
   componentDidMount() {
     this.apiCall();
@@ -68,19 +72,18 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-/*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
-    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
-    const category_koreans = [ '음악', '맛집', ' 책' ];
-    const categories = [ 'music', 'restaurant', 'book'];
-    const klasses = ['Music', 'Restaurant', 'Book'];
-    const CANCEL_INDEX = 3;*/
+    /*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
+        const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
+        const category_koreans = [ '음악', '맛집', ' 책' ];
+        const categories = [ 'music', 'restaurant', 'book'];
+        const klasses = ['Music', 'Restaurant', 'Book'];
+        const CANCEL_INDEX = 3;*/
     const BUTTONS = [ '요즘 좋은 음악', '재미 있는 책', '취소' ];
     const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddBook' ];
     const category_koreans = [ '음악', ' 책' ];
-    const categories = [ 'music', 'book'];
-    const klasses = ['Music', 'Book'];
+    const categories = [ 'music', 'book' ];
+    const klasses = [ 'Music', 'Book' ];
     const CANCEL_INDEX = 2;
-
 
     ActionSheet.show(
       {
@@ -110,11 +113,41 @@ export default class TabA extends Component {
     return this.state.categories.map(function (chunk, i) {
       const { category, category_korean } = chunk;
       return (
-        <Tab key={i} heading={category_korean} activeTextStyle={{ color: Constant.FiveColor }}>
+        <Tab key={i} heading={<TabHeading/>}>
           <FiveIndex category={category} navigation={navigation} onScroll={onScroll}/>
         </Tab>
-      )
+      );
     });
+  }
+
+  renderTabButtons(goToPage) {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+        <FlatList
+          horizontal
+          data={this.state.categories}
+          renderItem={({ item, index }) => (
+            <Button key={index + 1} transparent onPress={() => goToPage(index + 1)}>
+              <Text medium-thin black>{item.category_korean}</Text>
+            </Button>
+          )}
+          keyExtractor={item => 'tabs-' + item.category}
+          ListHeaderComponent={
+            <Button transparent onPress={() => goToPage(0)}>
+              <Text medium-thin black>홈</Text>
+            </Button>
+          }
+        />
+        <View>
+          <Button onPress={() => this.onClickAdd()} transparent style={{ marginRight: 10 }}>
+            <ImageCon
+              iconHeight={22}
+              image={require('../../assets/images/add_icon_pink.png')}
+            />
+          </Button>
+        </View>
+      </View>
+    );
   }
 
   render() {
@@ -124,45 +157,45 @@ export default class TabA extends Component {
     return (
       <Container>
         {this.state.headerShow ?
-          <Header hasTabs style={{
-            height: Constant.globalPaddingTop + 35 + 40,
-            paddingRight: 0,
+          <Header style={{
+            height: Constant.globalPaddingTop + 35 + 80,
           }}>
             <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
               flex: 1,
-              marginTop: Constant.globalPaddingTop,
+              flexDirection: 'column',
             }}>
               <View style={{
-                width: 130,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flex: 1,
+                marginTop: Constant.globalPaddingTop,
               }}>
-                <Text xlarge>{'Myfive'}</Text>
-                <View style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}>
-                  <Text micro grey>β</Text>
+                <View style={{ width: 130 }}>
+                  <Text xlarge>{'Myfive'}</Text>
+                  <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                  }}>
+                    <Text micro grey>β</Text>
+                  </View>
                 </View>
               </View>
-              <View>
-                <Button onPress={() => this.onClickAdd()} transparent style={{ marginRight: 10 }}>
-                  <ImageCon
-                    image={require('../../assets/images/add_icon_pink.png')}
-                  />
-                </Button>
-              </View>
+              {this.renderTabButtons((page) => this.tabView.goToPage(page))}
             </View>
           </Header>
-          : <View style={{
+          : <Header style={{
             paddingTop: Constant.globalPaddingTop,
-            backgroundColor: '#F8F8F8',
-          }}></View>
+          }}>
+            {this.renderTabButtons((page) => this.tabView.goToPage(page))}
+          </Header>
         }
-        <Tabs locked tabBarUnderlineStyle={{ backgroundColor: Constant.FiveColor, }}>
-          <Tab heading="홈" activeTextStyle={{ color: Constant.FiveColor }}>
+        <Tabs locked initialPage={0} ref={(tabView) => {
+          this.tabView = tabView;
+        }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'}
+              renderTabBar={() => <ScrollableTab/>}>
+          <Tab heading={<TabHeading/>}>
             <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
           </Tab>
           {this.renderCategoryTabs((e) => this.handleScroll(e))}
@@ -175,5 +208,4 @@ export default class TabA extends Component {
       </Container>
     );
   }
-
 }

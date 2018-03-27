@@ -97,10 +97,22 @@ export default class Tutorial extends Component {
             showsVerticalScrollIndicator={false}
           >
             <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>안녕하세요</Text>
+              <Image
+                source={require('../../assets/images/tutorial_1.png')}
+                style={{
+                  height: (Constant.deviceHeight),
+                  width: Constant.deviceWidth,
+                }}
+              />
             </View>
             <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Text>튜토리얼 입니다</Text>
+              <Image
+                source={require('../../assets/images/tutorial_2.png')}
+                style={{
+                  height: (Constant.deviceHeight),
+                  width: Constant.deviceWidth,
+                }}
+              />
             </View>
             <View style={{
               justifyContent: 'space-between',

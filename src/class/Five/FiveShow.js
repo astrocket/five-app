@@ -376,7 +376,7 @@ export default class FiveShow extends Component {
               />
               {/* 링크 */}
               <ListItemIconClick
-                label={'가사'}
+                label={'상세보기'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.related_link,
                   headerTitle: this.state.five.related_link

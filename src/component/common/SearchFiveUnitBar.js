@@ -3,8 +3,8 @@ import {
   Image, TouchableOpacity, View,
 } from 'react-native';
 import {
-  FollowSmallButton
-} from './FollowSmallButton';
+  AddSmallButton
+} from './AddSmallButton';
 import * as Images from '../../assets/images/Images';
 import {
   Card, CardItem, Text, Thumbnail, ListItem,  Left,  Body,  Right, Icon
@@ -51,7 +51,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
             justifyContent: 'center',
             paddingRight: 5,
           }}>
-            <FollowSmallButton
+            <AddSmallButton
               textTrue={'담김'}
               textFalse={'+ 담기'}
               clicked={clicked}
@@ -79,7 +79,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
             justifyContent: 'center',
             paddingRight: 5,
           }}>
-            <FollowSmallButton
+            <AddSmallButton
               onPress={onPress}
               textTrue={'담김'}
               textFalse={'+ 담기'}
