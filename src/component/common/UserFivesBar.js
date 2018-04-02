@@ -11,11 +11,11 @@ import BaseStyle from '../../config/BaseStyle';
 const UnitImage = ({ five, defaultImage, width, height }) => {
   if (five) {
     return (
-      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 4, width: width - 4, margin: 2, borderRadius: 10 }}/>
+      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 2, width: width - 2, margin: 1, borderRadius: 10 }}/>
     )
   } else {
     return (
-      <Image key={2} source={defaultImage} style={{height: height - 4, width: width - 4, margin: 2}}/>
+      <Image key={2} source={defaultImage} style={{height: height - 2, width: width - 2, margin: 1, borderRadius: 10}}/>
     )
   }
 };

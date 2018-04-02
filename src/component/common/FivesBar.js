@@ -11,6 +11,7 @@ import {
   Right,
   Badge
 } from 'native-base';
+import { FollowSmallButton } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
@@ -18,11 +19,11 @@ import BaseStyle from '../../config/BaseStyle';
 const UnitImage = ({ five, image, width, height }) => {
   if (five) {
     return (
-      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 4, width: width - 4, marginRight: 4, marginBottom: 4, borderRadius: 10 }}/>
+      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1, borderRadius: 10 }}/>
     )
   } else {
     return (
-      <Image key={2} source={image} style={{height: height - 4, width: width - 4, marginRight: 4, marginBottom: 4}}/>
+      <Image key={2} source={image} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1,  borderRadius: 10}}/>
     )
   }
 };
@@ -30,7 +31,7 @@ const UnitImage = ({ five, image, width, height }) => {
 const FiveImages = ({ fives, image, pureWidth }) => {
   return(
     <View style={{ flexDirection: 'row', flex: 1, height: pureWidth / 2, width: pureWidth}}>
-      <View style={{ flex: 1, marginRight: 4 }}>
+      <View style={{ flex: 1, marginRight: 2 }}>
         <UnitImage five={fives[0]} image={image} height={pureWidth / 2} width={pureWidth / 2} />
       </View>
       <View style={{ flex: 1, flexWrap: 'wrap' }}>
@@ -43,10 +44,10 @@ const FiveImages = ({ fives, image, pureWidth }) => {
   )
 };
 
-const FivesBar = ({ image, onPress, category, followers, followees, fives }) => {
+const FivesBar = ({ image, onPress, category, followers, followees, fives, followButton, onPressFollow, clicked }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
-  let cardMargin = 20;
+  let cardMargin = 16;
   let pureWidth = Constant.deviceWidth - cardMargin * 2 - cardPadding * 2;
 
   return (
@@ -54,7 +55,7 @@ const FivesBar = ({ image, onPress, category, followers, followees, fives }) => 
       <TouchableOpacity onPress={onPress}>
         <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
       </TouchableOpacity>
-      <ListItem cardStyle transparent button onPress={onPress}>
+      <ListItem cardStyle transparent button>
         <Thumbnail size={50} source={image}/>
         <Body>
           <Text medium>{Constant.CategoryToKorean(category)}</Text>
@@ -65,6 +66,15 @@ const FivesBar = ({ image, onPress, category, followers, followees, fives }) => 
             <Text note>{'Following'}</Text>
           </View>
         </Body>
+        {followButton ?
+          <Right>
+            <FollowSmallButton
+              onPress={onPressFollow}
+              textTrue={'팔로잉'}
+              textFalse={'팔로우'}
+              clicked={clicked}
+            />
+          </Right> : null}
       </ListItem>
     </View>
   );

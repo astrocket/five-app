@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList,
+  View, FlatList, TouchableOpacity,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { ImageCon } from '../../component/common';
+import { ImageCon, TabIcon } from '../../component/common';
 import axios from 'axios';
 import HomeIndex from './HomeIndex';
 import FiveIndex from '../Five/FiveIndex';
@@ -26,12 +26,10 @@ export default class TabA extends Component {
     header: null,
     tabBarLabel: '홈',
     tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-home"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
+      <TabIcon
+        tintColor={tintColor}
+        imageGrey={require('../../assets/images/home_icon_grey.png')}
+        imagePink={require('../../assets/images/home_icon_pink.png')}
       />
     ),
     ...Constant.FiveNavOptions,
@@ -44,7 +42,6 @@ export default class TabA extends Component {
       categories: [],
       headerShow: true,
     };
-
   }
 
   componentDidMount() {
@@ -52,22 +49,9 @@ export default class TabA extends Component {
   }
 
   apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${ApiServer.MY_PROFILE}/categories`, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          categories: response.data.categories,
-        });
-      })
-      .catch((error) => {
-        console.log('에러 : ' + error.response);
-      });
+    this.props.ApplicationStore.updateCategories().then(() => {
+      this.setState({ loading: false })
+    });
   }
 
   onClickAdd() {
@@ -78,18 +62,18 @@ export default class TabA extends Component {
         const categories = [ 'music', 'restaurant', 'book'];
         const klasses = ['Music', 'Restaurant', 'Book'];
         const CANCEL_INDEX = 3;*/
-    const BUTTONS = [ '요즘 좋은 음악', '재미 있는 책', '취소' ];
-    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddBook' ];
-    const category_koreans = [ '음악', ' 책' ];
-    const categories = [ 'music', 'book' ];
-    const klasses = [ 'Music', 'Book' ];
-    const CANCEL_INDEX = 2;
+    const BUTTONS = [ '음악', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic' ];
+    const category_koreans = [ '음악' ];
+    const categories = [ 'music' ];
+    const klasses = [ 'Music' ];
+    const CANCEL_INDEX = 1;
 
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '나의 FIVE에 아이템 추가하기',
+        title: '+ Five or Clip',
       },
       buttonIndex => {
         navigation.navigate(pages[ buttonIndex ], {
@@ -110,7 +94,7 @@ export default class TabA extends Component {
   renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
 
-    return this.state.categories.map(function (chunk, i) {
+    return this.props.ApplicationStore.categories.map(function (chunk, i) {
       const { category, category_korean } = chunk;
       return (
         <Tab key={i} heading={<TabHeading/>}>
@@ -121,30 +105,37 @@ export default class TabA extends Component {
   }
 
   renderTabButtons(goToPage) {
+    const { flexCenterCenter }= BaseStyle;
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', height: 56}}>
         <FlatList
           horizontal
-          data={this.state.categories}
+          showsHorizontalScrollIndicator={false}
+          style={{
+            height: 56,
+          }}
+          data={this.props.ApplicationStore.categories}
           renderItem={({ item, index }) => (
-            <Button key={index + 1} transparent onPress={() => goToPage(index + 1)}>
-              <Text medium-thin black>{item.category_korean}</Text>
-            </Button>
+            <TouchableOpacity key={index + 1} transparent onPress={() => goToPage(index + 1)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
+              <Text large black sd-gothic>{item.category_korean}</Text>
+            </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
-            <Button transparent onPress={() => goToPage(0)}>
-              <Text medium-thin black>홈</Text>
-            </Button>
+            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
+              <Text large black sd-gothic>홈</Text>
+            </TouchableOpacity>
           }
         />
-        <View>
-          <Button onPress={() => this.onClickAdd()} transparent style={{ marginRight: 10 }}>
+        <View style={{
+          height: 56,
+        }}>
+          <TouchableOpacity onPress={() => this.onClickAdd()} style={[flexCenterCenter,{ height: 56, width: null, paddingLeft: 16 }]}>
             <ImageCon
-              iconHeight={22}
+              iconHeight={25}
               image={require('../../assets/images/add_icon_pink.png')}
             />
-          </Button>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -158,7 +149,12 @@ export default class TabA extends Component {
       <Container>
         {this.state.headerShow ?
           <Header style={{
-            height: Constant.globalPaddingTop + 35 + 80,
+            paddingTop: Constant.globalPaddingTop + 35,
+            height: Constant.globalPaddingTop + 35 + 56 + 56,
+            paddingLeft: 16,
+            paddingRight: 16,
+            backgroundColor: '#FFF',
+            borderBottomWidth: 0
           }}>
             <View style={{
               flex: 1,
@@ -172,7 +168,7 @@ export default class TabA extends Component {
                 marginTop: Constant.globalPaddingTop,
               }}>
                 <View style={{ width: 130 }}>
-                  <Text xlarge>{'Myfive'}</Text>
+                  <Text xlarge montserrat>{'Home'}</Text>
                   <View style={{
                     position: 'absolute',
                     top: 0,
@@ -187,6 +183,9 @@ export default class TabA extends Component {
           </Header>
           : <Header style={{
             paddingTop: Constant.globalPaddingTop,
+            paddingLeft: 16,
+            paddingRight: 16,
+            height: 56 + Constant.globalPaddingTop,
           }}>
             {this.renderTabButtons((page) => this.tabView.goToPage(page))}
           </Header>

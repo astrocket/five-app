@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   View, Dimensions
 } from 'react-native';
 import {
@@ -57,24 +57,24 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
         <View style={{
           flex: 1,
           flexDirection: 'column',
-          width: deviceWidth - 20,
+          width: deviceWidth - 32,
           height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
           margin: 10,
         }}>
-          <Button transparent style={{
+          <TouchableOpacity style={{
             flex: 1,
             width: null,
             height: null,
             marginBottom: 5,
           }} onPress={onPress}>
             <Image source={{ uri: image_url }} style={{
-              height: deviceWidth - 20,
-              width: deviceWidth - 20,
+              height: deviceWidth - 48,
+              width: deviceWidth - 48,
               borderRadius: borderRadius,
               marginBottom: 10,
               flex: 1,
             }}/>
-          </Button>
+          </TouchableOpacity>
           <View>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
               <Text large numberOfLines={1}>{title}</Text>

@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FivesBar, ElevenHeader, EmptyBox,
+  UserUnitRound, FivesBar, ElevenHeader, EmptyBox, TabIcon,
 } from '../../component/common';
 import axios from 'axios';
 import * as Images from '../../assets/images/Images';
@@ -27,12 +27,10 @@ export default class TabB extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarLabel: '마이파이브',
     tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="logo-apple"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
+      <TabIcon
+        tintColor={tintColor}
+        imageGrey={require('../../assets/images/five_icon_grey.png')}
+        imagePink={require('../../assets/images/five_icon_pink.png')}
       />
     ),
     header: null,
@@ -89,18 +87,18 @@ export default class TabB extends Component {
     const klasses = ['Music', 'Restaurant', 'Book'];
     const CANCEL_INDEX = 3;*/
 
-    const BUTTONS = [ '요즘 좋은 음악', '재미 있는 책', '취소' ];
-    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddBook' ];
-    const category_koreans = [ '음악', ' 책' ];
-    const categories = [ 'music', 'book'];
-    const klasses = ['Music', 'Book'];
-    const CANCEL_INDEX = 2;
+    const BUTTONS = [ '음악', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic' ];
+    const category_koreans = [ '음악' ];
+    const categories = [ 'music' ];
+    const klasses = [ 'Music' ];
+    const CANCEL_INDEX = 1;
 
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '나의 FIVE에 아이템 추가하기',
+        title: '+ Five or Clip',
       },
       buttonIndex => {
         navigation.navigate(pages[ buttonIndex ], {
@@ -127,23 +125,12 @@ export default class TabB extends Component {
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'프로필'} custom rightButton onPressRight={() => navigation.navigate('ProfileWishIndex')} buttonIcon={"md-attach"}>
-          <Left/>
-          <Body>
-          <Title>{'프로필'}</Title>
-          </Body>
-          <Right>
-            <Button onPress={() => navigation.navigate('ProfileWishIndex')} transparent>
-              <Icon
-                name="md-attach"
-                style={{
-                  fontSize: 25,
-                  color: Constant.FiveColor,
-                }}
-              />
-            </Button>
-          </Right>
-        </ElevenHeader>
+          title={'프로필'}
+          custom
+          rightButton
+          rightAsImage
+          buttonIcon={require('../../assets/images/bookmark_icon_pink.png')}
+          onPressRight={() => navigation.navigate('ProfileWishIndex')} />
           <FlatList
             data={this.state.categories}
             style={{paddingBottom: 15}}
@@ -157,7 +144,7 @@ export default class TabB extends Component {
                 followers={item.followers_count}
                 followees={item.followees_count}
                 fives={item.fives}
-                image={Images.findImageOf(item.category)}
+                image={require('../../assets/images/five_void_grey.png')}
               />
             )}
             keyExtractor={item => 'five-category-list-' + item.klass}
@@ -168,16 +155,12 @@ export default class TabB extends Component {
               }}>
                 <Col style={{ alignItems: 'center' }}>
                   <TouchableOpacity style={{ width: 140, height: 130}}
-                                    onPress={() => navigation.navigate('Setting', {
-                                      categories: this.state.categories
-                                    })}
+                                    onPress={() => navigation.navigate('Setting')}
                   >
                     <UserUnitRound
                       id={my_profile.id}
                       image_url={my_profile.image_medium_url}
-                      onPress={() => navigation.navigate('Setting', {
-                        categories: this.state.categories
-                      })}
+                      onPress={() => navigation.navigate('Setting')}
                       barWidth={130}
                       barHeight={130}
                       borderRadius={65}

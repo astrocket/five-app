@@ -92,9 +92,7 @@ export default class Setting extends Component {
               </Right>
             </ListItem>
             <ListItem button
-                      onPress={() => navigation.navigate('CategoryEdit', {
-                        categories: this.props.navigation.state.params.categories,
-                      })}>
+                      onPress={() => navigation.navigate('CategoryEdit')}>
               <Body>
               <Text>카테고리관리</Text>
               </Body>
@@ -122,35 +120,23 @@ export default class Setting extends Component {
             </ListItem>
             <ListItem button
                       onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                        url: `https://myfivecs.blogspot.kr/`,
+                        headerTitle: '이용약관 및 개인정보보호정책',
+                      })}>
+              <Body>
+              <Text>이용약관 및 개인정보보호정책</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward"/>
+              </Right>
+            </ListItem>
+            <ListItem button
+                      onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                         url: `${ApiServer.COMPANY}/inquery?user=${JSON.stringify(this.props.ApplicationStore.my_profile)}`,
-                        headerTitle: '고객센터',
+                        headerTitle: '베타 서비스 개선 제안',
                       })}>
               <Body>
-              <Text>고객센터</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward"/>
-              </Right>
-            </ListItem>
-            <ListItem button
-                      onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                        url: `${ApiServer.COMPANY}/policy`,
-                        headerTitle: '이용약관',
-                      })}>
-              <Body>
-              <Text>이용약관</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward"/>
-              </Right>
-            </ListItem>
-            <ListItem button
-                      onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                        url: `${ApiServer.COMPANY}/privacy`,
-                        headerTitle: '개인정보보호정책',
-                      })}>
-              <Body>
-              <Text>개인정보보호정책</Text>
+              <Text>베타 서비스 개선 제안</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward"/>

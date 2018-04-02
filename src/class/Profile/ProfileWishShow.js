@@ -20,8 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileWishShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '파이브수정',
-    ...Constant.FiveNavOptions,
+    header: null
   });
 
   constructor(props) {
@@ -29,7 +28,7 @@ export default class ProfileWishShow extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      headers: {
+      header: {
         headers: {
           'X-User-Email': this.props.ApplicationStore.email,
           'X-User-Token': this.props.ApplicationStore.token
@@ -140,7 +139,7 @@ export default class ProfileWishShow extends Component {
 
     return (
       <Container>
-        <Content>
+        <Content onScroll={this.props.onScroll}>
           <Grid>
             <Row>
               {this.state.wishes.length > 0 ?

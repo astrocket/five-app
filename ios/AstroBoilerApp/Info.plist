@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.32</string>
+	<string>1.40</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -75,12 +75,7 @@
 				<true/>
 			</dict>
 			<key>youtu.be</key>
-            <dict>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-            <key>book.daum.net</key>
-            <dict>
+			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
@@ -102,6 +97,8 @@
 		<string>Zocial.ttf</string>
 		<string>Feather.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
+		<string>AppleSDGothicNeoEB.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>

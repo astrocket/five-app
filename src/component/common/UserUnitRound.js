@@ -27,7 +27,6 @@ const UserUnitRound = ({ id, name, image_url, large, onPress, barWidth, barHeigh
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: borderRadius,
-          backgroundColor: '#FBE175',
           marginBottom: 15,
         }}>
           <Image source={{ uri: image_url }} style={{

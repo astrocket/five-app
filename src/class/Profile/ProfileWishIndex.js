@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View,
+  View, FlatList, TouchableOpacity,
 } from 'react-native';
 import {
-  Container, Spinner, Tabs, Tab,
+  Container, Spinner, Tabs, Tab, ScrollableTab, Button, Text, TabHeading, Header,
 } from 'native-base';
 import axios from 'axios';
-import { EmptyBox } from '../../component/common';
+import { EmptyBox, NavBar } from '../../component/common';
 import ProfileWishShow from './ProfileWishShow';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -18,14 +18,14 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileWishIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '나의 클립함',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      headerShow: true,
       header: {
         headers: {
           'X-User-Email': this.props.ApplicationStore.email,
@@ -53,24 +53,61 @@ export default class ProfileWishIndex extends Component {
       });
   }
 
-  renderCategoryTabs() {
+  handleScroll(e) {
+    const currentOffset = e.nativeEvent.contentOffset.y;
+    const headerShow = currentOffset < 100;
+    this.setState({ headerShow });
+  }
+
+  renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
-    return this.state.categories.map(function(each_category, i) {
-      const { klass, category, category_korean, wishes} = each_category;
+    return this.state.categories.map(function (each_category, i) {
+      const { klass, category, category_korean, wishes } = each_category;
       return (
-        <Tab key={i} heading={category_korean} activeTextStyle={{
-          color: Constant.FiveColor,
-        }}>
+        <Tab key={i} heading={<TabHeading/>}>
           <ProfileWishShow
             klass={klass}
             category={category}
             category_korean={category_korean}
             wishes={wishes}
             navigation={navigation}
+            onScroll={onScroll}
           />
         </Tab>
-      )
+      );
     });
+  }
+
+  renderTabButtons(goToPage) {
+    const { flexCenterCenter } = BaseStyle;
+    return (
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        height: 20,
+      }}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{
+            height: 20,
+          }}
+          data={this.state.categories}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity key={index} onPress={() => goToPage(index)}
+                              style={[ flexCenterCenter, {
+                                height: 20,
+                                width: null,
+                                paddingRight: 16,
+                              } ]}>
+              <Text normal>{item.category_korean}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => 'tabs-' + item.category}
+        />
+      </View>
+    );
   }
 
   render() {
@@ -79,11 +116,28 @@ export default class ProfileWishIndex extends Component {
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText="내 보관함"
+        />
+        <Header style={{
+          backgroundColor: '#FFFFFF',
+          paddingLeft: 13,
+          paddingRight: 13,
+          borderBottomWidth: 0,
+          height: 46,
+        }}>
+          {this.renderTabButtons((page) => this.tabView.goToPage(page))}
+        </Header>
         {this.state.categories.length > 0 ?
-          <Tabs locked tabBarUnderlineStyle={{
-            backgroundColor: Constant.FiveColor,
-          }}>
-            {this.renderCategoryTabs()}
+          <Tabs locked initialPage={0} ref={(tabView) => {
+            this.tabView = tabView;
+          }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'}
+                renderTabBar={() => <ScrollableTab/>}>
+            {this.renderCategoryTabs((e) => this.handleScroll(e))}
           </Tabs>
           : <EmptyBox
             barWidth={Constant.deviceWidth - 20}

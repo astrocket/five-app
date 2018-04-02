@@ -24,19 +24,19 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
           flex: 1,
           flexDirection: 'column',
           height: null,
-          width: deviceWidth - (cardCut ? cardCut : 20) - marginRight,
+          width: 200 + marginRight,
           marginRight: marginRight,
           marginBottom: 10,
         }}>
           <Button transparent style={{
             flex: 1,
             height: null,
-            width: deviceWidth - (cardCut ? cardCut : 20) - marginRight,
+            width: 200 + marginRight,
             marginBottom: 5,
           }} onPress={onPress}>
             <Image source={{ uri: image_url }} style={{
-              height: deviceWidth - (cardCut ? cardCut : 20),
-              width: deviceWidth - (cardCut ? cardCut : 20),
+              height: 200,
+              width: 200,
               borderRadius: borderRadius,
               marginBottom: 10,
               flex: 1,

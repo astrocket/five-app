@@ -38,4 +38,6 @@ export * from './ElevenHeader';
 export * from './ListItemIconClick';
 export * from './ErrorHandler';
 export * from './ImageCon';
+export * from './TabIcon';
 export * from './AddSmallButton';
+export * from './AddWishSmallButton';

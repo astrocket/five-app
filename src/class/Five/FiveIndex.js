@@ -104,11 +104,11 @@ export default class FiveIndex extends Component {
         }>
           <Grid>
             <RowHeaderBar
-              title={'친구들의 five'}
+              title={'친구들의 컬렉션'}
               onPress={() => navigation.navigate('FiveList', {
                 category: this.state.category,
                 fives: this.state.fives,
-                title: '친구들의 five'
+                title: '친구들의 컬렉션'
               })}
               moreTitle={'모두보기'}
             />
@@ -116,6 +116,7 @@ export default class FiveIndex extends Component {
               {this.state.fives.length > 0 ?
                 <FlatList
                   horizontal
+                  showsHorizontalScrollIndicator={false}
                   data={this.state.fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (
@@ -149,12 +150,13 @@ export default class FiveIndex extends Component {
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 추천'}
+              title={'팔로우 제안'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               {this.state.follow_suggestions.length > 0 ?
                 <FlatList
                   horizontal
+                  showsHorizontalScrollIndicator={false}
                   data={this.state.follow_suggestions}
                   style={rowWrapper}
                   renderItem={({ item, index }) => (
@@ -188,6 +190,7 @@ export default class FiveIndex extends Component {
               {this.state.my_wish_fives.length > 0 ?
                 <FlatList
                   horizontal
+                  showsHorizontalScrollIndicator={false}
                   data={this.state.my_wish_fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (
@@ -221,12 +224,13 @@ export default class FiveIndex extends Component {
 
             </Row>
             <RowHeaderBar
-              title={`추천 ${this.state.category_korean}(당신의 FIVE에 도전)`}
+              title={`당신을 위한 클립 제안`}
             />
             <Row>
               {this.state.challenge_fives.length > 0 ?
                 <FlatList
                   horizontal
+                  showsHorizontalScrollIndicator={false}
                   data={this.state.challenge_fives}
                   style={rowWrapper}
                   renderItem={({ item }) => (

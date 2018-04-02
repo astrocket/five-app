@@ -44,7 +44,7 @@ export default class SignUpForm extends Component {
   }
 
   trySignUp() {
-    let regId = /^[a-zA-Z]{3,10}$/;
+    let regId = /^[a-zA-Z0-9]{3,10}$/;
     if ( !regId.test( this.state.input_name ) ) {
       ErrorHandler(
         '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
@@ -106,35 +106,6 @@ export default class SignUpForm extends Component {
     });
   }
 
-  readyToSubmit() {
-    let regId = /^[a-zA-Z]{3,10}$/;
-    if ( !regId.test( this.state.input_name ) ) {
-      this.setState({
-        disableButton: true,
-      });
-      return false
-    }
-
-    let regExp = /^[(0-9)]{2}$/;
-    if ( !regExp.test( this.state.input_birth ) ) {
-      this.setState({
-        disableButton: true,
-      });
-      return false
-    }
-
-    if ( this.state.input_gender === '') {
-      this.setState({
-        disableButton: true,
-      });
-      return false
-    }
-
-    this.setState({
-      disableButton: false,
-    })
-  }
-
   renderButton() {
     if (this.state.submiting) {
       return <Spinner size="small" />;
@@ -150,7 +121,7 @@ export default class SignUpForm extends Component {
   }
 
   handleInputName(input_name) {
-    let regId = /^[a-zA-Z]{0,10}$/;
+    let regId = /^[a-zA-Z0-9]{0,10}$/;
     if ( !regId.test( input_name ) ) {
       ErrorHandler(
         '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
@@ -171,6 +142,20 @@ export default class SignUpForm extends Component {
     } else {
       this.setState({ input_birth })
     }
+  }
+
+  renderButton() {
+    if (this.state.submiting) {
+      return <Spinner size="small" />;
+    }
+
+    return (
+      <BottomFullButton
+        onPress={() => this.trySignUp()}
+      >
+        완료
+      </BottomFullButton>
+    );
   }
 
   render() {
@@ -238,7 +223,7 @@ export default class SignUpForm extends Component {
             <Row style={{ marginTop: 20}}>
               <Text>
                 <Text>
-                  {`"완료" `}
+                  {`완료`}
                 </Text>
                 <Text style={{ color: Constant.GreyColor}}>
                   {`버튼을 누르면 MYFIVE의 `}

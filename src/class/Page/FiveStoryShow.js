@@ -96,7 +96,7 @@ export default class FiveStoryShow extends Component {
           rightAsImage
           rightIcon={require('../../assets/images/cancel_icon_grey.png')}
           onPressRight={() => navigation.goBack()}
-          headerText="커스텀 헤더"
+          headerText="Five 스토리"
         />
         <Grid>
           <Row>

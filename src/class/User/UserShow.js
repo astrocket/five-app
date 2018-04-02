@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl
+  View, FlatList, RefreshControl, Alert
 } from 'react-native';
 import {
-  Container, Content, Text, Spinner,
+  Container, Content, Text, Spinner, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -67,6 +67,71 @@ export default class UserShow extends Component {
     });
   }
 
+
+  askFollowOption(item, index) {
+    console.log(JSON.stringify(this.props.ApplicationStore.categories));
+    this.props.ApplicationStore.hasCategory(item.category).then((have) => {
+      if (have) {
+        this.followCall(item, index);
+      } else {
+        Alert.alert(
+          `아직 참여한 카테고리는 아니에요`,
+          `${item.state.user.name}님을 팔로우 하고 함께 ${item.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          [
+            {
+              text: '네',
+              onPress: () => this.followCall(item, index).then(() => {
+                this.props.navigation.navigate(`ProfileFiveAdd${item.klass}`, {
+                  category: item.category,
+                });
+              }),
+            },
+            {
+              text: '취소',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true },
+        );
+      }
+    });
+  }
+
+  async followCall(item, index) {
+    const data = {
+      following: {
+        user_id: this.state.user.id,
+        following: !item.following,
+      },
+    };
+
+    const header = {
+      headers: {
+        'X-User-Email': this.props.ApplicationStore.email,
+        'X-User-Token': this.props.ApplicationStore.token,
+      },
+    };
+
+    await axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
+      .then((response) => {
+        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
+      }).catch((error) => {
+        console.log(error.response);
+        Toast.show({
+          text: JSON.stringify(error.response.data),
+          position: 'bottom',
+          duration: 1500,
+        });
+      });
+  }
+
+  onCreateFollowCallSuccess(response, index) {
+    const new_following = response.data;
+    const stateBefore = [ ...this.state.categories ];
+    stateBefore[ index ].following = new_following;
+    this.setState({ follow_suggestions: stateBefore });
+  }
+
   render() {
     const { preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -103,12 +168,15 @@ export default class UserShow extends Component {
               <FlatList
                 data={this.state.categories}
                 style={{paddingBottom: 15}}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                   <FivesBar
+                    followButton
+                    onPressFollow={() => this.askFollowOption(item, index)}
                     onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user, category_data: item, category: item.category, navLoading: true })}
                     category={item.category}
                     followers={item.followers_count}
                     followees={item.followees_count}
+                    clicked={item.following}
                     fives={item.fives}
                     image={Images.findImageOf(item.klass.toLowerCase())}
                   />

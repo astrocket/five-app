@@ -14,7 +14,7 @@ const ElevenHeader = (props) => {
   const { headerShow, title, custom, rightButton, onPressRight, buttonIcon, rightAsImage } = props;
   const bigHeader = {
     paddingBottom: 10, paddingTop: Constant.globalPaddingTop + 35,
-    paddingLeft: 10, paddingRight: 10,
+    paddingLeft: 16, paddingRight: 16,
     height: Constant.globalPaddingTop + 35 + 50,
     backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
@@ -26,7 +26,7 @@ const ElevenHeader = (props) => {
     return (
       headerShow ?
         <View style={bigHeader}>
-          <Text xlarge>{title}</Text>
+          <Text xlarge montserrat>{title}</Text>
           {rightButton ?
             <View>
               <Button onPress={onPressRight} transparent>
@@ -42,17 +42,37 @@ const ElevenHeader = (props) => {
                     }}
                   />
                 }
-
               </Button>
             </View> : null
           }
-        </View> : <Header>{props.children}</Header>
+        </View> :
+          <Header>
+            <Left/>
+            <Body>
+            <Title>{title}</Title>
+            </Body>
+            <Right>
+              <Button onPress={onPressRight} transparent>
+                {rightAsImage ?
+                  <ImageCon
+                    image={buttonIcon}
+                  />
+                  :<Icon
+                    name={buttonIcon}
+                    style={{
+                      fontSize: 25,
+                      color: Constant.FiveColor,
+                    }}
+                  />}
+              </Button>
+            </Right>
+          </Header>
     );
   } else {
     return (
       headerShow ?
         <View style={bigHeader}>
-          <Text xlarge>{title}</Text>
+          <Text xlarge montserrat>{title}</Text>
         </View> :
         <Header>
           <Left/>

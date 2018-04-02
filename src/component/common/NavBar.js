@@ -41,6 +41,7 @@ const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsIma
           style={{
             backgroundColor: 'transparent',
             borderBottomWidth: 0,
+            elevation: 0,
           }}
         >
           <Left>
@@ -107,6 +108,11 @@ const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsIma
       <Header
         rounded
         iosBarStyle={statusBar}
+        style={{
+          backgroundColor: '#FFF',
+          borderBottomWidth: 0,
+          elevation: 0,
+        }}
       >
         <Left>
           {

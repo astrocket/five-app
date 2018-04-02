@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import BaseStyle from '../../config/BaseStyle';
 
-const ImageCon = ({ iconHeight, image }) => {
+const ImageCon = ({ iconHeight, image, color }) => {
   const { container } = BaseStyle;
   const { height, width } = Image.resolveAssetSource(image);
 
@@ -13,7 +13,7 @@ const ImageCon = ({ iconHeight, image }) => {
       source={image}
       style={{
         height: (iconHeight || 25),
-        width: (iconHeight || 25) * (height / width) + 1,
+        width: (iconHeight || 25) * (height / width),
       }}
     />
   );

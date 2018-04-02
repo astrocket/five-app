@@ -12,7 +12,7 @@ import {
   Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, UserUnitBar,
+  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, TabIcon,
 } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -27,12 +27,10 @@ export default class TabC extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarLabel: '검색',
     tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="ios-search-outline"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
+      <TabIcon
+        tintColor={tintColor}
+        imageGrey={require('../../assets/images/search_icon_grey.png')}
+        imagePink={require('../../assets/images/search_icon_pink.png')}
       />
     ),
     header: null,

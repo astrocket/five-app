@@ -114,6 +114,24 @@ export default class Tutorial extends Component {
                 }}
               />
             </View>
+            <View style={{ width: Constant.deviceWidth, flex: 1}}>
+              <Image
+                source={require('../../assets/images/tutorial_3.png')}
+                style={{
+                  height: (Constant.deviceHeight),
+                  width: Constant.deviceWidth,
+                }}
+              />
+            </View>
+            <View style={{ width: Constant.deviceWidth, flex: 1}}>
+              <Image
+                source={require('../../assets/images/tutorial_4.png')}
+                style={{
+                  height: (Constant.deviceHeight),
+                  width: Constant.deviceWidth,
+                }}
+              />
+            </View>
             <View style={{
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -161,10 +179,10 @@ export default class Tutorial extends Component {
           <Fab
             active={true}
             direction="up"
-            style={{ backgroundColor: Constant.FiveColor }}
+            style={{ backgroundColor: Constant.GreyColor }}
             position="bottomLeft"
             onPress={() => navigation.dispatch(startAction)}>
-            <Text micro note>생략</Text>
+            <Text micro note>skip</Text>
           </Fab>
         </View>
         {this.state.loading &&

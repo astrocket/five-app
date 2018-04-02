@@ -9,7 +9,7 @@ import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import { NotificationUnitBar, ShowMore, ElevenHeader, EmptyBox } from '../../component/common';
+import { NotificationUnitBar, ShowMore, ElevenHeader, EmptyBox, TabIcon } from '../../component/common';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
@@ -19,12 +19,10 @@ export default class TabD extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     tabBarLabel: '소식',
     tabBarIcon: ({ tintColor }) => (
-      <Icon
-        name="md-megaphone"
-        style={{
-          fontSize: 25,
-          color: tintColor,
-        }}
+      <TabIcon
+        tintColor={tintColor}
+        imageGrey={require('../../assets/images/new_icon_grey.png')}
+        imagePink={require('../../assets/images/new_icon_pink.png')}
       />
     ),
     header: null,

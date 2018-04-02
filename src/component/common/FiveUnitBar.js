@@ -12,7 +12,7 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
 
   if (updated_at) {
     return (
-      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 5}}>
+      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 10}}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}
@@ -43,7 +43,7 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
     );
   } else {
     return (
-      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 5}}>
+      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 10}}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}

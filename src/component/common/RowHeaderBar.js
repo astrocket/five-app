@@ -17,10 +17,10 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 10
+        padding: 16
       }]}>
         <View style={{ flexDirection: 'row'}}>
-          <Text small>{title}</Text>
+          <Text normal>{title}</Text>
           {yellowLabel ?
             <Text small yellow>{yellowLabel}</Text>
             :null}
@@ -37,9 +37,9 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 10
+        padding: 16
       }]}>
-        <Text small>{title}</Text>
+        <Text normal>{title}</Text>
       </View>
     )
   }

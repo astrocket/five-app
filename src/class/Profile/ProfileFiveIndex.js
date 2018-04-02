@@ -5,13 +5,13 @@ import {
 import {
   Container, Header, Content, Text, Spinner,
   Card, CardItem, Thumbnail, Button, Icon, Left,
-  Body, Right, H1, Toast, ListItem, ActionSheet,
+  Body, Right, H1, Toast, ListItem, ActionSheet, Fab,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitBar, FiveUnitFull,
+  FiveUnitBar, FiveUnitFull, NavBar,
 } from '../../component/common';
 import { FollowSmallButton } from '../../component/common';
 import axios from 'axios';
@@ -42,7 +42,7 @@ export default class ProfileFiveIndex extends Component {
           </Button>
         </View>
     ),*/
-    ...Constant.FiveNavOptions,
+   header: null
   });
 
   constructor(props) {
@@ -187,7 +187,8 @@ export default class ProfileFiveIndex extends Component {
           <FlatList
             horizontal
             data={this.state.fives}
-            style={rowWrapper}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingLeft: (Constant.deviceWidth / 2) - 100, paddingRight: (Constant.deviceWidth / 2) - 100 }}
             renderItem={({ item }) => (
               <FiveUnitFull
                 multiple
@@ -227,10 +228,23 @@ export default class ProfileFiveIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
+          <NavBar
+            leftButton
+            leftAsImage
+            leftIcon={require('../../assets/images/back_icon_pink.png')}
+            onPressLeft={() => navigation.goBack()}
+            rightButton
+            rightAsImage
+            rightIcon={require('../../assets/images/pencil_icon_pink.png')}
+            onPressRight={() => navigation.navigate('ProfileFiveEdit', {
+              category: this.state.category,
+            })}
+            headerText=""
+          />
           <Grid>
-            <View>
+            <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
-                <Text grey>{my_profile.name}의</Text>
+                <Text grey normal-thin>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <Text large>{this.state.category_korean} </Text>
@@ -240,23 +254,34 @@ export default class ProfileFiveIndex extends Component {
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
-                  <Text small grey>{'Follower '}</Text>
+                  <Text small grey>{'팔로워 '}</Text>
                   <Text small primary>{Number(this.state.followers_count).toLocaleString()}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
-                  <Text small grey>{'Following '}</Text>
+                  <Text small grey>{'팔로잉 '}</Text>
                   <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
                 </TouchableOpacity>
-                <View style={{ width: 50 }}>
-                  {this.renderFlipButton(this.state.flip)}
-                </View>
               </View>
             </View>
             {this.renderCard(this.state.flip)}
           </Grid>
         </Content>
+        <Fab
+          active={true}
+          direction="up"
+          style={{ backgroundColor: Constant.FiveColor }}
+          position="bottomRight"
+          onPress={() => this.flipCard()}>
+          <Icon
+            name="md-reorder"
+            style={{
+              fontSize: 25,
+              color: '#FFF',
+            }}
+          />
+        </Fab>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

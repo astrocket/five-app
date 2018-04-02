@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl,
+  View, FlatList, RefreshControl, Alert,
 } from 'react-native';
 import {
   Container, Content, Spinner, Toast
@@ -66,7 +66,36 @@ export default class HomeIndex extends Component {
     this.props.screenProps.modalNavigation.navigate('DrawerOpen');
   }*/
 
-  followCall(item, index) {
+  askFollowOption(item, index) {
+    console.log(JSON.stringify(this.props.ApplicationStore.categories));
+    this.props.ApplicationStore.hasCategory(item.category).then((have) => {
+      if (have) {
+        this.followCall(item, index);
+      } else {
+        Alert.alert(
+          `아직 참여한 카테고리는 아니에요`,
+          `${item.user.name}님을 팔로우 하고 함께 ${item.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          [
+            {
+              text: '네',
+              onPress: () => this.followCall(item, index).then(() => {
+                this.props.navigation.navigate(`ProfileFiveAdd${item.klass}`, {
+                  category: item.category,
+                });
+              }),
+            },
+            {
+              text: '취소',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true },
+        );
+      }
+    });
+  }
+
+  async followCall(item, index) {
     const data = {
       following: {
         user_id: item.user.id,
@@ -81,7 +110,7 @@ export default class HomeIndex extends Component {
       },
     };
 
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
+    await axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
       .then((response) => {
         this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -121,34 +150,36 @@ export default class HomeIndex extends Component {
           />
         }>
           <Grid>
-            <RowHeaderBar
-              title={'FIVE 스토리'}
-            />
             <Row>
-              <FiveStoryFull
-                singleClickable
-                id={this.state.five_story.id}
-                title={this.state.five_story.title}
-                subtitle={this.state.five_story.subtitle}
-                image_url={this.state.five_story.image_large_url}
-                onPress={() => navigation.navigate('FiveStoryShow', {
-                  title: this.state.five_story.title,
-                  id: this.state.five_story.id,
-                  five_story: this.state.five_story,
-                })}
-                barWidth={null}
-                barHeight={null}
-                borderRadius={15}
-                marginRight={10}
-              />
+              <View style={{
+                padding: 16,
+              }}>
+                <FiveStoryFull
+                  singleClickable
+                  id={this.state.five_story.id}
+                  title={this.state.five_story.title}
+                  subtitle={this.state.five_story.subtitle}
+                  image_url={this.state.five_story.image_large_url}
+                  onPress={() => navigation.navigate('FiveStoryShow', {
+                    title: this.state.five_story.title,
+                    id: this.state.five_story.id,
+                    five_story: this.state.five_story,
+                  })}
+                  barWidth={null}
+                  barHeight={null}
+                  borderRadius={15}
+                  marginRight={10}
+                />
+              </View>
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 추천'}
+              title={'팔로우 제안'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 data={this.state.follow_suggestions}
                 style={rowWrapper}
                 renderItem={({ item, index }) => (
@@ -156,8 +187,8 @@ export default class HomeIndex extends Component {
                     onPress={() => navigation.navigate('UserShow', {
                       user: item.user,
                     })}
-                    defaultImage={Images.findImageOf(item.category)}
-                    onPressFollow={() => this.followCall(item, index)}
+                    defaultImage={require('../../assets/images/five_void_grey.png')}
+                    onPressFollow={() => this.askFollowOption(item, index)}
                     category={item.category}
                     fives={item.fives}
                     clicked={item.following}
@@ -168,11 +199,12 @@ export default class HomeIndex extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'요즘 뜨는 아이템'}
+              title={'당신을 위한 클립 제안'}
             />
             <Row>
               <FlatList
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 data={this.state.popular_fives}
                 style={rowWrapper}
                 renderItem={({ item }) => (

@@ -29,7 +29,6 @@ export default class CategoryEdit extends Component {
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       klass: '',
-      categories: this.props.navigation.state.params.categories,
     };
   }
 
@@ -70,7 +69,7 @@ export default class CategoryEdit extends Component {
       <Container>
         <Content padder>
           <FlatList
-            data={this.state.categories}
+            data={this.props.ApplicationStore.categories}
             style={{paddingBottom: 15}}
             renderItem={({ item }) => (
               <Button bordered full danger onPress={() => Toast.show({
@@ -81,7 +80,7 @@ export default class CategoryEdit extends Component {
                 <Text>나의 {item.category} 정보 전체 삭제하기</Text>
               </Button>
             )}
-            keyExtractor={item => 'category-name-list-' + item.id}
+            keyExtractor={item => 'category-name-list-' + item.category}
           />
         </Content>
         {this.state.loading &&

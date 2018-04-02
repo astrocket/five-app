@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, Alert, ListView, Keyboard,
+  View, FlatList, Alert, ListView, Keyboard, TouchableOpacity
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -40,7 +40,8 @@ export default class ProfileFiveAddBook extends Component {
       no_more: true,
       documents: [],
       clicked: [],
-      searched: false,
+      searched: true,
+      no_result: true,
       wishes: this.props.navigation.state.params.wishes,
       headerShow: true,
     };
@@ -253,8 +254,7 @@ export default class ProfileFiveAddBook extends Component {
 
   handleInputSearch(input_search) {
     if (input_search === '') {
-      this.setState({ searched: false });
-      Keyboard.dismiss();
+      this.setState({ searched: true, no_result: true });
     } else {
       this.setState({ input_search });
     }
@@ -294,7 +294,7 @@ export default class ProfileFiveAddBook extends Component {
             flex: 1,
             flexDirection: 'column',
           }}>
-            <Text>결과 없음 !</Text>
+            <Text>검색 결과가 없습니다</Text>
           </View>
         );
       } else {
@@ -369,24 +369,12 @@ export default class ProfileFiveAddBook extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'책 FIVE 추가'} custom rightButton
-          onPressRight={() => navigation.goBack()} buttonIcon={'md-close-circle'}>
-          <Left/>
-          <Body>
-          <Title>{'책 FIVE 추가'}</Title>
-          </Body>
-          <Right>
-            <Button onPress={() => navigation.goBack()} transparent>
-              <Icon
-                name="md-close-circle"
-                style={{
-                  fontSize: 25,
-                  color: Constant.FiveColor,
-                }}
-              />
-            </Button>
-          </Right>
-        </ElevenHeader>
+          title={'책 FIVE 추가'}
+          custom
+          rightButton
+          rightAsImage
+          buttonIcon={require('../../assets/images/cancel_icon_grey.png')}
+          onPressRight={() => navigation.goBack()} />
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,
@@ -399,10 +387,18 @@ export default class ProfileFiveAddBook extends Component {
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
+              value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.setState({page: 1}, () => this.searchApiKakao(this.state.input_search))}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
+            <TouchableOpacity onPress={() => this.setState({
+              input_search: '',
+              searched: true,
+              no_result: true,
+            })}>
+              <Icon name="md-close"/>
+            </TouchableOpacity>
           </Item>
         </Header>
         {this.renderSearchResult()}

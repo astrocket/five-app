@@ -24,8 +24,8 @@ const BaseStyle = StyleSheet.create({
   },
   rowWrapper: {
     paddingBottom: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   headerDoubleIconsContainer: {
     flexDirection: 'row',

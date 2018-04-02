@@ -9,7 +9,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
-import { FiveUnitBar, EmptyBox } from '../../component/common';
+import { FiveUnitBar, EmptyBox, NavBar} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -20,8 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileFiveEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '내 FIVE 관리',
-    ...Constant.FiveNavOptions,
+    header: null
   });
 
   constructor(props) {
@@ -172,6 +171,13 @@ export default class ProfileFiveEdit extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
+          <NavBar
+            leftButton
+            leftAsImage
+            leftIcon={require('../../assets/images/back_icon_pink.png')}
+            onPressLeft={() => navigation.goBack()}
+            headerText="내 FIVE 관리"
+          />
           <Grid>
             <Row>
               <List

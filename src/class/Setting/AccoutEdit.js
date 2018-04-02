@@ -148,7 +148,7 @@ export default class AccountEdit extends Component {
             </Row>
             <Row>
               <TouchableOpacity onPress={() => this.signOutAction()}>
-                <Text>로그아웃</Text>
+                <Text>Sign Out</Text>
               </TouchableOpacity>
             </Row>
           </Grid>

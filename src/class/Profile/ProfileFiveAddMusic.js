@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, Alert, ListView, Keyboard,
+  View, FlatList, Alert, ListView, Keyboard, TouchableOpacity
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -19,7 +19,7 @@ import { observer, inject } from 'mobx-react/native';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-export default class ProfileFiveAddRestaurant extends Component {
+export default class ProfileFiveAddMusic extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     header: null,
@@ -31,6 +31,12 @@ export default class ProfileFiveAddRestaurant extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       loading: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
       category: this.props.navigation.state.params.category,
       category_korean: this.props.navigation.state.params.category_korean,
       klass: this.props.navigation.state.params.klass,
@@ -40,7 +46,8 @@ export default class ProfileFiveAddRestaurant extends Component {
       no_more: true,
       tracks: [],
       clicked: [],
-      searched: false,
+      searched: true,
+      no_result: true,
       wishes: this.props.navigation.state.params.wishes,
       headerShow: true,
     };
@@ -70,14 +77,7 @@ export default class ProfileFiveAddRestaurant extends Component {
       favorable_id: item.id,
     };
 
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, header)
+    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, this.state.header)
       .then((response) => {
         this.onCreateFiveCallSuccess(response.data, index);
       }).catch((error) => {
@@ -97,7 +97,43 @@ export default class ProfileFiveAddRestaurant extends Component {
     this.setState({ wishes: stateBefore });
   }
 
-  // 보관함 담기 끝
+  // 보관함 담기 나중에 추가. api결과도 보관함 담을 떄 db에 레코드 기록해야함
+
+  createWishCall(item, index) {
+    let url = `${ApiServer.MY_PROFILE}/create_wish?category=${this.state.category}`;
+
+    const data = {
+      favorable_id: item.id,
+    };
+
+    if (url) {
+      axios.post(url, data, this.state.header)
+        .then((response) => {
+          Alert.alert(
+            '성공',
+            `${item.title}이(가) 클립에 추가되었습니다.`,
+            [
+              {
+                text: '확인',
+                style: 'cancel',
+              },
+            ],
+            { cancelable: true },
+          );
+        }).catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data.full) {
+          this.handleOnCreateFiveCallFull();
+        } else {
+          Toast.show({
+            text: '에러 : ' + JSON.stringify(error.response.data.errors),
+            position: 'bottom',
+            duration: 1500,
+          });
+        }
+      });
+    }
+  }
 
   // 뮤직스 검색결과 추가 하기 시작
   addFive(track, index) {
@@ -233,7 +269,7 @@ export default class ProfileFiveAddRestaurant extends Component {
           'X-User-Token': this.props.ApplicationStore.token,
         },
       };
-      axios.get(`${ApiServer.MUSICS}/search_musix?s=${input_search}&page=${this.state.page}`, config)
+      axios.get(`${ApiServer.MUSICS}/search_musix?s=${this.state.input_search}&page=${this.state.page}`, config)
         .then((response) => {
           console.log(response);
           this.setState({
@@ -253,8 +289,7 @@ export default class ProfileFiveAddRestaurant extends Component {
 
   handleInputSearch(input_search) {
     if (input_search === '') {
-      this.setState({ searched: false });
-      Keyboard.dismiss();
+      this.setState({ searched: true, no_result: true });
     } else {
       this.setState({ input_search });
     }
@@ -294,7 +329,7 @@ export default class ProfileFiveAddRestaurant extends Component {
             flex: 1,
             flexDirection: 'column',
           }}>
-            <Text>결과 없음 !</Text>
+            <Text>검색 결과가 없습니다</Text>
           </View>
         );
       } else {
@@ -305,6 +340,7 @@ export default class ProfileFiveAddRestaurant extends Component {
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
                   id={item.id}
+                  category={'music'}
                   image_url={item.image_medium_url}
                   title={item.track_name}
                   subtitle={`${item.artist_name} / ${item.album_name}`}
@@ -334,6 +370,7 @@ export default class ProfileFiveAddRestaurant extends Component {
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
                   id={item.id}
+                  category={'music'}
                   image_url={item.image_medium_url}
                   title={item.title}
                   subtitle={item.subtitle}
@@ -368,24 +405,12 @@ export default class ProfileFiveAddRestaurant extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'음악 FIVE 추가'} custom rightButton
-          onPressRight={() => navigation.goBack()} buttonIcon={'md-close-circle'}>
-          <Left/>
-          <Body>
-          <Title>{'음악 FIVE 추가'}</Title>
-          </Body>
-          <Right>
-            <Button onPress={() => navigation.goBack()} transparent>
-              <Icon
-                name="md-close-circle"
-                style={{
-                  fontSize: 25,
-                  color: Constant.FiveColor,
-                }}
-              />
-            </Button>
-          </Right>
-        </ElevenHeader>
+          title={'음악 FIVE 추가'}
+          custom
+          rightButton
+          rightAsImage
+          buttonIcon={require('../../assets/images/cancel_icon_grey.png')}
+          onPressRight={() => navigation.goBack()} />
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,
@@ -398,10 +423,18 @@ export default class ProfileFiveAddRestaurant extends Component {
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
+              value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.setState({page:1},() => this.searchApiMusix(this.state.input_search))}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
+            <TouchableOpacity onPress={() => this.setState({
+              input_search: '',
+              searched: true,
+              no_result: true,
+            })}>
+              <Icon name="md-close"/>
+            </TouchableOpacity>
           </Item>
         </Header>
         {this.renderSearchResult()}

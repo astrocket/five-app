@@ -15,15 +15,15 @@ const FiveUnitBarImage = ({ image_url }) => {
   if (image_url) {
     return (
       <Image
-        style={{ width: 60, height: 60, borderRadius: 20 }}
+        style={{ width: 56, height: 56, borderRadius: 10 }}
         source={{ uri: image_url }}
       />
     )
   } else {
     return (
       <Image
-        style={{ width: 60, height: 60, borderRadius: 20 }}
-        source={Images.restaurant_main}
+        style={{ width: 56, height: 56, borderRadius: 10 }}
+        source={require('../../assets/images/five_void.png')}
       />
     )
   }
@@ -34,12 +34,12 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
 
   if (clicked) {
     return (
-      <ListItem avatarList>
+      <ListItem avatarList style={{ height: 76, padding: 8 }}>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <View style={{ flex: 1, height: 56, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>
@@ -62,12 +62,12 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
     );
   } else {
     return (
-      <ListItem avatarList>
+      <ListItem avatarList style={{ height: 76, padding: 8 }}>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <View style={{ flex: 1, height: 56, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>

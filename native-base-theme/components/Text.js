@@ -7,35 +7,40 @@ export default (variables = variable) => {
     color: variables.textColor,
     ".note": {
       color: "#a7a7a7",
+      marginBottom: 3,
       fontSize: variables.noteFontSize
     },
     ".xlarge": {
-      fontSize: 35,
-      marginBottom: 5,
+      fontSize: 34,
+      marginBottom: 3,
       fontWeight: "800"
     },
     ".large": {
-      fontSize: 25,
-      marginBottom: 5,
+      fontSize: 24,
+      marginBottom: 3,
       fontWeight: "800"
     },
     ".medium": {
       fontSize: 20,
-      marginBottom: 5,
+      marginBottom: 3,
       fontWeight: "800"
     },
     ".medium-thin": {
       fontSize: 20,
-      marginBottom: 5,
+      marginBottom: 3,
     },
     ".normal": {
-      fontSize: 16,
-      marginBottom: 5,
+      fontSize: 17,
+      marginBottom: 3,
+    },
+    ".normal-thin": {
+      fontSize: 17,
+      marginBottom: 3,
       fontWeight: "800"
     },
     ".small": {
       fontSize: 14,
-      marginBottom: 5,
+      marginBottom: 3,
       fontWeight: "800",
     },
     ".micro": {
@@ -57,6 +62,12 @@ export default (variables = variable) => {
     ".black": {
       color: '#000000',
     },
+    ".sd-gothic": {
+      fontFamily: "AppleSDGothicNeoEB00",
+    },
+    ".montserrat": {
+      fontFamily: "Montserrat-ExtraBold"
+    }
   };
 
   return textTheme;

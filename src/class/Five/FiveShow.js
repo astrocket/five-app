@@ -12,7 +12,7 @@ import {
 import {
   RowHeaderBar, NavBar, UserUnitRound, AddSmallButton, ListItemIconClick,
 } from '../../component/common';
-import { FiveUnitRound } from '../../component/common';
+import { FiveUnitRound, ImageCon } from '../../component/common';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
@@ -234,26 +234,28 @@ export default class FiveShow extends Component {
     });
 
     if (before_my_five !== my_five) {
-      this.setState({
-        five_users_count: my_five ? this.state.five_users_count += 1 : this.state.five_users_count -= 1,
-      }, () => {
-        var message;
-        if (fives_count === 5) {
-          message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
-        } else {
-          message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
-        }
-        Alert.alert(
-          `${this.state.category_korean} FIVE 선택됨`,
-          message,
-          [
-            {
-              text: '확인',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true },
-        );
+      this.props.ApplicationStore.updateCategories().then(() => {
+        this.setState({
+          five_users_count: my_five ? this.state.five_users_count += 1 : this.state.five_users_count -= 1,
+        }, () => {
+          let message;
+          if (fives_count === 5) {
+            message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
+          } else {
+            message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
+          }
+          Alert.alert(
+            `${this.state.category_korean} FIVE 선택됨`,
+            message,
+            [
+              {
+                text: '확인',
+                style: 'cancel',
+              },
+            ],
+            { cancelable: true },
+          );
+        });
       });
     } else if (before_my_wish !== my_wish) {
       Alert.alert(
@@ -320,13 +322,9 @@ export default class FiveShow extends Component {
                   }}>
                     <Text large numberOfLines={1} style={{ width: Constant.deviceWidth/3*2}}>{this.state.five.title}</Text>
                     <View style={BaseStyle.headerDoubleIconsContainer}>
-                      <Button onPress={() => this.createWishCall()} transparent>
-                        <Icon
-                          name="md-attach"
-                          style={{
-                            fontSize: 25,
-                            color: Constant.FiveColor,
-                          }}
+                      <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 3 }}>
+                        <ImageCon
+                          image={require('../../assets/images/bookmark_icon_pink.png')}
                         />
                       </Button>
                       <View style={{
@@ -348,7 +346,7 @@ export default class FiveShow extends Component {
               </View>
             </Row>
             <List style={{ paddingBottom: 20 }}>
-              <ListItem avatar>
+              <ListItem avatar style={{ borderTopWidth: 0.5, borderTopColor: 'rgba(237, 237, 237, 0.5)', borderBottomWidth: 0.5, borderBottomColor: 'rgba(237, 237, 237, 0.5)', padding: 5, marginBottom: 10}}>
                 <Left>
                   <Thumbnail small source={Images.findImageOf(this.state.category)}/>
                 </Left>
@@ -376,28 +374,28 @@ export default class FiveShow extends Component {
               />
               {/* 링크 */}
               <ListItemIconClick
-                label={'상세보기'}
+                label={'가사'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.related_link,
-                  headerTitle: this.state.five.related_link
+                  headerTitle: '가사 보기'
                 })}
                 target={this.state.five.related_link}
-                title={'링크 열어보기'}
+                title={'가사 보기'}
               />
               {/* 유튜브 링크 */}
               <ListItemIconClick
-                label={'유튜브'}
+                label={'YouTube'}
                 onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.youtube_link,
                   headerTitle: this.state.five.track_name
                 })}
                 target={this.state.five.youtube_link}
-                title={'음악 감상하기'}
+                title={'음악 듣기'}
               />
             </List>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={`Five 리스트   `}
+              title={`이 ${this.state.category_korean}을 Five한 사람들   `}
               yellowLabel={`${Number(this.state.five_users_count).toLocaleString()}`}
               onPress={() => navigation.navigate('FiveUserList', {
                 users: this.state.users, title: `FIVE 유저들`,
@@ -409,6 +407,7 @@ export default class FiveShow extends Component {
             <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 data={this.state.five_users}
                 style={rowWrapper}
                 renderItem={({ item }) => (
@@ -430,11 +429,12 @@ export default class FiveShow extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={navigation.state.params.suggest_title || `추천 ${this.state.category_korean}`}
+              title={navigation.state.params.suggest_title || `이 ${this.state.category_korean} 관련 clip 제안`}
             />
             <Row>
               <FlatList
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 data={this.state.related_fives}
                 style={rowWrapper}
                 renderItem={({ item }) => (

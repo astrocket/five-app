@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl, TouchableOpacity
+  View, FlatList, RefreshControl, TouchableOpacity, Alert,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -13,7 +13,7 @@ import {
 import {
   FiveUnitBar, FiveUnitFull,
 } from '../../component/common';
-import { FollowSmallButton } from '../../component/common';
+import { FollowSmallButton, ImageCon } from '../../component/common';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
@@ -22,11 +22,18 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
+@inject('ApplicationStore')
 @observer
 export default class UserFiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
+    headerLeft: (
+      <Button transparent onPress={() => navigation.goBack()}>
+        <ImageCon
+          image={require('../../assets/images/back_icon_pink.png')}
+        />
+      </Button>
+    ),
     headerRight: (
       navigation.state.params.navLoading ?
         null :
@@ -69,6 +76,7 @@ export default class UserFiveShow extends Component {
         },
       },
       category: this.props.navigation.state.params.category,
+      klass: '',
       user: this.props.navigation.state.params.user,
       flip: false,
       clicked: false,
@@ -81,7 +89,6 @@ export default class UserFiveShow extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({
-      openShareActionSheet: () => this.openShareActionSheet(),
       toggleFollow: () => this.toggleFollow(),
     });
     this.apiCall();
@@ -137,9 +144,37 @@ export default class UserFiveShow extends Component {
     })
   }
 
-  followCall(category, data, onSuccess) {
+  askFollowOption(data, onSuccess) {
+    this.props.ApplicationStore.hasCategory(this.state.category).then((have) => {
+      if (have) {
+        this.followCall(data, onSuccess);
+      } else {
+        Alert.alert(
+          `아직 참여한 카테고리는 아니에요`,
+          `${this.state.user.name}님을 팔로우 하고 함께 ${this.state.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          [
+            {
+              text: '네',
+              onPress: () => this.followCall(data, onSuccess).then(() => {
+                this.props.navigation.navigate(`ProfileFiveAdd${this.state.klass}`, {
+                  category: this.state.category,
+                });
+              }),
+            },
+            {
+              text: '취소',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: true },
+        );
+      }
+    });
+  }
 
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${category}`, data, this.state.header)
+  async followCall(data, onSuccess) {
+
+  await axios.post(`${ApiServer.FOLLOWINGS}/?category=${this.state.category}`, data, this.state.header)
       .then((response) => {
         onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
       }).catch((error) => {
@@ -159,7 +194,7 @@ export default class UserFiveShow extends Component {
         following: !this.state.following,
       },
     };
-    this.followCall(this.state.category, data, (response) => this.onFollowSuccess(response));
+    this.askFollowOption(data, (response) => this.onFollowSuccess(response));
   }
 
   onFollowSuccess(response) {
@@ -239,6 +274,7 @@ export default class UserFiveShow extends Component {
         <Row key={2}>
           <FlatList
             horizontal
+            showsHorizontalScrollIndicator={false}
             data={this.state.fives}
             style={rowWrapper}
             renderItem={({ item }) => (

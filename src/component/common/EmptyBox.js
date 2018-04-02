@@ -15,11 +15,11 @@ import BaseStyle from '../../config/BaseStyle';
 const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight, message }) => {
   const { container } = BaseStyle;
   return (
-    <TouchableOpacity onPress={onPress} style={{ padding: 10 }}>
+    <TouchableOpacity onPress={onPress} style={{ padding: 16 }}>
       <View style={{
-        width: barWidth,
+        width: barWidth - 16,
         height: barHeight,
-        padding: 10,
+        padding: 16,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#EEE',
