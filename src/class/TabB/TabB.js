@@ -80,15 +80,8 @@ export default class TabB extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-/*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
-    const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
-    const category_koreans = [ '음악', '맛집', ' 책' ];
-    const categories = [ 'music', 'restaurant', 'book'];
-    const klasses = ['Music', 'Restaurant', 'Book'];
-    const CANCEL_INDEX = 3;*/
 
     const BUTTONS = [ '음악', '취소' ];
-    const pages = [ 'ProfileFiveAddMusic' ];
     const category_koreans = [ '음악' ];
     const categories = [ 'music' ];
     const klasses = [ 'Music' ];
@@ -101,7 +94,7 @@ export default class TabB extends Component {
         title: '+ Five or Clip',
       },
       buttonIndex => {
-        navigation.navigate(pages[ buttonIndex ], {
+        navigation.navigate('SearchFive', {
           klass: klasses[ buttonIndex ],
           category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],
@@ -145,6 +138,7 @@ export default class TabB extends Component {
                 followees={item.followees_count}
                 fives={item.fives}
                 image={require('../../assets/images/five_void_grey.png')}
+                fiveImage={Images.findImageOf(item.klass.toLowerCase())}
               />
             )}
             keyExtractor={item => 'five-category-list-' + item.klass}
