@@ -56,18 +56,18 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-/*    const BUTTONS = [ '음악', '책', '맛집', '취소' ];
-    const category_koreans = [ '음악', '책', '맛집' ];
-    const categories = [ 'music', 'book', 'restaurant' ];
-    const klasses = [ 'Music', 'Book', 'Restaurant' ];
-    const CANCEL_INDEX = 3;*/
-
+    /*    const BUTTONS = [ '요즘 좋은 음악', '즐겨 찾는 맛집', '재미 있는 책', '취소' ];
+        const pages = [ 'ProfileFiveAddMusic', 'ProfileFiveAddRestaurant', 'ProfileFiveAddBook' ];
+        const category_koreans = [ '음악', '맛집', ' 책' ];
+        const categories = [ 'music', 'restaurant', 'book'];
+        const klasses = ['Music', 'Restaurant', 'Book'];
+        const CANCEL_INDEX = 3;*/
     const BUTTONS = [ '음악', '취소' ];
+    const pages = [ 'ProfileFiveAddMusic' ];
     const category_koreans = [ '음악' ];
     const categories = [ 'music' ];
     const klasses = [ 'Music' ];
     const CANCEL_INDEX = 1;
-
 
     ActionSheet.show(
       {
@@ -76,7 +76,7 @@ export default class TabA extends Component {
         title: '+ Five or Clip',
       },
       buttonIndex => {
-        navigation.navigate('SearchFive', {
+        navigation.navigate(pages[ buttonIndex ], {
           klass: klasses[ buttonIndex ],
           category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],

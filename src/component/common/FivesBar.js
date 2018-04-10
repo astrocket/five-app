@@ -44,7 +44,7 @@ const FiveImages = ({ fives, image, pureWidth }) => {
   )
 };
 
-const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, fives, followButton, onPressFollow, clicked }) => {
+const FivesBar = ({ image, onPress, category, followers, followees, fives, followButton, onPressFollow, clicked }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
   let cardMargin = 16;
@@ -56,7 +56,7 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
         <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
       </TouchableOpacity>
       <ListItem cardStyle transparent button>
-        <Thumbnail size={50} source={fiveImage}/>
+        <Thumbnail size={50} source={image}/>
         <Body>
           <Text medium>{Constant.CategoryToKorean(category)}</Text>
           <View style={{ flexDirection: 'row'}}>

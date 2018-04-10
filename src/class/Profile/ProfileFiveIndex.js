@@ -222,27 +222,25 @@ export default class ProfileFiveIndex extends Component {
 
     return (
       <Container>
-        <NavBar
-          leftButton
-          leftAsImage
-          leftIcon={require('../../assets/images/back_icon_pink.png')}
-          onPressLeft={() => navigation.goBack()}
-          rightButton
-          rightAsImage
-          rightIcon={require('../../assets/images/pencil_icon_pink.png')}
-          onPressRight={() => navigation.navigate('ProfileFiveEdit', {
-            category: this.state.category,
-            category_korean: this.state.category_korean,
-            klass: this.state.klass,
-          })}
-          headerText=""
-        />
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
+          <NavBar
+            leftButton
+            leftAsImage
+            leftIcon={require('../../assets/images/back_icon_pink.png')}
+            onPressLeft={() => navigation.goBack()}
+            rightButton
+            rightAsImage
+            rightIcon={require('../../assets/images/pencil_icon_pink.png')}
+            onPressRight={() => navigation.navigate('ProfileFiveEdit', {
+              category: this.state.category,
+            })}
+            headerText=""
+          />
           <Grid>
             <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
