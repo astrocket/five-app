@@ -79,10 +79,8 @@ export default class HomeIndex extends Component {
             {
               text: '네',
               onPress: () => this.followCall(item, index).then(() => {
-                this.props.navigation.navigate(`SearchFive`, {
+                this.props.navigation.navigate(`ProfileFiveAdd${item.klass}`, {
                   category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
                 });
               }),
             },

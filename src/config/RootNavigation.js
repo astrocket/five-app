@@ -40,21 +40,23 @@ import ProfileFiveEdit from '../class/Profile/ProfileFiveEdit';
 import ProfileFollowerIndex from '../class/Profile/ProfileFollowerIndex';
 import ProfileFolloweeIndex from '../class/Profile/ProfileFolloweeIndex';
 import FiveStoryShow from '../class/Page/FiveStoryShow';
+import ProfileFiveAddRestaurant from '../class/Profile/ProfileFiveAddRestaurant';
+import ProfileFiveAddMusic from '../class/Profile/ProfileFiveAddMusic';
+import ProfileFiveAddBook from '../class/Profile/ProfileFiveAddBook';
 import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import InfoEdit from '../class/Setting/InfoEdit';
 import AccountEdit from '../class/Setting/AccoutEdit';
 import AlarmEdit from '../class/Setting/AlarmEdit';
 import CategoryEdit from '../class/Setting/CategoryEdit';
-import SearchFive from '../class/Search/SearchFive';
 
 const TabNavigation = TabNavigator(
     {
       TabA: {
         screen: TabA,
       },
-/*      TabC: {
+      TabC: {
         screen: TabC,
-      },*/
+      },
       TabD: {
         screen: TabD,
       },
@@ -156,6 +158,15 @@ const StackNavigation = StackNavigator(
     FiveStoryShow: {
       screen: FiveStoryShow,
     },
+    ProfileFiveAddRestaurant: {
+      screen: ProfileFiveAddRestaurant,
+    },
+    ProfileFiveAddMusic: {
+      screen: ProfileFiveAddMusic,
+    },
+    ProfileFiveAddBook: {
+      screen: ProfileFiveAddBook,
+    },
     Setting: {
       screen: Setting,
     },
@@ -170,9 +181,6 @@ const StackNavigation = StackNavigator(
     },
     CategoryEdit: {
       screen: CategoryEdit,
-    },
-    SearchFive: {
-      screen: SearchFive,
     },
   }, {
     headerMode: 'screen',

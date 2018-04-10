@@ -5,7 +5,7 @@ import {
 import {
   Container, Header, Content, Text, Spinner,
   Card, CardItem, Thumbnail, Button, Icon, Left,
-  Body, Right, H1, Toast, ListItem, ActionSheet, Fab,
+  Body, Right, H1, Toast, ListItem, ActionSheet,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -27,7 +27,41 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserFiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    header: null,
+    headerLeft: (
+      <Button transparent onPress={() => navigation.goBack()}>
+        <ImageCon
+          image={require('../../assets/images/back_icon_pink.png')}
+        />
+      </Button>
+    ),
+    headerRight: (
+      navigation.state.params.navLoading ?
+        null :
+        <View style={BaseStyle.headerDoubleIconsContainer}>
+{/*          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
+            <Icon
+              name="ios-share-outline"
+              style={{
+                fontSize: 25,
+                color: Constant.FiveColor,
+              }}
+            />
+          </Button>*/}
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingRight: 5,
+          }}>
+            <FollowSmallButton
+              onPress={navigation.state.params.toggleFollow}
+              textTrue={'팔로잉'}
+              textFalse={'팔로우'}
+              clicked={navigation.state.params.following}
+            />
+          </View>
+        </View>
+    ),
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -122,10 +156,8 @@ export default class UserFiveShow extends Component {
             {
               text: '네',
               onPress: () => this.followCall(data, onSuccess).then(() => {
-                this.props.navigation.navigate(`SearchFive`, {
-                  category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
+                this.props.navigation.navigate(`ProfileFiveAdd${this.state.klass}`, {
+                  category: this.state.category,
                 });
               }),
             },
@@ -243,7 +275,6 @@ export default class UserFiveShow extends Component {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingLeft: (Constant.deviceWidth / 2) - 110, paddingRight: (Constant.deviceWidth / 2) - 110 }}
             data={this.state.fives}
             style={rowWrapper}
             renderItem={({ item }) => (
@@ -277,32 +308,6 @@ export default class UserFiveShow extends Component {
 
     return (
       <Container>
-        <Header
-          rounded
-          style={{
-            backgroundColor: '#FFF',
-            borderBottomWidth: 0,
-            elevation: 0,
-          }}>
-          <Left>
-            <Button transparent onPress={() => navigation.goBack()}>
-              <ImageCon
-                image={require('../../assets/images/back_icon_pink.png')}
-              />
-            </Button>
-          </Left>
-          <Body>
-
-          </Body>
-          <Right>
-            <FollowSmallButton
-              onPress={navigation.state.params.toggleFollow}
-              textTrue={'팔로잉'}
-              textFalse={'팔로우'}
-              clicked={navigation.state.params.following}
-            />
-          </Right>
-        </Header>
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -330,24 +335,13 @@ export default class UserFiveShow extends Component {
                 <Text small grey>{'Following '}</Text>
                 <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
               </TouchableOpacity>
+              <View style={{ width: 50 }}>
+                {this.renderFlipButton(this.state.flip)}
+              </View>
             </View>
           </View>
           {this.renderCard(this.state.flip)}
         </Content>
-        <Fab
-          active={true}
-          direction="up"
-          style={{ backgroundColor: Constant.FiveColor }}
-          position="bottomRight"
-          onPress={() => this.flipCard()}>
-          <Icon
-            name="md-reorder"
-            style={{
-              fontSize: 25,
-              color: '#FFF',
-            }}
-          />
-        </Fab>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>

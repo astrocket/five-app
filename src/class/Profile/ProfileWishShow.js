@@ -41,6 +41,9 @@ export default class ProfileWishShow extends Component {
     };
   }
 
+  componentDidMount() {
+  }
+
   deleteCall(url, data, onSuccess) {
     axios.post(url, data, this.state.header)
       .then((response) => {
@@ -78,6 +81,7 @@ export default class ProfileWishShow extends Component {
         .then((response) => {
           this.onCreateFiveCallSuccess(response.data, index);
         }).catch((error) => {
+        console.log(error.response);
         Toast.show({
           text: '에러 : ' + JSON.stringify(error.response.data.errors),
           position: 'bottom',

@@ -10,7 +10,7 @@ import {
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import {
-  UserUnitRound, FivesBar, NavBar,
+  UserUnitRound, FivesBar
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
@@ -23,7 +23,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    header: null,
+    ...Constant.FiveNavOptions,
   });
 
   constructor(props) {
@@ -81,10 +81,8 @@ export default class UserShow extends Component {
             {
               text: '네',
               onPress: () => this.followCall(item, index).then(() => {
-                this.props.navigation.navigate(`SearchFive`, {
+                this.props.navigation.navigate(`ProfileFiveAdd${item.klass}`, {
                   category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
                 });
               }),
             },
@@ -140,20 +138,13 @@ export default class UserShow extends Component {
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
-        <NavBar
-          leftButton
-          leftAsImage
-          leftIcon={require('../../assets/images/back_icon_pink.png')}
-          onPressLeft={() => navigation.goBack()}
-          headerText={`${this.state.user.name}의 FIVE`}
-        />
+        <Grid>
           <Content refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)}
             />
           }>
-            <Grid>
             <Row style={{
               height: 250,
               alignItems: 'center',
@@ -187,15 +178,14 @@ export default class UserShow extends Component {
                     followees={item.followees_count}
                     clicked={item.following}
                     fives={item.fives}
-                    image={require('../../assets/images/five_void_grey.png')}
-                    fiveImage={Images.findImageOf(item.klass.toLowerCase())}
+                    image={Images.findImageOf(item.klass.toLowerCase())}
                   />
                 )}
                 keyExtractor={item => 'five-category-list-' + item.klass}
               />
             </Row>
-            </Grid>
           </Content>
+        </Grid>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
