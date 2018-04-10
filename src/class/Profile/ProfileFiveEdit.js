@@ -36,7 +36,8 @@ export default class ProfileFiveEdit extends Component {
         },
       },
       category: this.props.navigation.state.params.category,
-      klass: '',
+      category_korean: this.props.navigation.state.params.category_korean,
+      klass: this.props.navigation.state.params.klass,
       fives: [],
       wishes: []
     };
@@ -148,8 +149,8 @@ export default class ProfileFiveEdit extends Component {
         <EmptyBox
           key={rowId}
           barWidth={null}
-          onPress={() => navigation.navigate(`ProfileFiveAdd${this.state.klass}`, {
-            category: this.state.category, klass: this.state.klass, wishes: this.state.wishes
+          onPress={() => navigation.navigate(`SearchFive`, {
+            category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass, wishes: this.state.wishes
           })}
           barHeight={50}
           borderRadius={10}
@@ -165,19 +166,19 @@ export default class ProfileFiveEdit extends Component {
 
     return (
       <Container>
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText="내 FIVE 관리"
+        />
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <NavBar
-            leftButton
-            leftAsImage
-            leftIcon={require('../../assets/images/back_icon_pink.png')}
-            onPressLeft={() => navigation.goBack()}
-            headerText="내 FIVE 관리"
-          />
           <Grid>
             <Row>
               <List

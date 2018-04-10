@@ -106,7 +106,6 @@ const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsIma
   } else {
     return (
       <Header
-        rounded
         iosBarStyle={statusBar}
         style={{
           backgroundColor: '#FFF',
@@ -141,9 +140,9 @@ const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsIma
           }
         </Left>
         <Body>
-        <Title>
-          {headerText}
-        </Title>
+          <Title>
+            {headerText}
+          </Title>
         </Body>
         <Right>
           {
