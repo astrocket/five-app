@@ -93,7 +93,9 @@ export default class FiveShow extends Component {
       favorable_id: this.state.five.id,
     };
 
-    if (url) {
+    if (this.state.my_wish) {
+      this.deleteWishCall()
+    } else {
       axios.post(url, data, this.state.header)
         .then((response) => {
           this.onCreateFiveCallSuccess(response.data);
@@ -119,14 +121,16 @@ export default class FiveShow extends Component {
       favorable_id: this.state.five.id,
     };
 
-    if (url) {
+    if (this.state.my_five) {
+      this.deleteFiveCall()
+    } else {
       axios.post(url, data, this.state.header)
         .then((response) => {
           this.onCreateFiveCallSuccess(response.data);
         }).catch((error) => {
         console.log(error.response.data);
         if (error.response.data.full) {
-          this.handleOnCreateFiveCallFull();
+          this.askAddWish(JSON.stringify(error.response.data.errors[0]));
         } else {
           Toast.show({
             text: '에러 : ' + JSON.stringify(error.response.data.errors),
@@ -136,6 +140,63 @@ export default class FiveShow extends Component {
         }
       });
     }
+  }
+
+  deleteWishCall() {
+    const data = {
+      favorable_id: this.state.five.id,
+    };
+    axios.post(`${ApiServer.MY_PROFILE}/destroy_wish?category=${this.state.category}`, data, this.state.header)
+      .then((response) => {
+        this.setState({
+          my_wish: false
+        });
+      }).catch((error) => {
+      console.log(error.response);
+      Toast.show({
+        text: '에러 : ' + JSON.stringify(error.response.data.errors),
+        position: 'bottom',
+        duration: 1500,
+      });
+    });
+  }
+
+  deleteFiveCall() {
+    const data = {
+      favorable_id: this.state.five.id,
+    };
+    axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
+      .then((response) => {
+        this.setState({
+          five_users_count: (this.state.five_users_count -= 1),
+          my_five: false
+        });
+      }).catch((error) => {
+      console.log(error.response);
+      Toast.show({
+        text: '에러 : ' + JSON.stringify(error.response.data.errors),
+        position: 'bottom',
+        duration: 1500,
+      });
+    });
+  }
+
+  askAddWish(msg) {
+    Alert.alert(
+      `${msg}`,
+      `${this.state.five.title}을(를) ${this.state.category_korean} 보관함에 담으시겠어요?`,
+      [
+        {
+          text: '아니요',
+          style: 'cancel',
+        },
+        {
+          text: '네',
+          onPress: () => this.createWishCall()
+        },
+      ],
+      { cancelable: true },
+    );
   }
 
   // CONTROLLERS
@@ -151,54 +212,6 @@ export default class FiveShow extends Component {
       },
       buttonIndex => this.shareAction(BUTTONS[ buttonIndex ]),
     );
-  }
-
-  openFiveActionSheet() {
-    const my_five = this.state.my_five;
-    const my_wish = this.state.my_wish;
-    var BUTTONS;
-    var URLS;
-    var CANCEL_INDEX;
-    var message;
-
-    if (!my_five && !my_wish) {
-      BUTTONS = [ '보관함으로 추가', '나만의 FIVE 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=${this.state.category}`, `${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, false ];
-      CANCEL_INDEX = 2;
-      message = '보관함 또는 나만의 FIVE에 담아보세요.';
-    } else if (!my_five && my_wish) {
-      BUTTONS = [ '나만의 FIVE 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, false ];
-      CANCEL_INDEX = 1;
-      message = '이미 보관함에 있는 아이템 입니다.';
-    } else if (my_five && !my_wish) {
-      BUTTONS = [ '보관함으로 추가', 'Cancel' ];
-      URLS = [ `${ApiServer.MY_PROFILE}/create_wish?category=${this.state.category}`, false ];
-      CANCEL_INDEX = 1;
-      message = '이미 FIVE에 있는 아이템 입니다.';
-    } else {
-      BUTTONS = [ 'Cancel' ];
-      URLS = [ false ];
-      CANCEL_INDEX = 0;
-      message = '이미 FIVE이면서 보관함에 담긴 아이템 입니다.';
-    }
-
-    ActionSheet.show(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-        title: message,
-      },
-      buttonIndex => this.createFiveCall(URLS[ buttonIndex ]),
-    );
-  }
-
-  shareAction(value) {
-    Toast.show({
-      text: value,
-      position: 'bottom',
-      duration: 1500,
-    });
   }
 
   handleOnCreateFiveCallFull() {
@@ -222,62 +235,11 @@ export default class FiveShow extends Component {
   }
 
   onCreateFiveCallSuccess(data) {
-    const before_my_five = this.state.my_five;
-    const before_my_wish = this.state.my_wish;
     const my_five = data.my_five;
     const my_wish = data.my_wish;
-    const fives_count = data.fives_count;
 
     this.setState({
-      my_five: my_five,
-      my_wish: my_wish,
-    });
-
-    if (before_my_five !== my_five) {
-      this.props.ApplicationStore.updateCategories().then(() => {
-        this.setState({
-          five_users_count: my_five ? this.state.five_users_count += 1 : this.state.five_users_count -= 1,
-        }, () => {
-          let message;
-          if (fives_count === 5) {
-            message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 이제 FIVE 5개를 다 담았어요!`;
-          } else {
-            message = `${this.state.five.title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - fives_count}개를 더 선택할 수 있어요!`;
-          }
-          Alert.alert(
-            `${this.state.category_korean} FIVE 선택됨`,
-            message,
-            [
-              {
-                text: '확인',
-                style: 'cancel',
-              },
-            ],
-            { cancelable: true },
-          );
-        });
-      });
-    } else if (before_my_wish !== my_wish) {
-      Alert.alert(
-        '성공',
-        `${this.state.five.title}이(가) ${this.state.category_korean} 클립에 추가되었습니다.`,
-        [
-          {
-            text: '확인',
-            style: 'cancel',
-          },
-        ],
-        { cancelable: true },
-      );
-    } else if (before_my_wish === my_wish) {
-      Toast.show({
-        text: `이미 클립에 담긴 ${this.state.category_korean} 입니다.`,
-        position: 'bottom',
-        duration: 1500,
-      });
-    }
-
-    this.props.navigation.setParams({
+      five_users_count: (this.state.five_users_count += 1),
       my_five: my_five,
       my_wish: my_wish,
     });
@@ -323,9 +285,12 @@ export default class FiveShow extends Component {
                     <Text large numberOfLines={1} style={{ width: Constant.deviceWidth/3*2}}>{this.state.five.title}</Text>
                     <View style={BaseStyle.headerDoubleIconsContainer}>
                       <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 3 }}>
-                        <ImageCon
-                          image={require('../../assets/images/bookmark_icon_pink.png')}
-                        />
+                        {this.state.my_wish ?
+                          <ImageCon
+                            image={require('../../assets/images/bookmark_icon_pink.png')}
+                          /> : <ImageCon
+                            image={require('../../assets/images/bookmark_icon_pink.png')}
+                          />}
                       </Button>
                       <View style={{
                         alignItems: 'flex-end',
@@ -336,7 +301,7 @@ export default class FiveShow extends Component {
                           onPress={() => this.createFiveCall()}
                           textTrue={'담김'}
                           textFalse={'+ 담기'}
-                          clicked={this.state.my_five && this.state.my_wish}
+                          clicked={this.state.my_five}
                         />
                       </View>
                     </View>
