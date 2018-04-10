@@ -1,7 +1,7 @@
-export const DOMAIN = '172.16.10.209:3000';
-export const API = 'http://' + DOMAIN;
-//export const DOMAIN = "110.10.189.185";
-//export const API = "http://" + DOMAIN;
+//export const DOMAIN = '172.16.10.209:3000';
+//export const API = 'http://' + DOMAIN;
+export const DOMAIN = "110.10.189.185";
+export const API = "http://" + DOMAIN;
 
 export const WEB_SOCKET = 'ws://' + DOMAIN;
 export const CABLE = WEB_SOCKET + '/cable';
