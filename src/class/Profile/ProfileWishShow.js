@@ -90,12 +90,14 @@ export default class ProfileWishShow extends Component {
   onCreateFiveCallSuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = true;
+    stateBefore[index].wish.five_users_count += 1;
     this.setState({ wishes: stateBefore });
   }
 
   onDestroyFiveCallSuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = false;
+    stateBefore[index].wish.five_users_count -= 1;
     this.setState({ wishes: stateBefore });
   }
 
