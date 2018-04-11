@@ -166,7 +166,7 @@ export default class ProfileWishShow extends Component {
                   }
                   renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                     <Button full danger onPress={_ => this.askRestaurantDelete(secId, rowId, rowMap, data)}>
-                      <Icon active name="trash"/>
+                      <Text>삭제</Text>
                     </Button>
                   }
                   leftOpenValue={75}

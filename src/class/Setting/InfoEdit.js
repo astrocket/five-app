@@ -21,7 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserInfoNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '프로필 관리',
+    title: '내 프로필 관리',
     ...Constant.FiveNavOptions,
   });
 
@@ -148,7 +148,7 @@ export default class UserInfoNew extends Component {
             <Row style={{
               justifyContent: 'center',
               alignItems: 'center',
-              height: 200,
+              height: 240,
               marginBottom: 20,
             }}>
               <Col style={{ alignItems: 'center' }}>
@@ -157,23 +157,24 @@ export default class UserInfoNew extends Component {
                   name={my_profile.name}
                   image_url={my_profile.image_medium_url}
                   onPress={() => this.openImagePicker()}
-                  barWidth={70}
-                  barHeight={70}
-                  borderRadius={35}
+                  barWidth={100}
+                  barHeight={100}
+                  borderRadius={50}
                   marginRight={10}
-                  fontSize={20}
+                  fontSize={24}
                 />
+                <Text>  </Text>
                 <Text note style={{ width: 250, textAlign: 'center' }}>{my_profile.introduce}</Text>
               </Col>
             </Row>
-            <Row>
-              <Text small>닉네임</Text>
-            </Row>
             <Row style={{ marginBottom: 5 }}>
+              <Text small>  닉네임 변경</Text>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
               <InputSingle
                 placeholder={my_profile.name}
                 submitText={'확인'}
-                autoFocus={false}
+                autoFocus={true}
                 defaultValue={my_profile.name}
                 onChangeText={(name) => this.setState({ name })}
                 onSubmitPress={() => this.postUserInfo()}
@@ -182,12 +183,12 @@ export default class UserInfoNew extends Component {
               />
             </Row>
             <Row style={{ justifyContent: 'flex-end', marginBottom: 15 }}>
-              <Text note style={{ textAlign: 'right' }}>영문과 숫자 3자 이상 10자 이하로 정해주세요</Text>
-            </Row>
-            <Row>
-              <Text small>한 마디</Text>
+              <Text note style={{ textAlign: 'right', fontSize: 12 }}>영문과 숫자 3~10자로 정해 주세요</Text>
             </Row>
             <Row style={{ marginBottom: 5 }}>
+              <Text small>  자기 소개 변경</Text>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
               <InputSingle
                 placeholder={my_profile.introduce}
                 submitText={'확인'}
@@ -200,7 +201,7 @@ export default class UserInfoNew extends Component {
               />
             </Row>
             <Row style={{ justifyContent: 'flex-end', marginBottom: 15 }}>
-              <Text note style={{ textAlign: 'right' }}>다른 이용자에게는 두 줄까지만 보입니다.</Text>
+              <Text note style={{ textAlign: 'right', fontSize: 12 }}>다른 이용자에게는 두 줄까지만 보입니다</Text>
             </Row>
           </Grid>
         </Content>

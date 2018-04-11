@@ -20,16 +20,16 @@ const ListItemIconClick = ({ icon, label, onPress, target, title }) => {
               <Icon
                 name={icon}
                 style={{
-                  fontSize: 23,
+                  fontSize: 24,
                   borderRadius: 0,
                   color: Constant.FiveColor,
                 }}
-              /> : <Text small>{label}</Text>
+              /> : <Text normal-thin>{label}</Text>
             }
           </View>
         </Left>
-        <Body style={{ borderBottomWidth: 0, flex: 1, alignItems: 'flex-end'}}>
-          <Text small grey>{title}</Text>
+        <Body style={{ borderBottomWidth: 0, flex: 1, alignItems: 'flex-end', marginBottom: 10, marginRight: 10}}>
+          <Text grey>{title}</Text>
         </Body>
       </ListItem> : null
   );

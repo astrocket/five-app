@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text,
-  Spinner, Button, Icon, Left, Body, Title,
+  Spinner, Button, Left, Body, Title,
   Right, ActionSheet,
 } from 'native-base';
 import {
@@ -19,6 +19,8 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -105,7 +107,7 @@ export default class TabB extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 100;
+    var headerShow = currentOffset < 180;
     this.setState({ headerShow });
   }
 
@@ -118,7 +120,7 @@ export default class TabB extends Component {
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={'프로필'}
+          title={null} // 디자인 가이드에 따라 "프로필" 타이틀 삭제
           custom
           rightButton
           rightAsImage
@@ -172,10 +174,11 @@ export default class TabB extends Component {
                       backgroundColor: '#FFF',
                     }}>
                       <Icon
-                        name="md-create"
+                        name='cog'
                         style={{
-                          fontSize: 25,
-                          color: Constant.FiveColor,
+                          fontSize: 32,
+                          backgroundColor: 'transparent',
+                          color: Constant.LightGrey,
                         }}
                       />
                     </View>
@@ -183,8 +186,9 @@ export default class TabB extends Component {
                   <Text style={{
                     textAlign: 'center',
                     fontSize: 25,
+                    padding: 5,
                   }} large numberOfLines={1}>{my_profile.name}</Text>
-                  <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{my_profile.introduce}</Text>
+                  <Text note style={{ width: 250, textAlign: 'center', padding: 3 }} numberOfLines={2}>{my_profile.introduce}</Text>
                 </Col>
               </Row>
             }

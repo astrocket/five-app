@@ -17,7 +17,8 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 16
+        padding: 16,
+        paddingTop: 32
       }]}>
         <View style={{ flexDirection: 'row'}}>
           <Text normal>{title}</Text>
@@ -37,7 +38,8 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 16
+        padding: 16,
+        paddingTop: 32
       }]}>
         <Text normal>{title}</Text>
       </View>

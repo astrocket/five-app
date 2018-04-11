@@ -22,7 +22,7 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
         />
       </TouchableOpacity>
       <Body>
-      <View style={{ flex: 1, height: 50, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+      <View style={{ flex: 1, height: 52, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
         <Text normal numberOfLines={1} style={{ marginBottom: 0 }}>{title}</Text>
         <Text note numberOfLines={1}>{subtitle}</Text>
         <Text micro yellow>FIVE {five_users_count}</Text>
@@ -32,7 +32,7 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
         <View style={{
           alignItems: 'center',
           justifyContent: 'center',
-          paddingRight: 5,
+          paddingRight: 3,
         }}>
           <AddWishSmallButton
             onPress={onPress}

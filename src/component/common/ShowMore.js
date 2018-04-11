@@ -22,7 +22,7 @@ const ShowMore = ({ overText, no_more, page_loading, moreText, onPress }) => {
   }
 
   return (
-    <Button full primary onPress={onPress}>
+    <Button block light style={{ margin: 16 }} onPress={onPress}>
       <Text>{moreText}</Text>
     </Button>
   );

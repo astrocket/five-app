@@ -27,7 +27,7 @@ const NotificationUnitBar = ({ id, user, title, created_at, onPress }) => {
       <Left>
         <Thumbnail small source={{ uri: user.image_url }}/>
       </Left>
-      <Body style={{borderBottomWidth: 0}}>
+      <Body style={{borderBottomWidth: 1}}>
       <Grid>
         <Row>
           <Text numberOfLines={2}>{title}</Text>
@@ -37,6 +37,9 @@ const NotificationUnitBar = ({ id, user, title, created_at, onPress }) => {
         </Row>
       </Grid>
       </Body>
+      <Right>
+        <Text note><Text note numberOfLines={1}>{created_at.split('T')[0]}</Text></Text>
+      </Right>
     </ListItem>
   );
 };

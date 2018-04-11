@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View, Platform, Image, ScrollView, TouchableOpacity,
+  AppRegistry, StyleSheet, Text, View, Platform, Image, ScrollView, TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
-  Container, Text, Spinner,
+  Container, Spinner,
   Button, Fab
 } from 'native-base';
 import {
@@ -18,6 +18,26 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Swiper from 'react-native-swiper';
+
+const styles = StyleSheet.create({
+  wrapper: {
+  },
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  text: {
+    color: '#4a4a4a',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 10
+  }
+})
+
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -82,115 +102,99 @@ export default class Tutorial extends Component {
     });
 
     return (
-      <Container>
+      <Swiper 
+        style={styles.wrapper} 
+        showsButtons={false} 
+        loop={false} 
+        loadMinimal={true}
+        activeDotColor={Constant.GreyColor}
+      >
+        <View style={styles.slide1}>
+          <Image
+            source={require('../../assets/images/tutorial_1.png')}
+            style={{
+              height: (Constant.deviceHeight),
+              width: Constant.deviceWidth,
+            }}
+          />
+        </View>
+        <View style={styles.slide1}>
+          <Image
+            source={require('../../assets/images/tutorial_2.png')}
+            style={{
+              height: (Constant.deviceHeight),
+              width: Constant.deviceWidth,
+            }}
+          />
+        </View>
+        <View style={styles.slide1}>
+          <Image
+            source={require('../../assets/images/tutorial_3.png')}
+            style={{
+              height: (Constant.deviceHeight),
+              width: Constant.deviceWidth,
+            }}
+          />
+        </View>
+        <View style={styles.slide1}>
+          <Image
+            source={require('../../assets/images/tutorial_4.png')}
+            style={{
+              height: (Constant.deviceHeight),
+              width: Constant.deviceWidth,
+            }}
+          />
+        </View>
         <View style={{
           justifyContent: 'space-between',
           alignItems: 'center',
           backgroundColor: '#fff',
           flex: 1,
-          paddingTop: Platform.OS === 'ios' ? 20 : 0,
+          paddingTop: Constant.globalPaddingTop + 10,
         }}>
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Image
-                source={require('../../assets/images/tutorial_1.png')}
-                style={{
-                  height: (Constant.deviceHeight),
-                  width: Constant.deviceWidth,
-                }}
-              />
-            </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Image
-                source={require('../../assets/images/tutorial_2.png')}
-                style={{
-                  height: (Constant.deviceHeight),
-                  width: Constant.deviceWidth,
-                }}
-              />
-            </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Image
-                source={require('../../assets/images/tutorial_3.png')}
-                style={{
-                  height: (Constant.deviceHeight),
-                  width: Constant.deviceWidth,
-                }}
-              />
-            </View>
-            <View style={{ width: Constant.deviceWidth, flex: 1}}>
-              <Image
-                source={require('../../assets/images/tutorial_4.png')}
-                style={{
-                  height: (Constant.deviceHeight),
-                  width: Constant.deviceWidth,
-                }}
-              />
-            </View>
+          <View style={{
+            justifyContent: 'flex-start',
+            flex: 3,
+            width: Constant.deviceWidth
+          }}>
+            <Image
+              source={require('../../assets/images/five_logo.png')}
+              style={{
+                height: (Constant.deviceWidth / 3),
+                width: Constant.deviceWidth / 3,
+                margin: 32,
+              }}
+            />
+          </View>
+          <View style={{
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            flex: 1,
+            width: Constant.deviceWidth,
+            backgroundColor: 'white',
+          }}>
             <View style={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-              flex: 1,
-              paddingTop: Constant.globalPaddingTop,
-            }}>
-              <View style={{
-                justifyContent: 'flex-start',
-                flex: 1,
-                width: Constant.deviceWidth
-              }}>
-                <Image
-                  source={require('../../assets/images/five_logo.png')}
-                  style={{
-                    height: (Constant.deviceWidth / 3),
-                    width: Constant.deviceWidth / 3,
-                    margin: 20,
-                  }}
-                />
-              </View>
-              <View style={{
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                flex: 1,
-                width: Constant.deviceWidth
-              }}>
-                <TouchableOpacity
-                  onPress={() => navigation.dispatch(startAction)}
-                  style={{ margin: 20, flexDirection: 'row' }}>
-                  <Text large style={{ marginRight: 5 }}>
-                    시작하기
-                  </Text>
-                  <Icon
-                    name={'chevron-right'}
-                    style={{
-                      fontSize: 25,
-                      color: '#EEE',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ScrollView>
-          <Fab
-            active={true}
-            direction="up"
-            style={{ backgroundColor: Constant.GreyColor }}
-            position="bottomLeft"
-            onPress={() => navigation.dispatch(startAction)}>
-            <Text micro note>skip</Text>
-          </Fab>
+              width: Constant.deviceWidth / 3,
+              height: 50, 
+            }}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.dispatch(startAction)}
+              style={{ marginRight: 32, marginBottom: 18, flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.text}>
+                시작하기
+              </Text>
+              <Icon
+                name={'chevron-right'}
+                style={{
+                  fontSize: 28,
+                  color: '#EEE',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        {this.state.loading &&
-        <View style={preLoading}>
-          <Spinner size="large"/>
-        </View>
-        }
-      </Container>
+      </Swiper>
     );
   }
 }
