@@ -45,51 +45,11 @@ export default class SearchFive extends Component {
       methods: this.methodsPerApi(this.props.navigation.state.params.category),
       no_more: true,
       chunks: [],
-      clicked: [],
       searched: true,
       no_result: true,
       wishes: this.props.navigation.state.params.wishes,
       headerShow: true,
     };
-  }
-
-  // 보관함 담기 시작
-  askAddWishToFive(item, index) {
-    Alert.alert(
-      'FIVE 선택 확인',
-      `${item.title}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
-      [
-        {
-          text: '아니요',
-          style: 'cancel',
-        },
-        {
-          text: '네',
-          onPress: () => this.createFiveCall(item, index),
-        },
-      ],
-      { cancelable: true },
-    );
-  }
-
-  createFiveCall(item, index) {
-    const data = {
-      favorable_id: item.id,
-    };
-
-    axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, this.state.header)
-      .then((response) => {
-        this.onCreateFiveCallSuccess(response.data, index);
-      }).catch((error) => {
-      console.log(error.response);
-    });
-  }
-
-  onCreateFiveCallSuccess(item, index) {
-    const stateBefore = [ ...this.state.wishes ];
-    //documentsBefore.splice(index, 1);
-    stateBefore[ index ].clicked = true;
-    this.setState({ wishes: stateBefore });
   }
 
   methodsPerApi(category) {
@@ -98,6 +58,7 @@ export default class SearchFive extends Component {
        return {
          add_five_api: (c,i,n) => this.addFiveRestaurant(c,i,n),
          add_wish_api: (c,i,n) => this.addWishRestaurant(c,i,n),
+         onclick_image: (i) => this.props.screenProps.modalNavigation.navigate('Map', { lng: i.x, lat: i.y, title: this.namesPerApi(i), }),
          next_page: () => this.nextPageRestaurant(),
          search_api: (i) => this.searchApiRestaurant(i),
        };
@@ -105,6 +66,7 @@ export default class SearchFive extends Component {
         return {
           add_five_api: (c,i,n) => this.addFiveMusic(c,i,n),
           add_wish_api: (c,i,n) => this.addWishMusic(c,i,n),
+          onclick_image: (i) => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', { title: this.namesPerApi(i), url: (i.related_link || i.track_share_url.split('?')[0]) }),
           next_page: () => this.nextPageMusic(),
           search_api: (i) => this.searchApiMusic(i),
         };
@@ -112,6 +74,7 @@ export default class SearchFive extends Component {
         return {
           add_five_api: (c,i,n) => this.addFiveBook(c,i,n),
           add_wish_api: (c,i,n) => this.addWishBook(c,i,n),
+          onclick_image: (i) => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', { title: this.namesPerApi(i), url: (i.related_link || i.url)}),
           next_page: () => this.nextPageBook(),
           search_api: (i) => this.searchApiBook(i),
         };
@@ -119,6 +82,7 @@ export default class SearchFive extends Component {
         return {
           add_five_api: this.props.navigation.goBack(),
           add_wish_api: this.props.navigation.goBack(),
+          onclick_image: this.props.navigation.goBack(),
           next_page: this.props.navigation.goBack(),
           search_api: this.props.navigation.goBack()
         };
@@ -157,25 +121,6 @@ export default class SearchFive extends Component {
     }
   }
 
-  // 보관함 담기 끝
-  askAddFive(chunk, index) {
-      Alert.alert(
-      'FIVE 선택 확인',
-      `${this.namesPerApi(chunk).title}을(를) ${this.state.category_korean} FIVE로 선택하시겠어요?`,
-      [
-        {
-          text: '아니요',
-          style: 'cancel',
-        },
-        {
-          text: '네',
-          onPress: () => this.state.methods.add_five_api(chunk, index, this.namesPerApi(chunk).title)
-        },
-      ],
-      { cancelable: true },
-    );
-  }
-
   askAddWish(chunk, index, msg) {
     Alert.alert(
       `${msg}`,
@@ -194,55 +139,47 @@ export default class SearchFive extends Component {
     );
   }
 
-  onAddFiveSuccess(data, chunk, index, title) {
-    const chunksBefore = [ ...this.state.chunks ];
-    chunksBefore[ index ].clicked = true;
-    this.setState({ chunks: chunksBefore }, () => {
-      let message;
-      let options;
-      const cancel = {
-        text: '그만 선택하기',
-        onPress: () => this.props.navigation.dispatch(
-          NavigationActions.reset({
-            index: 1,
-            actions: [
-              NavigationActions.navigate({ routeName: 'Main', }),
-              NavigationActions.navigate({ routeName: 'ProfileFiveIndex', params: { category: this.state.category }, }),
-            ],
-          })
-        ),
-      };
-      if (data.fives_count === 5) {
-        message = `${this.state.category_korean} FIVE를 모두 선택했어요. 축하해요!`;
-        options = [
-          cancel
-        ]
-      } else {
-        message = `${title}이(가) ${this.state.category_korean} FIVE로 선택되었습니다. 아직 ${5 - data.fives_count}개를 더 선택할 수 있어요!`,
-          options = [
-            cancel,
-            {
-              text: '더 선택하기',
-              style: 'cancel',
-            },
-          ]
-      }
-      Alert.alert(
-        `${this.state.category_korean} FIVE 선택됨`,
-        message,
-        options,
-        { cancelable: true },
-      );
+  toggleFive(chunk, index) {
+    const beforeChunks = [...this.state.chunks];
+    if (beforeChunks[ index ].already_five) {
+      console.log('toggle clicked !');
+      this.deleteFiveCall(chunk, index);
+    } else {
+      this.state.methods.add_five_api(chunk, index, this.namesPerApi(chunk).title)
+    }
+    console.log('came nowhere');
+  }
+
+  deleteFiveCall(chunk, index) {
+    console.log('delete function reached');
+    const data = { favorable_id: chunk.id };
+    axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
+      .then((res) => {
+        this.onDeleteFiveSuccess(chunk, index)
+      }).catch((error) => {Toast.show({ text: '에러 : ' + JSON.stringify(error.response.data.errors), position: 'bottom', duration: 1500, });
     });
+  }
+
+  onAddFiveSuccess(chunk, index, five) {
+    const chunksBefore = [ ...this.state.chunks ];
+    chunksBefore[ index ] = five;
+    this.setState({ chunks: chunksBefore });
+  }
+
+  onDeleteFiveSuccess(chunk, index) {
+    const chunksBefore = [ ...this.state.chunks ];
+    chunksBefore[ index ].already_five = false;
+    chunksBefore[ index ].five_users_count -= 1;
+    this.setState({ chunks: chunksBefore });
   }
 
   // 카카오 맛집 검색결과 추가 하기 시작
   addFiveRestaurant(document, index, title) {
     axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
       .then((response) => {
-      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, document: document, }, this.state.header)
+      axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.state.header)
         .then((response) => {
-        this.onAddFiveSuccess(response.data, document, index, title);
+        this.onAddFiveSuccess(document, index, response.data.five);
       }).catch((error) => {
         this.askAddWish(document, index, JSON.stringify(error.response.data.errors[0]));
       });
@@ -257,8 +194,8 @@ export default class SearchFive extends Component {
 
   // 뮤직스 검색결과 추가 하기 시작
   addFiveMusic(track, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { track: track, }, this.state.header).then((response) => {
-      this.onAddFiveSuccess(response.data, track, index, title);
+    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { chunk: track, }, this.state.header).then((response) => {
+      this.onAddFiveSuccess(track, index, response.data.five);
     }).catch((error) => {
       this.askAddWish(track, index, JSON.stringify(error.response.data.errors[0]));
     });
@@ -266,9 +203,8 @@ export default class SearchFive extends Component {
 
   // 카카오 책 검색결과 추가 하기 시작
   addFiveBook(document, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { document: document, }, this.state.header).
-    then((response) => {
-      this.onAddFiveSuccess(response.data, document, index, title);
+    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=${this.state.category}`, { chunk: document, }, this.state.header).then((response) => {
+      this.onAddFiveSuccess(document, index, response.data.five);
     }).catch((error) => {
       this.askAddWish(document, index, JSON.stringify(error.response.data.errors[0]));
     });
@@ -278,7 +214,7 @@ export default class SearchFive extends Component {
   addWishRestaurant(document, index, title) {
     axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
       .then((response) => {
-        axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, document: document, }, this.state.header).then((response) => {
+        axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.state.header).then((response) => {
             Toast.show({
               text:`${title}이 보관함에 추가되었습니다.`,
               position: 'bottom',
@@ -302,7 +238,7 @@ export default class SearchFive extends Component {
 
   // 뮤직스 검색결과 추가 하기 시작
   addWishMusic(track, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { track: track, }, this.state.header).then((response) => {
+    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { chunk: track, }, this.state.header).then((response) => {
       Toast.show({
         text:`${title}이 보관함에 추가되었습니다.`,
         position: 'bottom',
@@ -319,7 +255,7 @@ export default class SearchFive extends Component {
 
   // 카카오 책 검색결과 추가 하기 시작
   addWishBook(document, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { document: document, }, this.state.header).then((response) => {
+    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { chunk: document, }, this.state.header).then((response) => {
       Toast.show({
         text:`${title}이 보관함에 추가되었습니다.`,
         position: 'bottom',
@@ -405,7 +341,7 @@ export default class SearchFive extends Component {
 
   handleInputSearch(input_search) {
     if (input_search === '') {
-      this.setState({ searched: true, no_result: true, input_search: input_search });
+      this.setState({ searched: false, no_result: true, input_search: input_search });
     } else {
       this.setState({ input_search });
     }
@@ -440,10 +376,7 @@ export default class SearchFive extends Component {
       if (this.state.no_result) {
         return (
           <View style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-            flexDirection: 'column',
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
             <Text>검색 결과가 없습니다</Text>
           </View>
@@ -461,13 +394,9 @@ export default class SearchFive extends Component {
                   title={this.namesPerApi(item).title}
                   subtitle={this.namesPerApi(item).subtitle}
                   friends_info={item.five_users_count ? `FIVE ${item.five_users_count}` : null}
-                  clicked={item.clicked}
-                  onPress={() => this.askAddFive(item, index)}
-                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('Map', {
-                    lng: item.x,
-                    lat: item.y,
-                    title: item.place_name,
-                  })}
+                  clicked={item.already_five}
+                  onPress={() => this.toggleFive(item, index)}
+                  onPressImage={() => this.state.methods.onclick_image(item)}
                 />
               )}
               keyExtractor={item => 'search-five-list-' + this.namesPerApi(item).id}
@@ -490,9 +419,9 @@ export default class SearchFive extends Component {
                   image_url={item.image_medium_url}
                   title={item.title}
                   subtitle={item.subtitle}
-                  clicked={item.clicked}
+                  clicked={item.already_five}
                   friends_info={`FIVE ${item.five_users_count}`}
-                  onPress={() => this.askAddWishToFive(item, index)}
+                  onPress={() => this.state.methods.add_wish_api(item, index, this.namesPerApi(item).title)}
                   onPressImage={() => this.props.navigation.navigate('FiveShow', {
                     category: this.state.category,
                     id: item.id,
@@ -507,6 +436,12 @@ export default class SearchFive extends Component {
                 />
               }
             />
+          </Content>
+        );
+      } else {
+        return (
+          <Content onScroll={(e) => this.handleScroll(e)}>
+            <Text>검색전</Text>
           </Content>
         );
       }

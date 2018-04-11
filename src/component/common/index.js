@@ -41,3 +41,4 @@ export * from './ImageCon';
 export * from './TabIcon';
 export * from './AddSmallButton';
 export * from './AddWishSmallButton';
+export * from './SearchUserUnitBar';

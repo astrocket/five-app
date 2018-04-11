@@ -52,6 +52,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
             paddingRight: 5,
           }}>
             <AddSmallButton
+              onPress={onPress}
               textTrue={'담김'}
               textFalse={'+ 담기'}
               clicked={clicked}
