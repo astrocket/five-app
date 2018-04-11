@@ -6,6 +6,7 @@ import * as ApiServer from './ApiServer';
 export const platform = variable.platform;
 export const FiveColor = '#FA3F97';
 export const GreyColor = '#A1A1A1';
+export const LightGrey = '#E1E1E1';
 
 export const isIphoneX = platform === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 export const FiveNavOptions = {

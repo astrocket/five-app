@@ -54,7 +54,9 @@ const BaseStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 3,
+    marginBottom: 3
   },
   topLeftLabel: {
     position: 'absolute',

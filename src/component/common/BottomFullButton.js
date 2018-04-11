@@ -28,7 +28,7 @@ const BottomFullButton = ({ onPress, children, disabled }) => {
 const styles = {
   textStyle: {
     alignSelf: 'center',
-    color: '#FFF',
+    color: Constant.FiveColor,
     fontSize: 16,
     fontWeight: '600',
     paddingTop: 15,
@@ -37,7 +37,7 @@ const styles = {
   buttonStyle: {
     flex: 1,
     alignSelf: 'stretch',
-    backgroundColor: Constant.FiveColor,
+    backgroundColor: '#FFFFFF',
   },
   disabledStyle: {
     flex: 1,

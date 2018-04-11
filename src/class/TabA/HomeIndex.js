@@ -152,7 +152,7 @@ export default class HomeIndex extends Component {
           />
         }>
           <Grid>
-            <Row>
+            <View>
               <View style={{
                 padding: 16,
               }}>
@@ -169,11 +169,11 @@ export default class HomeIndex extends Component {
                   })}
                   barWidth={null}
                   barHeight={null}
-                  borderRadius={15}
-                  marginRight={10}
+                  borderRadius={16}
+                  margin={16}
                 />
               </View>
-            </Row>
+            </View>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={'팔로우 제안'}
@@ -201,7 +201,7 @@ export default class HomeIndex extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'당신을 위한 클립 제안'}
+              title={'당신을 위한 북마크 제안'}
             />
             <Row>
               <FlatList

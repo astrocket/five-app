@@ -31,7 +31,7 @@ const UnitImage = ({ five, image, width, height }) => {
 const FiveImages = ({ fives, image, pureWidth }) => {
   return(
     <View style={{ flexDirection: 'row', flex: 1, height: pureWidth / 2, width: pureWidth}}>
-      <View style={{ flex: 1, marginRight: 2 }}>
+      <View style={{ flex: 1, marginRight: 0 }}>
         <UnitImage five={fives[0]} image={image} height={pureWidth / 2} width={pureWidth / 2} />
       </View>
       <View style={{ flex: 1, flexWrap: 'wrap' }}>
@@ -59,11 +59,11 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
         <Thumbnail size={50} source={fiveImage}/>
         <Body>
           <Text medium>{Constant.CategoryToKorean(category)}</Text>
-          <View style={{ flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row', padding: 2}}>
             <Text small style={{ marginRight: 0 }}>{Number(followers).toLocaleString()}</Text>
-            <Text note>{'Follower'}</Text>
+            <Text note>{'팔로워'}</Text>
             <Text small style={{ marginRight: 0 }}>{Number(followees).toLocaleString()}</Text>
-            <Text note>{'Following'}</Text>
+            <Text note>{'팔로잉'}</Text>
           </View>
         </Body>
         {followButton ?

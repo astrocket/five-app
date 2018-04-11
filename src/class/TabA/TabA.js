@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, TouchableOpacity,
+  View, FlatList, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Tabs, Tab, TabHeading,
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Tabs, Tab, TabHeading,
   ScrollableTab, ActionSheet,
 } from 'native-base';
 import {
@@ -18,18 +18,20 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
 
 export default class TabA extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     header: null,
-    tabBarLabel: '홈',
+    tabBarLabel: '발견',
     tabBarIcon: ({ tintColor }) => (
       <TabIcon
         tintColor={tintColor}
-        imageGrey={require('../../assets/images/home_icon_grey.png')}
-        imagePink={require('../../assets/images/home_icon_pink.png')}
+        imageGrey={require('../../assets/images/new_icon_grey.png')}
+        imagePink={require('../../assets/images/new_icon_pink.png')}
       />
     ),
     ...Constant.FiveNavOptions,
@@ -87,7 +89,7 @@ export default class TabA extends Component {
 
   handleScroll(e) {
     const currentOffset = e.nativeEvent.contentOffset.y;
-    const headerShow = currentOffset < 100;
+    const headerShow = currentOffset < 180;
     this.setState({ headerShow });
   }
 
@@ -107,7 +109,7 @@ export default class TabA extends Component {
   renderTabButtons(goToPage) {
     const { flexCenterCenter }= BaseStyle;
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', height: 56}}>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 56}}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -117,13 +119,13 @@ export default class TabA extends Component {
           data={this.props.ApplicationStore.categories}
           renderItem={({ item, index }) => (
             <TouchableOpacity key={index + 1} transparent onPress={() => goToPage(index + 1)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
-              <Text large black sd-gothic>{item.category_korean}</Text>
+              <Text large gray sd-gothic>{item.category_korean}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
-            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
-              <Text large black sd-gothic>홈</Text>
+            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20 }]}>
+              <Text large gray sd-gothic>홈</Text>
             </TouchableOpacity>
           }
         />
@@ -131,10 +133,13 @@ export default class TabA extends Component {
           height: 56,
         }}>
           <TouchableOpacity onPress={() => this.onClickAdd()} style={[flexCenterCenter,{ height: 56, width: null, paddingLeft: 16 }]}>
-            <ImageCon
-              iconHeight={25}
-              image={require('../../assets/images/add_icon_pink.png')}
-            />
+          <Icon
+            name='plus-circle'
+            style={{
+            fontSize: 32,
+            color: Constant.FiveColor,
+            }}
+          />
           </TouchableOpacity>
         </View>
       </View>
@@ -149,10 +154,10 @@ export default class TabA extends Component {
       <Container>
         {this.state.headerShow ?
           <Header style={{
-            paddingTop: Constant.globalPaddingTop + 35,
-            height: Constant.globalPaddingTop + 35 + 56 + 56,
-            paddingLeft: 16,
-            paddingRight: 16,
+            paddingTop: Constant.globalPaddingTop + 10,
+            height: Constant.globalPaddingTop + 10 + 72 + 56,
+            paddingLeft: 24,
+            paddingRight: 24,
             backgroundColor: '#FFF',
             borderBottomWidth: 0
           }}>
@@ -162,20 +167,13 @@ export default class TabA extends Component {
             }}>
               <View style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 flex: 1,
                 marginTop: Constant.globalPaddingTop,
               }}>
-                <View style={{ width: 130 }}>
-                  <Text xlarge montserrat>{'Home'}</Text>
-                  <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                  }}>
-                    <Text micro grey>β</Text>
-                  </View>
+                <View>
+                  <Text xlarge>{'발견'}</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}
@@ -183,9 +181,11 @@ export default class TabA extends Component {
           </Header>
           : <Header style={{
             paddingTop: Constant.globalPaddingTop,
-            paddingLeft: 16,
-            paddingRight: 16,
+            paddingLeft: 24,
+            paddingRight: 24,
             height: 56 + Constant.globalPaddingTop,
+            backgroundColor: '#FFF',
+            borderBottomWidth: 0,
           }}>
             {this.renderTabButtons((page) => this.tabView.goToPage(page))}
           </Header>
@@ -208,3 +208,15 @@ export default class TabA extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  mainTitle: {
+    color: '#070707',
+    fontWeight: "800",
+    fontSize: 32,
+    fontFamily: "montserrat"
+  },
+  red: {
+    color: 'red',
+  },
+});

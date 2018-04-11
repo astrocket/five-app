@@ -17,7 +17,7 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}
         />
-        <Body style={{ flex: 1, height: 60, alignSelf: 'stretch', justifyContent: 'center' }}>
+        <Body style={{ flex: 1, height: 52, alignSelf: 'stretch', justifyContent: 'center' }}>
         <View>
           <Text normal numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
@@ -48,7 +48,7 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
           style={{ width: 60, height: 60, borderRadius: 20 }}
           source={{ uri: image_url }}
         />
-        <Body style={{ flex: 1, height: 60, alignSelf: 'stretch', justifyContent: 'center' }}>
+        <Body style={{ flex: 1, height: 52, alignSelf: 'stretch', justifyContent: 'center' }}>
           <View>
             <Text normal numberOfLines={1}>{title}</Text>
             <Text note numberOfLines={1}>{subtitle}</Text>

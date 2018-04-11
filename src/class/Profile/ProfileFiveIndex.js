@@ -203,8 +203,8 @@ export default class ProfileFiveIndex extends Component {
                   id: item.id,
                   navLoading: true,
                 })}
-                borderRadius={15}
-                marginRight={10}
+                borderRadius={20}
+                marginRight={32}
                 cardCut={80}
               />
             )}
@@ -246,7 +246,7 @@ export default class ProfileFiveIndex extends Component {
           <Grid>
             <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
-                <Text grey normal-thin>{my_profile.name}의</Text>
+                <Text grey>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <Text large>{this.state.category_korean} </Text>
@@ -256,14 +256,14 @@ export default class ProfileFiveIndex extends Component {
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
-                  <Text small grey>{'팔로워 '}</Text>
-                  <Text small primary>{Number(this.state.followers_count).toLocaleString()}</Text>
+                  <Text small>{Number(this.state.followers_count).toLocaleString()}</Text>
+                  <Text small grey>{'  팔로워 '}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
-                  <Text small grey>{'팔로잉 '}</Text>
-                  <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
+                  <Text small>{Number(this.state.followees_count).toLocaleString()}</Text>
+                  <Text small grey>{'  팔로잉'}</Text>
                 </TouchableOpacity>
               </View>
             </View>

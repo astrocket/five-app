@@ -21,8 +21,8 @@ export default class TabD extends Component {
     tabBarIcon: ({ tintColor }) => (
       <TabIcon
         tintColor={tintColor}
-        imageGrey={require('../../assets/images/new_icon_grey.png')}
-        imagePink={require('../../assets/images/new_icon_pink.png')}
+        imageGrey={require('../../assets/images/alarm_gray.png')}
+        imagePink={require('../../assets/images/alarm_pink.png')}
       />
     ),
     header: null,

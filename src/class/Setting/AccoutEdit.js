@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Keyboard, TouchableOpacity, AsyncStorage,
+  StyleSheet, View, Keyboard, TouchableOpacity, AsyncStorage,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Input, Item, Button, Toast,
@@ -20,7 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class AccountEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '계정 관리',
+    title: '비밀번호 설정',
     ...Constant.FiveNavOptions,
   });
 
@@ -67,7 +67,7 @@ export default class AccountEdit extends Component {
 
   onUploadSuccess(data) {
     Toast.show({
-      text: '비밀번호 변경 완료',
+      text: '비밀번호가 변경되었습니다.',
       position: 'bottom',
       duration: 1500,
     });
@@ -109,7 +109,7 @@ export default class AccountEdit extends Component {
 
     return (
       <BottomFullButton onPress={() => this.postUserInfo()}>
-        변경
+        변경 완료
       </BottomFullButton>
     );
   }
@@ -148,7 +148,16 @@ export default class AccountEdit extends Component {
             </Row>
             <Row>
               <TouchableOpacity onPress={() => this.signOutAction()}>
-                <Text>Sign Out</Text>
+                <View style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}>
+                  <Text style={signOutStyles.signOutText}>
+                    SIGN OUT
+                  </Text>
+                </View>
               </TouchableOpacity>
             </Row>
           </Grid>
@@ -165,3 +174,13 @@ export default class AccountEdit extends Component {
     );
   }
 }
+
+const signOutStyles = StyleSheet.create({
+  signOutText: {
+    padding: 16,
+    textAlign: 'right',
+    color: 'lightgrey',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+});

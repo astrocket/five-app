@@ -23,7 +23,7 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
       }}>
         <Input
           placeholder={placeholder}
-          placeholderTextColor={'#A1A1A1'}
+          placeholderTextColor={'#4a4a4a'}
           onChangeText={onChangeText}
           autoCapitalize={'none'}
           autoCorrect={false}
@@ -36,10 +36,10 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           style={{
-            fontSize: 15,
+            fontSize: 16,
             color: Constant.GreyColor,
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
           }}
         />
       </Item>
@@ -55,7 +55,7 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
       }}>
         <Input
           placeholder={placeholder}
-          placeholderTextColor={'#A1A1A1'}
+          placeholderTextColor={'#4a4a4a'}
           onChangeText={onChangeText}
           autoCapitalize={'none'}
           autoCorrect={false}
@@ -68,10 +68,10 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           style={{
-            fontSize: 15,
+            fontSize: 16,
             color: Constant.GreyColor,
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
           }}
         />
         <TouchableOpacity

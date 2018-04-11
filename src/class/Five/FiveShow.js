@@ -216,7 +216,7 @@ export default class FiveShow extends Component {
 
   handleOnCreateFiveCallFull() {
     Alert.alert(
-      `FIVE추가 불가능`,
+      `FIVE 추가 불가능`,
       `이미 5개의 FIVE가 선택되어서 추가로 담을 수 없습니다.`,
       [
         {
@@ -284,10 +284,10 @@ export default class FiveShow extends Component {
                   }}>
                     <Text large numberOfLines={1} style={{ width: Constant.deviceWidth/3*2}}>{this.state.five.title}</Text>
                     <View style={BaseStyle.headerDoubleIconsContainer}>
-                      <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 3 }}>
+                      <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 16 }}>
                         {this.state.my_wish ?
                           <ImageCon
-                            image={require('../../assets/images/bookmark_icon_pink.png')}
+                            image={require('../../assets/images/bookmark_pink_full.png')}
                           /> : <ImageCon
                             image={require('../../assets/images/bookmark_icon_pink.png')}
                           />}
@@ -360,10 +360,10 @@ export default class FiveShow extends Component {
             </List>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={`이 ${this.state.category_korean}을 Five한 사람들   `}
+              title={`이 ${this.state.category_korean}을 FIVE한 사람들   `}
               yellowLabel={`${Number(this.state.five_users_count).toLocaleString()}`}
               onPress={() => navigation.navigate('FiveUserList', {
-                users: this.state.users, title: `FIVE 유저들`,
+                users: this.state.users, title: `FIVE한 사람들`,
                 category: this.state.category,
                 favorable_id: this.state.five.id,
               })}
@@ -394,7 +394,7 @@ export default class FiveShow extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={navigation.state.params.suggest_title || `이 ${this.state.category_korean} 관련 clip 제안`}
+              title={navigation.state.params.suggest_title || `이 ${this.state.category_korean} 관련 북마크 제안`}
             />
             <Row>
               <FlatList
