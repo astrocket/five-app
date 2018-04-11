@@ -10,7 +10,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, TabIcon,
+  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, ShowMore, SearchUserUnitBar,
 } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -22,20 +22,56 @@ import { observer, inject } from 'mobx-react/native';
 @observer
 export default class SearchUser extends Component {
 
+  static navigationOptions = ({ navigation }) => ({
+    header: null,
+  });
+
   constructor(props) {
     super(props);
-
+    this.state = {
+      loading: false,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+      page: 1,
+      page_loading: false,
+      input_search: '',
+      no_more: true,
+      users: [],
+      searched: true,
+      no_result: true,
+      headerShow: true
+    }
   }
 
   searchUser() {
-
+    this.setState({ loading: true });
+    axios.get(`${ApiServer.USERS}/search_user?s=${this.state.input_search}&page=${this.state.page}`, this.state.header)
+      .then((res) => {
+        if (res.data.users.length > 0) {
+          this.setState({ loading: false, no_result: false, searched: true, users: res.data.users, no_more: res.data.no_more, page_loading: false})
+        } else {
+          this.setState({ loading: false, no_result: true, searched: true, users: res.data.users, no_more: res.data.no_more, page_loading: false})
+        }
+      }).catch((e) => console.log(e.response));
   }
 
   nextPageUser() {
-
+    this.setState({ loading: true });
+    axios.get(`${ApiServer.USERS}/search_user?s=${this.state.input_search}&page=${this.state.page}`, this.state.header)
+      .then((res) => {
+        this.setState({ loading: false, no_result: false, searched: true, users: [ ...this.state.users, ...res.data.users], no_more: res.data.no_more, page_loading: false})
+      }).catch((e) => console.log(e.response));
   }
 
   toggleUserFollow() {
+
+  }
+
+  onSuccessToggleFollow() {
 
   }
 
@@ -60,7 +96,7 @@ export default class SearchUser extends Component {
 
     return (
       <ShowMore
-        onPress={() => this.state.methods.next_page()}
+        onPress={() => this.nextPageUser()}
         moreText={'더보기'}
         overText={'끝'}
         no_more={this.state.no_more}
@@ -74,10 +110,7 @@ export default class SearchUser extends Component {
       if (this.state.no_result) {
         return (
           <View style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-            flexDirection: 'column',
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
             <Text>검색 결과가 없습니다</Text>
           </View>
@@ -86,25 +119,17 @@ export default class SearchUser extends Component {
         return (
           <Content onScroll={(e) => this.handleScroll(e)}>
             <FlatList
-              data={this.state.chunks}
+              data={this.state.users}
               renderItem={({ item, index }) => (
-                <SearchFiveUnitBar
-                  id={item.id}
-                  category={this.state.category}
-                  image_url={this.namesPerApi(item).image}
-                  title={this.namesPerApi(item).title}
-                  subtitle={this.namesPerApi(item).subtitle}
-                  friends_info={item.five_users_count ? `FIVE ${item.five_users_count}` : null}
-                  clicked={item.clicked}
-                  onPress={() => this.askAddFive(item, index)}
-                  onPressImage={() => this.props.screenProps.modalNavigation.navigate('Map', {
-                    lng: item.x,
-                    lat: item.y,
-                    title: item.place_name,
+                <SearchUserUnitBar
+                  user={item}
+                  onPress={() => this.props.navigation.navigate('UserShow', {
+                    user: item,
+                    title: item.name,
                   })}
                 />
               )}
-              keyExtractor={item => 'search-five-list-' + this.namesPerApi(item).id}
+              keyExtractor={item => 'search-five-list-' + item.id}
               ListFooterComponent={
                 this.renderNextPageButton()
               }
@@ -116,31 +141,13 @@ export default class SearchUser extends Component {
       if (this.state.wishes) {
         return (
           <Content onScroll={(e) => this.handleScroll(e)}>
-            <FlatList
-              data={this.state.wishes}
-              renderItem={({ item, index }) => (
-                <SearchFiveUnitBar
-                  id={item.id}
-                  image_url={item.image_medium_url}
-                  title={item.title}
-                  subtitle={item.subtitle}
-                  clicked={item.clicked}
-                  friends_info={`FIVE ${item.five_users_count}`}
-                  onPress={() => this.askAddWishToFive(item, index)}
-                  onPressImage={() => this.props.navigation.navigate('FiveShow', {
-                    category: this.state.category,
-                    id: item.id,
-                    title: item.title,
-                  })}
-                />
-              )}
-              keyExtractor={item => 'five-wish-list-' + item.id}
-              ListHeaderComponent={
-                <RowHeaderBar
-                  title={`클립해 둔 아래 ${this.state.category_korean}들 중에서도 선택할 수 있어요.`}
-                />
-              }
-            />
+            <Text>검색전</Text>
+          </Content>
+        );
+      } else {
+        return (
+          <Content onScroll={(e) => this.handleScroll(e)}>
+            <Text>검색전</Text>
           </Content>
         );
       }
@@ -155,7 +162,7 @@ export default class SearchUser extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={`${this.state.category_korean} 검색`}
+          title={`유저 검색`}
           custom
           rightButton
           rightAsImage
@@ -168,14 +175,14 @@ export default class SearchUser extends Component {
           <Item>
             <Icon name="ios-search"/>
             <Input
-              placeholder={`좋아하는 ${this.state.category_korean}을 검색해서 FIVE로 추가하세요`}
+              placeholder={`좋아하는 유저를 검색해서 팔로우 해보세요`}
               autoCapitalize={'none'}
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
               value={this.state.input_search}
               returnKeyType={'search'}
-              onSubmitEditing={() => this.setState({page:1},this.state.methods.search_api(this.state.input_search))}
+              onSubmitEditing={() => this.setState({page:1}, this.searchUser(this.state.input_search))}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
             <TouchableOpacity onPress={() => this.setState({
