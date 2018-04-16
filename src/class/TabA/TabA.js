@@ -64,12 +64,12 @@ export default class TabA extends Component {
     const klasses = [ 'Music', 'Book', 'Restaurant' ];
     const CANCEL_INDEX = 3;*/
 
-    const BUTTONS = [ '음악', '이용자', '취소' ];
-    const category_koreans = [ '음악', '이용자' ];
-    const pages = [ 'SearchFive', 'SearchUser'];
-    const categories = [ 'music', 'user' ];
-    const klasses = [ 'Music', 'User' ];
-    const CANCEL_INDEX = 2;
+    const BUTTONS = [ '음악', '책', '이용자', '취소' ];
+    const category_koreans = [ '음악', '책', '이용자' ];
+    const pages = [ 'SearchFive', 'SearchFive', 'SearchUser'];
+    const categories = [ 'music', 'book', 'user' ];
+    const klasses = [ 'Music', 'Book', 'User' ];
+    const CANCEL_INDEX = 3;
 
 
     ActionSheet.show(

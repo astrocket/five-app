@@ -16,6 +16,7 @@ import axios from 'axios';
 import {
   UserUnitRound, FivesBar, NavBar,
 } from '../../component/common';
+import SearchUser from '../Search/SearchUser';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -35,26 +36,41 @@ export default class TabC extends Component {
       />
     ),
     header: null,
-    ...Constant.FiveNavOptions,
   });
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      suggestions: [],
+      loading: true,
+      header: {
+        headers: {
+          'X-User-Email': this.props.ApplicationStore.email,
+          'X-User-Token': this.props.ApplicationStore.token,
+        },
+      },
+    }
+  }
+
+  componentDidMount() {
+    this.apiCall();
+  }
+
+  apiCall() {
+    axios.get(`${ApiServer.USERS}/suggestions`, this.state.header)
+      .then((res) => {
+        this.setState({
+          suggestions: res.data,
+          loading: false
+        })
+      }).catch((e) => console.log(e.response));
+  }
 
   render () {
     const { container, preLoading } = BaseStyle;
 
     return (
-      <Container style={{ backgroundColor: '#FFFFFF' }}>
-        <NavBar
-          headerText={`친구찾기`}
-        />
-        <Grid style = {{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'gray' }}>
-          <Col style = {{ width: 300, height: 300, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-            <Col style = {{ width: 240, height: 240, backgroundColor: 'white', margin: 16, padding: 32, borderColor: 'red',borderRadius: 16 }}></Col>
-          </Col>
-            <Text style = {{ color: 'red', padding: 16 }}>
-              여기에 이용자 검색을 넣습니다
-            </Text>
-        </Grid>
-      </Container>
+      <SearchUser navigation={this.props.navigation} suggestions={this.state.suggestions} loading={this.state.loading} />
     );
   }
 }
