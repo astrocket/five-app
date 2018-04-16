@@ -9,7 +9,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
-import { FiveUnitBar, EmptyBox, NavBar} from '../../component/common';
+import { FiveUnitBar, FiveUnitBar4Edit, EmptyBox, NavBar} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -104,8 +104,8 @@ export default class ProfileFiveEdit extends Component {
       rowMap[`${secId}${rowId}`].props.closeRow();
     } else {
       Alert.alert(
-        '해당 파이브를 삭제하시겠어요?',
-        '삭제해도 클립 리스트에서 확인할 수 있습니다.',
+        '아이템 삭제 확인',
+        '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
         [
           { text: '아니요',
             style: 'cancel'
@@ -152,8 +152,8 @@ export default class ProfileFiveEdit extends Component {
           onPress={() => navigation.navigate(`SearchFive`, {
             category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass, wishes: this.state.wishes
           })}
-          barHeight={50}
-          borderRadius={10}
+          barHeight={60}
+          borderRadius={24}
           marginRight={0}
         />
       );
@@ -180,11 +180,13 @@ export default class ProfileFiveEdit extends Component {
           />
         }>
           <Grid>
+            <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
+            </Row>
             <Row>
               <List
                 dataSource={this.ds.cloneWithRows([0,1,2,3,4])}
                 style={{
-                  paddingTop: 10,
+                  
                 }}
                 renderRow={(data, secId, rowId, rowMap) =>
                   this.renderFiveUnitBars(data, secId, rowId, rowMap)
@@ -195,12 +197,14 @@ export default class ProfileFiveEdit extends Component {
                 }
                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                   <Button full danger onPress={_ => this.askRestaurantDelete(secId, rowId, rowMap, data)}>
-                    <Icon active name="trash"/>
+                    <Text>삭제</Text>
                   </Button>
                 }
-                leftOpenValue={60}
-                rightOpenValue={-60}
+                leftOpenValue={75}
+                rightOpenValue={-75}
               />
+            </Row>
+            <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
             </Row>
           </Grid>
         </Content>

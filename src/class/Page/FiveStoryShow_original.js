@@ -6,7 +6,7 @@ import {
   Container,
   Header,
   Content, Toast,
-  Text, Button,
+  Text, Button, Icon,
   Spinner, ActionSheet,
 } from 'native-base';
 import {
@@ -20,8 +20,6 @@ import * as ApiServer from '../../config/ApiServer';
 import { FiveUnitBar, NavBar } from '../../component/common';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -88,7 +86,7 @@ export default class FiveStoryShow extends Component {
     const deviceWidth = Dimensions.get('window').width;
 
     return (
-      <Container style={{ backgroundColor: '#fafafa'}}>
+      <Container>
         <NavBar
 /*          leftButton
           leftAsImage
@@ -107,13 +105,12 @@ export default class FiveStoryShow extends Component {
               style={{ flex: 1 }}
             />
           </Row>
-          <Row style={{ width: deviceWidth, height: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>
-            <Col style={{ flex: 1, width: deviceWidth, height: 76, borderRadius: 24, backgroundColor: 'white' }}>
+          <Row style={{ height: 80, backgroundColor: '#FFF', borderTopWidth: 1, borderTopColor: '#eee'}}>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               scrollEventThrottle={10}
-              pagingEnabled={true}
+              pagingEnabled
             >
               {this.state.five_story.fives.map((item) => {
                 return (
@@ -124,9 +121,7 @@ export default class FiveStoryShow extends Component {
                       subtitle={item.subtitle}
                       friends_info={`FIVE ${item.five_users_count}`}
                       image_url={item.image_medium_url}
-                      icon={'angle-right'}
-                      onPress={() => navigation.navigate(`FiveShow`, {
-                        category: item.category,
+                      onPress={() => navigation.navigate(`${item.klass}Show`, {
                         title: item.title,
                         id: item.id,
                         navLoading: true,
@@ -137,7 +132,6 @@ export default class FiveStoryShow extends Component {
                 )
               })}
             </ScrollView>
-            </Col>
           </Row>
         </Grid>
         {this.state.loading &&

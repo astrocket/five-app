@@ -11,6 +11,9 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -21,8 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class AlarmEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '허용여부 설정',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -39,6 +41,13 @@ export default class AlarmEdit extends Component {
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
+       <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`허용권한 설정`}
+        />
         <Content>
           <List style={{
             borderBottomWidth: 1,

@@ -43,7 +43,7 @@ export default class StartForm extends Component {
     var regExp =  /^\d{3}\d{3,4}\d{4}$/;
     if (!regExp.test(this.state.input_phone)) {
       ErrorHandler(
-        '잘못된 휴대폰 번호입니다. 01012341234 와 같은 숫자만 입력하세요.',
+        '휴대폰 번호가 잘못되었어요. 다시 한 번 정확히 입력해 주세요.',
         () => this.setState({ input_phone: ''})
       );
       return false;
@@ -107,7 +107,7 @@ export default class StartForm extends Component {
     var regExp = /^[(0-9)]{4}$/;
     if (!regExp.test(this.state.input_pin)) {
       ErrorHandler(
-        '잘못된 핀 번호입니다. 4자리 숫자만 입력하세요.',
+        '잘못된 인증번호입니다. 다시 입력해 주세요.',
         () => this.setState({ input_pin: ''})
       );
       return false;
@@ -181,8 +181,7 @@ export default class StartForm extends Component {
         return <Text note>어서오세요 !{'\n'}MYFIVE는 별도 아이디 없이{'\n'}휴대폰 번호만 있으면{'\n'}시작할 수 있어요.</Text>;
       case 1:
         return <Text
-          note>입력하신{'\n'}{this.state.phone_number.substring(0, 3)}-{this.state.phone_number.substring(3, 7)}-{this.state.phone_number.substring(7, 11)}로{'\n'}문자
-          메시지 인증번호를{'\n'}보내드렸어요.</Text>;
+          note>입력하신{'\n'}{this.state.phone_number.substring(0, 3)}-{this.state.phone_number.substring(3, 7)}-{this.state.phone_number.substring(7, 11)}로{'\n'} 인증번호를{'\n'}보내드렸어요.</Text>;
       default:
         return <Text note>{this.state.message}</Text>;
     }
@@ -194,7 +193,7 @@ export default class StartForm extends Component {
         return (
           <InputSingle
             key={0}
-            placeholder={`휴대폰 번호를 입력해 주세요('-' 제외)`}
+            placeholder={`인증 받을 휴대폰 번호를 입력해 주세요.`}
             noButton
             autoFocus={true}
             value={this.state.input_phone}
@@ -209,7 +208,7 @@ export default class StartForm extends Component {
           <View key={12}>
             <InputSingle
               key={1}
-              placeholder={'문자 메시지로 받은 인증번호를 입력해 주세요'}
+              placeholder={'문자로 받은 인증번호를 입력해 주세요.'}
               noButton
               autoFocus={true}
               value={this.state.input_pin}
@@ -231,7 +230,7 @@ export default class StartForm extends Component {
               })}
               style={{ margin: 10 }}
             >
-              <Text note>인증번호를 받지 못했을 때</Text>
+              <Text note>  인증번호를 받지 못했을 때</Text>
             </TouchableOpacity>
           </View>
         );
@@ -240,7 +239,7 @@ export default class StartForm extends Component {
           <View key={13}>
             <InputSingle
               key={3}
-              placeholder={'문자 메시지로 받은 인증번호를 다시 입력해 주세요'}
+              placeholder={'인증번호를 다시 입력해 주세요.'}
               noButton
               autoFocus={true}
               value={this.state.input_pin}

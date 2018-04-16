@@ -11,6 +11,9 @@ import {
 } from 'react-native-easy-grid';
 import { FollowUnitBar, EmptyBox } from '../../component/common';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -21,8 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileFollowerIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '내 팔로워',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -73,20 +75,14 @@ export default class ProfileFollowerIndex extends Component {
 
     return (
       <Container>
-{/*        <Header searchBar noShadow rounded style={{paddingTop: 0, height: 56 }}>
-          <Item>
-            <Icon name="ios-search" />
-            <Input
-              placeholder="Search"
-              autoCapitalize={'none'}
-              autoCorrect={false}
-            />
-            <Icon name="ios-people" />
-          </Item>
-          <Button transparent>
-            <Text>검색</Text>
-          </Button>
-        </Header>*/}
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`내 팔로워`}
+        />
+
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}

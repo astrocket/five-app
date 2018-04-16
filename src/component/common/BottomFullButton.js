@@ -29,8 +29,8 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: Constant.FiveColor,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '900',
     paddingTop: 15,
     paddingBottom: 15
   },

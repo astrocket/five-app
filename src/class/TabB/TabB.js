@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FivesBar, ElevenHeader, EmptyBox, TabIcon,
+  UserUnitRound, FivesBar, ElevenHeader, EmptyBox, TabIcon, NavBar
 } from '../../component/common';
 import axios from 'axios';
 import * as Images from '../../assets/images/Images';
@@ -93,7 +93,7 @@ export default class TabB extends Component {
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '+ Five or Clip',
+        title: '+ FIVE',
       },
       buttonIndex => {
         navigation.navigate('SearchFive', {
@@ -117,18 +117,16 @@ export default class TabB extends Component {
     const { my_profile } = this.props.ApplicationStore;
 
     return (
-      <Container style={{ backgroundColor: '#FFFFFF' }}>
-        <ElevenHeader
-          headerShow={this.state.headerShow}
-          title={null} // 디자인 가이드에 따라 "프로필" 타이틀 삭제
-          custom
+      <Container style={{ backgroundColor: '#fafafa' }}>
+        <NavBar
           rightButton
           rightAsImage
-          buttonIcon={require('../../assets/images/bookmark_icon_pink.png')}
-          onPressRight={() => navigation.navigate('ProfileWishIndex')} />
+          rightIcon={require('../../assets/images/bookmark_pink_full.png')}
+          onPressRight={() => navigation.navigate('ProfileWishIndex')} 
+        />
           <FlatList
             data={this.state.categories}
-            style={{paddingBottom: 15}}
+            style={{paddingBottom: 16}}
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
             onScroll={(e) => {this.handleScroll(e)}}
@@ -146,11 +144,12 @@ export default class TabB extends Component {
             keyExtractor={item => 'five-category-list-' + item.klass}
             ListHeaderComponent={
               <Row style={{
-                height: 250,
+                height: 280,
                 alignItems: 'center',
+                backgroundColor: '#ffffff',
               }}>
                 <Col style={{ alignItems: 'center' }}>
-                  <TouchableOpacity style={{ width: 140, height: 130}}
+                  <TouchableOpacity style={{ width: 130, height: 130}}
                                     onPress={() => navigation.navigate('Setting')}
                   >
                     <UserUnitRound
@@ -164,19 +163,19 @@ export default class TabB extends Component {
                     />
                     <View style={{
                       position:'absolute',
-                      bottom:10,
-                      right:10,
-                      minWidth:40,
-                      height:40,
-                      borderRadius:20,
+                      bottom:0,
+                      right:0,
+                      minWidth:32,
+                      height:32,
+                      borderRadius:16,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      backgroundColor: '#FFF',
+                      backgroundColor: 'white',
                     }}>
                       <Icon
                         name='cog'
                         style={{
-                          fontSize: 32,
+                          fontSize: 28,
                           backgroundColor: 'transparent',
                           color: Constant.LightGrey,
                         }}
@@ -185,10 +184,11 @@ export default class TabB extends Component {
                   </TouchableOpacity>
                   <Text style={{
                     textAlign: 'center',
-                    fontSize: 25,
+                    fontFamily: 'montserrat',
+                    fontSize: 26,
                     padding: 5,
                   }} large numberOfLines={1}>{my_profile.name}</Text>
-                  <Text note style={{ width: 250, textAlign: 'center', padding: 3 }} numberOfLines={2}>{my_profile.introduce}</Text>
+                  <Text note style={{ width: 250, textAlign: 'center', padding: 3 }} numberOfLines={2}>❝ {my_profile.introduce} ❞</Text>
                 </Col>
               </Row>
             }
@@ -198,7 +198,7 @@ export default class TabB extends Component {
           : <EmptyBox
             barWidth={Constant.deviceWidth - 20}
             onPress={() => this.onClickAdd()}
-            message={`아직 담은 FIVE가 없으시네요. ${'\n'}여기를 눌러서 카테고리를 추가하세요`}
+            message={`아직 FIVE를 하나도 선택하지 않았어요. ${'\n'}여기를 눌러서 아이템을 추가해 보세요!`}
             barHeight={100}
             borderRadius={10}
             marginRight={0}

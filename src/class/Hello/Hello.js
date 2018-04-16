@@ -3,7 +3,7 @@ import {
   View, Platform, Image,
 } from 'react-native';
 import {
-  Container, Header, Icon, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem
+  Container, Header, Text, Spinner, ListItem, List, Left, Body, Thumbnail, Card, CardItem
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -15,6 +15,8 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -50,7 +52,7 @@ export default class Hello extends Component {
     const { navigation } = this.props;
 
     return (
-      <Container>
+      <Container style = {{ backgroundColor: '#fafafa' }}>
         <View style={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -76,21 +78,22 @@ export default class Hello extends Component {
         </View>
         <View style={{
           flex: 1,
-          padding: 20,
+          margin: 36,
+          padding: 0,
           alignSelf: 'stretch',
-          backgroundColor: '#fff',
+          backgroundColor: 'red',
         }}>
-          <List>
-            <ListItem noBorder style={{ justifyContent: 'center'}}>
-              <Text small>앱 접근 권한 안내</Text>
+          <List style = {{ borderRadius: 24 }} >
+            <ListItem noBorder style={{ justifyContent: 'center' }}>
+              <Text normal style={{ textDecorationLine: 'underline', color: Constant.GreyColor }}>앱 접근 권한 안내</Text>
             </ListItem>
             <ListItem avatar>
               <Left>
                 <Icon
-                  name="md-checkmark"
+                  name="bell"
                   style={{
-                    fontSize: 25,
-                    color: Constant.FiveColor,
+                    fontSize: 24,
+                    color: 'grey',
                   }}
                 />
               </Left>
@@ -102,10 +105,10 @@ export default class Hello extends Component {
             <ListItem avatar>
               <Left>
                 <Icon
-                  name="md-checkmark"
+                  name="list-alt"
                   style={{
-                    fontSize: 25,
-                    color: Constant.FiveColor,
+                    fontSize: 24,
+                    color: 'grey',
                   }}
                 />
               </Left>
@@ -117,31 +120,31 @@ export default class Hello extends Component {
             <ListItem avatar>
               <Left>
                 <Icon
-                  name="md-checkmark"
+                  name="camera"
                   style={{
-                    fontSize: 25,
-                    color: Constant.FiveColor,
+                    fontSize: 24,
+                    color: 'grey',
                   }}
                 />
               </Left>
               <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
-              <Text normal>카메라</Text>
-              <Text micro grey>프로필 사진 기타 이미지 촬영</Text>
+                <Text normal>카메라</Text>
+                <Text micro grey>프로필 사진 기타 이미지 촬영</Text>
               </Body>
             </ListItem>
             <ListItem avatar>
               <Left>
                 <Icon
-                  name="md-checkmark"
+                  name="image"
                   style={{
-                    fontSize: 25,
-                    color: Constant.FiveColor,
+                    fontSize: 24,
+                    color: 'grey',
                   }}
                 />
               </Left>
               <Body style={{ borderBottomWidth: 0, flexDirection: 'row' }}>
-              <Text normal>사진첩</Text>
-              <Text micro grey>프로필 사진 기타 이미지 등록</Text>
+                <Text normal>사진첩</Text>
+                <Text micro grey>프로필 사진 기타 이미지 등록</Text>
               </Body>
             </ListItem>
             <ListItem noBorder style={{ justifyContent: 'center'}}>

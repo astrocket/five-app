@@ -14,6 +14,9 @@ import {
   DeleteCategory,
 } from '../../component/common/index';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -25,8 +28,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class Setting extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '설정',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -67,6 +69,13 @@ export default class Setting extends Component {
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
+       <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`설정`}
+        />
         <Content>
           <List>
             <ListItem itemDivider>
@@ -152,7 +161,7 @@ export default class Setting extends Component {
                 <Icon name="grid"/>
               </Left>
               <Body>
-              <Text style={noticeStyles.noticeContent}>허용여부 설정</Text>
+              <Text style={noticeStyles.noticeContent}>허용권한 설정</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward"/>

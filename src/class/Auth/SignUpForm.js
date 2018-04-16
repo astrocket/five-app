@@ -47,7 +47,7 @@ export default class SignUpForm extends Component {
     let regId = /^[a-zA-Z0-9]{3,10}$/;
     if ( !regId.test( this.state.input_name ) ) {
       ErrorHandler(
-        '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
+        '마이파이브 닉네임은 3~10자리 영문과 숫자로만 이용할 수 있어요.',
         () => this.setState({ input_name: '' })
       );
       return false
@@ -55,13 +55,13 @@ export default class SignUpForm extends Component {
 
     let regExp = /^[(0-9)]{2}$/;
     if ( !regExp.test( this.state.input_birth ) ) {
-      ErrorHandler('잘못된 출생년도 입니다. 2자리 숫자만 입력하세요',
+      ErrorHandler('"92"와 같이 두 자리 숫자만으로 충분해요!',
         () => this.setState({ input_birth: '' }));
       return false
     }
 
     if ( this.state.input_gender === '') {
-      ErrorHandler('성별이 선택되지 않았습니다.',
+      ErrorHandler('성별을 선택해 주세요.',
         () => this.setState({ input_gender: '' }));
       return false
     }
@@ -124,7 +124,7 @@ export default class SignUpForm extends Component {
     let regId = /^[a-zA-Z0-9]{0,10}$/;
     if ( !regId.test( input_name ) ) {
       ErrorHandler(
-        '잘못된 닉네임 형식 입니다. 3~10자리 영문만 입력하세요.',
+        '마이파이브 닉네임은 3~10자리 영문과 숫자로만 이용할 수 있어요.',
         () => this.setState({ input_name: '' })
       );
       return false
@@ -136,7 +136,7 @@ export default class SignUpForm extends Component {
   handleInputBirth(input_birth) {
     let regExp = /^[(0-9)]{0,2}$/;
     if ( !regExp.test( input_birth ) ) {
-      ErrorHandler('잘못된 출생년도 입니다. 2자리 숫자만 입력하세요',
+      ErrorHandler('$"$92$"$와 같이 두 자리 숫자만으로 충분해요!',
         () => this.setState({ input_birth: '' }));
       return false
     } else {
@@ -172,7 +172,7 @@ export default class SignUpForm extends Component {
             />
             <Row>
               <InputSingle
-                placeholder={'닉네임 (영문 또는 숫자 3~10자 입력)'}
+                placeholder={'닉네임 (영문 또는 숫자 3~10자)'}
                 value={this.state.input_name}
                 autoFocus={true}
                 onChangeText={(input_name) => this.handleInputName(input_name)}
@@ -183,18 +183,19 @@ export default class SignUpForm extends Component {
               />
             </Row>
             <Row>
-              <InputSingle
-                placeholder={'출생년도 두 자리 숫 (예: 92)'}
+              <Col size={50} style={{ marginRight: 16 }}>
+                <InputSingle
+                placeholder={'생년 (예: "92")'}
                 value={this.state.input_birth}
                 onChangeText={(input_birth) => this.handleInputBirth(input_birth)}
                 onSubmitEditing={Keyboard.dismiss}
                 returnKeyType={'next'}
                 keyboardType={'numeric'}
                 noButton
-              />
-            </Row>
-            <Row>
-              <InputToggle
+                />
+              </Col>
+              <Col size={50}>
+                <InputToggle
                 leftText={'여자'}
                 leftClicked={this.state.left_clicked}
                 rightText={'남자'}
@@ -205,9 +206,10 @@ export default class SignUpForm extends Component {
                 onRightPress={() => {
                   this.setState({input_gender: 'M', left_clicked: false, right_clicked: true});
                 }}
-              />
+                />
+              </Col>
             </Row>
-            <Row style={{ marginTop: 20}}>
+            <Row style={{ marginTop: 0}}>
               <InputSingle
                 placeholder={'비밀번호 (6자리 이상)'}
                 value={this.state.input_password}
@@ -220,8 +222,8 @@ export default class SignUpForm extends Component {
                 noButton
               />
             </Row>
-            <Row style={{ marginTop: 20}}>
-              <Text>
+            <Row style={{ margin: 10}}>
+              <Text style={{ fontSize: 4 }}>
                 <Text>
                   {`완료`}
                 </Text>
@@ -230,7 +232,7 @@ export default class SignUpForm extends Component {
                 </Text>
                 <Text
                   onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                    url: `${ApiServer.COMPANY}/policy`,
+                    url: `https://myfivecs.blogspot.kr/`,
                     headerTitle: '이용약관'
                   })}
                 >
@@ -241,7 +243,7 @@ export default class SignUpForm extends Component {
                 </Text>
                 <Text
                   onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                    url: `${ApiServer.COMPANY}/privacy`,
+                    url: `https://myfivecs.blogspot.kr/`,
                     headerTitle: '개인정보보호정책'
                   })}
                 >
