@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Image,
+  Image, ImageBackground,
   TouchableOpacity,
   View, Dimensions
 } from 'react-native';
@@ -10,6 +10,9 @@ import {
   Text,
   Thumbnail, Button, Icon
 } from 'native-base';
+import {
+  Col, Row, Grid,
+} from 'react-native-easy-grid';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
@@ -57,30 +60,40 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
         <View style={{
           flex: 1,
           flexDirection: 'column',
-          width: deviceWidth - 32,
+          width: null,
           height: null, // 높이는 텍스트에 따라 자유롭게 커진다.
-          margin: 10,
+          margin: 8,
         }}>
           <TouchableOpacity style={{
             flex: 1,
             width: null,
             height: null,
-            marginBottom: 5,
+            marginBottom: 8,
           }} onPress={onPress}>
-            <Image source={{ uri: image_url }} style={{
-              height: deviceWidth - 48,
-              width: deviceWidth - 48,
-              borderRadius: borderRadius,
-              marginBottom: 10,
-              flex: 1,
-            }}/>
-          </TouchableOpacity>
-          <View>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <Text large numberOfLines={1}>{title}</Text>
+            <View>
+              <ImageBackground 
+                style={{
+                  height: (deviceWidth - 48) * 1.2,
+                  width: deviceWidth - 48,
+                  marginBottom: 12 
+                }}
+                imageStyle={{ borderRadius: 16 }}
+                source={{ uri: image_url }} >
+                <View style={{ flex: 65, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
+                  <Text></Text>
+                </View>
+                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 14 }}>
+                  <Text normal numberOfLines={1} style={{ color: Constant.LightGrey, fontWeight: '900', textShadowColor: 'black' }}>{subtitle}</Text>
+                </View>
+                <View style={{ flex: 20, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 12, width: 300 }}> 
+                  <Text numberOfLines={2} style={{ color: 'white', fontSize: 32, fontWeight: '900' }}>{title}</Text>
+                </View>
+                <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
+                  <Text></Text>
+                </View>
+              </ImageBackground>
             </View>
-            <Text note numberOfLines={1}>{subtitle}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -138,5 +151,7 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
     );
   }
 };
+
+
 
 export { FiveStoryFull };

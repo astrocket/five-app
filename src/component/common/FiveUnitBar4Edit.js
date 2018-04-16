@@ -10,12 +10,12 @@ import * as Constant from '../../config/Constant';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBottom, updated_at, friends_info, new_label }) => {
+const FiveUnitBar4Edit = ({ id, subtitle, title, image_url, onPress, icon, paddingBottom, updated_at, friends_info, new_label }) => {
   const { container } = BaseStyle;
 
   if (updated_at) {
     return (
-      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 10}}>
+      <ListItem avatarList button onPress={onPress} style={{paddingBottom: paddingBottom || 40}}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 16 }}
           source={{ uri: image_url }}
@@ -77,4 +77,4 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
   }
 };
 
-export { FiveUnitBar };
+export { FiveUnitBar4Edit };

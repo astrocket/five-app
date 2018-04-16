@@ -27,9 +27,10 @@ const FiveUnitRound = ({ id, subtitle, title, image_url, five_users_count, onPre
           marginBottom: 5,
         }}>
           <Image source={{ uri: image_url }} style={{
-            height: null,
-            width: null,
+            height: 156,
+            width: 156,
             borderRadius: borderRadius,
+            marginRight: 8,
             flex: 1,
           }}/>
         </View>

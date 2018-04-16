@@ -8,31 +8,39 @@ import {
   CardItem,
   Text, Body,
   Thumbnail, ListItem,
-  Icon,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
+import * as Constant from '../../config/Constant';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWidth, barHeight, borderRadius, marginRight, message }) => {
   const { container } = BaseStyle;
   return (
-    <TouchableOpacity onPress={onPress} style={{ padding: 16 }}>
+    <TouchableOpacity onPress={onPress} style={{ padding: 10 }}>
       <View style={{
-        width: barWidth - 16,
+        width: barWidth - 20,
         height: barHeight,
-        padding: 16,
+        margin: 10,
+        padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EEE',
+        backgroundColor: '#fafafa',
         borderRadius: borderRadius,
         marginRight: marginRight
       }}>
         {message ?
-          <Text grey>{message}</Text>
+          <Text style = {{
+            color: Constant.GreyColor,
+            fontSize: 16,
+            fontWeight: '600'
+          }}
+            >{message}</Text>
           : <Icon
-            name="ios-add-circle-outline"
+            name="search-plus"
             style={{
-              fontSize: 40,
-              color: '#FFF',
+              fontSize: 48,
+              color: '#fff',
             }}
           />
         }

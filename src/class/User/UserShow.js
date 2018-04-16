@@ -139,13 +139,13 @@ export default class UserShow extends Component {
     const { navigation } = this.props;
 
     return (
-      <Container style={{ backgroundColor: '#FFFFFF' }}>
+      <Container style={{ backgroundColor: 'white' }}>
         <NavBar
           leftButton
           leftAsImage
           leftIcon={require('../../assets/images/back_icon_pink.png')}
           onPressLeft={() => navigation.goBack()}
-          headerText={`${this.state.user.name}의 FIVE`}
+          headerText={``}
         />
           <Content refreshControl={
             <RefreshControl
@@ -155,7 +155,7 @@ export default class UserShow extends Component {
           }>
             <Grid>
             <Row style={{
-              height: 250,
+              height: 280,
               alignItems: 'center',
             }}>
               <Col style={{ alignItems: 'center' }}>
@@ -168,12 +168,27 @@ export default class UserShow extends Component {
                 />
                 <Text style={{
                   textAlign: 'center',
-                  fontSize: 25,
+                  fontFamily: 'montserrat',
+                  fontSize: 26,
+                  padding: 5
                 }} large numberOfLines={1}>{this.state.user.name}</Text>
-                <Text note style={{ width: 250, textAlign: 'center' }} numberOfLines={2}>{this.state.user.introduce}</Text>
+                <Text note style={{ width: 250, textAlign: 'center', padding: 3, marginBottom: 32 }} numberOfLines={2}>❝ {this.state.user.introduce} ❞</Text>
               </Col>
             </Row>
-            <Row>
+            <View style={{
+              flex: 1,
+              flexDirection: 'row',
+              height: 12,
+              alignItems: 'center',
+              backgroundColor: '#fafafa'
+            }}>
+            </View>
+            <View style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#fafafa'
+            }}>
               <FlatList
                 data={this.state.categories}
                 style={{paddingBottom: 15}}
@@ -193,7 +208,7 @@ export default class UserShow extends Component {
                 )}
                 keyExtractor={item => 'five-category-list-' + item.klass}
               />
-            </Row>
+            </View>
             </Grid>
           </Content>
         {this.state.loading &&

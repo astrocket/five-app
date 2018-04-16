@@ -106,15 +106,15 @@ export default class ProfileWishShow extends Component {
     };
 
     Alert.alert(
-      '알림',
-      '해당 아이템을 삭제하시겠어요?',
+      '삭제 알림',
+      '이 아이템을 보관함에서 삭제하시겠어요?',
       [
         {
           text: '아니요',
           style: 'cancel',
         },
         {
-          text: '네',
+          text: 'OK',
           onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
         },
       ],
@@ -135,6 +135,8 @@ export default class ProfileWishShow extends Component {
 
     return (
       <Container>
+        <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
+        </Row>
         <Content onScroll={this.props.onScroll}>
           <Grid>
             <Row>
