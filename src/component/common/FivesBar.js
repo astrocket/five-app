@@ -9,7 +9,9 @@ import {
   Left,
   Body,
   Right,
-  Badge
+  Badge,
+  Container,
+  Content
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -66,31 +68,36 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
   const { container } = BaseStyle;
 
   return (
-    <View style={{ width: pureWidth + cardPadding * 2, margin: cardMargin, padding: cardPadding, borderRadius: 16, backgroundColor: 'white' }}>
-      <TouchableOpacity style={{ backgroundColor: 'transparent' }} onPress={onPress}>
-        <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
-        <ListItem cardStyle transparent button>
-          <Thumbnail size={50} source={fiveImage}/>
-          <Body>
-            <Text medium style={{ fontFamily: 'montserrat', margin: 2 }}>{Constant.CategoryToKorean(category)}</Text>
-            <View style={{ flexDirection: 'row', padding: 2}}>
-              <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followers).toLocaleString()}</Text>
-              <Text note>{'팔로워'}</Text>
-              <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followees).toLocaleString()}</Text>
-              <Text note>{'팔로잉'}</Text>
-            </View>
-          </Body>
-          {followButton ?
-            <Right>
-              <FollowSmallButton
+    <View>
+      <View style={{ width: pureWidth + cardPadding * 2, margin: cardMargin, padding: cardPadding, borderRadius: 16, backgroundColor: 'white' }}>
+        <TouchableOpacity style={{ backgroundColor: 'transparent' }} onPress={onPress}>
+          <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
+          <ListItem cardStyle transparent button>
+            <Thumbnail size={50} source={fiveImage}/>
+            <Body>
+              <Text medium style={{ fontFamily: 'montserrat', margin: 2 }}>{Constant.CategoryToKorean(category)}</Text>
+              <View style={{ flexDirection: 'row', padding: 2}}>
+                <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followers).toLocaleString()}</Text>
+                <Text note>{'팔로워'}</Text>
+                <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followees).toLocaleString()}</Text>
+                <Text note>{'팔로잉'}</Text>
+              </View>
+            </Body>
+            {followButton ?
+              <Right>
+                <FollowSmallButton
                 onPress={onPressFollow}
                 textTrue={'팔로잉'}
                 textFalse={'팔로우'}
                 clicked={clicked}
-              />
-            </Right> : null}
-        </ListItem>
-      </TouchableOpacity>
+                />
+              </Right> : null}
+          </ListItem>
+        </TouchableOpacity>
+      </View>
+      <View style = {{ height: 16, backgroundColor: 'transparent' }}>
+        <Text></Text>
+      </View>
     </View>
   );
 };
