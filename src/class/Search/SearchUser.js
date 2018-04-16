@@ -41,7 +41,7 @@ export default class SearchUser extends Component {
       input_search: '',
       no_more: true,
       users: [],
-      searched: true,
+      searched: false,
       no_result: true,
       headerShow: true
     }
@@ -67,17 +67,9 @@ export default class SearchUser extends Component {
       }).catch((e) => console.log(e.response));
   }
 
-  toggleUserFollow() {
-
-  }
-
-  onSuccessToggleFollow() {
-
-  }
-
   handleInputSearch(input_search) {
     if (input_search === '') {
-      this.setState({ searched: true, no_result: true, input_search: input_search });
+      this.setState({ searched: false, input_search: input_search });
     } else {
       this.setState({ input_search });
     }
@@ -138,17 +130,36 @@ export default class SearchUser extends Component {
         );
       }
     } else {
-      if (this.state.wishes) {
+      if (this.props.suggestions.length > 0) {
         return (
           <Content onScroll={(e) => this.handleScroll(e)}>
-            <Text>검색전</Text>
+            <FlatList
+              data={this.props.suggestions}
+              renderItem={({ item, index }) => (
+                <SearchUserUnitBar
+                  user={item}
+                  onPress={() => this.props.navigation.navigate('UserShow', {
+                    user: item,
+                    title: item.name,
+                  })}
+                />
+              )}
+              keyExtractor={item => 'search-user-suggestion-list-' + item.id}
+              ListHeaderComponent={
+                <RowHeaderBar
+                  title={'팔로워 추천'}
+                />
+              }
+            />
           </Content>
         );
       } else {
         return (
-          <Content onScroll={(e) => this.handleScroll(e)}>
-            <Text>검색전</Text>
-          </Content>
+          <View style={{
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
+          }}>
+            <Text>궁금한 친구를 검색해 보세요</Text>
+          </View>
         );
       }
     }
@@ -162,12 +173,7 @@ export default class SearchUser extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={`유저 검색`}
-          custom
-          rightButton
-          rightAsImage
-          buttonIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressRight={() => navigation.goBack()} />
+          title={`친구찾기`}/>
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,
@@ -187,15 +193,14 @@ export default class SearchUser extends Component {
             />
             <TouchableOpacity onPress={() => this.setState({
               input_search: '',
-              searched: true,
-              no_result: true,
+              searched: false,
             })}>
               <Icon name="md-close"/>
             </TouchableOpacity>
           </Item>
         </Header>
         {this.renderSearchResult()}
-        {this.state.loading &&
+        {(this.state.loading || this.props.loading) &&
         <View style={preLoading}>
           <Spinner size="large"/>
         </View>
