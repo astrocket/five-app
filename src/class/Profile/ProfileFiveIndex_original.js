@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, FlatList, RefreshControl, Dimensions, ScrollView,
+  View, Image, TouchableOpacity, FlatList, RefreshControl
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -22,11 +22,8 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-import SwipeCards from '../Five/SwipeCards.js';
-
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
-
 export default class ProfileFiveIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -121,23 +118,107 @@ export default class ProfileFiveIndex extends Component {
     })
   }
 
+  flipCard() {
+    this.setState({
+      flip: !this.state.flip,
+    });
+  }
+
+  renderFlipButton(flip) {
+    if (flip) {
+      return (
+        <Button onPress={() => this.flipCard()} transparent>
+          <Icon
+            name="md-photos"
+            style={{
+              fontSize: 25,
+              color: '#000',
+            }}
+          />
+        </Button>
+      );
+    } else {
+      return (
+        <Button onPress={() => this.flipCard()} transparent>
+          <Icon
+            name="md-reorder"
+            style={{
+              fontSize: 25,
+              color: '#000',
+            }}
+          />
+        </Button>
+      );
+    }
+  }
+
+  renderCard(flip) {
+    const { rowWrapper } = BaseStyle;
+    const { navigation } = this.props;
+
+    if (flip) {
+      return (
+        <Row key={1}>
+          <FlatList
+            data={this.state.fives}
+            renderItem={({ item }) => (
+              <FiveUnitBar
+                id={item.id}
+                title={item.title}
+                subtitle={item.subtitle}
+                friends_info={`FIVE ${item.five_users_count}`}
+                image_url={item.image_medium_url}
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: this.state.category,
+                  title: item.title,
+                  id: item.id,
+                  navLoading: true,
+                })}
+                new_label={item.new_label}
+              />
+            )}
+            keyExtractor={item => 'five-bar-list-' + item.id}
+          />
+        </Row>
+      );
+    } else {
+      return (
+        <Row key={2}>
+          <FlatList
+            horizontal
+            data={this.state.fives}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingLeft: (Constant.deviceWidth / 2) - 100, paddingRight: (Constant.deviceWidth / 2) - 100 }}
+            renderItem={({ item }) => (
+              <FiveUnitFull
+                multiple
+                id={item.id}
+                subtitle={item.subtitle}
+                title={item.title}
+                friends_info={`FIVE ${item.five_users_count}`}
+                image_url={item.image_large_url}
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: this.state.category,
+                  title: item.title,
+                  id: item.id,
+                  navLoading: true,
+                })}
+                borderRadius={20}
+                marginRight={32}
+                cardCut={80}
+              />
+            )}
+            keyExtractor={item => 'five-full-list-' + item.id}
+          />
+        </Row>
+      );
+    }
+  }
+
   render() {
     const { container, preLoading, rowFlexCenterCenter } = BaseStyle;
     const { navigation } = this.props;
     const { my_profile } = this.props.ApplicationStore;
-
-    /* const cards = [
-          {
-            text: 'Card One',
-            name: 'One',
-            image: require('../../assets/images/five_void.png'),
-          },
-          {
-            text: 'Card Two',
-            name: '34',
-            image: require('../../assets/images/five_void.png'),
-          },
-        ]; */ // 덱 스와이퍼 카드 데이터
 
     return (
       <Container>
@@ -162,64 +243,47 @@ export default class ProfileFiveIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <View>
-            <Col style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 5, justifyContent: 'center' }}>
+          <Grid>
+            <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
-                <Text style={{ color: Constant.GreyColor, fontFamily: 'montserrat', fontSize: 18, fontWeight: '600' }}>{my_profile.name}</Text>
-                <Text style={{ color: Constant.GreyColor, fontSize: 18, fontWeight: '300' }}>의</Text>
+                <Text grey>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
-                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900' }}>{this.state.category_korean} </Text>
-                <Text style={{ color: 'black', fontSize: 28, fontWeight: '300' }}>파이브</Text>
+                <Text large>{this.state.category_korean} </Text>
+                <Text large thin>파이브</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
-                  <Text style={{ fontFamily: 'montserrat', fontSize: 17, fontWeight: '900'}} >{Number(this.state.followers_count).toLocaleString()}</Text>
-                  <Text style={{ color: Constant.GreyColor, fontSize: 17, fontWeight: '300'}} >{'  팔로워 '}</Text>
+                  <Text small>{Number(this.state.followers_count).toLocaleString()}</Text>
+                  <Text small grey>{'  팔로워 '}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
-                  <Text style={{ fontFamily: 'montserrat', fontSize: 17, fontWeight: '900'}} >{Number(this.state.followees_count).toLocaleString()}</Text>
-                  <Text style={{ color: Constant.GreyColor, fontSize: 17, fontWeight: '300'}}>{'  팔로잉'}</Text>
+                  <Text small>{Number(this.state.followees_count).toLocaleString()}</Text>
+                  <Text small grey>{'  팔로잉'}</Text>
                 </TouchableOpacity>
               </View>
-            </Col>
-          </View>
-          <Row style={{ width: Constant.deviceWidth, height: 400, alignItems: 'center', justifyContent: 'center', backgroundColor: 'red', borderRadius: 24 }}>
-            <Col style={{ flex: 1, width: Constant.deviceWidth, height: 380, borderRadius: 24, backgroundColor: 'white' }}>
-              <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  scrollEventThrottle={10}
-                  pagingEnabled={true}
-                  renderItem={({ item }) => (
-
-                       <FiveUnitFull
-                          multiple
-                          id={item.id}
-                          subtitle={item.subtitle}
-                          title={item.title}
-                          friends_info={`FIVE ${item.five_users_count}`}
-                          image_url={item.image_large_url}
-                          onPress={() => navigation.navigate('FiveShow', {
-                            category: this.state.category,
-                            title: item.title,
-                            id: item.id,
-                            navLoading: true,
-                          })}
-                          borderRadius={20}
-                          marginRight={32}
-                          cardCut={80}
-                        />
-
-                  )}
-              />
-            </Col>
-          </Row>
+            </View>
+            {this.renderCard(this.state.flip)}
+          </Grid>
         </Content>
+        <Fab
+          active={true}
+          direction="up"
+          style={{ backgroundColor: Constant.FiveColor }}
+          position="bottomRight"
+          onPress={() => this.flipCard()}>
+          <Icon
+            name="md-reorder"
+            style={{
+              fontSize: 25,
+              color: '#FFF',
+            }}
+          />
+        </Fab>
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
@@ -230,32 +294,3 @@ export default class ProfileFiveIndex extends Component {
   }
 
 }
-
-
-
-/* <DeckSwiper
-            dataSource={cards}
-            renderItem={item =>
-              <Card style={{ elevation: 10 }}>
-                <CardItem>
-                  <Left>
-                    <Thumbnail source={item.image} />
-                    <Body>
-                      <Text>{item.text}</Text>
-                      <Text note>NativeBase</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-                <CardItem cardBody>
-                  <Image style={{ height: 300, flex: 1 }} source={item.image} />
-                </CardItem>
-                <CardItem>
-                  <Icon name="heart" style={{ color: '#ED4A6A' }} />
-                  <Text>{item.name}</Text>
-                </CardItem>
-              </Card>
-            }
-          />
-
-          */
-

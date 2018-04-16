@@ -10,7 +10,7 @@ const ErrorHandler = ({ type, message, position, onCheck }) => {
 
   if (type === 'alert') {
     return Alert.alert(
-      `에러`,
+      `확인 필요`,
       `${message}`,
       [
         {

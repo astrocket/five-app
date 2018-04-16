@@ -5,6 +5,9 @@ import {
 import {
   Container, Spinner, Tabs, Tab, ScrollableTab, Button, Text, TabHeading, Header,
 } from 'native-base';
+import {
+  Col, Row, Grid,
+} from 'react-native-easy-grid';
 import axios from 'axios';
 import { EmptyBox, NavBar } from '../../component/common';
 import ProfileWishShow from './ProfileWishShow';
@@ -85,23 +88,29 @@ export default class ProfileWishIndex extends Component {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        height: 20,
+        height: 24,
       }}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{
-            height: 20,
+            height: 24,
           }}
           data={this.state.categories}
           renderItem={({ item, index }) => (
             <TouchableOpacity key={index} onPress={() => goToPage(index)}
                               style={[ flexCenterCenter, {
-                                height: 20,
+                                height: 24,
                                 width: null,
                                 paddingRight: 16,
                               } ]}>
-              <Text normal>{item.category_korean}</Text>
+              <Text normal style={{
+                        color: '#333333',
+                        fontSize: 22,
+                        fontWeight: '900'
+                      }}>
+                  {item.category_korean}
+                </Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
@@ -125,8 +134,8 @@ export default class ProfileWishIndex extends Component {
         />
         <Header style={{
           backgroundColor: '#FFFFFF',
-          paddingLeft: 13,
-          paddingRight: 13,
+          paddingLeft: 16,
+          paddingRight: 16,
           borderBottomWidth: 0,
           height: 46,
         }}>
@@ -141,7 +150,7 @@ export default class ProfileWishIndex extends Component {
           </Tabs>
           : <EmptyBox
             barWidth={Constant.deviceWidth - 20}
-            message={`아직 담긴 클립이 없으시네요. ${'\n'} 나만의 FIVE들을 찾아서 보관해보세요.`}
+            message={`아직 보관한 아이템이 하나도 없어요. ${'\n'}나의 FIVE가 될 아이템을 찾아보세요!`}
             barHeight={100}
             borderRadius={10}
             marginRight={0}

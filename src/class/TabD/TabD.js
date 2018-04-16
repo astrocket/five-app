@@ -149,10 +149,10 @@ export default class TabD extends Component {
           />
           :<EmptyBox
             barWidth={Constant.deviceWidth - 20}
-            message={`아직 담은 소식이 없으시네요. ${'\n'} 친구들을 팔로우하고 소식을 받아보세요`}
+            message={`아직 친구들 소식이 없어요. ${'\n'}친구들을 더 팔로우하고 소식을 받아보세요!`}
             barHeight={100}
             borderRadius={10}
-            marginRight={0}
+            marginRight={10}
           />
         }
         {this.state.loading &&

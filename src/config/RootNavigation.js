@@ -53,9 +53,9 @@ const TabNavigation = TabNavigator(
       TabA: {
         screen: TabA,
       },
-/*      TabC: {
+      TabC: {
         screen: TabC,
-      },*/
+      },
       TabD: {
         screen: TabD,
       },
@@ -181,6 +181,9 @@ const StackNavigation = StackNavigator(
   }, {
     headerMode: 'screen',
     mode: 'card',
+    navigationOptions: {
+      headerBackTitle: null,
+    }
   },
 );
 

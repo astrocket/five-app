@@ -95,7 +95,7 @@ export default class LogInForm extends Component {
               onPress={() => this.props.navigation.navigate('FindPassword', { user: this.state.user })}
               style={{ margin: 10 }}
             >
-              <Text note>비밀번호가 기억나지 않아요</Text>
+              <Text note>  비밀번호가 기억나지 않아요</Text>
             </TouchableOpacity>
           </View>
         );

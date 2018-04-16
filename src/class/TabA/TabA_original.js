@@ -64,22 +64,21 @@ export default class TabA extends Component {
     const klasses = [ 'Music', 'Book', 'Restaurant' ];
     const CANCEL_INDEX = 3;*/
 
-    const BUTTONS = [ '음악', '이용자', '취소' ];
-    const category_koreans = [ '음악', '이용자' ];
-    const pages = [ 'SearchFive', 'SearchUser'];
-    const categories = [ 'music', 'user' ];
-    const klasses = [ 'Music', 'User' ];
-    const CANCEL_INDEX = 2;
+    const BUTTONS = [ '음악', '취소' ];
+    const category_koreans = [ '음악' ];
+    const categories = [ 'music' ];
+    const klasses = [ 'Music' ];
+    const CANCEL_INDEX = 1;
 
 
     ActionSheet.show(
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '+ FIVE',
+        title: '+ Five or Clip',
       },
       buttonIndex => {
-        navigation.navigate(`${pages[ buttonIndex ]}`, {
+        navigation.navigate('SearchFive', {
           klass: klasses[ buttonIndex ],
           category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],
@@ -120,13 +119,13 @@ export default class TabA extends Component {
           data={this.props.ApplicationStore.categories}
           renderItem={({ item, index }) => (
             <TouchableOpacity key={index + 1} transparent onPress={() => goToPage(index + 1)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
-              <Text large sd-gothic style={{ color: '#333333' }}>{item.category_korean}</Text>
+              <Text large gray sd-gothic>{item.category_korean}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
             <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20 }]}>
-              <Text large sd-gothic style={{ color: '#333333' }}>홈</Text>
+              <Text large gray sd-gothic>홈</Text>
             </TouchableOpacity>
           }
         />
@@ -174,7 +173,7 @@ export default class TabA extends Component {
                 marginTop: Constant.globalPaddingTop,
               }}>
                 <View>
-                  <Text xlarge style={{ fontFamily: 'montserrat', color: '#333333' }}>{'Home'}</Text>
+                  <Text xlarge>{'발견'}</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}

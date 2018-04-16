@@ -23,7 +23,7 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
       }}>
         <Input
           placeholder={placeholder}
-          placeholderTextColor={'#4a4a4a'}
+          placeholderTextColor={'#a1a1a1'}
           onChangeText={onChangeText}
           autoCapitalize={'none'}
           autoCorrect={false}
@@ -36,8 +36,9 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           style={{
-            fontSize: 16,
-            color: Constant.GreyColor,
+            fontSize: 18,
+            fontWeight: '600',
+            color: '#555555',
             paddingLeft: 16,
             paddingRight: 16,
           }}
@@ -68,8 +69,9 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           style={{
-            fontSize: 16,
-            color: Constant.GreyColor,
+            fontSize: 18,
+            fontWeight: '600',
+            color: '#555555',
             paddingLeft: 16,
             paddingRight: 16,
           }}

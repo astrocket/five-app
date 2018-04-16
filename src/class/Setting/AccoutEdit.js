@@ -10,6 +10,9 @@ import {
 } from 'react-native-easy-grid';
 import { BottomFullButton, InputSingle } from '../../component/common/index';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -20,8 +23,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class AccountEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '비밀번호 설정',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -121,6 +123,13 @@ export default class AccountEdit extends Component {
 
     return (
       <Container>
+       <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`비밀번호 설정`}
+        />
         <Content padder>
           <Grid>
             <Row>

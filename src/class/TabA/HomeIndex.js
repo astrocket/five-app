@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl, Alert,
+  StyleSheet, View, FlatList, RefreshControl, Alert,
 } from 'react-native';
 import {
   Container, Content, Spinner, Toast
@@ -149,13 +149,21 @@ export default class HomeIndex extends Component {
           <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
+            tintColor={Constant.FiveColor}
           />
         }>
-          <Grid>
-            <View>
-              <View style={{
-                padding: 16,
+
+          <Grid>  
+            <Row style={{
+              padding: 16,
+              backgroundColor: '#fafafa',
               }}>
+              <Row style={{
+                padding: 0,
+                backgroundColor: 'white',
+                borderRadius: 24
+                }}
+                >
                 <FiveStoryFull
                   singleClickable
                   id={this.state.five_story.id}
@@ -169,11 +177,11 @@ export default class HomeIndex extends Component {
                   })}
                   barWidth={null}
                   barHeight={null}
-                  borderRadius={16}
-                  margin={16}
+                  borderRadius={10}
+                  margin={0}
                 />
-              </View>
-            </View>
+              </Row>
+            </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={'팔로우 제안'}
@@ -222,24 +230,206 @@ export default class HomeIndex extends Component {
                       id: item.five.id,
                       navLoading: true,
                     })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
+                    barWidth={164}
+                    barHeight={156}
+                    borderRadius={16}
+                    marginRight={0}
                   />
                 )}
                 keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
               />
             </Row>
           </Grid>
+
+          <Grid> 
+            <Row
+              style={{ height: 32, backgroundColor: '#fafafa' }}
+            /> 
+            <Row style={{
+              padding: 16,
+              backgroundColor: '#fafafa',
+              }}>
+              <Row style={{
+                padding: 0,
+                backgroundColor: 'white',
+                borderRadius: 24
+                }}
+                >
+                <FiveStoryFull
+                  singleClickable
+                  id={this.state.five_story.id}
+                  title={this.state.five_story.title}
+                  subtitle={this.state.five_story.subtitle}
+                  image_url={this.state.five_story.image_large_url}
+                  onPress={() => navigation.navigate('FiveStoryShow', {
+                    title: this.state.five_story.title,
+                    id: this.state.five_story.id,
+                    five_story: this.state.five_story,
+                  })}
+                  barWidth={null}
+                  barHeight={null}
+                  borderRadius={10}
+                  margin={0}
+                />
+              </Row>
+            </Row>
+            <RowHeaderBar
+              style={{ backgroundColor: '#fafafa' }}
+              title={'팔로우 제안'}
+            />
+            <Row style={{ backgroundColor: '#fafafa' }}>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={this.state.follow_suggestions}
+                style={rowWrapper}
+                renderItem={({ item, index }) => (
+                  <UserFivesBar
+                    onPress={() => navigation.navigate('UserShow', {
+                      user: item.user,
+                    })}
+                    defaultImage={require('../../assets/images/five_void_grey.png')}
+                    onPressFollow={() => this.askFollowOption(item, index)}
+                    category={item.category}
+                    fives={item.fives}
+                    clicked={item.following}
+                    user={item.user}
+                  />
+                )}
+                keyExtractor={item => 'user-fives-' + item.category + item.user.id}
+              />
+            </Row>
+            <RowHeaderBar
+              title={'당신을 위한 북마크 제안'}
+            />
+            <Row>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={this.state.popular_fives}
+                style={rowWrapper}
+                renderItem={({ item }) => (
+                  <FiveUnitRound
+                    id={item.five.id}
+                    title={item.five.title}
+                    subtitle={item.five.subtitle}
+                    five_users_count={item.five.five_users_count}
+                    image_url={item.five.image_medium_url}
+                    onPress={() => navigation.navigate('FiveShow', {
+                      category: item.five.category,
+                      title: item.five.title,
+                      id: item.five.id,
+                      navLoading: true,
+                    })}
+                    barWidth={164}
+                    barHeight={156}
+                    borderRadius={16}
+                    marginRight={0}
+                  />
+                )}
+                keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
+              />
+            </Row>
+          </Grid>
+
+          <Grid> 
+            <Row
+              style={{ height: 32, backgroundColor: '#fafafa' }}
+            /> 
+            <Row style={{
+              padding: 16,
+              backgroundColor: '#fafafa',
+              }}>
+              <Row style={{
+                padding: 0,
+                backgroundColor: 'white',
+                borderRadius: 24
+                }}
+                >
+                <FiveStoryFull
+                  singleClickable
+                  id={this.state.five_story.id}
+                  title={this.state.five_story.title}
+                  subtitle={this.state.five_story.subtitle}
+                  image_url={this.state.five_story.image_large_url}
+                  onPress={() => navigation.navigate('FiveStoryShow', {
+                    title: this.state.five_story.title,
+                    id: this.state.five_story.id,
+                    five_story: this.state.five_story,
+                  })}
+                  barWidth={null}
+                  barHeight={null}
+                  borderRadius={10}
+                  margin={0}
+                />
+              </Row>
+            </Row>
+            <RowHeaderBar
+              style={{ backgroundColor: '#fafafa' }}
+              title={'팔로우 제안'}
+            />
+            <Row style={{ backgroundColor: '#fafafa' }}>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={this.state.follow_suggestions}
+                style={rowWrapper}
+                renderItem={({ item, index }) => (
+                  <UserFivesBar
+                    onPress={() => navigation.navigate('UserShow', {
+                      user: item.user,
+                    })}
+                    defaultImage={require('../../assets/images/five_void_grey.png')}
+                    onPressFollow={() => this.askFollowOption(item, index)}
+                    category={item.category}
+                    fives={item.fives}
+                    clicked={item.following}
+                    user={item.user}
+                  />
+                )}
+                keyExtractor={item => 'user-fives-' + item.category + item.user.id}
+              />
+            </Row>
+            <RowHeaderBar
+              title={'당신을 위한 북마크 제안'}
+            />
+            <Row>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={this.state.popular_fives}
+                style={rowWrapper}
+                renderItem={({ item }) => (
+                  <FiveUnitRound
+                    id={item.five.id}
+                    title={item.five.title}
+                    subtitle={item.five.subtitle}
+                    five_users_count={item.five.five_users_count}
+                    image_url={item.five.image_medium_url}
+                    onPress={() => navigation.navigate('FiveShow', {
+                      category: item.five.category,
+                      title: item.five.title,
+                      id: item.five.id,
+                      navLoading: true,
+                    })}
+                    barWidth={164}
+                    barHeight={156}
+                    borderRadius={16}
+                    marginRight={0}
+                  />
+                )}
+                keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
+              />
+            </Row>
+          </Grid>
+
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size="large"/>
+          <Spinner size='large' color={Constant.FiveColor} />
         </View>
         }
       </Container>
     );
   }
 }
-

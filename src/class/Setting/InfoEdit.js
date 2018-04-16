@@ -10,6 +10,9 @@ import {
 } from 'react-native-easy-grid';
 import { UserUnitRound, InputSingle } from '../../component/common/index';
 import axios from 'axios';
+import {
+  FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -21,8 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserInfoNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '내 프로필 관리',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -143,6 +145,13 @@ export default class UserInfoNew extends Component {
 
     return (
       <Container>
+       <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`프로필 변경`}
+        />
         <Content padder>
           <Grid>
             <Row style={{

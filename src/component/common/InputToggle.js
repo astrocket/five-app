@@ -15,14 +15,15 @@ const ToggleButton = ({ onPress, content, clicked }) => {
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={{
           borderWidth: 2,
-          borderColor: Constant.FiveColor,
-          borderRadius: 25,
+          borderColor: 'transparent',
+          backgroundColor: Constant.FiveColor,
+          borderRadius: 18,
           paddingLeft: 20,
           paddingRight: 20,
           paddingTop: 10,
           paddingBottom: 10,
         }}>
-          <Text style={{ color: Constant.FiveColor }}>{content}</Text>
+          <Text style={{ color: 'white', fontSize: 18, fontWeight: '900' }}>{content}</Text>
         </View>
       </TouchableWithoutFeedback>
     )
@@ -32,13 +33,13 @@ const ToggleButton = ({ onPress, content, clicked }) => {
         <View style={{
           borderWidth: 2,
           borderColor: 'transparent',
-          borderRadius: 25,
+          borderRadius: 18,
           paddingLeft: 20,
           paddingRight: 20,
           paddingTop: 10,
           paddingBottom: 10,
         }}>
-          <Text style={{ color: Constant.GreyColor }}>{content}</Text>
+          <Text style={{ color: Constant.GreyColor, fontSize: 18 }}>{content}</Text>
         </View>
       </TouchableWithoutFeedback>
     )

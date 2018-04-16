@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TouchableOpacity, View,
+  StyleSheet, TouchableOpacity, View,
 } from 'react-native';
 import {
   Text,
@@ -21,7 +21,7 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         paddingTop: 32
       }]}>
         <View style={{ flexDirection: 'row'}}>
-          <Text normal>{title}</Text>
+          <Text style={styles.rowHeaderBar}>{title}</Text>
           {yellowLabel ?
             <Text small yellow>{yellowLabel}</Text>
             :null}
@@ -41,11 +41,19 @@ const RowHeaderBar = ({ title, yellowLabel, onPress, moreTitle, style }) => {
         padding: 16,
         paddingTop: 32
       }]}>
-        <Text normal>{title}</Text>
+        <Text style={styles.rowHeaderBar}>{title}</Text>
       </View>
     )
   }
-
 };
+
+const styles = StyleSheet.create({
+  rowHeaderBar: {
+    fontSize: 18,
+    color: '#222222',
+    fontWeight: 'bold',
+    marginLeft: 3,
+  },
+});
 
 export { RowHeaderBar };

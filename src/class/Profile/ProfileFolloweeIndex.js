@@ -11,6 +11,9 @@ import {
 } from 'react-native-easy-grid';
 import { FollowUnitBar, EmptyBox } from '../../component/common';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -21,8 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileFolloweeIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '내 팔로잉',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -87,6 +89,15 @@ export default class ProfileFolloweeIndex extends Component {
             <Text>검색</Text>
           </Button>
         </Header>*/}
+        
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`내 팔로잉`}
+        />
+
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
