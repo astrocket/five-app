@@ -79,7 +79,7 @@ export default class TabA extends Component {
         title: '+ FIVE',
       },
       buttonIndex => {
-        navigation.navigate('SearchFive', {
+        navigation.navigate(`${pages[ buttonIndex ]}`, {
           klass: klasses[ buttonIndex ],
           category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],

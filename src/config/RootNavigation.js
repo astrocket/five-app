@@ -46,6 +46,7 @@ import AccountEdit from '../class/Setting/AccoutEdit';
 import AlarmEdit from '../class/Setting/AlarmEdit';
 import CategoryEdit from '../class/Setting/CategoryEdit';
 import SearchFive from '../class/Search/SearchFive';
+import SearchUser from '../class/Search/SearchUser';
 
 const TabNavigation = TabNavigator(
     {
@@ -173,6 +174,9 @@ const StackNavigation = StackNavigator(
     },
     SearchFive: {
       screen: SearchFive,
+    },
+    SearchUser: {
+      screen: SearchUser,
     },
   }, {
     headerMode: 'screen',

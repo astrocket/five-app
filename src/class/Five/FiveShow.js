@@ -166,7 +166,7 @@ export default class FiveShow extends Component {
       favorable_id: this.state.five.id,
     };
     axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
-      .then((response) => {
+       .then((response) => {
         this.setState({
           five_users_count: (this.state.five_users_count -= 1),
           my_five: false
