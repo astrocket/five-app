@@ -11,6 +11,9 @@ class ObservableApplicationStore {
   @observable first = true;
   @observable my_profile = '';
   @observable categories = [];
+  @observable music_fives = [];
+  @observable book_fives = [];
+  @observable restaurant_fives = [];
 
   async setFirstAuth() {
     await AsyncStorage.multiGet([ 'email', 'token', 'key' ], (err, stores) => {
@@ -45,7 +48,6 @@ class ObservableApplicationStore {
         this.first = true,
         this.my_profile = '',
         this.categories = []
-
     );
   }
 
@@ -82,6 +84,87 @@ class ObservableApplicationStore {
     });
     return have;
   }
+
+  matchFive(category) {
+    switch (category) {
+      case 'music':
+        return this.music_fives;
+      case 'book':
+        return this.book_fives;
+      case 'restaurant':
+        return this.restaurant_fives;
+      default:
+        return [];
+    }
+  }
+
+  async setFivesOf(category, fives) {
+    console.log('setfivesof' + category + fives);
+    switch (category) {
+      case 'music':
+        await (this.music_fives = fives);
+        return true;
+      case 'book':
+        await (this.book_fives = fives);
+        return true;
+      case 'restaurant':
+        await (this.restaurant_fives = fives);
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  async getFivesOf(category) {
+    switch (category) {
+      case 'music':
+        return this.music_fives;
+      case 'book':
+        return this.book_fives;
+      case 'restaurant':
+        return this.restaurant_fives;
+      default:
+        return [];
+    }
+  }
+
+  async addFiveTo(category, five) {
+    this.getFivesOf(category).then((fives) => {
+      switch (category) {
+        case 'music':
+          this.music_fives.push(five);
+          return true;
+        case 'book':
+          this.book_fives.push(five);
+          return true;
+        case 'restaurant':
+          this.restaurant_fives.push(five);
+          return true;
+        default:
+          return false;
+      }
+    });
+  }
+
+  async removeFiveTo(category, five) {
+    this.getFivesOf(category).then((fives) => {
+      var filteredFives = fives.filter(fv => fv.id !== five.id);
+      switch (category) {
+        case 'music':
+          this.music_fives.replace(filteredFives);
+          return true;
+        case 'book':
+          this.book_fives.replace(filteredFives);
+          return true;
+        case 'restaurant':
+          this.restaurant_fives.replace(filteredFives);
+          return true;
+        default:
+          return false;
+      }
+    });
+  }
+
 }
 
 const observableApplicationStore = new ObservableApplicationStore();

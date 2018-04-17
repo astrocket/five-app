@@ -83,41 +83,43 @@ export default class ProfileFiveEdit extends Component {
     });
   }
 
-  askRestaurantDelete(secId, rowId, rowMap, five_data) {
+  askDelete(secId, rowId, rowMap, five_data) {
     const url = `${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`;
     const item = this.state.fives[ rowId ];
-    const data = {
-      favorable_id: item.id
-    };
+    if(item) {
+     const data = {
+       favorable_id: item.id
+     };
 
-    if (this.state.fives.length <= 1) {
-      Alert.alert(
-        '알림',
-        '1개 이하로 파이브를 삭제할 수 없습니다.',
-        [
-          {
-            text: '확인',
-          },
-        ],
-        { cancelable: true },
-      );
-      rowMap[`${secId}${rowId}`].props.closeRow();
-    } else {
-      Alert.alert(
-        '아이템 삭제 확인',
-        '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
-        [
-          { text: '아니요',
-            style: 'cancel'
-          },
-          {
-            text: '네',
-            onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
-          },
-        ],
-        { cancelable: true },
-      );
-    }
+     if (this.state.fives.length <= 1) {
+       Alert.alert(
+         '알림',
+         '1개 이하로 파이브를 삭제할 수 없습니다.',
+         [
+           {
+             text: '확인',
+           },
+         ],
+         { cancelable: true },
+       );
+       rowMap[`${secId}${rowId}`].props.closeRow();
+     } else {
+       Alert.alert(
+         '아이템 삭제 확인',
+         '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
+         [
+           { text: '아니요',
+             style: 'cancel'
+           },
+           {
+             text: '네',
+             onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
+           },
+         ],
+         { cancelable: true },
+       );
+     }
+   }
   }
 
   deleteRow(secId, rowId, rowMap) {
@@ -185,9 +187,6 @@ export default class ProfileFiveEdit extends Component {
             <Row>
               <List
                 dataSource={this.ds.cloneWithRows([0,1,2,3,4])}
-                style={{
-                  
-                }}
                 renderRow={(data, secId, rowId, rowMap) =>
                   this.renderFiveUnitBars(data, secId, rowId, rowMap)
                 }
@@ -196,9 +195,10 @@ export default class ProfileFiveEdit extends Component {
                   null
                 }
                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                  <Button full danger onPress={_ => this.askRestaurantDelete(secId, rowId, rowMap, data)}>
+                  this.state.fives[ rowId ] ?
+                  <Button full danger onPress={_ => this.askDelete(secId, rowId, rowMap, data)}>
                     <Text>삭제</Text>
-                  </Button>
+                  </Button> : null
                 }
                 leftOpenValue={75}
                 rightOpenValue={-75}

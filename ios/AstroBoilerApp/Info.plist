@@ -109,5 +109,7 @@
 	<string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>마이파이브에서 사용자의 카메라 앱 접근 허용을 필요로 합니다.</string>
+	<key>NSContactsUsageDescription</key>
+    <string>마이파이브에서 사용자의 연락처 접근 허용을 필요로 합니다.</string>
 </dict>
 </plist>

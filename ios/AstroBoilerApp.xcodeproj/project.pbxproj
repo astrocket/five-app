@@ -50,8 +50,10 @@
 		CEDB0A33925B4ED0BB8B016B /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42E09B0F05C942FD9EBF172A /* Entypo.ttf */; };
 		DF1670081AF545428E6AD6AA /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEB8F2C3EB49C583EC3F91 /* Entypo.ttf */; };
 		E4ADF95ACF3E4C25971C5C1E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */; };
+		E61FE8F169F34F999E0F86F3 /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35029C0828B74D64A9A56625 /* libRCTContacts.a */; };
 		EFFB7F06C5AD4F94BB81007E /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28E1D9C7323C43CF8A678D35 /* MaterialIcons.ttf */; };
 		F3C046B058AC4AC3AC210287 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 000426450E5A476A84BE9788 /* Roboto_medium.ttf */; };
+		8A5A6DCE68B04AD1B37276D5 /* libRNOpenSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7607BD3760E4D7B9B12DB09 /* libRNOpenSettings.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +161,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
+		};
+		04954A612085BEE8005C0CC7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1441618E1BD0A79300FA4F59;
+			remoteInfo = RCTContacts;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -339,7 +348,9 @@
 		2453C175F6294433A0C1B2E4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		28E1D9C7323C43CF8A678D35 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2B5DD0DFBA014CD38B314542 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		35029C0828B74D64A9A56625 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTContacts.a; sourceTree = "<group>"; };
 		39EEB8F2C3EB49C583EC3F91 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTContacts.xcodeproj; path = "../node_modules/react-native-contacts/ios/RCTContacts.xcodeproj"; sourceTree = "<group>"; };
 		42E09B0F05C942FD9EBF172A /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		48DB50D001084D3CB38BE926 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -365,6 +376,8 @@
 		EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		F9E2F3A26BC418F5003501E2 /* Pods-AstroBoilerApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AstroBoilerApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp.debug.xcconfig"; sourceTree = "<group>"; };
 		FC17295C9AE3DA46829D68E0 /* Pods-AstroBoilerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AstroBoilerApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AstroBoilerApp/Pods-AstroBoilerApp.release.xcconfig"; sourceTree = "<group>"; };
+		793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */ = {isa = PBXFileReference; name = "RNOpenSettings.xcodeproj"; path = "../node_modules/react-native-open-setting/ios/RNOpenSettings.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D7607BD3760E4D7B9B12DB09 /* libRNOpenSettings.a */ = {isa = PBXFileReference; name = "libRNOpenSettings.a"; path = "libRNOpenSettings.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +409,8 @@
 				E4ADF95ACF3E4C25971C5C1E /* libRNImagePicker.a in Frameworks */,
 				C44110B304BF4F6384A9576C /* libRNVectorIcons.a in Frameworks */,
 				A5AE1EF5692F36BD2426A4B7 /* libPods-AstroBoilerApp.a in Frameworks */,
+				E61FE8F169F34F999E0F86F3 /* libRCTContacts.a in Frameworks */,
+				8A5A6DCE68B04AD1B37276D5 /* libRNOpenSettings.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +481,7 @@
 			children = (
 				EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */,
 				48DB50D001084D3CB38BE926 /* libRNVectorIcons.a */,
-				B002943D041C41F0B1FB1299 /* libAirMaps.a */,
+				35029C0828B74D64A9A56625 /* libRCTContacts.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -483,6 +498,14 @@
 			isa = PBXGroup;
 			children = (
 				04949C5020172D4900294088 /* libRNVectorIcons.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04954A5E2085BEE8005C0CC7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04954A622085BEE8005C0CC7 /* libRCTContacts.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -584,6 +607,8 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */,
 				99B8623FDFC0430BBD48FF38 /* RNVectorIcons.xcodeproj */,
+				420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */,
+				793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -760,6 +785,10 @@
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
 				},
 				{
+					ProductGroup = 04954A5E2085BEE8005C0CC7 /* Products */;
+					ProjectRef = 420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -909,6 +938,13 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = 04949C4F20172D4900294088 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		04954A622085BEE8005C0CC7 /* libRCTContacts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTContacts.a;
+			remoteRef = 04954A612085BEE8005C0CC7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1228,12 +1264,16 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
+					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1257,12 +1297,16 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
+					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1289,6 +1333,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
+					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1317,6 +1363,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
+					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

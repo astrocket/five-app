@@ -58,12 +58,12 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-    const BUTTONS = [ '음악', '책', '이용자', '취소' ];
-    const category_koreans = [ '음악', '책', '이용자' ];
-    const pages = [ 'SearchFive', 'SearchFive', 'SearchUser'];
-    const categories = [ 'music', 'book', 'user' ];
-    const klasses = [ 'Music', 'Book', 'User' ];
-    const CANCEL_INDEX = 3;
+    const BUTTONS = [ '음악', '책', '취소' ];
+    const category_koreans = [ '음악', '책' ];
+    const pages = [ 'SearchFive', 'SearchFive'];
+    const categories = [ 'music', 'book' ];
+    const klasses = [ 'Music', 'Book' ];
+    const CANCEL_INDEX = 2;
 
     ActionSheet.show(
       {

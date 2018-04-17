@@ -1,5 +1,5 @@
-//export const DOMAIN = '172.20.10.2:3000';
-export const DOMAIN = "110.10.189.185";
+export const DOMAIN = '172.16.10.228:3000';
+//export const DOMAIN = "110.10.189.185";
 export const API = "http://" + DOMAIN;
 
 export const WEB_SOCKET = 'ws://' + DOMAIN;

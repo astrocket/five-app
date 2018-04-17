@@ -81,7 +81,6 @@ export default class AccountEdit extends Component {
     });
   }
 
-
   signOutAction() {
     this.setState({ loading: true });
 
@@ -91,7 +90,7 @@ export default class AccountEdit extends Component {
         'X-User-Token': this.props.ApplicationStore.token,
       },
     }).then((response) => {
-      AsyncStorage.multiRemove([ 'email', 'token', 'key' ])
+      AsyncStorage.multiRemove([ 'email', 'token', 'key', 'login', 'first', 'my_profile', 'categories', 'contact_agreed' ])
         .then(() => {
           this.props.ApplicationStore.signOut();
         });

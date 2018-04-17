@@ -148,6 +148,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-open-setting')
+    compile project(':react-native-contacts')
     compile project(':react-native-vector-icons')
     compile project(':react-native-image-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
