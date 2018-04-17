@@ -21,6 +21,7 @@ export * from './FiveUserUnitBar';
 export * from './HomeCategoryBar';
 export * from './FivesBar';
 export * from './FiveUnitFull';
+export * from './FiveUnitFullCenter';
 export * from './FiveUnitBar';
 export * from './FiveUpdatedUnitBar';
 export * from './FiveStoryFull';

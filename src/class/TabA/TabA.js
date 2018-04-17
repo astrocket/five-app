@@ -58,12 +58,12 @@ export default class TabA extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-    const BUTTONS = [ '음악', '책', '이용자', '취소' ];
-    const category_koreans = [ '음악', '책', '이용자' ];
-    const pages = [ 'SearchFive', 'SearchFive', 'SearchUser'];
-    const categories = [ 'music', 'book', 'user' ];
-    const klasses = [ 'Music', 'Book', 'User' ];
-    const CANCEL_INDEX = 3;
+    const BUTTONS = [ '음악', '책', '취소' ];
+    const category_koreans = [ '음악', '책' ];
+    const pages = [ 'SearchFive', 'SearchFive'];
+    const categories = [ 'music', 'book' ];
+    const klasses = [ 'Music', 'Book' ];
+    const CANCEL_INDEX = 2;
 
     ActionSheet.show(
       {
@@ -162,12 +162,16 @@ export default class TabA extends Component {
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 flex: 1,
                 marginTop: Constant.globalPaddingTop,
               }}>
-                <View>
-                  <Text xlarge style={{ fontFamily: 'montserrat', color: '#333333' }}>{'Home'}</Text>
+                <View style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-start'
+                }}>
+                  <Text style={{ fontFamily: 'montserrat', fontSize: 28, color: Constant.LightGrey }}>{'Home'}</Text>
+                  <Text style={{ fontFamily: 'montserrat', fontSize: 12, color: Constant.LightGrey }}>{''}</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}
