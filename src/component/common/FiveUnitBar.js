@@ -46,7 +46,7 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
     );
   } else {
     return (
-      <ListItem avatarList button onPress={onPress} style={{height: 60, width: Constant.deviceWidth, backgroundColor: 'white' }}>
+      <ListItem avatarList button onPress={onPress} style={{height: 76, width: Constant.deviceWidth, backgroundColor: 'white' }}>
         <Image
           style={{ width: 60, height: 60, borderRadius: 16, margin: 0 }}
           source={{ uri: image_url }}

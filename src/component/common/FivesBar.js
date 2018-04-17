@@ -29,11 +29,11 @@ var pureWidth = Constant.deviceWidth - cardMargin * 2 - cardPadding * 2;
 const UnitImage = ({ five, image, width, height }) => {
   if (five) {
     return (
-      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1, borderRadius: 16 }}/>
+      <Image key={1} source={{ uri: five.image_medium_url }} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1, borderRadius: 12 }}/>
     )
   } else {
     return (
-      <Image key={2} source={image} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1,  borderRadius: 16}}/>
+      <Image key={2} source={image} style={{height: height - 2, width: width - 2, marginRight: 1, marginBottom: 1,  borderRadius: 12 }}/>
     )
   }
 };
@@ -69,7 +69,7 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
 
   return (
     <View>
-      <View style={{ width: pureWidth + cardPadding * 2, margin: cardMargin, padding: cardPadding, borderRadius: 16, backgroundColor: 'white' }}>
+      <View style={{ width: pureWidth + cardPadding * 2, margin: cardMargin, padding: cardPadding, borderRadius: 12, backgroundColor: 'white' }}>
         <TouchableOpacity style={{ backgroundColor: 'transparent' }} onPress={onPress}>
           <FiveImages fives={fives} image={image} pureWidth={pureWidth} />
           <ListItem cardStyle transparent button>
