@@ -162,12 +162,16 @@ export default class TabA extends Component {
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 flex: 1,
                 marginTop: Constant.globalPaddingTop,
               }}>
-                <View>
-                  <Text xlarge style={{ fontFamily: 'montserrat', color: '#333333' }}>{'Home'}</Text>
+                <View style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-start'
+                }}>
+                  <Text style={{ fontFamily: 'montserrat', fontSize: 28, color: Constant.LightGrey }}>{'Home'}</Text>
+                  <Text style={{ fontFamily: 'montserrat', fontSize: 12, color: Constant.LightGrey }}>{''}</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}

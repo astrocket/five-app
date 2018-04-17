@@ -219,10 +219,10 @@ export default class ProfileFiveIndex extends Component {
                     justifyContent: 'center',
                     marginBottom: 0,
                   }}>
-                  <Col style = {{ width: (Constant.deviceWidth - 256) / 2, backgroundColor: 'black' }}>
+                  <Col style = {{ width: 16, backgroundColor: 'blue' }}>
                   </Col>
                   <Col>
-                    <Row style={{ height: 12 }}></Row>
+                    <Row style={{ height: 8 }}></Row>
                     <FlatList
                       data={this.state.fives}
                       renderItem={({ item }) => (
@@ -244,7 +244,7 @@ export default class ProfileFiveIndex extends Component {
                       keyExtractor={item => 'five-bar-list-' + item.id}
                     />
                   </Col>          
-                  <Col style = {{ width: (Constant.deviceWidth - 256) / 2, backgroundColor: 'black' }}>
+                  <Col style = {{ width: 16, backgroundColor: 'blue' }}>
                   </Col>
                 </Grid>
               }
