@@ -82,12 +82,12 @@ export default class TabB extends Component {
 
   onClickAdd() {
     const { navigation } = this.props;
-
-    const BUTTONS = [ '음악', '취소' ];
-    const category_koreans = [ '음악' ];
-    const categories = [ 'music' ];
-    const klasses = [ 'Music' ];
-    const CANCEL_INDEX = 1;
+    const BUTTONS = [ '음악', '책', '취소' ];
+    const category_koreans = [ '음악', '책' ];
+    const pages = [ 'SearchFive', 'SearchFive'];
+    const categories = [ 'music', 'book' ];
+    const klasses = [ 'Music', 'Book' ];
+    const CANCEL_INDEX = 2;
 
     ActionSheet.show(
       {
@@ -96,7 +96,7 @@ export default class TabB extends Component {
         title: '+ FIVE',
       },
       buttonIndex => {
-        navigation.navigate('SearchFive', {
+        navigation.navigate(`${pages[ buttonIndex ]}`, {
           klass: klasses[ buttonIndex ],
           category_korean: category_koreans[ buttonIndex ],
           category: categories[ buttonIndex ],

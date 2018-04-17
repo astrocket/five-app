@@ -12,6 +12,7 @@ import {
 import {
   FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, ShowMore, SearchUserUnitBar,
 } from '../../component/common';
+import UserContacts from '../Device/UserContacts';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -122,6 +123,9 @@ export default class SearchUser extends Component {
                 />
               )}
               keyExtractor={item => 'search-five-list-' + item.id}
+              ListHeaderComponent={
+                <UserContacts showContacts navigation={this.props.navigation}/>
+              }
               ListFooterComponent={
                 this.renderNextPageButton()
               }
@@ -146,9 +150,12 @@ export default class SearchUser extends Component {
               )}
               keyExtractor={item => 'search-user-suggestion-list-' + item.id}
               ListHeaderComponent={
-                <RowHeaderBar
-                  title={'팔로워 추천'}
-                />
+                <View>
+                  <UserContacts showContacts navigation={this.props.navigation}/>
+                  <RowHeaderBar
+                    title={'팔로워 추천'}
+                  />
+                </View>
               }
             />
           </Content>

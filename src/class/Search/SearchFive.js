@@ -29,7 +29,7 @@ export default class SearchFive extends Component {
     super(props);
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      loading: false,
+      loading: true,
       header: {
         headers: {
           'X-User-Email': this.props.ApplicationStore.email,
@@ -45,11 +45,26 @@ export default class SearchFive extends Component {
       methods: this.methodsPerApi(this.props.navigation.state.params.category),
       no_more: true,
       chunks: [],
-      searched: true,
+      searched: false,
       no_result: true,
-      wishes: this.props.navigation.state.params.wishes,
+      wishes: [],
       headerShow: true,
     };
+  }
+
+  componentDidMount() {
+    this.apiCall();
+  }
+
+  async apiCall() {
+    await axios.get(`${ApiServer.MY_PROFILE}/wishes?category=${this.state.category}`, this.state.header)
+      .then((response) => {
+        console.log(response.data.categories[0].wishes);
+        this.setState({
+          loading: false,
+          wishes: response.data.categories[0].wishes,
+        });
+      }).catch((error) => {console.log(JSON.stringify(error.response))});
   }
 
   methodsPerApi(category) {
@@ -408,28 +423,28 @@ export default class SearchFive extends Component {
         );
       }
     } else {
-      if (this.state.wishes) {
+      if (this.state.wishes.length > 0) {
         return (
           <Content onScroll={(e) => this.handleScroll(e)}>
             <FlatList
               data={this.state.wishes}
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
-                  id={item.id}
-                  image_url={item.image_medium_url}
-                  title={item.title}
-                  subtitle={item.subtitle}
-                  clicked={item.already_five}
-                  friends_info={`FIVE ${item.five_users_count}`}
-                  onPress={() => this.state.methods.add_wish_api(item, index, this.namesPerApi(item).title)}
+                  id={item.wish.id}
+                  image_url={item.wish.image_medium_url}
+                  title={item.wish.title}
+                  subtitle={item.wish.subtitle}
+                  clicked={item.also_five}
+                  friends_info={`FIVE ${item.wish.five_users_count}`}
+                  onPress={() => this.state.methods.add_wish_api(item, index, this.namesPerApi(item.wish).title)}
                   onPressImage={() => this.props.navigation.navigate('FiveShow', {
                     category: this.state.category,
-                    id: item.id,
-                    title: item.title,
+                    id: item.wish.id,
+                    title: item.wish.title,
                   })}
                 />
               )}
-              keyExtractor={item => 'five-wish-list-' + item.id}
+              keyExtractor={item => 'five-wish-list-' + item.wish.id}
               ListHeaderComponent={
                 <RowHeaderBar
                   title={`클립해 둔 아래 ${this.state.category_korean}들 중에서도 선택할 수 있어요.`}
@@ -440,9 +455,11 @@ export default class SearchFive extends Component {
         );
       } else {
         return (
-          <Content onScroll={(e) => this.handleScroll(e)}>
-            <Text>검색전</Text>
-          </Content>
+          <View style={{
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
+          }}>
+            <Text>관심있는 Five를 검색 해보세요.</Text>
+          </View>
         );
       }
     }
@@ -481,8 +498,7 @@ export default class SearchFive extends Component {
             />
             <TouchableOpacity onPress={() => this.setState({
               input_search: '',
-              searched: true,
-              no_result: true,
+              searched: false,
             })}>
               <Icon name="md-close"/>
             </TouchableOpacity>

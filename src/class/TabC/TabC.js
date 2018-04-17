@@ -1,21 +1,8 @@
 import React, { Component } from 'react';
 import {
-  View, TouchableOpacity, AsyncStorage, FlatList, Alert, Keyboard,
-} from 'react-native';
-import {
-  Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, List, ListItem,
-} from 'native-base';
-import {
-  Col, Row, Grid,
-} from 'react-native-easy-grid';
-import {
-  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, TabIcon,
+  TabIcon,
 } from '../../component/common';
 import axios from 'axios';
-import {
-  UserUnitRound, FivesBar, NavBar,
-} from '../../component/common';
 import SearchUser from '../Search/SearchUser';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
