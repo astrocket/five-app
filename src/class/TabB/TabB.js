@@ -188,7 +188,7 @@ export default class TabB extends Component {
                     fontSize: 26,
                     padding: 5,
                   }} large numberOfLines={1}>{my_profile.name}</Text>
-                  <Text note style={{ width: 250, textAlign: 'center', padding: 3 }} numberOfLines={2}>❝ {my_profile.introduce} ❞</Text>
+                  <Text note style={{ width: 250, textAlign: 'center', padding: 3 }} numberOfLines={2}> {my_profile.introduce} </Text>
                 </Col>
               </Row>
             }

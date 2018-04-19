@@ -25,7 +25,7 @@ import * as Constant from '../../config/Constant';
 const NotificationUnitBar = ({ id, user, title, created_at, onPress }) => {
   const { container } = BaseStyle;
   return (
-    <ListItem avatar button onPress={onPress} transparent style={{ marginLeft: 0}}>
+    <ListItem avatar button onPress={onPress} transparent style={{ marginLeft: 6}}>
       <Left>
         <Thumbnail source={{ uri: user.image_url }}/>
       </Left>
@@ -48,28 +48,26 @@ const NotificationUnitBar = ({ id, user, title, created_at, onPress }) => {
 const styles = StyleSheet.create({
   noticeName: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 10,
+    padding: 8,
     color: '#333333',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '600',
   },
   noticeBody: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 10,
+    padding: 4,
+    paddingRight: 12, 
     color: '#555555',
-    fontSize: 15
+    fontSize: 16,
   },
   noticeSub: {
-    justifyContent: 'flex-end',
     alignItems: 'center',
     color: Constant.LightGrey,
-    padding: 10
+    padding: 4,
   },
   noticeBold: {
     alignItems: 'center',
-    padding: 10
+    padding: 8,
   },
 })
 

@@ -11,6 +11,7 @@ import {
   Thumbnail,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
+import * as Constant from '../../config/Constant';
 
 const UserUnitRound = ({ id, name, image_url, large, onPress, barWidth, barHeight, borderRadius, marginRight, fontSize }) => {
   const { container } = BaseStyle;
@@ -37,8 +38,10 @@ const UserUnitRound = ({ id, name, image_url, large, onPress, barWidth, barHeigh
         </View>
         <View>
           <Text style={{
+            color: Constant.GreyColor,
             textAlign: 'center',
             fontSize: fontSize,
+            fontFamily: 'montserrat'
           }} large={large} numberOfLines={1}>{name}</Text>
         </View>
       </View>

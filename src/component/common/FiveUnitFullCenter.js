@@ -57,7 +57,7 @@ const FiveUnitFullCenter = ({ id, subtitle, title, image_url, friends_info, onPr
               }}/>
             </Button>
           </Row>
-          <Row size={9} style={{ justifyContent: 'center', padding: 12, backgroundColor: 'white' }}>
+          <Row size={9} style={{ justifyContent: 'center', padding: 12, backgroundColor: 'white', marginRight: 10, marginLeft: 10 }}>
             <Text large numberOfLines={1}>{title}</Text>
           </Row>
           <Row size={7} style={{ width: 260, justifyContent: 'center', marginRight: 20, marginLeft: 20 }}>

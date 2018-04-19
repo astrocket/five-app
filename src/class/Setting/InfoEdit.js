@@ -150,7 +150,7 @@ export default class UserInfoNew extends Component {
           leftAsImage
           leftIcon={require('../../assets/images/back_icon_pink.png')}
           onPressLeft={() => navigation.goBack()}
-          headerText={`프로필 변경`}
+          headerText={`내 프로필 변경`}
         />
         <Content padder>
           <Grid>
@@ -166,14 +166,13 @@ export default class UserInfoNew extends Component {
                   name={my_profile.name}
                   image_url={my_profile.image_medium_url}
                   onPress={() => this.openImagePicker()}
-                  barWidth={100}
-                  barHeight={100}
-                  borderRadius={50}
-                  marginRight={10}
-                  fontSize={24}
+                  barWidth={110}
+                  barHeight={110}
+                  borderRadius={55}
+                  marginRight={0}
+                  fontSize={22}
                 />
-                <Text>  </Text>
-                <Text note style={{ width: 250, textAlign: 'center' }}>{my_profile.introduce}</Text>
+                <Text note style={{ width: 250, textAlign: 'center', padding: 8 }}>{my_profile.introduce}</Text>
               </Col>
             </Row>
             <Row style={{ marginBottom: 5 }}>
