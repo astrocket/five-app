@@ -23,7 +23,7 @@ const SearchUserUnitBar = ({ user, onPress }) => {
     return (
       <ListItem avatar button onPress={onPress}>
         <Left>
-          <Thumbnail small style={{ marginLeft: 3 }} source={{ uri: user.image_thumb_url }}/>
+          <Thumbnail small style={{ marginLeft: 4 }} source={{ uri: user.image_thumb_url }}/>
         </Left>
         <Body style={{ borderBottomWidth: 0 }}>
         <Text small style={styles.followUnitName} numberOfLines={1}>{user.name}</Text>
@@ -44,7 +44,7 @@ const SearchUserUnitBar = ({ user, onPress }) => {
     return (
       <ListItem avatar button onPress={onPress}>
         <Left>
-          <Thumbnail small source={{ uri: user.image_thumb_url }}/>
+          <Thumbnail small style={{ marginLeft: 4 }} source={{ uri: user.image_thumb_url }}/>
         </Left>
         <Body style={{ borderBottomWidth: 0 }}>
         <Text numberOfLines={1}>{user.name}</Text>

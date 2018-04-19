@@ -484,12 +484,12 @@ export default class SearchFive extends Component {
           title={`${this.state.category_korean} 검색`}
           custom
           rightButton
-          rightAsImage
-          buttonIcon={require('../../assets/images/go_icon_grey.png')}
+          buttonIcon={'times-circle'}
           onPressRight={() => navigation.goBack()} />
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,
+          elevation: 0,
           borderBottomWidth: 0,
           backgroundColor: 'white',
         }}>
@@ -513,7 +513,7 @@ export default class SearchFive extends Component {
               input_search: '',
               searched: false,
             })}>
-              <Icon name="times-circle" style = {{ fontSize: 26, color: 'grey', marginRight: 12 }}/>
+              <Icon name="times" style = {{ fontSize: 20, color: 'grey', marginRight: 12 }}/>
             </TouchableOpacity>
           </Item>
         </Header>

@@ -73,8 +73,8 @@ export default class HomeIndex extends Component {
         this.followCall(item, index);
       } else {
         Alert.alert(
-          `아직 참여한 카테고리는 아니에요`,
-          `${item.user.name}님을 팔로우 하고 함께 ${item.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          `아직 시작한 주제가 아니에요`,
+          `${item.category_korean} 파이브를 시작하고 ${item.user.name}님을 팔로우 하시겠어요?`,
           [
             {
               text: '네',

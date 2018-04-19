@@ -122,7 +122,7 @@ export default class TabA extends Component {
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
-            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20 }]}>
+            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20, marginLeft: 2 }]}>
               <Text style={styles.cateTab}>홈</Text>
             </TouchableOpacity>
           }
@@ -152,9 +152,9 @@ export default class TabA extends Component {
       <Container>
         {this.state.headerShow ?
           <Header style={{
-            paddingTop: Constant.globalPaddingTop + 10,
-            height: Constant.globalPaddingTop + 10 + 72 + 56,
-            paddingLeft: 24,
+            paddingTop: Constant.globalPaddingTop + 12,
+            height: Constant.globalPaddingTop + 12 + 66 + 56,
+            paddingLeft: 16,
             paddingRight: 24,
             backgroundColor: '#FFF',
             borderBottomWidth: 0
@@ -174,8 +174,7 @@ export default class TabA extends Component {
                   justifyContent: 'flex-end',
                   alignItems: 'flex-start'
                 }}>
-                  <Text style={styles.mainTitle}>{'Home'}</Text>
-                  <Text style={{ fontFamily: 'montserrat', fontSize: 12, color: Constant.LightGrey }}>{''}</Text>
+                  <Text style={styles.mainTitle}>{'홈'}</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}
@@ -194,7 +193,7 @@ export default class TabA extends Component {
         }
         <Tabs locked initialPage={0} ref={(tabView) => {
           this.tabView = tabView;
-        }} tabBarUnderlineStyle={{ opacity: 1 }} tabBarPosition={'overlayTop'} 
+        }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'} 
               renderTabBar={() => <ScrollableTab/>}>
           <Tab heading={<TabHeading/>}>
             <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
@@ -213,8 +212,8 @@ export default class TabA extends Component {
 
 const styles = StyleSheet.create({
   mainTitle: {
-    color: Constant.LightGrey,
-    fontSize: 32,
+    color: '#333333',
+    fontSize: 36,
     fontWeight: '900',
     fontFamily: "montserrat"
   },

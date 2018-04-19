@@ -193,6 +193,7 @@ export default class SearchUser extends Component {
         <Header searchBar style={{
           paddingTop: 0,
           height: 56,
+          elevation: 0,
           borderBottomColor: 'white',
           backgroundColor: 'white',
         }}>
@@ -216,7 +217,7 @@ export default class SearchUser extends Component {
               input_search: '',
               searched: false,
             })}>
-              <Icon name="times-circle" style = {{ fontSize: 26, color: 'grey', marginRight: 12 }}/>
+              <Icon name="times" style = {{ fontSize: 20, color: 'grey', marginRight: 12 }}/>
             </TouchableOpacity>
           </Item>
         </Header>

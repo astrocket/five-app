@@ -3,11 +3,13 @@ import {
   View, Image
 } from 'react-native';
 import {
-  Text, Header, Left, Body, Right, Title, Button, Icon,
+  Text, Header, Left, Body, Right, Title, Button,
 } from 'native-base';
 import { ImageCon } from './';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ElevenHeader = (props) => {
   const { container } = BaseStyle;
@@ -38,7 +40,8 @@ const ElevenHeader = (props) => {
                     name={buttonIcon}
                     style={{
                       fontSize: 28,
-                      color: Constant.FiveColor,
+                      color: Constant.LightGrey,
+                      marginRight: 2,
                     }}
                   />
                 }
@@ -61,7 +64,7 @@ const ElevenHeader = (props) => {
                     name={buttonIcon}
                     style={{
                       fontSize: 28,
-                      color: Constant.FiveColor,
+                      color: Constant.LightGrey,
                     }}
                   />}
               </Button>
