@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, Alert, ListView, Keyboard, TouchableOpacity
+  View, FlatList, Alert, ListView, Keyboard, TouchableOpacity, Image,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -503,11 +503,11 @@ export default class SearchFive extends Component {
       } else {
         return (
           <View style={{
-            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white',
           }}>
-            <Text>FIVE를 검색 해보세요.</Text>
+            <Image style = {{ width: 100, height: 100 }} source = {require('../../assets/images/sign_up_done.png')} />
           </View>
-        );
+        );보
       }
     }
   }

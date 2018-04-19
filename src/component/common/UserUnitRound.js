@@ -38,10 +38,9 @@ const UserUnitRound = ({ id, name, image_url, large, onPress, barWidth, barHeigh
         </View>
         <View>
           <Text style={{
-            color: Constant.GreyColor,
+            color: '#333333',
             textAlign: 'center',
             fontSize: fontSize,
-            fontFamily: 'montserrat'
           }} large={large} numberOfLines={1}>{name}</Text>
         </View>
       </View>

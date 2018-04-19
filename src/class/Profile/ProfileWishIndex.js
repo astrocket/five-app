@@ -88,9 +88,13 @@ export default class ProfileWishIndex extends Component {
         }} activeTabStyle={{
           backgroundColor: 'transparent'
         }} textStyle={{
-          color: Constant.GreyColor
+          color: Constant.LightGrey,
+          fontSize: 18,
+          fontWeight: '900'
         }} activeTextStyle={{
-          color: Constant.FiveColor
+          color: '#333333',
+          fontSize: 18,
+          fontWeight: '900',
         }}>
           <ProfileWishShow
             klass={klass}
