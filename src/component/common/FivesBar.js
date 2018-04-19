@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import {
   Card,
   CardItem,
@@ -75,12 +75,12 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
           <ListItem cardStyle transparent button>
             <Thumbnail size={50} source={fiveImage}/>
             <Body>
-              <Text medium style={{ fontFamily: 'montserrat', margin: 2 }}>{Constant.CategoryToKorean(category)}</Text>
-              <View style={{ flexDirection: 'row', padding: 2}}>
-                <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followers).toLocaleString()}</Text>
-                <Text note>{'팔로워'}</Text>
-                <Text small style={{ fontFamily: 'montserrat', marginRight: 0 }}>{Number(followees).toLocaleString()}</Text>
-                <Text note>{'팔로잉'}</Text>
+              <Text medium style={{ fontFamily: 'montserrat', paddingTop: 3, paddingBottom: 2 }}>{Constant.CategoryToKorean(category)}</Text>
+              <View style = {{ flexDirection: 'row' }}>
+                <Col>
+{/*                  <Text style = {styles.fivesBarFollowNumber}>아이유 스물셋 외 4</Text> */}
+                  <Text style = {styles.fivesBarFollowNumber}>{'팔로워'}  {Number(followers).toLocaleString()}      {'팔로잉'}  {Number(followees).toLocaleString()}</Text> 
+                </Col>
               </View>
             </Body>
             {followButton ?
@@ -101,5 +101,21 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+
+  fivesBarFollowText: {
+    color: Constant.GreyColor,
+    fontFamily: 'montserrat',
+    fontSize: 14,
+    fontWeight: '100',
+  },
+  fivesBarFollowNumber: {
+    color: Constant.LightGrey,
+    fontFamily: 'montserrat',
+    fontSize: 14,
+    fontWeight: '100',
+  },
+});
 
 export { FivesBar };

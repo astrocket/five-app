@@ -87,7 +87,7 @@ export default class UserContacts extends Component {
         <EmptyBox
           barWidth={Constant.deviceWidth - 20}
           onPress={() => RNOpenSettings.openSettings()}
-          message={`아직 연락처 공유를 안하셨네요. ${'\n'}여기를 눌러서 연락처를 통해 친구를 찾아보세요`}
+          message={`내 주변 친구들의 취향이 궁금하다면?. ${'\n'}여기를 눌러서 연락처를 통해 친구를 찾아보세요.`}
           barHeight={100}
           borderRadius={10}
           marginRight={0}

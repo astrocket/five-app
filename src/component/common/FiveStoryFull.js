@@ -82,10 +82,10 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
                 <View style={{ flex: 65, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
                   <Text></Text>
                 </View>
-                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 14 }}>
+                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 18 }}>
                   <Text normal numberOfLines={1} style={{ color: Constant.LightGrey, fontWeight: '900', textShadowColor: 'black' }}>{subtitle}</Text>
                 </View>
-                <View style={{ flex: 20, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 12, width: 310 }}> 
+                <View style={{ flex: 20, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 16, width: 310 }}> 
                   <Text numberOfLines={2} style={{ color: 'white', fontSize: 32, fontWeight: '900' }}>{title}</Text>
                 </View>
                 <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>

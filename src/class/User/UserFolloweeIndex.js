@@ -11,6 +11,9 @@ import {
 } from 'react-native-easy-grid';
 import { FollowUnitBar, EmptyBox } from '../../component/common';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -21,8 +24,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class UserFolloweeIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: '팔로잉',
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -79,7 +81,14 @@ export default class UserFolloweeIndex extends Component {
     const { navigation } = this.props;
 
     return (
-      <Container>
+      <Container style={{ backgroundColor: 'white' }}>
+       <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`팔로잉`}
+        />
 {/*        <Header searchBar noShadow rounded style={{paddingTop: 0, height: 56 }}>
           <Item>
             <Icon name="ios-search" />

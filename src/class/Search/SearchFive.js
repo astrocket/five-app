@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, Button, Toast, Left, Body, Title, Right,
+  Item, Input, Button, Toast, Left, Body, Title, Right,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -16,6 +16,8 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -364,7 +366,7 @@ export default class SearchFive extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 100;
+    var headerShow = currentOffset < 50;
     this.setState({ headerShow });
   }
 
@@ -393,7 +395,13 @@ export default class SearchFive extends Component {
           <View style={{
             justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
-            <Text>검색 결과가 없습니다</Text>
+            <EmptyBox
+              barWidth={Constant.deviceWidth - 20}
+              message={`검색 결과가 없어요. ${'\n'}다른 검색어로 다시 시도해 보세요!`}
+              barHeight={100}
+              borderRadius={10}
+              marginRight={10}
+            />
           </View>
         );
       } else {
@@ -447,7 +455,7 @@ export default class SearchFive extends Component {
               keyExtractor={item => 'five-wish-list-' + item.wish.id}
               ListHeaderComponent={
                 <RowHeaderBar
-                  title={`클립해 둔 아래 ${this.state.category_korean}들 중에서도 선택할 수 있어요.`}
+                  title={`보관함의 ${this.state.category_korean} 중에서도 선택할 수 있어요.`}
                 />
               }
             />
@@ -458,7 +466,7 @@ export default class SearchFive extends Component {
           <View style={{
             justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
-            <Text>관심있는 Five를 검색 해보세요.</Text>
+            <Text>FIVE를 검색 해보세요.</Text>
           </View>
         );
       }
@@ -477,20 +485,25 @@ export default class SearchFive extends Component {
           custom
           rightButton
           rightAsImage
-          buttonIcon={require('../../assets/images/cancel_icon_grey.png')}
+          buttonIcon={require('../../assets/images/go_icon_grey.png')}
           onPressRight={() => navigation.goBack()} />
         <Header searchBar rounded style={{
           paddingTop: 0,
           height: 56,
+          borderBottomWidth: 0,
+          backgroundColor: 'white',
         }}>
-          <Item>
-            <Icon name="ios-search"/>
+          <Item style = {{ backgroundColor: Constant.LightGrey, height: 44, borderRadius: 12 }}>
+            <Icon name="search" style={{ fontSize: 26, color: 'grey', marginLeft: 12, marginRight: 6 }}/>
             <Input
-              placeholder={`좋아하는 ${this.state.category_korean}을 검색해서 FIVE로 추가하세요`}
+              showLoading
+              placeholderTextColor={Constant.GreyColor}
+              placeholder={`좋아하는 ${this.state.category_korean}을 찾아 보세요...`}
               autoCapitalize={'none'}
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
+              cancelButtonTitle={'취소'}
               value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.setState({page:1},this.state.methods.search_api(this.state.input_search))}
@@ -500,7 +513,7 @@ export default class SearchFive extends Component {
               input_search: '',
               searched: false,
             })}>
-              <Icon name="md-close"/>
+              <Icon name="times-circle" style = {{ fontSize: 26, color: 'grey', marginRight: 12 }}/>
             </TouchableOpacity>
           </Item>
         </Header>

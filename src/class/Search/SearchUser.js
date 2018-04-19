@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
-  Item, Input, Icon, List, ListItem,
+  Item, Input, List, ListItem,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -18,6 +18,8 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -103,9 +105,15 @@ export default class SearchUser extends Component {
       if (this.state.no_result) {
         return (
           <View style={{
-            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
+            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white'
           }}>
-            <Text>검색 결과가 없습니다</Text>
+            <EmptyBox
+              barWidth={Constant.deviceWidth - 20}
+              message={`검색 결과가 없어요. ${'\n'}다른 아이디로 다시 검색해 보세요!`}
+              barHeight={100}
+              borderRadius={10}
+              marginRight={10}
+            />
           </View>
         );
       } else {
@@ -153,7 +161,7 @@ export default class SearchUser extends Component {
                 <View>
                   <UserContacts showContacts navigation={this.props.navigation}/>
                   <RowHeaderBar
-                    title={'팔로워 추천'}
+                    title={'팔로우 제안'}
                   />
                 </View>
               }
@@ -180,19 +188,25 @@ export default class SearchUser extends Component {
       <Container keyboardShouldPersistTaps={'always'}>
         <ElevenHeader
           headerShow={this.state.headerShow}
+          custom
           title={`친구찾기`}/>
-        <Header searchBar rounded style={{
+        <Header searchBar style={{
           paddingTop: 0,
           height: 56,
+          borderBottomColor: 'white',
+          backgroundColor: 'white',
         }}>
-          <Item>
-            <Icon name="ios-search"/>
+          <Item style = {{ backgroundColor: Constant.LightGrey, height: 44, borderRadius: 12 }}>
+            <Icon name="search" style={{ fontSize: 26, color: 'grey', marginLeft: 12, marginRight: 6 }}/>
             <Input
-              placeholder={`좋아하는 유저를 검색해서 팔로우 해보세요`}
+              showLoading
+              placeholder={` 아이디로 친구를 찾아 보세요...`}
+              placeholderTextColor={Constant.GreyColor}
               autoCapitalize={'none'}
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
+              cancelButtonTitle={'취소'}
               value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.setState({page:1}, this.searchUser(this.state.input_search))}
@@ -202,7 +216,7 @@ export default class SearchUser extends Component {
               input_search: '',
               searched: false,
             })}>
-              <Icon name="md-close"/>
+              <Icon name="times-circle" style = {{ fontSize: 26, color: 'grey', marginRight: 12 }}/>
             </TouchableOpacity>
           </Item>
         </Header>

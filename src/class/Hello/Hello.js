@@ -81,7 +81,7 @@ export default class Hello extends Component {
           margin: 36,
           padding: 0,
           alignSelf: 'stretch',
-          backgroundColor: 'red',
+          backgroundColor: '#fafafa',
         }}>
           <List style = {{ borderRadius: 24 }} >
             <ListItem noBorder style={{ justifyContent: 'center' }}>

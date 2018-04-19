@@ -84,29 +84,29 @@ export default class ProfileWishIndex extends Component {
   renderTabButtons(goToPage) {
     const { flexCenterCenter } = BaseStyle;
     return (
-      <View style={{
+      <View style = {{
         flex: 1,
+        backgroundColor: 'red',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        height: 24,
-      }}>
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start' }}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{
-            height: 24,
+            height: 36,
           }}
           data={this.state.categories}
           renderItem={({ item, index }) => (
             <TouchableOpacity key={index} onPress={() => goToPage(index)}
-                              style={[ flexCenterCenter, {
+                              style={{
                                 height: 24,
                                 width: null,
-                                paddingRight: 16,
-                              } ]}>
+                                paddingRight: 24,
+                              }}>
               <Text normal style={{
                         color: '#333333',
-                        fontSize: 22,
+                        fontSize: 20,
                         fontWeight: '900'
                       }}>
                   {item.category_korean}
@@ -133,11 +133,13 @@ export default class ProfileWishIndex extends Component {
           headerText="내 보관함"
         />
         <Header style={{
-          backgroundColor: '#FFFFFF',
-          paddingLeft: 16,
-          paddingRight: 16,
+          backgroundColor: 'blue',
+          alignItems: 'flex-start',
+          paddingLeft: 24,
+          paddingRight: 24,
           borderBottomWidth: 0,
-          height: 46,
+          height: 36,
+          elevation: 0
         }}>
           {this.renderTabButtons((page) => this.tabView.goToPage(page))}
         </Header>

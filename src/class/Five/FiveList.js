@@ -11,14 +11,16 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+import { EmptyBox, NavBar } from '../../component/common';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
 export default class FiveList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
-    ...Constant.FiveNavOptions,
+    header: null,
   });
 
   constructor(props) {
@@ -97,6 +99,13 @@ export default class FiveList extends Component {
 
     return (
       <Container>
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={navigation.state.params.title}
+        />
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -106,7 +115,7 @@ export default class FiveList extends Component {
           <FlatList
             data={this.state.fives}
             style={{
-              paddingTop: 10,
+              padding: 6,
             }}
             renderItem={({ item }) => (
               <FiveUnitBar
@@ -116,7 +125,7 @@ export default class FiveList extends Component {
                 subtitle={item.subtitle}
                 friends_info={`FIVE ${item.five_users_count}`}
                 image_url={item.image_medium_url}
-                icon={'ios-arrow-forward-outline'}
+                icon={null}
                 onPress={() => this.props.navigation.navigate('FiveShow', {
                   category: item.category,
                   title: item.title,

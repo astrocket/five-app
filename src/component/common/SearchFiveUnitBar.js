@@ -34,7 +34,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
 
   if (clicked) {
     return (
-      <ListItem avatarList style={{ height: 76, padding: 8 }}>
+      <ListItem avatarList style={{ height: 76, padding: 8, marginLeft: 8 }}>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
@@ -63,7 +63,7 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
     );
   } else {
     return (
-      <ListItem avatarList style={{ height: 76, padding: 8 }}>
+      <ListItem avatarList style={{ height: 76, padding: 8, marginLeft: 8 }}>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>

@@ -132,8 +132,8 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      borderRadius={15}
-                      marginRight={10}
+                      borderRadius={3}
+                      marginRight={16}
                       cardCut={80}
                     />
                   )}
@@ -182,7 +182,7 @@ export default class FiveIndex extends Component {
               }
             </Row>
             <RowHeaderBar
-              title={`내가 클립해 둔 ${this.state.category_korean}`}
+              title={`내가 보관해 둔 ${this.state.category_korean}`}
               onPress={() => navigation.navigate('ProfileWishIndex')}
               moreTitle={'모두보기'}
             />
@@ -207,8 +207,8 @@ export default class FiveIndex extends Component {
                       })}
                       barWidth={150}
                       barHeight={150}
-                      borderRadius={15}
-                      marginRight={10}
+                      borderRadius={12}
+                      marginRight={16}
                     />
                   )}
                   keyExtractor={item => 'wish-five-' + item.id}
@@ -224,7 +224,7 @@ export default class FiveIndex extends Component {
 
             </Row>
             <RowHeaderBar
-              title={`당신을 위한 클립 제안`}
+              title={`당신을 위한 ${this.state.category_korean} 제안`}
             />
             <Row>
               {this.state.challenge_fives.length > 0 ?
@@ -247,8 +247,8 @@ export default class FiveIndex extends Component {
                       })}
                       barWidth={150}
                       barHeight={150}
-                      borderRadius={15}
-                      marginRight={10}
+                      borderRadius={12}
+                      marginRight={16}
                     />
                   )}
                   keyExtractor={item => 'five-challenge-' + item.id}

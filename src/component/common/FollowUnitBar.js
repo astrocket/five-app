@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  Image, View,
+  Image, View, StyleSheet,
 } from 'react-native';
 import {
   Card, CardItem, Text, Thumbnail, ListItem, Left, Body, Right, Badge,
 } from 'native-base';
 import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
+import * as Constant from '../../config/Constant';
 
 const FollowUnitBar = ({ user, onPress, following }) => {
   const { container } = BaseStyle;
@@ -16,15 +17,15 @@ const FollowUnitBar = ({ user, onPress, following }) => {
         <Left>
           <Thumbnail small source={{ uri: user.image_thumb_url }}/>
         </Left>
-        <Body style={{ borderBottomWidth: 0 }}>
-        <Text numberOfLines={1}>{user.name}</Text>
-        <Text note numberOfLines={1}>{user.introduce}</Text>
+        <Body style={{ borderBottomWidth: 0}}>
+          <Text small style={styles.followUnitName} numberOfLines={1}>{user.name}</Text>
+          <Text note style={styles.followUnitComment} numberOfLines={1}>{user.introduce}</Text>
         </Body>
         <Right style={{
           borderBottomWidth: 0,
           width: 80,
           flexDirection: 'row',
-          justifyContent: 'center',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
           {following.restaurant &&
@@ -45,13 +46,29 @@ const FollowUnitBar = ({ user, onPress, following }) => {
         <Left>
           <Thumbnail small source={{ uri: user.image_thumb_url }}/>
         </Left>
-        <Body style={{ borderBottomWidth: 0 }}>
-        <Text numberOfLines={1}>{user.name}</Text>
-        <Text note numberOfLines={1}>{user.introduce}</Text>
+        <Body style={{ borderBottomWidth: 0}}>
+          <Text small style={styles.followUnitName} numberOfLines={1}>{user.name}</Text>
+          <Text note style={styles.followUnitComment} numberOfLines={1}>{user.introduce}</Text>
         </Body>
       </ListItem>
     );
   }
 };
+
+const styles = StyleSheet.create({
+
+  followUnitName: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 14,
+    fontWeight: '100',
+    paddingTop: 3,
+  },
+  followUnitComment: {
+    color: Constant.LightGrey,
+    fontSize: 12,
+    fontWeight: '100',
+  },
+});
 
 export { FollowUnitBar };

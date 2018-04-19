@@ -23,47 +23,53 @@ const FiveUnitFullCenter = ({ id, subtitle, title, image_url, friends_info, onPr
   if (multiple) {
     return (
       <Grid style={{
-          backgroundColor: 'red',
+          backgroundColor: '#fafafa',
           height: 400,
           width: Constant.deviceWidth,
           justifyContent: 'center',
           marginBottom: 0,
         }}>
-        <Col style = {{ width: (Constant.deviceWidth - 268) / 2, backgroundColor: 'black' }}>
+        <Col style = {{ width: 16, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
         </Col>
-        <Col style={{ backgroundColor: 'yellow', borderRadius: 16 }}>
-          <Row size={65}
+        <Col style = {{ width: (Constant.deviceWidth - 292) / 2 - 16, backgroundColor: '#fafafa' }}>
+        </Col>
+        <Col style={{ backgroundColor: 'white', borderRadius: 16 }}>
+          <Row size={70}
             style={{
-            width: 268,
+            width: 292,
             borderRadius: 12,
             padding: 16,
             }}>
             <Button transparent style={{
               flex: 1,
-              height: 240,
-              width: 240,
+              height: 260,
+              width: 260,
               marginBottom: 0,
+              borderRadius: 3
               }} onPress={onPress}>
-              <Image source={{ uri: image_url }} style={{
-                height: 240,
-                width: 240,
-                borderRadius: borderRadius,
-                marginBottom: 0,
-                flex: 1,
+              <Image 
+                source={{ uri: image_url }}
+                style={{
+                  height: 260,
+                  width: 260,
+                  borderRadius: 3,
+                  resizeMode: 'contain'
               }}/>
             </Button>
           </Row>
-          <Row size={10} style={{justifyContent: 'center' }}>
+          <Row size={9} style={{ justifyContent: 'center', padding: 12, backgroundColor: 'white' }}>
             <Text large numberOfLines={1}>{title}</Text>
           </Row>
-          <Row size={10} style={{ justifyContent: 'center' }}>
+          <Row size={7} style={{ width: 260, justifyContent: 'center', marginRight: 20, marginLeft: 20 }}>
             <Text note numberOfLines={1}>{subtitle}</Text>
           </Row>
-          <Row size={15} style={{ justifyContent: 'center' }}>
+          <Row size={14} style={{ justifyContent: 'center' }}>
             <Text micro yellow>{friends_info}</Text>
           </Row>
+        </Col>
+        <Col style = {{ width: (Constant.deviceWidth - 292) / 2 - 16, backgroundColor: '#fafafa' }}>
         </Col>          
-        <Col style = {{ width: (Constant.deviceWidth - 268) / 2, backgroundColor: 'black' }}>
+        <Col style = {{ width: 16, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
         </Col>
       </Grid>
     );

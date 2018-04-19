@@ -11,6 +11,9 @@ import {
 import { NavigationActions } from 'react-navigation';
 import { InputSingle } from '../../component/common';
 import axios from 'axios';
+import {
+  UserUnitRound, FivesBar, NavBar,
+} from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
