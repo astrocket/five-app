@@ -67,7 +67,6 @@ export default class UserShow extends Component {
     });
   }
 
-
   askFollowOption(item, index) {
     console.log(JSON.stringify(this.props.ApplicationStore.categories));
     this.props.ApplicationStore.hasCategory(item.category).then((have) => {
@@ -76,17 +75,17 @@ export default class UserShow extends Component {
       } else {
         Alert.alert(
           `아직 참여한 카테고리는 아니에요`,
-          `${item.state.user.name}님을 팔로우 하고 함께 ${item.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          `${Constant.askToParticipate(item.category_korean, this.state.user.name)}`,
           [
             {
               text: '네',
-              onPress: () => this.followCall(item, index).then(() => {
+              onPress: () => {
                 this.props.navigation.navigate(`SearchFive`, {
                   category: item.category,
                   category_korean: item.category_korean,
                   klass: item.klass,
                 });
-              }),
+              },
             },
             {
               text: '취소',

@@ -74,7 +74,7 @@ export default class HomeIndex extends Component {
       } else {
         Alert.alert(
           `아직 참여한 카테고리는 아니에요`,
-          `${item.user.name}님을 팔로우 하고 함께 ${item.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          `${Constant.askToParticipate(item.user.name, item.category_korean)}`,
           [
             {
               text: '네',
@@ -135,7 +135,9 @@ export default class HomeIndex extends Component {
   _onRefresh() {
     this.setState({ refreshing: true });
     this.apiCall().then(() => {
-      this.setState({ refreshing: false });
+      this.props.ApplicationStore.updateCategories().then(() => {
+        this.setState({ loading: false, refreshing: false })
+      });
     });
   }
 

@@ -36,15 +36,29 @@ export default class ProfileWishIndex extends Component {
         },
       },
       categories: [],
+      initialPage: 0
     };
   }
 
   componentDidMount() {
-    this.apiCall();
+    this.apiCall().then(() => {
+      this.moveToPage();
+    });
   }
 
-  apiCall() {
-    axios.get(`${ApiServer.MY_PROFILE}/wishes`, this.state.header)
+  moveToPage() {
+    const { initialCategory } = this.props.navigation.state.params;
+
+    this.state.categories.map ((each_category,i) => {
+      const { category } = each_category;
+      if (typeof initialCategory !== undefined && initialCategory === category) {
+        this.tabView.goToPage(i);
+      }
+    });
+  }
+
+  async apiCall() {
+    await axios.get(`${ApiServer.MY_PROFILE}/wishes`, this.state.header)
       .then((response) => {
         this.setState({
           loading: false,
@@ -64,10 +78,20 @@ export default class ProfileWishIndex extends Component {
 
   renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
-    return this.state.categories.map(function (each_category, i) {
+
+    return this.state.categories.map ((each_category, i) => {
       const { klass, category, category_korean, wishes } = each_category;
+
       return (
-        <Tab key={i} heading={<TabHeading/>}>
+        <Tab key={i} heading={category_korean} tabStyle={{
+          backgroundColor: 'transparent'
+        }} activeTabStyle={{
+          backgroundColor: 'transparent'
+        }} textStyle={{
+          color: Constant.GreyColor
+        }} activeTextStyle={{
+          color: Constant.FiveColor
+        }}>
           <ProfileWishShow
             klass={klass}
             category={category}
@@ -81,7 +105,7 @@ export default class ProfileWishIndex extends Component {
     });
   }
 
-  renderTabButtons(goToPage) {
+  renderTabButtonsOld(goToPage) {
     const { flexCenterCenter } = BaseStyle;
     return (
       <View style = {{
@@ -119,6 +143,7 @@ export default class ProfileWishIndex extends Component {
     );
   }
 
+
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
@@ -126,28 +151,21 @@ export default class ProfileWishIndex extends Component {
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <NavBar
+          hasTabs
           leftButton
           leftAsImage
           leftIcon={require('../../assets/images/back_icon_pink.png')}
           onPressLeft={() => navigation.goBack()}
           headerText="내 보관함"
         />
-        <Header style={{
-          backgroundColor: 'blue',
-          alignItems: 'flex-start',
-          paddingLeft: 24,
-          paddingRight: 24,
-          borderBottomWidth: 0,
-          height: 36,
-          elevation: 0
-        }}>
-          {this.renderTabButtons((page) => this.tabView.goToPage(page))}
-        </Header>
         {this.state.categories.length > 0 ?
-          <Tabs locked initialPage={0} ref={(tabView) => {
+          <Tabs locked initialPage={this.state.initialPage} ref={(tabView) => {
             this.tabView = tabView;
-          }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'}
-                renderTabBar={() => <ScrollableTab/>}>
+          }} renderTabBar={() => <ScrollableTab tabsContainerStyle={{ justifyContent: 'flex-start', flexWrap: 'wrap', backgroundColor: 'transparent'}}/>} tabBarUnderlineStyle={{
+            backgroundColor: 'transparent',
+            borderBottomColor: '#FFF',
+            elevation: 0,
+          }}>
             {this.renderCategoryTabs((e) => this.handleScroll(e))}
           </Tabs>
           : <EmptyBox
