@@ -144,7 +144,7 @@ export default class FiveIndex extends Component {
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`${this.state.category_korean} 친구를 팔로우하면${'\n'}이 곳에서 친구들의 ${this.state.category_korean} FIVE를 확인할 수 있어요.`}
+                  message={`${this.state.category_korean} 친구를 팔로우하면${'\n'}여기에서 친구들의 ${this.state.category_korean} FIVE를 확인할 수 있어요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
@@ -260,7 +260,7 @@ export default class FiveIndex extends Component {
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 추천 해드릴 도전 FIVE가 없네요.`}
+                  message={`아직 추천 해드릴 ${this.state.category_korean}이 없네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}

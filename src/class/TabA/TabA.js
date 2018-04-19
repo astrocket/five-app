@@ -115,15 +115,15 @@ export default class TabA extends Component {
             <TouchableOpacity 
               key={index + 1} 
               transparent onPress={() => goToPage(index + 1)} 
-              style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}
+              style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24 }]}
               >
               <Text style={styles.cateTab}>{item.category_korean}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
-            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20, marginLeft: 2 }]}>
-              <Text style={styles.cateTab}>홈</Text>
+            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24, marginLeft: 2 }]}>
+              <Text style={styles.cateTab}>투데이</Text>
             </TouchableOpacity>
           }
         />
@@ -155,7 +155,7 @@ export default class TabA extends Component {
             paddingTop: Constant.globalPaddingTop + 12,
             height: Constant.globalPaddingTop + 12 + 66 + 56,
             paddingLeft: 16,
-            paddingRight: 24,
+            paddingRight: 30,
             backgroundColor: '#FFF',
             borderBottomWidth: 0
           }}>
@@ -182,8 +182,8 @@ export default class TabA extends Component {
           </Header>
           : <Header style={{
             paddingTop: Constant.globalPaddingTop,
-            paddingLeft: 24,
-            paddingRight: 24,
+            paddingLeft: 16,
+            paddingRight: 30,
             height: 56 + Constant.globalPaddingTop,
             backgroundColor: '#FFF',
             borderBottomWidth: 0,

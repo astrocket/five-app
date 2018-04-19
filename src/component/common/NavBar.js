@@ -15,7 +15,7 @@ const NavBar = ({ statusBar, hasTabs, backgroundImage, onPressLeft, leftButton, 
 
   if (backgroundImage) {
     return (
-      <View style={{ height: 300 }}>
+      <View style={{ height: 240 }}>
         {backgroundImage ?
           <View
             style={{

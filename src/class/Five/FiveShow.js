@@ -3,7 +3,7 @@ import {
   View, Alert, FlatList, RefreshControl, Linking, StatusBar,
 } from 'react-native';
 import {
-  Container, Content, Text, Spinner, Thumbnail, Button, Icon, Left,
+  Container, Content, Text, Spinner, Thumbnail, Button, Left,
   Body, Toast, ListItem, ActionSheet, List,
 } from 'native-base';
 import {
@@ -20,6 +20,8 @@ import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('ApplicationStore') // Inject some or all the stores!
 @observer
@@ -75,7 +77,7 @@ export default class FiveShow extends Component {
         });
       })
       .catch((error) => {
-        console.log('에러 : ' + JSON.stringify(error.response));
+        console.log('확인해 주세요! ' + JSON.stringify(error.response));
       });
   }
 
@@ -105,7 +107,7 @@ export default class FiveShow extends Component {
           this.handleOnCreateFiveCallFull();
         } else {
           Toast.show({
-            text: '에러 : ' + JSON.stringify(error.response.data.errors),
+            text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
             position: 'bottom',
             duration: 1500,
           });
@@ -133,7 +135,7 @@ export default class FiveShow extends Component {
           this.askAddWish(JSON.stringify(error.response.data.errors[0]));
         } else {
           Toast.show({
-            text: '에러 : ' + JSON.stringify(error.response.data.errors),
+            text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
             position: 'bottom',
             duration: 1500,
           });
@@ -154,7 +156,7 @@ export default class FiveShow extends Component {
       }).catch((error) => {
       console.log(error.response);
       Toast.show({
-        text: '에러 : ' + JSON.stringify(error.response.data.errors),
+        text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
         position: 'bottom',
         duration: 1500,
       });
@@ -174,7 +176,7 @@ export default class FiveShow extends Component {
       }).catch((error) => {
       console.log(error.response);
       Toast.show({
-        text: '에러 : ' + JSON.stringify(error.response.data.errors),
+        text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
         position: 'bottom',
         duration: 1500,
       });
@@ -216,7 +218,7 @@ export default class FiveShow extends Component {
 
   handleOnCreateFiveCallFull() {
     Alert.alert(
-      `FIVE 추가 불가능`,
+      `FIVE 가득참`,
       `이미 5개의 FIVE가 선택되어서 추가로 담을 수 없습니다.`,
       [
         {
@@ -306,58 +308,56 @@ export default class FiveShow extends Component {
                       </View>
                     </View>
                   </View>
-                  <Text note numberOfLines={1} style={{ marginLeft: 3 }}>{this.state.five.subtitle}</Text>
+                  <Text note numberOfLines={1} style={{ marginLeft: 3, width: Constant.deviceWidth/2 }}>{this.state.five.subtitle}</Text>
                 </View>
               </View>
             </Row>
-            <List style={{ paddingBottom: 20 }}>
-              <ListItem avatar style={{ borderTopWidth: 0.5, borderTopColor: 'rgba(237, 237, 237, 0.5)', borderBottomWidth: 0.5, borderBottomColor: 'rgba(237, 237, 237, 0.5)', padding: 5, marginBottom: 10}}>
-                <Left>
-                  <Thumbnail small source={Images.findImageOf(this.state.category)}/>
-                </Left>
-                <Body style={{ borderBottomWidth: 0 }}>
-                <Text>{this.state.category_korean}</Text>
-                </Body>
-              </ListItem>
-              {/* 지도 */}
-              <ListItemIconClick
-                icon={'md-map'}
-                onPress={() => this.props.screenProps.modalNavigation.navigate('Map', {
-                  lat: this.state.five.lat,
-                  lng: this.state.five.lng,
-                  title: this.state.five.title,
-                })}
-                target={this.state.five.address}
-                title={this.state.five.address}
-              />
-              {/* 전화 */}
-              <ListItemIconClick
-                icon={'md-call'}
-                onPress={() => Linking.openURL(`tel:${this.state.five.phone}`)}
-                target={this.state.five.phone}
-                title={this.state.five.phone}
-              />
-              {/* 링크 */}
-              <ListItemIconClick
-                label={'가사'}
-                onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+            <Row style = {{ height: 100 }}>
+              <Col size={50}>
+                <Button style={{
+                  flex: 1,
+                  backgroundColor: 'white',
+                  height: 56,
+                  width: Constant.deviceWidth / 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 16,
+                }} onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.related_link,
                   headerTitle: '가사 보기'
                 })}
-                target={this.state.five.related_link}
-                title={'가사 보기'}
-              />
-              {/* 유튜브 링크 */}
-              <ListItemIconClick
-                label={'YouTube'}
-                onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                >
+                  <Icon name='align-left' 
+                    style={{
+                      color: Constant.LightGrey,
+                      fontSize: 36,
+                    }}
+                  />
+                </Button>
+              </Col>
+              <Col size={50}>
+                <Button style={{
+                  flex: 1,
+                  backgroundColor: 'white',
+                  height: 56,
+                  width: Constant.deviceWidth / 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 16,
+                }} onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                   url: this.state.five.youtube_link,
                   headerTitle: this.state.five.track_name
                 })}
-                target={this.state.five.youtube_link}
-                title={'음악 듣기'}
-              />
-            </List>
+                >
+                  <Icon name='youtube-square' 
+                    style={{
+                      color: Constant.LightGrey,
+                      fontSize: 36,
+                    }}
+                  />
+                </Button>
+              </Col>
+            </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={`이 ${this.state.category_korean}을 FIVE한 사람들   `}
@@ -417,8 +417,8 @@ export default class FiveShow extends Component {
                     })}
                     barWidth={150}
                     barHeight={150}
-                    borderRadius={15}
-                    marginRight={10}
+                    borderRadius={12}
+                    marginRight={16}
                   />
                 )}
                 keyExtractor={item => `related-${item.klass}-fives-` + item.id}
