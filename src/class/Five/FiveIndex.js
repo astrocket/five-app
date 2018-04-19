@@ -46,7 +46,9 @@ export default class FiveIndex extends Component {
   _onRefresh() {
     this.setState({refreshing: true});
     this.apiCall().then(() => {
-      this.setState({refreshing: false});
+      this.props.ApplicationStore.updateCategories().then(() => {
+        this.setState({ loading: false, refreshing: false })
+      });
     });
   }
 
@@ -183,7 +185,9 @@ export default class FiveIndex extends Component {
             </Row>
             <RowHeaderBar
               title={`내가 보관해 둔 ${this.state.category_korean}`}
-              onPress={() => navigation.navigate('ProfileWishIndex')}
+              onPress={() => navigation.navigate('ProfileWishIndex', {
+                initialCategory: this.state.category
+              })}
               moreTitle={'모두보기'}
             />
             <Row>

@@ -61,7 +61,7 @@ export default class UserContacts extends Component {
   }
 
   renderContacts() {
-    if (this.state.permission) {
+    if (this.state.permission && this.state.contact_friends.length > 0) {
       return (
         <FlatList
           data={this.state.contact_friends}
@@ -74,7 +74,7 @@ export default class UserContacts extends Component {
               })}
             />
           )}
-          keyExtractor={item => 'search-user-suggestion-list-' + item.id}
+          keyExtractor={item => 'search-user-contact-list-' + item.id}
           ListHeaderComponent={
             <RowHeaderBar
               title={'연락처 친구'}

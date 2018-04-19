@@ -73,8 +73,8 @@ export default class HomeIndex extends Component {
         this.followCall(item, index);
       } else {
         Alert.alert(
-          `아직 시작한 주제가 아니에요`,
-          `${item.category_korean} 파이브를 시작하고 ${item.user.name}님을 팔로우 하시겠어요?`,
+          `아직 참여한 카테고리는 아니에요`,
+          `${Constant.askToParticipate(item.user.name, item.category_korean)}`,
           [
             {
               text: '네',
@@ -135,7 +135,9 @@ export default class HomeIndex extends Component {
   _onRefresh() {
     this.setState({ refreshing: true });
     this.apiCall().then(() => {
-      this.setState({ refreshing: false });
+      this.props.ApplicationStore.updateCategories().then(() => {
+        this.setState({ loading: false, refreshing: false })
+      });
     });
   }
 

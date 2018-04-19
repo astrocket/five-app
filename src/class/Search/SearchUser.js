@@ -62,8 +62,7 @@ export default class SearchUser extends Component {
       }).catch((e) => console.log(e.response));
   }
 
-  nextPageUser() {
-    this.setState({ loading: true });
+  pageCall() {
     axios.get(`${ApiServer.USERS}/search_user?s=${this.state.input_search}&page=${this.state.page}`, this.state.header)
       .then((res) => {
         this.setState({ loading: false, no_result: false, searched: true, users: [ ...this.state.users, ...res.data.users], no_more: res.data.no_more, page_loading: false})
@@ -76,6 +75,15 @@ export default class SearchUser extends Component {
     } else {
       this.setState({ input_search });
     }
+  }
+
+  nextPage() {
+    this.setState({
+      page: this.state.page + 1,
+      page_loading: true,
+    }, () => {
+      this.pageCall();
+    });
   }
 
   handleScroll(e) {
@@ -91,7 +99,7 @@ export default class SearchUser extends Component {
 
     return (
       <ShowMore
-        onPress={() => this.nextPageUser()}
+        onPress={() => this.nextPage()}
         moreText={'더보기'}
         overText={'끝'}
         no_more={this.state.no_more}
@@ -132,7 +140,9 @@ export default class SearchUser extends Component {
               )}
               keyExtractor={item => 'search-five-list-' + item.id}
               ListHeaderComponent={
-                <UserContacts showContacts navigation={this.props.navigation}/>
+                <RowHeaderBar
+                  title={'검색 결과'}
+                />
               }
               ListFooterComponent={
                 this.renderNextPageButton()

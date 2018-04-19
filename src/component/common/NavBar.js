@@ -9,7 +9,7 @@ import { ImageCon } from './';
 import BaseStyle from '../../config/BaseStyle';
 import * as Constant from '../../config/Constant';
 
-const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsImage, leftIcon, leftIconColor, onPressRight, rightButton, rightAsImage, rightIcon, rightIconColor, headerText }) => {
+const NavBar = ({ statusBar, hasTabs, backgroundImage, onPressLeft, leftButton, leftAsImage, leftIcon, leftIconColor, onPressRight, rightButton, rightAsImage, rightIcon, rightIconColor, headerText }) => {
   const { container } = BaseStyle;
   const { leftSpace, rightSpace } = styles;
 
@@ -106,6 +106,7 @@ const NavBar = ({ statusBar, backgroundImage, onPressLeft, leftButton, leftAsIma
   } else {
     return (
       <Header
+        hasTabs={hasTabs}
         iosBarStyle={statusBar}
         style={{
           backgroundColor: '#FFF',

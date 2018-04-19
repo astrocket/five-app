@@ -117,17 +117,17 @@ export default class UserFiveShow extends Component {
       } else {
         Alert.alert(
           `아직 참여한 카테고리는 아니에요`,
-          `${this.state.user.name}님을 팔로우 하고 함께 ${this.state.category_korean} 카테고리에 참여하러 가시겠어요?`,
+          `${Constant.askToParticipate(this.state.category_korean, this.state.user.name)}`,
           [
             {
               text: '네',
-              onPress: () => this.followCall(data, onSuccess).then(() => {
+              onPress: () => {
                 this.props.navigation.navigate(`SearchFive`, {
                   category: item.category,
                   category_korean: item.category_korean,
                   klass: item.klass,
                 });
-              }),
+              },
             },
             {
               text: '취소',
@@ -249,6 +249,7 @@ export default class UserFiveShow extends Component {
             {this.state.fives.map((item) => {
               return (
               <FiveUnitFullCenter
+                key={item.id}
                 multiple
                 id={item.id}
                 subtitle={item.subtitle}
