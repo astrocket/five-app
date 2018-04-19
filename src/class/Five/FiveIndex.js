@@ -125,6 +125,7 @@ export default class FiveIndex extends Component {
                     <FiveUnitFull
                       multiple
                       id={item.id}
+                      category={item.category}
                       title={item.title}
                       subtitle={item.subtitle}
                       friends_info={item.friends_info}

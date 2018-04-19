@@ -82,7 +82,6 @@ export default class ProfileFollowerIndex extends Component {
           onPressLeft={() => navigation.goBack()}
           headerText={`내 팔로워`}
         />
-
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}

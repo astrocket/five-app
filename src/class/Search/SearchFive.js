@@ -11,7 +11,7 @@ import {
 } from 'react-native-easy-grid';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
-import { SearchFiveUnitBar, ShowMore, ElevenHeader, RowHeaderBar } from '../../component/common';
+import { SearchFiveUnitBar, ShowMore, ElevenHeader, RowHeaderBar, EmptyBox } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
@@ -61,14 +61,12 @@ export default class SearchFive extends Component {
   async apiCall() {
     await axios.get(`${ApiServer.MY_PROFILE}/wishes?category=${this.state.category}`, this.state.header)
       .then((response) => {
-        console.log(response.data.categories[0].wishes);
         this.setState({
           loading: false,
           wishes: response.data.categories[0].wishes,
         });
       }).catch((error) => {console.log(JSON.stringify(error.response))});
   }
-
 
   /* Wish to Five */
 
@@ -95,7 +93,9 @@ export default class SearchFive extends Component {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = true;
     stateBefore[index].wish.five_users_count += 1;
-    this.setState({ wishes: stateBefore });
+    this.props.ApplicationStore.updateCategories().then(() => {
+      this.setState({ wishes: stateBefore })
+    });
   }
 
   onDestroyFiveCallSuccess(data, index) {
@@ -104,7 +104,6 @@ export default class SearchFive extends Component {
     stateBefore[index].wish.five_users_count -= 1;
     this.setState({ wishes: stateBefore });
   }
-
 
   /* Wish to Five end */
 
@@ -219,7 +218,9 @@ export default class SearchFive extends Component {
   onAddFiveSuccess(chunk, index, five) {
     const chunksBefore = [ ...this.state.chunks ];
     chunksBefore[ index ] = five;
-    this.setState({ chunks: chunksBefore });
+    this.props.ApplicationStore.updateCategories().then(() => {
+      this.setState({ chunks: chunksBefore })
+    });
   }
 
   onDeleteFiveSuccess(chunk, index) {
@@ -445,7 +446,7 @@ export default class SearchFive extends Component {
         );
       } else {
         return (
-          <Content onScroll={(e) => this.handleScroll(e)}>
+          <Content onScroll={(e) => this.handleScroll(e)} key={'content-chunks'}>
             <FlatList
               data={this.state.chunks}
               renderItem={({ item, index }) => (
@@ -472,7 +473,7 @@ export default class SearchFive extends Component {
     } else {
       if (this.state.wishes.length > 0) {
         return (
-          <Content onScroll={(e) => this.handleScroll(e)}>
+          <Content onScroll={(e) => this.handleScroll(e)} key={'content-wishes'}>
             <FlatList
               data={this.state.wishes}
               renderItem={({ item, index }) => (
