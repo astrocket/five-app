@@ -184,7 +184,7 @@ export default class HomeIndex extends Component {
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 제안'}
+              title={'음악 팔로우 제안'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
@@ -209,7 +209,7 @@ export default class HomeIndex extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'당신을 위한 북마크 제안'}
+              title={'당신을 위한 음악 제안'}
             />
             <Row>
               <FlatList
@@ -275,7 +275,7 @@ export default class HomeIndex extends Component {
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 제안'}
+              title={'책 팔로우 제안'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
@@ -300,7 +300,7 @@ export default class HomeIndex extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'당신을 위한 북마크 제안'}
+              title={'당신을 위한 책 제안'}
             />
             <Row>
               <FlatList
@@ -366,7 +366,7 @@ export default class HomeIndex extends Component {
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 제안'}
+              title={'영화 팔로우 제안'}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               <FlatList
@@ -391,7 +391,7 @@ export default class HomeIndex extends Component {
               />
             </Row>
             <RowHeaderBar
-              title={'당신을 위한 북마크 제안'}
+              title={'당신을 위한 영화 제안'}
             />
             <Row>
               <FlatList

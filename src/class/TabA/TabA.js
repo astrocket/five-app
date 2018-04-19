@@ -83,7 +83,7 @@ export default class TabA extends Component {
 
   handleScroll(e) {
     const currentOffset = e.nativeEvent.contentOffset.y;
-    const headerShow = currentOffset < 180;
+    const headerShow = currentOffset < 30;
     this.setState({ headerShow });
   }
 
@@ -112,14 +112,18 @@ export default class TabA extends Component {
           }}
           data={this.props.ApplicationStore.categories}
           renderItem={({ item, index }) => (
-            <TouchableOpacity key={index + 1} transparent onPress={() => goToPage(index + 1)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}>
-              <Text large sd-gothic style={{ color: '#333333' }}>{item.category_korean}</Text>
+            <TouchableOpacity 
+              key={index + 1} 
+              transparent onPress={() => goToPage(index + 1)} 
+              style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 16 }]}
+              >
+              <Text style={styles.cateTab}>{item.category_korean}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
             <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20 }]}>
-              <Text large sd-gothic style={{ color: '#333333' }}>홈</Text>
+              <Text style={styles.cateTab}>홈</Text>
             </TouchableOpacity>
           }
         />
@@ -170,7 +174,7 @@ export default class TabA extends Component {
                   justifyContent: 'flex-end',
                   alignItems: 'flex-start'
                 }}>
-                  <Text style={{ fontFamily: 'montserrat', fontSize: 28, color: Constant.LightGrey }}>{'Home'}</Text>
+                  <Text style={styles.mainTitle}>{'Home'}</Text>
                   <Text style={{ fontFamily: 'montserrat', fontSize: 12, color: Constant.LightGrey }}>{''}</Text>
                 </View>
               </View>
@@ -190,7 +194,7 @@ export default class TabA extends Component {
         }
         <Tabs locked initialPage={0} ref={(tabView) => {
           this.tabView = tabView;
-        }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'}
+        }} tabBarUnderlineStyle={{ opacity: 1 }} tabBarPosition={'overlayTop'} 
               renderTabBar={() => <ScrollableTab/>}>
           <Tab heading={<TabHeading/>}>
             <HomeIndex navigation={navigation} onScroll={(e) => this.handleScroll(e)}/>
@@ -209,12 +213,14 @@ export default class TabA extends Component {
 
 const styles = StyleSheet.create({
   mainTitle: {
-    color: '#070707',
-    fontWeight: "800",
+    color: Constant.LightGrey,
     fontSize: 32,
+    fontWeight: '900',
     fontFamily: "montserrat"
   },
-  red: {
-    color: 'red',
+  cateTab: {
+    color: Constant.LightGrey,
+    fontSize: 24,
+    fontWeight: '900',
   },
 });

@@ -9,9 +9,10 @@ import {
   Left,
   Body,
   Right,
-  Badge, Icon
+  Badge
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeCategoryBar = ({ image, onPress, title, people, new_people }) => {
   const { container } = BaseStyle;
@@ -22,7 +23,7 @@ const HomeCategoryBar = ({ image, onPress, title, people, new_people }) => {
       <Text medium-thin primary>{title}</Text>
       </Body>
       <Right>
-        <Icon name="arrow-forward"/>
+        <Icon name="angle-right"/>
       </Right>
     </ListItem>
   );

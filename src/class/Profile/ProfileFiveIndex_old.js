@@ -285,11 +285,11 @@ export default class ProfileFiveIndex extends Component {
           <Grid>
             <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
-                <Text grey>{my_profile.name}의</Text>
+                <Text style = {styles.fiveUsername}>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
-                <Text large>{this.state.category_korean} </Text>
-                <Text large thin>파이브</Text>
+                <Text style = {styles.fiveTitle}>{this.state.category_korean} </Text>
+                <Text style = {styles.fiveTitle}>파이브</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <TouchableOpacity transparent style={{
@@ -331,5 +331,32 @@ export default class ProfileFiveIndex extends Component {
       </Container>
     );
   }
+
+const styles = StyleSheet.create({
+  fiveUsername: {
+    color: Constant.GreyColor,
+    fontFamily: 'montserrat',
+    fontSize: 18,
+    fontWeight: '900',
+  },
+  fiveTitle: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 26,
+    fontWeight: '900',
+  },
+  fiveFollowText: {
+    color: Constant.GreyColor,
+    fontFamily: 'montserrat',
+    fontSize: 16,
+    fontWeight: '300',
+  },
+  fiveFollowNumber: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
 
 }

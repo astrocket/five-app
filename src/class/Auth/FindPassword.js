@@ -206,7 +206,7 @@ export default class FindPassword extends Component {
           <Row>
             <InputSingle
               key={3}
-              placeholder={'생년 (예: 92)'}
+              placeholder={'생년 두 자리 숫자를 입력해 주세요 (예: 92)'}
               value={this.state.input_birth}
               onChangeText={(input_birth) => this.handleBirthInput(input_birth)}
               onSubmitEditing={Keyboard.dismiss}

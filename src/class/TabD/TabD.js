@@ -114,6 +114,7 @@ export default class TabD extends Component {
       <Container style={{ backgroundColor: '#FFFFFF' }}>
         <ElevenHeader
           headerShow={this.state.headerShow}
+          custom
           title={'소식'}
         />
         { this.state.notifications.length > 0 ?

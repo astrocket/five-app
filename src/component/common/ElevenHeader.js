@@ -37,7 +37,7 @@ const ElevenHeader = (props) => {
                   :<Icon
                     name={buttonIcon}
                     style={{
-                      fontSize: 25,
+                      fontSize: 28,
                       color: Constant.FiveColor,
                     }}
                   />
@@ -46,7 +46,7 @@ const ElevenHeader = (props) => {
             </View> : null
           }
         </View> :
-          <Header>
+          <Header style = {{ backgroundColor: 'white', borderBottomColor: 'white' }}>
             <Left/>
             <Body>
             <Title>{title}</Title>
@@ -60,7 +60,7 @@ const ElevenHeader = (props) => {
                   :<Icon
                     name={buttonIcon}
                     style={{
-                      fontSize: 25,
+                      fontSize: 28,
                       color: Constant.FiveColor,
                     }}
                   />}
@@ -74,7 +74,7 @@ const ElevenHeader = (props) => {
         <View style={bigHeader}>
           <Text xlarge montserrat>{title}</Text>
         </View> :
-        <Header>
+        <Header style = {{ backgroundColor: 'white' }}>
           <Left/>
           <Body>
           <Title>{title}</Title>

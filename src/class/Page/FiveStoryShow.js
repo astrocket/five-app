@@ -90,15 +90,15 @@ export default class FiveStoryShow extends Component {
     return (
       <Container style={{ backgroundColor: '#fafafa'}}>
         <NavBar
-/*          leftButton
+          leftButton
           leftAsImage
           leftIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressLeft={() => navigation.goBack()}*/
-          rightButton
+          onPressLeft={() => navigation.goBack()}
+/*          rightButton
           rightAsImage
           rightIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressRight={() => navigation.goBack()}
-          headerText="FIVE 스토리"
+          onPressRight={() => navigation.goBack()} */
+          headerText="FIVE 스토리" 
         />
         <Grid>
           <Row>
@@ -117,7 +117,7 @@ export default class FiveStoryShow extends Component {
             >
               {this.state.five_story.fives.map((item) => {
                 return (
-                  <View key={item.id} style={{ width: deviceWidth, paddingTop: 10, paddingBottom: 10 }}>
+                  <View key={item.id} style={{ width: deviceWidth, paddingTop: 0, paddingBottom: 10 }}>
                     <FiveUnitBar
                       id={item.id}
                       title={item.title}

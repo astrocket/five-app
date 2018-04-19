@@ -282,7 +282,7 @@ export default class FiveShow extends Component {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                   }}>
-                    <Text large numberOfLines={1} style={{ marginLeft: 2, width: Constant.deviceWidth/3*2}}>{this.state.five.title}</Text>
+                    <Text large numberOfLines={1} style={{ marginLeft: 2, width: Constant.deviceWidth/2 + 32}}>{this.state.five.title}</Text>
                     <View style={BaseStyle.headerDoubleIconsContainer}>
                       <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 16 }}>
                         {this.state.my_wish ?

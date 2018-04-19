@@ -106,7 +106,7 @@ export default class ProfileFollowerIndex extends Component {
             />
           :<EmptyBox
               barWidth={Constant.deviceWidth - 20}
-              message={'아직 나를 팔로우 하는 친구가 없어요. 먼저 다른 친구를 팔로우 해보세요.'}
+              message={'아직 나를 팔로우 하는 친구가 없어요.'}
               barHeight={100}
               borderRadius={10}
               marginRight={0}

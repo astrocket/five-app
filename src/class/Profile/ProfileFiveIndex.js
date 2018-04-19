@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, FlatList, RefreshControl, ScrollView
+  View, Image, TouchableOpacity, FlatList, RefreshControl, ScrollView, StyleSheet
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -213,17 +213,20 @@ export default class ProfileFiveIndex extends Component {
               })}
               {        
                 <Grid style={{
-                    backgroundColor: 'red',
+                    backgroundColor: '#fafafa',
                     height: 400,
                     width: Constant.deviceWidth,
                     justifyContent: 'center',
                     marginBottom: 0,
                   }}>
-                  <Col style = {{ width: (Constant.deviceWidth - 256) / 2, backgroundColor: 'black' }}>
+                  <Col style = {{ width: 16, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
                   </Col>
-                  <Col>
-                    <Row style={{ height: 12 }}></Row>
+                  <Col style = {{ width: 8, backgroundColor: '#fafafa' }}>
+                  </Col>
+                  <Col style = {{ backgroundColor: '#fafafa', borderRadius: 12 }}>
+                    <Row style = {{ height: 8 }}></Row>
                     <FlatList
+                      style = {{ backgroundColor: "#fafafa" }}
                       data={this.state.fives}
                       renderItem={({ item }) => (
                         <FiveUnitBar
@@ -242,9 +245,11 @@ export default class ProfileFiveIndex extends Component {
                         />
                       )}
                       keyExtractor={item => 'five-bar-list-' + item.id}
-                    />
+                    /> 
+                  </Col>       
+                  <Col style = {{ width: 16, backgroundColor: '#fafafa' }}>
                   </Col>          
-                  <Col style = {{ width: (Constant.deviceWidth - 256) / 2, backgroundColor: 'black' }}>
+                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
                   </Col>
                 </Grid>
               }
@@ -285,31 +290,32 @@ export default class ProfileFiveIndex extends Component {
           <Grid>
             <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
-                <Text grey>{my_profile.name}의</Text>
+                <Text style = {styles.fiveUsername}>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
-                <Text large>{this.state.category_korean} </Text>
-                <Text large thin>파이브</Text>
+                <Text style = {styles.fiveTitle}>{this.state.category_korean} 파이브</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
-                  <Text small>{Number(this.state.followers_count).toLocaleString()}</Text>
-                  <Text small grey>{'  팔로워 '}</Text>
+                  <Text style = {styles.fiveFollowText}>{'팔로워  '}</Text>
+                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text> 
                 </TouchableOpacity>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFolloweeIndex', { category: this.state.category })}>
-                  <Text small>{Number(this.state.followees_count).toLocaleString()}</Text>
-                  <Text small grey>{'  팔로잉'}</Text>
+                  <Text style = {styles.fiveFollowText}>{'팔로잉  '}</Text>
+                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followees_count).toLocaleString()}</Text>
                 </TouchableOpacity>
               </View>
             </View>
+            <Row style = {{ height: 16, backgroundColor: '#fafafa' }}></Row>
             {this.renderCard(this.state.flip)}
+            <Row style = {{ height: 48, backgroundColor: '#fafafa' }}></Row>
           </Grid>
         </Content>
-        <Fab
+{/*        <Fab
           active={true}
           direction="up"
           style={{ backgroundColor: Constant.FiveColor }}
@@ -322,7 +328,7 @@ export default class ProfileFiveIndex extends Component {
               color: '#FFF',
             }}
           />
-        </Fab>
+        </Fab> */}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
@@ -331,5 +337,31 @@ export default class ProfileFiveIndex extends Component {
       </Container>
     );
   }
-
 }
+
+
+const styles = StyleSheet.create({
+  fiveUsername: {
+    color: Constant.GreyColor,
+    fontFamily: 'montserrat',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  fiveTitle: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 28,
+    fontWeight: '900',
+  },
+  fiveFollowText: {
+    color: 'grey',
+    fontSize: 16,
+    fontWeight: '100',
+  },
+  fiveFollowNumber: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 16,
+    fontWeight: '200',
+  },
+});

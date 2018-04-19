@@ -34,10 +34,10 @@ export default class ModalWebViewShow extends Component {
     return (
       <Container>
         <NavBar
-          rightButton
-          rightAsImage
-          rightIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressRight={() => modalNavigation.goBack()}
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/cancel_icon_grey.png')}
+          onPressLeft={() => modalNavigation.goBack()}
           headerText={headerTitle}
         />
         <Grid>

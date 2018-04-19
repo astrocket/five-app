@@ -24,22 +24,24 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
           flex: 1,
           flexDirection: 'column',
           height: null,
-          width: 240 + marginRight,
+          width: 240,
           marginRight: marginRight,
+          borderRadius: borderRadius,
           marginBottom: 10,
         }}>
           <Button transparent style={{
             flex: 1,
             height: null,
-            width: 240 + marginRight,
+            borderRadius: borderRadius,
             marginBottom: 5,
           }} onPress={onPress}>
             <Image source={{ uri: image_url }} style={{
               height: 240,
-              width: 240,
               borderRadius: borderRadius,
               marginBottom: 10,
               flex: 1,
+              resizeMode: 'contain',
+              alignItems: 'flex-start',
             }}/>
           </Button>
           <View>
@@ -47,10 +49,10 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
               flexDirection: 'row',
               justifyContent: 'flex-start',
             }}>
-              <Text large numberOfLines={1}>{title}</Text>
+              <Text large numberOfLines={1} style = {{ paddingLeft: 3, width: 200 }}>{title}</Text>
             </View>
-            <Text note numberOfLines={1}>{subtitle}</Text>
-            <Text micro yellow>{friends_info}</Text>
+            <Text note numberOfLines={1} style = {{ padding: 6, paddingLeft: 3, width: 200 }}>{subtitle}</Text>
+            <Text micro yellow style = {{ padding: 3 }}>{friends_info}</Text>
           </View>
         </View>
       </View>

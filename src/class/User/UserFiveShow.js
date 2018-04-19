@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, RefreshControl, TouchableOpacity, Alert,
+  View, FlatList, RefreshControl, TouchableOpacity, Alert, StyleSheet, ScrollView
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitBar, FiveUnitFull,
+  FiveUnitBar, FiveUnitFull, FiveUnitFullCenter
 } from '../../component/common';
 import { FollowSmallButton, ImageCon } from '../../component/common';
 import axios from 'axios';
@@ -240,14 +240,15 @@ export default class UserFiveShow extends Component {
     } else {
       return (
         <Row key={2}>
-          <FlatList
+          <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingLeft: (Constant.deviceWidth / 2) - 110, paddingRight: (Constant.deviceWidth / 2) - 110 }}
-            data={this.state.fives}
-            style={rowWrapper}
-            renderItem={({ item }) => (
-              <FiveUnitFull
+            scrollEventThrottle={10}
+            pagingEnabled={true}
+          >
+            {this.state.fives.map((item) => {
+              return (
+              <FiveUnitFullCenter
                 multiple
                 id={item.id}
                 subtitle={item.subtitle}
@@ -259,13 +260,54 @@ export default class UserFiveShow extends Component {
                   title: item.title,
                   id: item.id,
                 })}
-                borderRadius={15}
-                marginRight={10}
+                borderRadius={12}
                 cardCut={80}
               />
-            )}
-            keyExtractor={item => 'five-full-list-' + item.id}
-          />
+            )
+          })}
+              {        
+                <Grid style={{
+                    backgroundColor: '#fafafa',
+                    height: 400,
+                    width: Constant.deviceWidth,
+                    justifyContent: 'center',
+                    marginBottom: 0,
+                  }}>
+                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
+                  </Col>
+                  <Col style = {{ width: 4, backgroundColor: '#fafafa' }}>
+                  </Col>
+                  <Col style = {{ backgroundColor: '#fafafa', borderRadius: 12 }}>
+                    <Row style = {{ height: 8 }}></Row>
+                    <FlatList
+                      style = {{ backgroundColor: "#fafafa" }}
+                      data={this.state.fives}
+                      renderItem={({ item }) => (
+                        <FiveUnitBar
+                          id={item.id}
+                          title={item.title}
+                          subtitle={item.subtitle}
+                          friends_info={`FIVE ${item.five_users_count}`}
+                          image_url={item.image_medium_url}
+                          onPress={() => navigation.navigate('FiveShow', {
+                            category: this.state.category,
+                            title: item.title,
+                            id: item.id,
+                            navLoading: true,
+                          })}
+                          new_label={item.new_label}
+                        />
+                      )}
+                      keyExtractor={item => 'five-bar-list-' + item.id}
+                    /> 
+                  </Col>       
+                  <Col style = {{ width: 16, backgroundColor: '#fafafa' }}>
+                  </Col>          
+                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
+                  </Col>
+                </Grid>
+              }
+          </ScrollView>
         </Row>
       );
     }
@@ -309,32 +351,33 @@ export default class UserFiveShow extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <View>
+          <Grid>
             <View style={rowFlexCenterCenter}>
-              <Text grey>{this.state.user.name}의</Text>
+              <Text style = {styles.fiveUsername}>{this.state.user.name}의</Text>
             </View>
             <View style={rowFlexCenterCenter}>
-              <Text large>{this.state.category_korean} </Text>
-              <Text large thin>파이브</Text>
+              <Text style = {styles.fiveTitle}>{this.state.category_korean} 파이브</Text>
             </View>
             <View style={rowFlexCenterCenter}>
               <TouchableOpacity transparent style={{
                 flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
               }} onPress={() => navigation.navigate('UserFollowerIndex', { category: this.state.category, user: navigation.state.params.user})}>
-                <Text small grey>{'Follower '}</Text>
-                <Text small primary>{Number(this.state.followers_count).toLocaleString()}</Text>
+                <Text style = {styles.fiveFollowText}>팔로워  </Text>
+                <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text>
               </TouchableOpacity>
               <TouchableOpacity transparent style={{
                 flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
               }} onPress={() => navigation.navigate('UserFolloweeIndex', { category: this.state.category, user: navigation.state.params.user})}>
-                <Text small grey>{'Following '}</Text>
-                <Text small primary>{Number(this.state.followees_count).toLocaleString()}</Text>
+                <Text style = {styles.fiveFollowText}>팔로잉  </Text>
+                <Text style = {styles.fiveFollowNumber}>{Number(this.state.followees_count).toLocaleString()}</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          {this.renderCard(this.state.flip)}
+            <Row style = {{ height: 16, backgroundColor: '#fafafa' }}></Row>
+            {this.renderCard(this.state.flip)}
+            <Row style = {{ height: 48, backgroundColor: '#fafafa' }}></Row>
+          </Grid>
         </Content>
-        <Fab
+{/*        <Fab
           active={true}
           direction="up"
           style={{ backgroundColor: Constant.FiveColor }}
@@ -347,7 +390,7 @@ export default class UserFiveShow extends Component {
               color: '#FFF',
             }}
           />
-        </Fab>
+        </Fab> */}
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
@@ -356,5 +399,32 @@ export default class UserFiveShow extends Component {
       </Container>
     );
   }
-
 }
+
+
+const styles = StyleSheet.create({
+  fiveUsername: {
+    color: Constant.GreyColor,
+    fontFamily: 'montserrat',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  fiveTitle: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 28,
+    fontWeight: '900',
+  },
+  fiveFollowText: {
+    color: Constant.GreyColor,
+    fontSize: 16,
+    fontWeight: '100',
+  },
+  fiveFollowNumber: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 16,
+    fontWeight: '300',
+  },
+});
+
