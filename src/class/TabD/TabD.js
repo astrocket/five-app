@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList,
+  View, FlatList, RefreshControl,
 } from 'react-native';
 import {
-  Container, Spinner, Icon
+  Container, Spinner, Content,
 } from 'native-base';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
@@ -33,6 +33,7 @@ export default class TabD extends Component {
     super(props);
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
+      refreshing: false,
       notifications: [],
       page: 1,
       page_loading: false,
@@ -45,14 +46,14 @@ export default class TabD extends Component {
     this.apiCall();
   }
 
-  apiCall() {
+  async apiCall() {
     const config = {
       headers: {
         'X-User-Email': this.props.ApplicationStore.email,
         'X-User-Token': this.props.ApplicationStore.token,
       },
     };
-    axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
+    await axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
       .then((response) => {
         this.props.navigation.setParams({
           noticeCount: 30
@@ -66,6 +67,13 @@ export default class TabD extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.apiCall().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   pageCall() {
@@ -123,6 +131,8 @@ export default class TabD extends Component {
             style={{
               paddingBottom: 10,
             }}
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
             onScroll={(e) => this.handleScroll(e)}
             renderItem={({ item }) => (
               <NotificationUnitBar
@@ -148,13 +158,21 @@ export default class TabD extends Component {
                 />
             }
           />
-          :<EmptyBox
-            barWidth={Constant.deviceWidth - 20}
-            message={`아직 친구들 소식이 없어요. ${'\n'}친구들을 더 팔로우하고 소식을 받아보세요!`}
-            barHeight={100}
-            borderRadius={10}
-            marginRight={10}
-          />
+          : <Content refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+              tintColor={Constant.FiveColor}
+            />
+          }>
+            <EmptyBox
+              barWidth={Constant.deviceWidth - 20}
+              message={`아직 친구들 소식이 없어요. ${'\n'}친구들을 더 팔로우하고 소식을 받아보세요!`}
+              barHeight={100}
+              borderRadius={10}
+              marginRight={10}
+            />
+          </Content>
         }
         {this.state.loading &&
         <View style={preLoading}>

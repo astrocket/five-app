@@ -69,6 +69,45 @@ export default class SearchFive extends Component {
       }).catch((error) => {console.log(JSON.stringify(error.response))});
   }
 
+
+  /* Wish to Five */
+
+  createFiveCall(item, index, title) {
+
+    const data = {
+      favorable_id: item.wish.id,
+    };
+
+    if (item.also_five) {
+      axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
+        .then((response) => {
+          this.onDestroyFiveCallSuccess(response.data, index);
+        }).catch((error) => {Toast.show({ text: '에러 : ' + JSON.stringify(error.response.data.errors), position: 'bottom', duration: 1500, })});
+    } else {
+      axios.post(`${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`, data, this.state.header)
+        .then((response) => {
+          this.onCreateFiveCallSuccess(response.data, index);
+        }).catch((error) => {Toast.show({ text: '에러 : ' + JSON.stringify(error.response.data.errors), position: 'bottom', duration: 1500, })});
+    }
+  }
+
+  onCreateFiveCallSuccess(data, index) {
+    const stateBefore = [...this.state.wishes];
+    stateBefore[index].also_five = true;
+    stateBefore[index].wish.five_users_count += 1;
+    this.setState({ wishes: stateBefore });
+  }
+
+  onDestroyFiveCallSuccess(data, index) {
+    const stateBefore = [...this.state.wishes];
+    stateBefore[index].also_five = false;
+    stateBefore[index].wish.five_users_count -= 1;
+    this.setState({ wishes: stateBefore });
+  }
+
+
+  /* Wish to Five end */
+
   methodsPerApi(category) {
     switch (category) {
       case 'restaurant':
@@ -444,7 +483,7 @@ export default class SearchFive extends Component {
                   subtitle={item.wish.subtitle}
                   clicked={item.also_five}
                   friends_info={`FIVE ${item.wish.five_users_count}`}
-                  onPress={() => this.state.methods.add_wish_api(item, index, this.namesPerApi(item.wish).title)}
+                  onPress={() => this.createFiveCall(item, index, this.namesPerApi(item.wish).title)}
                   onPressImage={() => this.props.navigation.navigate('FiveShow', {
                     category: this.state.category,
                     id: item.wish.id,

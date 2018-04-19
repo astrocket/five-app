@@ -80,3 +80,7 @@ export const CategoryToApi = (category) => {
   }
   return api_suffix
 };
+
+export const askToParticipate = (category, user) => {
+  return `${category} 파이브를 시작하고 ${user}님을 팔로우 하시겠어요?`
+};
