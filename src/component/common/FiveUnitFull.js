@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   View, Dimensions,
 } from 'react-native';
 import {
@@ -13,7 +13,7 @@ import {
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 
-const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, multiple, borderRadius, marginRight, cardCut }) => {
+const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, onPress, multiple, borderRadius, marginRight, cardCut }) => {
   const { container } = BaseStyle;
   const deviceWidth = Dimensions.get('window').width;
 
@@ -21,29 +21,27 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
     return (
       <View>
         <View style={{
-          flex: 1,
-          flexDirection: 'column',
-          height: null,
           width: 240,
-          marginRight: marginRight,
-          borderRadius: borderRadius,
+          height: null,
           marginBottom: 10,
+          borderRadius: borderRadius,
+          marginRight: marginRight,
         }}>
-          <Button transparent style={{
-            flex: 1,
+          <TouchableOpacity transparent style={{
+            width: null,
             height: null,
             borderRadius: borderRadius,
             marginBottom: 5,
           }} onPress={onPress}>
-            <Image source={{ uri: image_url }} style={{
-              height: 240,
-              borderRadius: borderRadius,
-              marginBottom: 10,
-              flex: 1,
-              resizeMode: 'contain',
-              alignItems: 'flex-start',
-            }}/>
-          </Button>
+            <Image
+              source={{ uri: image_url }}
+              style={{
+                width: (category === 'book' ? 170 : 240),
+                resizeMode: 'cover',
+                height: 240
+              }}
+            />
+          </TouchableOpacity>
           <View>
             <View style={{
               flexDirection: 'row',
@@ -57,6 +55,49 @@ const FiveUnitFull = ({ id, subtitle, title, image_url, friends_info, onPress, m
         </View>
       </View>
     );
+{/*      <View>
+        <View style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          height: null,
+          width: 270,
+          marginRight: marginRight,
+          borderRadius: borderRadius,
+          marginBottom: 10,
+        }}>
+          <TouchableOpacity transparent style={{
+            justifyContent: 'flex-start',
+            height: null,
+            width: null,
+            borderRadius: borderRadius,
+            marginBottom: 5,
+            backgroundColor: '#A22'
+          }} onPress={onPress}>
+            <Image source={{ uri: image_url }} style={{
+              height: 240,
+              width: null,
+              borderRadius: borderRadius,
+              marginBottom: 10,
+              resizeMode: 'contain',
+              flex: 1,
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
+            }}/>
+          </TouchableOpacity>
+          <View>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+            }}>
+              <Text large numberOfLines={1} style = {{ paddingLeft: 3, width: 200 }}>{title}</Text>
+            </View>
+            <Text note numberOfLines={1} style = {{ padding: 6, paddingLeft: 3, width: 200 }}>{subtitle}</Text>
+            <Text micro yellow style = {{ padding: 3 }}>{friends_info}</Text>
+          </View>
+        </View>
+      </View>
+    );*/}
   } else {
     return (
       <View>

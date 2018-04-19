@@ -9,7 +9,7 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FiveUserUnitBar, ShowMore } from '../../component/common';
+import { FiveUserUnitBar, ShowMore, NavBar, } from '../../component/common';
 import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
@@ -21,8 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class FiveUserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
-    ...Constant.FiveNavOptions,
+    header: null
   });
 
   constructor(props) {
@@ -105,6 +104,13 @@ export default class FiveUserList extends Component {
 
     return (
       <Container>
+        <NavBar
+          leftButton
+          leftAsImage
+          leftIcon={require('../../assets/images/back_icon_pink.png')}
+          onPressLeft={() => navigation.goBack()}
+          headerText={`FIVE한 사람들`}
+        />
         <Content refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}

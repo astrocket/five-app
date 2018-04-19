@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Image } from 'react-native';
 import {
   Toast
 } from 'native-base';

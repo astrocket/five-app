@@ -261,7 +261,7 @@ export default class FiveShow extends Component {
         }>
           <NavBar
             statusBar={'light-content'}
-            backgroundImage={{url: this.state.five.image_large_url}}
+            backgroundImage={{uri: this.state.five.image_large_url}}
             leftButton
             leftAsImage
             leftIcon={require('../../assets/images/arrow_icon_white.png')}

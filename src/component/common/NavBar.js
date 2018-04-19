@@ -28,7 +28,7 @@ const NavBar = ({ statusBar, hasTabs, backgroundImage, onPressLeft, leftButton, 
           >
             <Image
               style={{
-                flex: 1,
+                flex: 1
               }}
               source={backgroundImage}
             />
