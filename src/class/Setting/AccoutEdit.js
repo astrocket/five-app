@@ -9,17 +9,14 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { BottomFullButton, InputSingle } from '../../component/common/index';
-import axios from 'axios';
 import {
-  UserUnitRound, FivesBar, NavBar,
+  NavBar,
 } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class AccountEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -28,9 +25,10 @@ export default class AccountEdit extends Component {
 
   constructor(props) {
     super(props);
-    const { my_profile } = this.props.ApplicationStore;
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
+      loading: false,
       submiting: false,
       input_password: '',
       input_password_confirmation: '',
@@ -38,68 +36,23 @@ export default class AccountEdit extends Component {
   }
 
   postUserInfo() {
-    this.setState({ submiting: true });
-
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.MY_PROFILE}/update_user`, {
+    const data = {
       user: {
         password: this.state.input_password,
         password_confirmation: this.state.input_password_confirmation,
       }
-    }, header)
-      .then((response) => {
-        this.onUploadSuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      this.setState({
-        submiting: false,
-      });
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
-  }
-
-  onUploadSuccess(data) {
-    Toast.show({
-      text: '비밀번호가 변경되었습니다.',
-      position: 'bottom',
-      duration: 1500,
-    });
-    this.props.ApplicationStore.setMyProfile(data).then(() => {
-      this.setState({
-        submiting: false,
-        loading: false,
-      }, () => this.props.navigation.goBack());
+    };
+    this.setState({ submiting: true }, () => {
+      this.server.profileUpdate(data, (data) => this.setState(data), null, async (res) => {
+        await this.app.setMyProfile(res.data)
+          .then(() => this.props.navigation.goBack())
+      }).then(() => this.setState({ submiting: false }));
     });
   }
 
   signOutAction() {
-    this.setState({ loading: true });
-
-    axios.post(`${ApiServer.USERS}/sign_out`, {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    }).then((response) => {
-      AsyncStorage.multiRemove([ 'email', 'token', 'key', 'login', 'first', 'my_profile', 'categories', 'contact_agreed' ])
-        .then(() => {
-          this.props.ApplicationStore.signOut();
-        });
-    }).catch((error) => {
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
+    this.setState({ loading: true }, () => {
+      this.server.userSignOut();
     });
   }
 
@@ -110,7 +63,7 @@ export default class AccountEdit extends Component {
 
     return (
       <BottomFullButton onPress={() => this.postUserInfo()}>
-        변경 완료
+        {'변경하기'}
       </BottomFullButton>
     );
   }
@@ -118,7 +71,7 @@ export default class AccountEdit extends Component {
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container>
@@ -134,7 +87,7 @@ export default class AccountEdit extends Component {
             <Row>
               <InputSingle
                 placeholder={'새로운 비밀번호 (6자리 이상)'}
-                value={''}
+                value={this.state.input_password}
                 autoFocus={false}
                 onChangeText={(input_password) => this.setState({ input_password })}
                 onSubmitEditing={Keyboard.dismiss}
@@ -146,7 +99,7 @@ export default class AccountEdit extends Component {
             <Row>
               <InputSingle
                 placeholder={'새로운 비밀번호 재입력'}
-                value={''}
+                value={this.state.input_password_confirmation}
                 onChangeText={(input_password_confirmation) => this.setState({ input_password_confirmation })}
                 onSubmitEditing={() => this.postUserInfo()}
                 returnKeyType={'done'}

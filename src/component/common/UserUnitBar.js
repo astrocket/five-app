@@ -1,42 +1,74 @@
 import React from 'react';
 import {
-  Image,
-  TouchableOpacity,
-  View,
+  Image, View, StyleSheet,
 } from 'react-native';
 import {
-  Text,
-  Thumbnail,
-  ListItem,
-  Left,
-  Body,
-  Right,
+  Card, CardItem, Text, Thumbnail, ListItem, Left, Body, Right, Badge,
 } from 'native-base';
+import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
+import * as Constant from '../../config/Constant';
 
-const UserUnitBar = ({ id, name, image_url, onPress, introduce, followees_count, followers_count, updated_at }) => {
-  const { container } = BaseStyle;
-  return (
-    <ListItem avatarList button onPress={onPress} transparent>
-      <Left>
-        <Thumbnail source={{ uri: image_url }}/>
-      </Left>
-      <Body style={{ borderBottomWidth: 0 }}>
-      <Text>{name}</Text>
-      <View style={{ flexDirection: 'row'}}>
-        <Text small style={{ marginRight: 0 }}>{Number(followers_count).toLocaleString()}</Text>
-        <Text note>{' 팔로워'}</Text>
-        <Text small style={{ marginRight: 0 }}>{Number(followees_count).toLocaleString()}</Text>
-        <Text note>{' 팔로잉'}</Text>
-      </View>
-      </Body>
-      <Right style={{ borderBottomWidth: 0 }}>
-        {updated_at ?
-          <Text note>{updated_at.split('T')[0]}</Text>
-        :null}
-      </Right>
-    </ListItem>
-  );
+const ImagePerRole = ({ user }) => {
+  return user.roles.map(function (role) {
+    return (
+      <Image key={`${user.id}-${role}`} style={{ width: 25, height: 25, borderRadius: 12.5 }} source={Images.findImageOf(role)}/>
+    )
+  });
 };
+
+const UserUnitBar = ({ user, onPress }) => {
+  const { container } = BaseStyle;
+  if (user.roles.length > 0) {
+    return (
+      <ListItem avatar button onPress={onPress}>
+        <Left>
+          <Thumbnail small style={{ marginLeft: 4 }} source={{ uri: user.image_thumb_url }}/>
+        </Left>
+        <Body style={{ borderBottomWidth: 0 }}>
+        <Text small style={styles.followUnitName} numberOfLines={1}>{user.name}</Text>
+        <Text note style={styles.followUnitComment} numberOfLines={1}>{user.introduce}</Text>
+        </Body>
+        <Right style={{
+          borderBottomWidth: 0,
+          width: 80,
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}>
+          <ImagePerRole user={user}/>
+        </Right>
+      </ListItem>
+    );
+  } else {
+    return (
+      <ListItem avatar button onPress={onPress}>
+        <Left>
+          <Thumbnail small style={{ marginLeft: 4 }} source={{ uri: user.image_thumb_url }}/>
+        </Left>
+        <Body style={{ borderBottomWidth: 0 }}>
+        <Text numberOfLines={1}>{user.name}</Text>
+        <Text note numberOfLines={1}>{user.introduce}</Text>
+        </Body>
+      </ListItem>
+    );
+  }
+};
+
+const styles = StyleSheet.create({
+
+  followUnitName: {
+    color: '#333333',
+    fontFamily: 'montserrat',
+    fontSize: 14,
+    fontWeight: '100',
+    paddingTop: 3,
+  },
+  followUnitComment: {
+    color: Constant.LightGrey,
+    fontSize: 12,
+    fontWeight: '100',
+  },
+});
 
 export { UserUnitBar };

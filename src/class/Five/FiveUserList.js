@@ -9,15 +9,12 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FiveUserUnitBar, ShowMore, NavBar, } from '../../component/common';
-import axios from 'axios';
+import { UserUnitBar, ShowMore, NavBar, } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveUserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -26,12 +23,15 @@ export default class FiveUserList extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.state = {
       category: this.props.navigation.state.params.category,
       favorable_id: this.props.navigation.state.params.favorable_id,
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      users: [],
+      five_users: [],
       page: 1,
       page_loading: false,
       no_more: false,
@@ -39,62 +39,33 @@ export default class FiveUserList extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          users: response.data,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.five.fiveUserList(this.state.category, this.state.favorable_id, this.state.page, (res) => {
+      this.setState({
+        five_users: res.data.five_users, no_more: res.data.no_more
       });
+    }).then(() => this.setState({ loading: false }));
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, page: 1});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  pageCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.state.favorable_id}/five_users?page=${this.state.page}`, config)
-      .then((response) => {
-        if (response.data === undefined || response.data.length === 0) {
-          this.setState({ no_more: true });
-        }
+    this.setState({ refreshing: true, page: 1 }, () => {
+      this.five.fiveUserList(this.state.category, this.state.favorable_id, this.state.page, (res) => {
         this.setState({
-          users: [ ...this.state.users, ...response.data ],
-          page_loading: false,
+          five_users: res.data.five_users, no_more: res.data.no_more
         });
-      }).catch((error) => {
-      console.log(error.response);
+      }).then(() => this.setState({ refreshing: false }));
     });
   }
 
   nextPage() {
-    this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
-    }, () => {
-      this.pageCall();
+    this.setState({ page: this.state.page + 1, page_loading: true, }, () => {
+      this.five.fiveUserList(this.state.category, this.state.favorable_id, this.state.page, (res) => {
+        if (res.data.no_more) {
+          this.setState({ no_more: true });
+        }
+        this.setState({
+          five_users: [ ...this.state.five_users, ...res.data.five_users ], no_more: res.data.no_more
+        });
+      }).then(() => this.setState({ page_loading: false }));
     });
   }
 
@@ -118,15 +89,14 @@ export default class FiveUserList extends Component {
           />
         }>
           <FlatList
-            data={this.state.users}
+            data={this.state.five_users}
             style={{
               paddingTop: 10,
             }}
             renderItem={({ item }) => (
-              <FiveUserUnitBar
-                style={{ backgroundColor: '#fafafa' }}
+              <UserUnitBar
                 user={item}
-                onPress={() => navigation.navigate('UserShow', {
+                onPress={() => this.props.navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,
                 })}

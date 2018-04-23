@@ -8,28 +8,21 @@ import {
 import {
   EmptyBox, SearchUserUnitBar, RowHeaderBar
 } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import Contacts from 'react-native-contacts';
 import RNOpenSettings from 'react-native-open-setting';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class UserContacts extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       contact_friends: [],
       permission: false,
     };
@@ -42,22 +35,14 @@ export default class UserContacts extends Component {
   getContacts() {
     Contacts.getAll((err, contacts) => {
       if (err === 'denied'){
-        console.log('4');
         this.setState({ loading: false, permission: false })
       } else {
-        console.log('3');
-        this.sendToServer(contacts);
+        this.server.deviceContactPost(contacts, (data) => this.setState(data))
+          .then(() => {
+            this.setState({ loading: false, permission: true })
+          })
       }
     });
-  }
-
-  sendToServer(contacts) {
-    console.log('5');
-    axios.post(`${ApiServer.MY_PROFILE}/device_contacts`, {contacts: contacts}, this.state.header)
-      .then((res) => {
-        console.log('6');
-        this.setState({ contact_friends: res.data, loading: false, permission: true })
-      }).catch((err) => {this.setState({ loading: false, permission: false })})
   }
 
   renderContacts() {

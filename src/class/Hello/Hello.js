@@ -8,18 +8,14 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
-import { NavigationActions } from 'react-navigation';
-import { BottomFullButton, MultiToggle } from '../../component/common';
+import { BottomFullButton } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class Hello extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -28,6 +24,8 @@ export default class Hello extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.auth = this.props.stores.auth;
     this.state = {
       loading: false,
       submiting: false,
@@ -41,7 +39,7 @@ export default class Hello extends Component {
 
     return (
       <BottomFullButton
-        onPress={() => this.props.ApplicationStore.signIn()}>
+        onPress={() => this.app.signIn()}>
         확인
       </BottomFullButton>
     );

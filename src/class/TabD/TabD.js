@@ -5,15 +5,12 @@ import {
 import {
   Container, Spinner, Content,
 } from 'native-base';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { NotificationUnitBar, ShowMore, ElevenHeader, EmptyBox, TabIcon } from '../../component/common';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class TabD extends Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -31,8 +28,10 @@ export default class TabD extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: true,
       refreshing: false,
       notifications: [],
       page: 1,
@@ -43,59 +42,18 @@ export default class TabD extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
-      .then((response) => {
-        this.props.navigation.setParams({
-          noticeCount: 30
-        });
-        this.setState({
-          loading: false,
-          notifications: response.data.notifications,
-          no_more: response.data.no_more
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.server.notificationIndex(this.state, (data) => this.setState(data))
+      .then(() => {
+        this.setState({ loading: false })
       });
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  pageCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${ApiServer.NOTIFICATIONS}?page=${this.state.page}`, config)
-      .then((response) => {
-        if (response.data.no_more) {
-          this.setState({ no_more: true });
-        } else {
-          this.setState({
-            notifications: [ ...this.state.notifications, ...response.data.notifications ],
-            no_more: response.data.no_more,
-            page_loading: false,
-          });
-        }
-      }).catch((error) => {
-      console.log(error.response);
+    this.setState({ refreshing: true }, () => {
+      this.server.notificationIndex(this.state, (data) => this.setState(data))
+        .then(() => {
+          this.setState({ refreshing: false })
+        });
     });
   }
 
@@ -104,7 +62,10 @@ export default class TabD extends Component {
       page: this.state.page + 1,
       page_loading: true,
     }, () => {
-      this.pageCall();
+      this.server.notificationIndexPaging(this.state, (data) => this.setState(data))
+        .then(() => {
+          this.setState({ page_loading: false })
+        });
     });
   }
 

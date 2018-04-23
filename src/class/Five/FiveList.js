@@ -6,17 +6,14 @@ import {
   Container, Content, Spinner,
 } from 'native-base';
 import { FiveUnitBar, ShowMore } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 import { EmptyBox, NavBar } from '../../component/common';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -25,17 +22,14 @@ export default class FiveList extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       category: this.props.navigation.state.params.category,
       category_korean: Constant.CategoryToKorean(this.props.navigation.state.params.category),
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       fives: [],
       page: 1,
       page_loading: false,
@@ -45,51 +39,29 @@ export default class FiveList extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${Constant.CategoryToApi(this.state.category)}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          fives: response.data,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    this.five.fiveList(this.state.category, this.state.search_params, this.state.page, (res) => {
+      this.setState({ fives: res.data.fives, no_more: res.data.no_more });
+    }).then(() => this.setState({ loading: false }))
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, page: 1});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  pageCall() {
-    axios.get(`${Constant.CategoryToApi(this.state.category)}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
-      .then((response) => {
-        console.log(response);
-        if (response.data === undefined || response.data.length === 0) {
-          this.setState({ no_more: true });
-        }
-        this.setState({
-          fives: [ ...this.state.fives, ...response.data ],
-          page_loading: false,
-        });
-      }).catch((error) => {
-      console.log(error.response);
+    this.setState({ refreshing: true, page: 1 }, () => {
+      this.five.fiveList(this.state.category, this.state.search_params, this.state.page, (res) => {
+        this.setState({ fives: res.data.fives, no_more: res.data.no_more });
+      }).then(() => this.setState({ refreshing: false }))
     });
   }
 
   nextPage() {
-    this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
-    }, () => {
-      this.pageCall();
+    this.setState({ page: this.state.page + 1, page_loading: true, }, () => {
+      this.five.fiveList(this.state.category, this.state.search_params, this.state.page, (res) => {
+        if (res.data.no_more) {
+          this.setState({ no_more: true });
+        }
+        this.setState({
+          fives: [ ...this.state.fives, ...res.data.fives ],
+        });
+      }).then(() => this.setState({ page_loading: false }));
     });
   }
 

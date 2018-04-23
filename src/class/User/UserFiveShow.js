@@ -14,16 +14,12 @@ import {
   FiveUnitBar, FiveUnitFull, FiveUnitFullCenter
 } from '../../component/common';
 import { FollowSmallButton, ImageCon } from '../../component/common';
-import axios from 'axios';
-import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore')
-@observer
+@inject('stores') @observer
 export default class UserFiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -32,15 +28,12 @@ export default class UserFiveShow extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: true,
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       category: this.props.navigation.state.params.category,
       klass: '',
       user: this.props.navigation.state.params.user,
@@ -54,124 +47,56 @@ export default class UserFiveShow extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({
-      toggleFollow: () => this.toggleFollow(),
-    });
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}/fives?category=${this.state.category}`, this.state.header)
-      .then((response) => {
-        this.props.navigation.setParams({
-          following: response.data.following,
-          navLoading: false,
-        });
-        this.setState({
-          loading: false,
-          klass: response.data.klass,
-          category_korean: response.data.category_korean,
-          fives: response.data.fives,
-          followers_count: response.data.followers_count,
-          followees_count: response.data.followees_count,
-          following: response.data.following,
-        });
-      })
-      .catch((error) => {
-        console.log('에러 : ' + error.response);
+    this.server.userFives(this.state.user.id, this.state.category, (res) => {
+      this.setState({
+        klass: res.data.klass, category_korean: res.data.category_korean,
+        fives: res.data.fives, followers_count: res.data.followers_count,
+        followees_count: res.data.followees_count, following: res.data.following,
       });
+    }).then(() => this.setState({ loading: false }))
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  openShareActionSheet() {
-    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
-    const CANCEL_INDEX = 1;
-
-    ActionSheet.show(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-      },
-      buttonIndex => this.shareAction(BUTTONS[buttonIndex]),
-    );
-  }
-
-  shareAction(value) {
-    Toast.show({
-      text: value,
-      position: 'bottom',
-      duration: 1500
-    })
-  }
-
-  askFollowOption(data, onSuccess) {
-    this.props.ApplicationStore.hasCategory(this.state.category).then((have) => {
-      if (have) {
-        this.followCall(data, onSuccess);
-      } else {
-        Alert.alert(
-          `아직 참여한 카테고리는 아니에요`,
-          `${Constant.askToParticipate(this.state.category_korean, this.state.user.name)}`,
-          [
-            {
-              text: '네',
-              onPress: () => {
-                this.props.navigation.navigate(`SearchFive`, {
-                  category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
-                });
-              },
-            },
-            {
-              text: '취소',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true },
-        );
-      }
-    });
-  }
-
-  async followCall(data, onSuccess) {
-
-  await axios.post(`${ApiServer.FOLLOWINGS}/?category=${this.state.category}`, data, this.state.header)
-      .then((response) => {
-        onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
+    this.setState({ refreshing: true }, () => {
+      this.server.userFives(this.state.user.id, this.state.category, (res) => {
+        this.setState({
+          klass: res.data.klass, category_korean: res.data.category_korean,
+          fives: res.data.fives, followers_count: res.data.followers_count,
+          followees_count: res.data.followees_count, following: res.data.following,
+        });
+      }).then(() => this.setState({ refreshing: false }))
     });
   }
 
   toggleFollow() {
-    const data = {
-      following: {
-        user_id: this.state.user.id,
-        following: !this.state.following,
-      },
-    };
-    this.askFollowOption(data, (response) => this.onFollowSuccess(response));
+    const have = this.app.hasCategory(this.state.category);
+    if (have) {
+      this.followCall();
+    } else {
+      Alert.alert(
+        `아직 참여한 카테고리는 아니에요`,
+        `${Constant.askToParticipate(this.state.category_korean, this.state.user.name)}`,
+        [ {
+            text: '네',
+            onPress: () => this.followCall(five)
+              .then(() => this.props.navigation.navigate(`SearchFive`, { category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass}))
+        },
+          { text: '취소', style: 'cancel'},
+        ], { cancelable: true },
+      );
+    }
   }
 
-  onFollowSuccess(response) {
+  async followCall() {
+    await this.server.followPost(this.state.user.id, this.state.following, this.state.category, (res) => this.onFollowSuccess(res))
+  }
+
+  async onFollowSuccess(response) {
     const new_following = response.data;
-    this.setState({
+    await this.setState({
       following: new_following,
       followers_count: new_following ? this.state.followers_count += 1 : this.state.followers_count -= 1,
     });
-    this.props.navigation.setParams({ following: new_following });
   }
 
   flipCard() {
@@ -339,10 +264,10 @@ export default class UserFiveShow extends Component {
           </Body>
           <Right>
             <FollowSmallButton
-              onPress={navigation.state.params.toggleFollow}
+              onPress={() => this.toggleFollow()}
               textTrue={'팔로잉'}
               textFalse={'팔로우'}
-              clicked={navigation.state.params.following}
+              clicked={this.state.following}
             />
           </Right>
         </Header>

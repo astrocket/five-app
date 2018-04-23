@@ -9,18 +9,15 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { UserUnitRound, InputSingle } from '../../component/common/index';
-import axios from 'axios';
 import {
-  FivesBar, NavBar,
+  NavBar,
 } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import ImagePicker from 'react-native-image-picker';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class UserInfoNew extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -29,119 +26,68 @@ export default class UserInfoNew extends Component {
 
   constructor(props) {
     super(props);
-    const { my_profile } = this.props.ApplicationStore;
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
-      introduce: my_profile.introduce,
-      name: my_profile.name,
+      user: {
+        name: this.app.my_profile.name,
+        username: this.app.my_profile.username,
+        introduce: this.app.my_profile.introduce
+      }
     };
   }
 
   postImage(source) {
-
     const data = new FormData();
-
     data.append("user[image]", {
-      uri: source.uri,
-      name: source.name,
-      type: source.type,
+      uri: source.uri, name: source.name, type: source.type,
     });
-
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-        'Content-Type': 'multipart/form-data;',
-      }
-    };
-
-    axios.post(`${ApiServer.MY_PROFILE}/update_user`, data, header)
-      .then((response) => {
-        this.onUploadSuccess(response.data);
-      }).catch((error) => {
-      Toast.show({
-        text: JSON.stringify(error.response),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
+    this.server.profileUpdate(data, (data) => this.setState(data), 'form')
+      .then(() => this.setState({ loading: false }))
   }
 
   openImagePicker() {
     const options = {
-      title: 'Select Avatar',
+      title: '프로필 사진 선택하기',
       storageOptions: {
-        skipBackup: true,
-        path: 'images',
+        skipBackup: true, path: 'images',
       },
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled image picker');
       }
       else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-      }
-      else {
-
-        this.setState({
-          loading: true,
+      } else {
+        this.setState({ loading: true }, () => {
+          let source = { uri: response.uri, name: response.fileName, type: response.type };
+          this.postImage(source);
         });
-
-        let source = {
-          uri: response.uri,
-          name: response.fileName,
-          type: response.type
-        };
-
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-        this.postImage(source);
       }
-    });
-  }
-
-  onUploadSuccess(data) {
-    this.props.ApplicationStore.setMyProfile(data).then(() => {
-      this.setState({
-        loading: false,
-      });
     });
   }
 
   postUserInfo() {
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(`${ApiServer.MY_PROFILE}/update_user`, {
+    const data = {
       user: {
-        introduce: this.state.introduce,
         name: this.state.name,
-        username: this.state.name,
+        username: this.state.username,
+        introduce: this.state.introduce
       }
-    }, header)
-      .then((response) => {
-        this.onUploadSuccess(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      Toast.show({
-        text: JSON.stringify(error.response),
-        position: 'bottom',
-        duration: 1500,
-      });
+    };
+    this.setState({ loading: true }, () => {
+      this.server.profileUpdate(data, (data) => this.setState(data))
+        .then(() => this.setState({ loading: false }));
     });
   }
 
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container>

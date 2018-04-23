@@ -14,7 +14,6 @@ import {
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as ApiServer from '../../config/ApiServer';
 import { FiveUnitBar, NavBar } from '../../component/common';
@@ -23,63 +22,20 @@ import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveStoryShow extends Component {
   static navigationOptions = ({ navigation }) => ({
-    /*title: navigation.state.params.title,
-    headerRight: (
-      navigation.state.params.navLoading ?
-        null :
-        <View style={BaseStyle.headerDoubleIconsContainer}>
-          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
-            <Icon
-              name="ios-share-outline"
-              style={{
-                fontSize: 25,
-                color: Constant.FiveColor,
-              }}
-            />
-          </Button>
-        </View>
-    ),
-    ...Constant.FiveNavOptions,*/
     header: null,
   });
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false,
+      loading: true,
       five_story: this.props.navigation.state.params.five_story,
     };
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      openShareActionSheet: () => this.openShareActionSheet(),
-    });
-  }
-
-  openShareActionSheet() {
-    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
-    const CANCEL_INDEX = 1;
-
-    ActionSheet.show(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-      },
-      buttonIndex => this.shareAction(BUTTONS[ buttonIndex ]),
-    );
-  }
-
-  shareAction(value) {
-    Toast.show({
-      text: value,
-      position: 'bottom',
-      duration: 1500,
-    });
   }
 
   render() {
@@ -94,10 +50,6 @@ export default class FiveStoryShow extends Component {
           leftAsImage
           leftIcon={require('../../assets/images/cancel_icon_grey.png')}
           onPressLeft={() => navigation.goBack()}
-/*          rightButton
-          rightAsImage
-          rightIcon={require('../../assets/images/cancel_icon_grey.png')}
-          onPressRight={() => navigation.goBack()} */
           headerText="FIVE 스토리" 
         />
         <Grid>
@@ -105,6 +57,9 @@ export default class FiveStoryShow extends Component {
             <WebView
               source={{ uri: `${ApiServer.FIVE_STORY}/${navigation.state.params.id}` }}
               style={{ flex: 1 }}
+              onLoadEnd={() => this.setState({
+                loading: false
+              })}
             />
           </Row>
           <Row style={{ width: deviceWidth, height: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>

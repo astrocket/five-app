@@ -100,13 +100,6 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = AstroBoilerApp;
 		};
-		019C127F208604F6007898D8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNOpenSettings;
-		};
 		043BAC9F1FE3C821008740D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0F1068205B04468185DE431A /* RNImagePicker.xcodeproj */;
@@ -426,7 +419,6 @@
 				A5AE1EF5692F36BD2426A4B7 /* libPods-AstroBoilerApp.a in Frameworks */,
 				E61FE8F169F34F999E0F86F3 /* libRCTContacts.a in Frameworks */,
 				8A5A6DCE68B04AD1B37276D5 /* libRNOpenSettings.a in Frameworks */,
-				76404DCECE214237A5116A83 /* libRNSearchBar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,14 +482,6 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		019C127B208604F6007898D8 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				019C1280208604F6007898D8 /* libRNOpenSettings.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		043BAC7A1FE3C81D008740D3 /* Recovered References */ = {
@@ -642,7 +626,6 @@
 				99B8623FDFC0430BBD48FF38 /* RNVectorIcons.xcodeproj */,
 				420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */,
 				793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */,
-				D063C85C52E94A1987DA12A3 /* RNSearchBar.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -789,7 +772,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = S5CPA6SBMQ;
+						DevelopmentTeam = 4YCR8M2TJY;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -913,13 +896,6 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		019C1280208604F6007898D8 /* libRNOpenSettings.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNOpenSettings.a;
-			remoteRef = 019C127F208604F6007898D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		043BACA01FE3C821008740D3 /* libRNImagePicker.a */ = {
@@ -1384,7 +1360,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = S5CPA6SBMQ;
+				DEVELOPMENT_TEAM = 4YCR8M2TJY;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
@@ -1416,7 +1392,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S5CPA6SBMQ;
+				DEVELOPMENT_TEAM = 4YCR8M2TJY;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",

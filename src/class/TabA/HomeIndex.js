@@ -3,23 +3,20 @@ import {
   StyleSheet, View, FlatList, RefreshControl, Alert,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Toast
+  Container, Content, Spinner, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import {
   RowHeaderBar, FiveStoryFull, FiveUnitRound, UserFivesBar,
 } from '../../component/common';
-import * as ApiServer from '../../config/ApiServer';
 import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class HomeIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -28,6 +25,8 @@ export default class HomeIndex extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       five_story: [],
@@ -38,107 +37,64 @@ export default class HomeIndex extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(`${ApiServer.HOME_INDEX}`, config)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          five_story: response.data.five_story,
-          popular_fives: response.data.popular_fives,
-          follow_suggestions: response.data.follow_suggestions,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.server.homeIndex((data) => this.setState(data))
+      .then(() => {
+        this.setState({ loading: false });
       });
-  }
-
-/*  openDrawerAction() {
-    this.props.screenProps.modalNavigation.navigate('DrawerOpen');
-  }*/
-
-  askFollowOption(item, index) {
-    console.log(JSON.stringify(this.props.ApplicationStore.categories));
-    this.props.ApplicationStore.hasCategory(item.category).then((have) => {
-      if (have) {
-        this.followCall(item, index);
-      } else {
-        Alert.alert(
-          `아직 참여한 카테고리는 아니에요`,
-          `${Constant.askToParticipate(item.user.name, item.category_korean)}`,
-          [
-            {
-              text: '네',
-              onPress: () => this.followCall(item, index).then(() => {
-                this.props.navigation.navigate(`SearchFive`, {
-                  category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
-                });
-              }),
-            },
-            {
-              text: '취소',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true },
-        );
-      }
-    });
-  }
-
-  async followCall(item, index) {
-    const data = {
-      following: {
-        user_id: item.user.id,
-        following: !item.following,
-      },
-    };
-
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    await axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
-      .then((response) => {
-        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
-  }
-
-  onCreateFollowCallSuccess(response, index) {
-    const new_following = response.data;
-    const stateBefore = [ ...this.state.follow_suggestions ];
-    stateBefore[ index ].following = new_following;
-    this.setState({ follow_suggestions: stateBefore });
   }
 
   _onRefresh() {
-    this.setState({ refreshing: true });
-    this.apiCall().then(() => {
-      this.props.ApplicationStore.updateCategories().then(() => {
-        this.setState({ loading: false, refreshing: false })
-      });
+    this.setState({ refreshing: true }, () => {
+      this.server.homeIndex((data) => this.setState(data))
+        .then(() => {
+          this.app.updateCategories().then(() => {
+            this.setState({ refreshing: false });
+          });
+        });
     });
+  }
+
+  toggleFollowCall(item, index) {
+    this.onClickFollow(item, index)
+      .then(() => {
+        const have = this.app.hasCategory(item.category);
+        if (have) {
+          this.server.followPost(item.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
+            .then(() => this.afterClickFollow(item, index));
+        } else {
+          Alert.alert(
+            `아직 참여한 카테고리는 아니에요`,
+            `${Constant.askToParticipate(item.category_korean, item.user.name)}`,
+            [ {
+              text: '네',
+              onPress: () => this.server.followPost(item.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
+                .then(() => this.afterClickFollow(item, index)
+                  .then(() => this.props.navigation.navigate(`SearchFive`, { category: item.category, category_korean: item.category_korean, klass: item.klass})))
+            },
+              { text: '취소', style: 'cancel'},
+            ], { cancelable: true },
+          );
+        }
+      });
+  }
+
+  async onClickFollow(item, index) {
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].loading = true;
+    await this.setState({ follow_suggestions: stateBefore })
+  }
+
+  async afterClickFollow(item, index) {
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].loading = false;
+    await this.setState({ follow_suggestions: stateBefore })
+  }
+
+  onSuccessFollow(res, index) {
+    const new_following = res.data;
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].following = new_following;
+    this.setState({ follow_suggestions: stateBefore });
   }
 
   render() {
@@ -154,18 +110,17 @@ export default class HomeIndex extends Component {
             tintColor={Constant.FiveColor}
           />
         }>
-
-          <Grid>  
+          <Grid>
             <Row style={{
               padding: 16,
               backgroundColor: '#fafafa',
-              }}>
+            }}>
               <Row style={{
                 padding: 0,
                 backgroundColor: 'white',
-                borderRadius: 24
-                }}
-                >
+                borderRadius: 24,
+              }}
+              >
                 <FiveStoryFull
                   singleClickable
                   id={this.state.five_story.id}
@@ -200,10 +155,11 @@ export default class HomeIndex extends Component {
                       user: item.user,
                     })}
                     defaultImage={require('../../assets/images/five_void_grey.png')}
-                    onPressFollow={() => this.askFollowOption(item, index)}
+                    onPressFollow={() => this.toggleFollowCall(item, index)}
                     category={item.category}
                     fives={item.fives}
                     clicked={item.following}
+                    loading={item.loading}
                     user={item.user}
                   />
                 )}
@@ -243,20 +199,23 @@ export default class HomeIndex extends Component {
             </Row>
           </Grid>
 
-          <Grid> 
+          <Grid>
             <Row
-              style={{ height: 32, backgroundColor: '#fafafa' }}
-            /> 
+              style={{
+                height: 32,
+                backgroundColor: '#fafafa',
+              }}
+            />
             <Row style={{
               padding: 16,
               backgroundColor: '#fafafa',
-              }}>
+            }}>
               <Row style={{
                 padding: 0,
                 backgroundColor: 'white',
-                borderRadius: 24
-                }}
-                >
+                borderRadius: 24,
+              }}
+              >
                 <FiveStoryFull
                   singleClickable
                   id={this.state.five_story.id}
@@ -291,7 +250,7 @@ export default class HomeIndex extends Component {
                       user: item.user,
                     })}
                     defaultImage={require('../../assets/images/five_void_grey.png')}
-                    onPressFollow={() => this.askFollowOption(item, index)}
+                    onPressFollow={() => this.toggleFollowCall(item, index)}
                     category={item.category}
                     fives={item.fives}
                     clicked={item.following}
@@ -334,20 +293,23 @@ export default class HomeIndex extends Component {
             </Row>
           </Grid>
 
-          <Grid> 
+          <Grid>
             <Row
-              style={{ height: 32, backgroundColor: '#fafafa' }}
-            /> 
+              style={{
+                height: 32,
+                backgroundColor: '#fafafa',
+              }}
+            />
             <Row style={{
               padding: 16,
               backgroundColor: '#fafafa',
-              }}>
+            }}>
               <Row style={{
                 padding: 0,
                 backgroundColor: 'white',
-                borderRadius: 24
-                }}
-                >
+                borderRadius: 24,
+              }}
+              >
                 <FiveStoryFull
                   singleClickable
                   id={this.state.five_story.id}
@@ -382,7 +344,7 @@ export default class HomeIndex extends Component {
                       user: item.user,
                     })}
                     defaultImage={require('../../assets/images/five_void_grey.png')}
-                    onPressFollow={() => this.askFollowOption(item, index)}
+                    onPressFollow={() => this.toggleFollowCall(item, index)}
                     category={item.category}
                     fives={item.fives}
                     clicked={item.following}
@@ -428,7 +390,7 @@ export default class HomeIndex extends Component {
         </Content>
         {this.state.loading &&
         <View style={preLoading}>
-          <Spinner size='large' color={Constant.FiveColor} />
+          <Spinner size='large' color={Constant.FiveColor}/>
         </View>
         }
       </Container>

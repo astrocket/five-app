@@ -6,7 +6,6 @@ import {
 import {
   StackNavigator,
 } from 'react-navigation';
-import Welcome from '../class/Auth/Welcome';
 import StartForm from '../class/Auth/StartForm';
 import LogInForm from '../class/Auth/LogInForm';
 import FindPassword from '../class/Auth/FindPassword';
@@ -14,7 +13,6 @@ import SignUpForm from '../class/Auth/SignUpForm';
 import ModalWebViewShow from '../class/Auth/ModalWebViewShow';
 import Hello from '../class/Hello/Hello';
 import Tutorial from '../class/Hello/Tutorial';
-import FiveSelect from '../class/Hello/FiveSelect';
 import Map from '../class/Page/Map';
 
 const CardNavigation = StackNavigator(
@@ -40,9 +38,6 @@ const CardNavigation = StackNavigator(
     Tutorial: {
       screen: Tutorial,
     },
-    FiveSelect: {
-      screen: FiveSelect,
-    },
   }, {
     headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
     mode: 'card'
@@ -65,12 +60,5 @@ const AuthNavigation = StackNavigator(
     mode: 'modal',
   }
 );
-
-{/*<Button onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-  url: `${ApiServer.FIVE_STORY}/31`,
-  headerTitle: '웹뷰'
-})}>
-  <Text>모달</Text>
-</Button>*/}
 
 export default AuthNavigation;

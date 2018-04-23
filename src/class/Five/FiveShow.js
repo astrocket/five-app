@@ -13,18 +13,14 @@ import {
   RowHeaderBar, NavBar, UserUnitRound, AddSmallButton, ListItemIconClick,
 } from '../../component/common';
 import { FiveUnitRound, ImageCon } from '../../component/common';
-import axios from 'axios';
-import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -34,17 +30,14 @@ export default class FiveShow extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: true,
       refreshing: false,
       category: this.props.navigation.state.params.category,
       category_korean: Constant.CategoryToKorean(this.props.navigation.state.params.category),
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       five: '',
       flip: false,
       five_users: [],
@@ -53,133 +46,77 @@ export default class FiveShow extends Component {
       my_wish: false,
       clicked: true,
       related_fives: [],
+      wish_loading: false,
+      five_loading: false
     };
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  // API CALLS
-
-  async apiCall() {
-    console.log(this.props.navigation.state.params.id);
-    await axios.get(`${Constant.CategoryToApi(this.state.category)}/${this.props.navigation.state.params.id}`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          five: response.data.five,
-          five_users: response.data.five_users,
-          five_users_count: response.data.five_users_count,
-          my_five: response.data.my_five,
-          my_wish: response.data.my_wish,
-          related_fives: response.data.related_fives,
-        });
-      })
-      .catch((error) => {
-        console.log('확인해 주세요! ' + JSON.stringify(error.response));
+    this.five.fiveShow(this.state.category, this.props.navigation.state.params.id, (res) => {
+      this.setState({
+        five: res.data.five,
+        five_users: res.data.five_users,
+        five_users_count: res.data.five_users_count,
+        my_five: res.data.my_five,
+        my_wish: res.data.my_wish,
+        related_fives: res.data.related_fives,
       });
+    }).then(() => this.setState({ loading: false }))
   }
 
   _onRefresh() {
-    this.setState({ refreshing: true });
-    this.apiCall().then(() => {
-      this.setState({ refreshing: false });
+    this.setState({ refreshing: true }, () => {
+      this.five.fiveShow(this.state.category, this.props.navigation.state.params.id, (res) => {
+        this.setState({
+          five: res.data.five,
+          five_users: res.data.five_users,
+          five_users_count: res.data.five_users_count,
+          my_five: res.data.my_five,
+          my_wish: res.data.my_wish,
+          related_fives: res.data.related_fives,
+        });
+      }).then(() => this.setState({ refreshing: false }))
     });
   }
 
-  createWishCall() {
-    var url = `${ApiServer.MY_PROFILE}/create_wish?category=${this.state.category}`;
-
-    const data = {
-      favorable_id: this.state.five.id,
-    };
-
-    if (this.state.my_wish) {
-      this.deleteWishCall()
-    } else {
-      axios.post(url, data, this.state.header)
-        .then((response) => {
-          this.onCreateFiveCallSuccess(response.data);
-        }).catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data.full) {
-          this.handleOnCreateFiveCallFull();
-        } else {
-          Toast.show({
-            text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
-            position: 'bottom',
-            duration: 1500,
-          });
-        }
-      });
-    }
-  }
-
-  createFiveCall() {
-    var url = `${ApiServer.MY_PROFILE}/create_five?category=${this.state.category}`;
-
-    const data = {
-      favorable_id: this.state.five.id,
-    };
-
-    if (this.state.my_five) {
-      this.deleteFiveCall()
-    } else {
-      axios.post(url, data, this.state.header)
-        .then((response) => {
-          this.onCreateFiveCallSuccess(response.data);
-        }).catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data.full) {
-          this.askAddWish(JSON.stringify(error.response.data.errors[0]));
-        } else {
-          Toast.show({
-            text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
-            position: 'bottom',
-            duration: 1500,
-          });
-        }
-      });
-    }
-  }
-
-  deleteWishCall() {
-    const data = {
-      favorable_id: this.state.five.id,
-    };
-    axios.post(`${ApiServer.MY_PROFILE}/destroy_wish?category=${this.state.category}`, data, this.state.header)
-      .then((response) => {
-        this.setState({
-          my_wish: false
-        });
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
-        position: 'bottom',
-        duration: 1500,
-      });
+  toggleWishCall() {
+    this.setState({ wish_loading: true }, () => {
+      if (this.state.my_wish) {
+        this.five.wishDestroy(this.state.category, this.state.five.id, (res) => {
+          this.setState({ my_wish: false });
+        }).then(() => this.setState({ wish_loading: false }));
+      } else {
+        this.five.wishCreate(this.state.category, this.state.five.id, (res) => {
+          this.setState({ my_five: res.data.my_five, my_wish: res.data.my_wish, });
+        }).then(() => this.setState({ wish_loading: false }));
+      }
     });
   }
 
-  deleteFiveCall() {
-    const data = {
-      favorable_id: this.state.five.id,
-    };
-    axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
-       .then((response) => {
-        this.setState({
-          five_users_count: (this.state.five_users_count -= 1),
-          my_five: false
-        });
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: '확인해 주세요! ' + JSON.stringify(error.response.data.errors),
-        position: 'bottom',
-        duration: 1500,
-      });
+  toggleFiveCall() {
+    this.setState({ five_loading: true }, () => {
+      if (this.state.my_five) {
+        this.five.fiveDestroy(this.state.category, this.state.five.id, (res) => {
+          this.setState({ five_users_count: (this.state.five_users_count -= 1), my_five: false });
+        }).then(() => this.setState({ five_loading: false }));
+      } else {
+        this.five.fiveCreate(this.state.category, this.state.five.id, (res) => {
+          console.log(JSON.stringify(res.data.first_kiss));
+          if (res.data.first_kiss) {
+            this.app.updateCategories().then(() => {
+              this.setState({ five_users_count: (this.state.five_users_count += 1), my_five: res.data.my_five, my_wish: res.data.my_wish, });
+            });
+          } else {
+            this.setState({ five_users_count: (this.state.five_users_count += 1), my_five: res.data.my_five, my_wish: res.data.my_wish, });
+          }
+        }, (e) => {
+          if (e.response.data.full && !this.state.my_wish) {
+            this.askAddWish(JSON.stringify(e.response.data.errors[0]));
+          } else {
+            this.five.defaultErrorHandler(e)
+          }
+        }).then(() => this.setState({ five_loading: false }));
+      }
     });
   }
 
@@ -187,67 +124,11 @@ export default class FiveShow extends Component {
     Alert.alert(
       `${msg}`,
       `${this.state.five.title}을(를) ${this.state.category_korean} 보관함에 담으시겠어요?`,
-      [
-        {
-          text: '아니요',
-          style: 'cancel',
-        },
-        {
-          text: '네',
-          onPress: () => this.createWishCall()
-        },
-      ],
+      [ { text: '아니요', style: 'cancel', },
+        { text: '네', onPress: () => this.toggleWishCall() }, ],
       { cancelable: true },
     );
   }
-
-  // CONTROLLERS
-
-  openShareActionSheet() {
-    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
-    const CANCEL_INDEX = 1;
-
-    ActionSheet.show(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-      },
-      buttonIndex => this.shareAction(BUTTONS[ buttonIndex ]),
-    );
-  }
-
-  handleOnCreateFiveCallFull() {
-    Alert.alert(
-      `FIVE 가득참`,
-      `이미 5개의 FIVE가 선택되어서 추가로 담을 수 없습니다.`,
-      [
-        {
-          text: 'FIVE 바꾸기',
-          onPress: () => this.props.navigation.navigate('ProfileFiveEdit', {
-            category: this.state.category,
-          }),
-        },
-        {
-          text: '확인',
-          style: 'cancel',
-        },
-      ],
-      { cancelable: true },
-    );
-  }
-
-  onCreateFiveCallSuccess(data) {
-    const my_five = data.my_five;
-    const my_wish = data.my_wish;
-
-    this.setState({
-      five_users_count: (this.state.five_users_count += 1),
-      my_five: my_five,
-      my_wish: my_wish,
-    });
-  }
-
-  // VIEW
 
   render() {
     const { container, preLoading, rowWrapper } = BaseStyle;
@@ -286,8 +167,9 @@ export default class FiveShow extends Component {
                   }}>
                     <Text large numberOfLines={1} style={{ marginLeft: 2, width: Constant.deviceWidth/2 + 32}}>{this.state.five.title}</Text>
                     <View style={BaseStyle.headerDoubleIconsContainer}>
-                      <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 16 }}>
-                        {this.state.my_wish ?
+                      <Button onPress={() => this.toggleWishCall()} transparent style={{ marginRight: 16 }}>
+                        {this.state.wish_loading ? null :
+                          this.state.my_wish ?
                           <ImageCon
                             image={require('../../assets/images/bookmark_pink_full.png')}
                           /> : <ImageCon
@@ -300,10 +182,11 @@ export default class FiveShow extends Component {
                         paddingRight: 5,
                       }}>
                         <AddSmallButton
-                          onPress={() => this.createFiveCall()}
+                          onPress={() => this.toggleFiveCall()}
                           textTrue={'담김'}
                           textFalse={'+ 담기'}
                           clicked={this.state.my_five}
+                          loading={this.state.five_loading}
                         />
                       </View>
                     </View>

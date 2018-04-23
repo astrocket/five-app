@@ -6,21 +6,17 @@ import {
   Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch, H2, Toast,
   Spinner,
 } from 'native-base';
-
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import {
-  UserUnitRound, FivesBar, NavBar,
+  NavBar,
 } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class AlarmEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -29,15 +25,17 @@ export default class AlarmEdit extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
+      loading: false,
     };
   }
 
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>

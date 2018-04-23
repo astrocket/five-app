@@ -14,7 +14,6 @@ import {
 import {
   StyleProvider,
   Spinner,
-  Button,
 } from 'native-base';
 import getTheme from './native-base-theme/components';
 import platform from './native-base-theme/variables/platform';
@@ -23,7 +22,7 @@ import RootNavigation from './src/config/RootNavigation';
 import AuthNavigation from './src/config/AuthNavigation';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
+@inject('stores') // Inject some or all the stores!
 @observer
 export default class App extends Component<{}> {
 
@@ -33,6 +32,8 @@ export default class App extends Component<{}> {
       loading: true,
       loggedIn: false,
     };
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
   }
 
   componentWillMount() {
@@ -41,7 +42,7 @@ export default class App extends Component<{}> {
       .then((result) => {
         if (result) {
           isAuthenticated = true;
-          this.props.ApplicationStore.setAuthInfo().then(() => {
+          this.app.setAuthInfo().then(() => {
             this.setState({
               loggedIn: isAuthenticated,
               loading: false,
@@ -64,7 +65,7 @@ export default class App extends Component<{}> {
       [ 'key', 'astrokey' ],
       [ 'login', true ],
     ]).then(() => {
-      this.props.ApplicationStore.setAuthInfo().then(() => {
+      this.app.setAuthInfo().then(() => {
         this.setState({
           loggedIn: true,
           loading: false,
@@ -92,7 +93,7 @@ export default class App extends Component<{}> {
         </StyleProvider>
       );
     } else {
-      if (this.props.ApplicationStore.login) {
+      if (this.app.login) {
         return (
           <StyleProvider style={getTheme(platform)}>
             <RootNavigation/>

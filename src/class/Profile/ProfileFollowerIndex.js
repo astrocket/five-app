@@ -9,18 +9,14 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FollowUnitBar, EmptyBox } from '../../component/common';
-import axios from 'axios';
 import {
-  UserUnitRound, FivesBar, NavBar,
+  UserUnitBar, EmptyBox, NavBar, ShowMore,
 } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ProfileFollowerIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -29,43 +25,44 @@ export default class ProfileFollowerIndex extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false, //실서비스에서는 로딩 true로
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
-      category: this.props.navigation.state.params.category,
+      loading: true,
       refreshing: false,
-      followers_followings: [],
-      flip: false
+      page: 1,
+      page_loading: false,
+      no_more: false,
+      category: this.props.navigation.state.params.category,
+      followers: [],
     };
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.MY_PROFILE}/followers?category=${this.state.category}`, this.state.header)
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-          followers_followings: response.data.followers_followings,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.server.profileFollowers(this.state.category, this.state.page, (res) => {
+      this.setState({
+        followers: res.data.followers, no_more: res.data.no_more
       });
+    }).then(() => this.setState({ loading: false }));
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
+    this.setState({ refreshing: true, page: 1 }, () => {
+      this.server.profileFollowers(this.state.category, this.state.page, (res) => {
+        this.setState({
+          followers: res.data.followers, no_more: res.data.no_more
+        });
+      }).then(() => this.setState({ refreshing: false }));
+    });
+  }
+
+  nextPage() {
+    this.setState({ page: this.state.page + 1, page_loading: true, }, () => {
+      this.server.profileFollowers(this.state.category, this.state.page, (res) => {
+        this.setState({
+          followers: [ ...this.state.followers, ...res.data.followers ], no_more: res.data.no_more
+        });
+      }).then(() => this.setState({ page_loading: false }));
     });
   }
 
@@ -88,20 +85,29 @@ export default class ProfileFollowerIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          {this.state.followers_followings.length > 0 ?
+          {this.state.followers.length > 0 ?
             <FlatList
-              data={this.state.followers_followings}
+              data={this.state.followers}
               renderItem={({ item }) => (
-                <FollowUnitBar
-                  user={item.follower}
-                  following={item}
-                  onPress={() => navigation.navigate('UserShow', {
-                    user: item.follower,
-                    title: item.follower.name,
+                <UserUnitBar
+                  user={item}
+                  onPress={() => this.props.navigation.navigate('UserShow', {
+                    user: item,
+                    title: item.name,
                   })}
                 />
               )}
-              keyExtractor={item => 'followers_followings-list-' + item.id}
+              keyExtractor={item => 'user-followers-list-' + item.id}
+              ListFooterComponent={
+                () =>
+                  <ShowMore
+                    onPress={() => this.nextPage()}
+                    moreText={'더보기'}
+                    overText={'끝'}
+                    no_more={this.state.no_more}
+                    page_loading={this.state.page_loading}
+                  />
+              }
             />
           :<EmptyBox
               barWidth={Constant.deviceWidth - 20}

@@ -9,15 +9,12 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import { FiveUnitBar, ShowMore } from '../../component/common';
-import axios from 'axios';
+import { UserUnitBar, ShowMore } from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
-
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+// 지금 안쓰이는 부분인데, 더보기 눌러서 어디서든 일반 유저리스트 쭉 뿌리면 필요한 거임. FiveUser리스트는 Five의 유저만
+@inject('stores') @observer
 export default class UserList extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -27,15 +24,11 @@ export default class UserList extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: true,
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       users: [],
       page: 1,
       page_loading: false,
@@ -45,50 +38,33 @@ export default class UserList extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          users: response.data,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.server.userList(this.state.page, this.state.search_params, (res) => {
+      this.setState({
+        users: res.data.users, no_more: res.data.no_more
       });
+    }).then(() => this.setState({ loading: false }));
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, page: 1 });
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  pageCall() {
-    axios.get(`${ApiServer.USERS}/list?page=${this.state.page}&s=${this.state.search_params}`, this.state.header)
-      .then((response) => {
-        if (response.data === undefined || response.data.length === 0) {
-          this.setState({ no_more: true });
-        }
+    this.setState({ refreshing: true, page: 1 }, () => {
+      this.server.userList(this.state.page, this.state.search_params, (res) => {
         this.setState({
-          users: [ ...this.state.users, ...response.data ],
-          page_loading: false,
+          users: res.data.users, no_more: res.data.no_more
         });
-      }).catch((error) => {
-      console.log(error.response);
+      }).then(() => this.setState({ refreshing: false }));
     });
   }
 
   nextPage() {
-    this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
-    }, () => {
-      this.pageCall();
+    this.setState({ page: this.state.page + 1, page_loading: true, }, () => {
+      this.server.userList(this.state.page, this.state.search_params, (res) => {
+        if (res.data.no_more) {
+          this.setState({ no_more: true });
+        }
+        this.setState({
+          users: [ ...this.state.users, ...res.data.users ], no_more: res.data.no_more
+        });
+      }).then(() => this.setState({ page_loading: false }));
     });
   }
 
@@ -110,14 +86,9 @@ export default class UserList extends Component {
               paddingTop: 10,
             }}
             renderItem={({ item }) => (
-              <FiveUnitBar
-                multiple
-                id={item.id}
-                title={item.name}
-                subtitle={item.introduce}
-                image_url={item.image_medium_url}
-                icon={'ios-arrow-forward-outline'}
-                onPress={() => navigation.navigate('UserShow', {
+              <UserUnitBar
+                user={item}
+                onPress={() => this.props.navigation.navigate('UserShow', {
                   user: item,
                   title: item.name,
                 })}

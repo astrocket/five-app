@@ -27,15 +27,6 @@ const FiveUserUnitBar = ({ user, onPress, style }) => {
       <Text numberOfLines={1}>{user.name}</Text>
       <Text note numberOfLines={1}>{user.introduce}</Text>
       </Body>
-      <Right style={{
-        borderBottomWidth: 0,
-        width: 120,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <Text>{user.five_days}</Text>
-      </Right>
     </ListItem>
   );
 };

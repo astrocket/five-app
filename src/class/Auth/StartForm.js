@@ -10,15 +10,12 @@ import {
 } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation';
 import { InputSingle } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { ErrorHandler} from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class StartForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -27,6 +24,8 @@ export default class StartForm extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.auth = this.props.stores.auth;
     this.state = {
       loading: false,
       input_phone: '',
@@ -49,23 +48,8 @@ export default class StartForm extends Component {
       return false;
     }
 
-    this.setState({ status: -1 });
-    const url = `${ApiServer.PHONE}/send_sms`;
-    const data = {
-      phone_number: this.state.input_phone,
-    };
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(url, data, header)
-      .then((response) => {
-        this.onSendPin(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      ErrorHandler(JSON.stringify(error.response.data));
+    this.setState({ status: -1 }, async () => {
+      await this.auth.phoneSendSms(this.state.input_phone, (res) => this.onSendPin(res.data))
     });
   }
 
@@ -87,17 +71,12 @@ export default class StartForm extends Component {
           }));
       } else {
         this.setState({
-          status: 1,
-          message: 1,
-          phone_number: phone_number,
-          input_pin: '',
+          status: 1, message: 1, phone_number: phone_number, input_pin: '',
         });
       }
     } else {
       this.setState({
-        status: 0,
-        message: message,
-        input_pin: '',
+        status: 0, message: message, input_pin: '',
       });
       ErrorHandler(message);
     }
@@ -113,24 +92,8 @@ export default class StartForm extends Component {
       return false;
     }
 
-    this.setState({ status: -1 });
-    const url = `${ApiServer.PHONE}/verify`;
-    const data = {
-      pin_phone: this.state.phone_number,
-      pin_number: this.state.input_pin,
-    };
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    axios.post(url, data, header)
-      .then((response) => {
-        this.onVerifyPin(response.data); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      ErrorHandler(JSON.stringify(error.response.data));
+    this.setState({ status: -1 }, async () => {
+      await this.auth.phoneVerify(this.state.phone_number, this.state.input_pin, (res) => this.onVerifyPin(res.data))
     });
   }
 
@@ -281,17 +244,6 @@ export default class StartForm extends Component {
             <Row style={{marginBottom: 20}}>
               <Text xlarge>시작하기</Text>
             </Row>
-            {/*            <Row style={{
-              justifyContent: 'flex-end',
-              marginBottom: 20,
-            }}>
-              <View style={{
-                width: Constant.deviceWidth / 2,
-                height: 100,
-              }}>
-                {this.renderMessage()}
-              </View>
-            </Row>*/}
           </Grid>
           {this.renderInput()}
         </Content>

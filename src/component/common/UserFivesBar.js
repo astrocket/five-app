@@ -37,7 +37,7 @@ const FiveImages = ({ fives, defaultImage, pureWidth }) => {
 };
 
 
-const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, user, clicked }) => {
+const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, user, clicked, loading }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
   let cardMargin = 20;
@@ -68,6 +68,7 @@ const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, u
             textTrue={'팔로잉'}
             textFalse={'팔로우'}
             clicked={clicked}
+            loading={loading}
           />
         </Right>
       </ListItem>

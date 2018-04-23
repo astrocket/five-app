@@ -6,16 +6,11 @@ import {
   Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch, H2, Toast,
   Spinner,
 } from 'native-base';
-
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  DeleteCategory,
-} from '../../component/common/index';
-import axios from 'axios';
-import {
-  UserUnitRound, FivesBar, NavBar,
+  NavBar,
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
@@ -23,8 +18,7 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class Setting extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -33,39 +27,17 @@ export default class Setting extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: false,
     };
-  }
-
-  componentDidMount() {
-    this.apiCall();
-  }
-
-  apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(`${ApiServer.MY_PROFILE}/me`, config)
-      .then((response) => {
-        this.props.ApplicationStore.setMyProfile(response.data).then(() => {
-          this.setState({
-            loading: false,
-          });
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
   }
 
   render() {
     const { container, preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container style={{ backgroundColor: '#FFFFFF' }}>
@@ -110,7 +82,7 @@ export default class Setting extends Component {
             </ListItem>
             <ListItem icon
                       onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                        url: `${ApiServer.COMPANY}/inquery?user=${JSON.stringify(this.props.ApplicationStore.my_profile)}`,
+                        url: `${ApiServer.COMPANY}/inquery?user=${JSON.stringify(my_profile)}`,
                         headerTitle: '제안 보내기',
                       })}>
               <Left>

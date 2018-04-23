@@ -3,31 +3,24 @@ import {
   View, Platform,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Spinner,
+  Container, Header, Content, Text, Spinner,
 } from 'native-base';
 import {
-  Col,
-  Row,
-  Grid,
+  Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { NavBar } from '../../component/common';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class Map extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       title: this.props.screenProps.modalNavigation.state.params.title,

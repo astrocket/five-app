@@ -64,7 +64,7 @@ const FiveImages = ({ fives, image, pureWidth }) => {
   )
 };
 
-const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, fives, followButton, onPressFollow, clicked }) => {
+const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, fives, followButton, onPressFollow, clicked, loading }) => {
   const { container } = BaseStyle;
 
   return (
@@ -90,6 +90,7 @@ const FivesBar = ({ image, fiveImage, onPress, category, followers, followees, f
                 textTrue={'팔로잉'}
                 textFalse={'팔로우'}
                 clicked={clicked}
+                loading={loading}
                 />
               </Right> : null}
           </ListItem>

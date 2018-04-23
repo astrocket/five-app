@@ -21,26 +21,7 @@ import { observer, inject } from 'mobx-react/native';
 
 import Swiper from 'react-native-swiper';
 
-const styles = StyleSheet.create({
-  wrapper: {
-  },
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  text: {
-    color: '#4a4a4a',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 10
-  }
-})
-
-
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class Tutorial extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -49,44 +30,11 @@ export default class Tutorial extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.auth = this.props.stores.auth;
     this.state = {
       loading: false,
-      submiting: false,
     };
-  }
-
-  apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(ApiServer.HOME_INDEX, config)
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-
-  renderButton() {
-    if (this.state.submiting) {
-      return <Spinner size="small" />;
-    }
-
-    return (
-      <BottomFullButton
-        onPress={() =>
-          this.props.ApplicationStore.signIn()
-        }>
-        확인
-      </BottomFullButton>
-    );
   }
 
   render() {
@@ -198,3 +146,21 @@ export default class Tutorial extends Component {
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  wrapper: {
+  },
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  text: {
+    color: '#4a4a4a',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 10
+  }
+})
