@@ -8,14 +8,11 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class PageB extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -25,35 +22,23 @@ export default class PageB extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true,
       refreshing: false,
     };
   }
 
-  async apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    await axios.get(ApiServer.HOME_INDEX, config)
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+  componentDidMount() {
+    this.server.homeIndex((data) => this.setState(data))
+      .then(() => this.setState({ loading: false }))
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
+    this.setState({ refreshing: true }, () => {
+      this.server.homeIndex((data) => this.setState(data))
+        .then(() => this.setState({ refreshing: false }))
     });
   }
 

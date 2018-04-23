@@ -10,18 +10,11 @@ import {
 } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation';
 import { InputSingle } from '../../component/common';
-import axios from 'axios';
-import {
-  UserUnitRound, FivesBar, NavBar,
-} from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import { ErrorHandler } from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class LogInForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -30,6 +23,8 @@ export default class LogInForm extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.auth = this.props.stores.auth;
     this.state = {
       loading: false,
       user: this.props.navigation.state.params.data.user,
@@ -41,42 +36,11 @@ export default class LogInForm extends Component {
   }
 
   tryLogin() {
-    this.setState({ loading: true });
-
-    // rails server 에 로그인 시도하는 부분. 로그인 시도하고 서버에서 나온 결과값에 따라서 토스트메세지를 띄운다.
-    axios.post(`${ApiServer.USERS}/sign_in`, {
-      user: {
-        email: this.state.user.email,
-        password: this.state.input_text
-      }
-    }).then((response) => {
-      this.onLoginSuccess(response.data);
-    }).catch((error) => {
-      this.setState({ loading: false });
-      ErrorHandler(
-        JSON.stringify(error.response.data.errors.title),
-        () => this.setState({ input_text: '' })
-      );
+    this.setState({ loading: true }, async () => {
+      await this.auth.userSignIn(this.state.user.email, this.state.input_text, (res) => this.app.onSignInSuccess(res.data), (e) => {
+        this.setState({ input_text: '', loading: false }, () => this.auth.defaultErrorHandler(e))
+      });
     });
-  }
-
-  onLoginSuccess(data) {
-    AsyncStorage.multiSet([
-      [ 'email',  data.email],
-      [ 'token', data.authentication_token ],
-      [ 'key', data.key ]
-    ]).then(() => {
-      this.props.ApplicationStore.setAuthInfo();
-    });
-  }
-
-  renderMessage() {
-    switch (this.state.message) {
-      case 0:
-        return <Text key={0} note>{this.state.user.name}님, 어서오세요 !{'\n'}비밀번호를 입력하면 MYFIVE를{'\n'}다시 시작할 수 있어요.</Text>;
-      default:
-        return <Text key={this.state.message} note>{this.state.message}</Text>;
-    }
   }
 
   renderInput() {
@@ -120,17 +84,6 @@ export default class LogInForm extends Component {
             <Row style={{marginBottom: 20}}>
               <Text xlarge>로그인</Text>
             </Row>
-{/*            <Row style={{
-              justifyContent: 'flex-end',
-              marginBottom: 20,
-            }}>
-              <View style={{
-                width: Constant.deviceWidth / 2,
-                height: 100,
-              }}>
-                {this.renderMessage()}
-              </View>
-            </Row>*/}
           </Grid>
           {this.renderInput()}
         </Content>

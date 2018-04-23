@@ -29,68 +29,34 @@ const FiveUnitBarImage = ({ image_url }) => {
   }
 };
 
-const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked, image_url, friends_info  }) => {
+const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked, image_url, friends_info, loading }) => {
   const { container } = BaseStyle;
 
-  if (clicked) {
-    return (
-      <ListItem avatarList>
-        <TouchableOpacity onPress={onPressImage}>
-          <FiveUnitBarImage image_url={image_url} />
-        </TouchableOpacity>
-        <Body>
-        <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-          <Text normal style = {{ fontWeight: '600', padding: 1 }} numberOfLines={1}>{title}</Text>
-          <Text note numberOfLines={1}>{subtitle}</Text>
-          <Text micro yellow>{friends_info}</Text>
+  return (
+    <ListItem avatarList>
+      <TouchableOpacity onPress={onPressImage}>
+        <FiveUnitBarImage image_url={image_url} />
+      </TouchableOpacity>
+      <Body>
+      <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <Text normal style = {{ fontWeight: `${clicked ? '600' : '100'}`, padding: 1 }} numberOfLines={1}>{title}</Text>
+        <Text note numberOfLines={1}>{subtitle}</Text>
+        <Text micro yellow>{friends_info}</Text>
+      </View>
+      </Body>
+      <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
+        <View style={{
+          alignItems: 'center', justifyContent: 'center', paddingRight: 5,
+        }}>
+          <AddSmallButton
+            onPress={onPress}
+            clicked={clicked}
+            loading={loading}
+          />
         </View>
-        </Body>
-        <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingRight: 5,
-          }}>
-            <AddSmallButton
-              onPress={onPress}
-              textTrue={'담김'}
-              textFalse={'+ 담기'}
-              clicked={clicked}
-            />
-          </View>
-        </Right>
-      </ListItem>
-    );
-  } else {
-    return (
-      <ListItem avatarList>
-        <TouchableOpacity onPress={onPressImage}>
-          <FiveUnitBarImage image_url={image_url} />
-        </TouchableOpacity>
-        <Body>
-        <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-          <Text normal style = {{ fontWeight: '100', padding: 1 }} numberOfLines={1}>{title}</Text>
-          <Text note numberOfLines={1}>{subtitle}</Text>
-          <Text micro yellow>{friends_info}</Text>
-        </View>
-        </Body>
-        <Right style={{ alignItems: 'center', alignSelf: 'center' }}>
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingRight: 5,
-          }}>
-            <AddSmallButton
-              onPress={onPress}
-              textTrue={'담김'}
-              textFalse={'+ 담기'}
-              clicked={clicked}
-            />
-          </View>
-        </Right>
-      </ListItem>
-    );
-  }
+      </Right>
+    </ListItem>
+  );
 };
 
 export { SearchFiveUnitBar };

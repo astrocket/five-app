@@ -16,8 +16,7 @@ import BaseStyle from '../../config/BaseStyle';
 import { ErrorHandler } from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FindPassword extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -26,6 +25,8 @@ export default class FindPassword extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: false,
       user: this.props.navigation.state.params.user,

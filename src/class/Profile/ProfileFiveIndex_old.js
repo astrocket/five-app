@@ -22,8 +22,7 @@ import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ProfileFiveIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -47,6 +46,8 @@ export default class ProfileFiveIndex extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,

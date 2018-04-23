@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, FlatList, RefreshControl, ScrollView, StyleSheet
+  View, TouchableOpacity, FlatList, RefreshControl, ScrollView, StyleSheet
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
   Card, CardItem, Thumbnail, Button, Icon, Left,
-  Body, Right, H1, Toast, ListItem, ActionSheet, Fab, DeckSwiper,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -13,50 +12,27 @@ import {
 import {
   FiveUnitBar, FiveUnitFullCenter, NavBar,
 } from '../../component/common';
-import { FollowSmallButton } from '../../component/common';
-import axios from 'axios';
-import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
-import { observer, inject } from 'mobx-react/native';
+import { observer, inject, Observer } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ProfileFiveIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-/*    headerRight: (
-      navigation.state.params.navLoading ?
-        null :
-        <View style={BaseStyle.headerDoubleIconsContainer}>
-          <Button onPress={navigation.state.params.openShareActionSheet} transparent>
-            <Icon
-              name="ios-share-outline"
-              style={{
-                fontSize: 25,
-                color: Constant.FiveColor,
-              }}
-            />
-          </Button>
-        </View>
-    ),*/
    header: null
   });
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: false,
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
-      category: this.props.navigation.state.params.category,
+      category: this.props.navigation.state.params.category_chunk.category,
       flip: false,
       clicked: false,
       fives: [],
@@ -65,57 +41,12 @@ export default class ProfileFiveIndex extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.navigation.setParams({
-      openShareActionSheet: () => this.openShareActionSheet(),
-      toggleFollow: () => this.toggleFollow(),
-    });
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.category}`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          klass: response.data.klass,
-          category_korean: response.data.category_korean,
-          fives: response.data.fives,
-          followers_count: response.data.followers_count,
-          followees_count: response.data.followees_count,
-        });
-      })
-      .catch((error) => {
-        console.log('에러 : ' + error.response);
-      });
-  }
-
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
+    this.setState({ refreshing: true }, () => {
+      this.server.profileCategoryFive(this.state.category, async (res) => {
+        await this.app.updateCategory(this.state.category, res.data)
+      }).then(() => this.setState({ refreshing: false }));
     });
-  }
-
-  openShareActionSheet() {
-    const BUTTONS = [ '카카오톡 공유하기', 'Cancel' ];
-    const CANCEL_INDEX = 1;
-
-    ActionSheet.show(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-      },
-      buttonIndex => this.shareAction(BUTTONS[buttonIndex]),
-    );
-  }
-
-  shareAction(value) {
-    Toast.show({
-      text: value,
-      position: 'bottom',
-      duration: 1500
-    })
   }
 
   flipCard() {
@@ -152,15 +83,64 @@ export default class ProfileFiveIndex extends Component {
     }
   }
 
-  renderCard(flip) {
-    const { rowWrapper } = BaseStyle;
-    const { navigation } = this.props;
-
-    if (flip) {
-      return (
-        <Row key={1}>
+  renderCard() {
+    const navigation = this.props.navigation;
+    return (
+      <Observer>
+        {() => (
           <FlatList
-            data={this.state.fives}
+            key={'flat-list-card-section'}
+            data={this.app.findCategory(this.state.category).get().fives}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={10}
+            pagingEnabled={true}
+            renderItem={({ item }) => (
+              <FiveUnitFullCenter
+                multiple
+                id={item.id}
+                subtitle={item.subtitle}
+                title={item.title}
+                friends_info={`FIVE ${item.five_users_count}`}
+                image_url={item.image_large_url}
+                onPress={() => navigation.navigate('FiveShow', {
+                  category: this.state.category,
+                  title: item.title,
+                  id: item.id,
+                })}
+                borderRadius={12}
+                cardCut={80}
+              />
+            )}
+            keyExtractor={item => 'card-list' + item.id}
+            ListFooterComponent={
+                        this.renderList()
+            }
+          />
+        )}
+      </Observer>
+    )
+  }
+
+  renderList() {
+    return (
+      <View style={{
+        backgroundColor: '#fafafa',
+        height: 400,
+        width: Constant.deviceWidth,
+        justifyContent: 'center',
+        marginBottom: 0,
+      }} key={'inner-grid'}>
+        <Col style = {{ width: 16, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
+        </Col>
+        <Col style = {{ width: 8, backgroundColor: '#fafafa' }}>
+        </Col>
+        <Col style = {{ backgroundColor: '#fafafa', borderRadius: 12 }}>
+          <Row style = {{ height: 8 }}></Row>
+          <FlatList
+            key={'flat-list-listing-section'}
+            data={this.app.findCategory(this.state.category).get().fives}
+            style = {{ backgroundColor: "#fafafa" }}
             renderItem={({ item }) => (
               <FiveUnitBar
                 id={item.id}
@@ -172,97 +152,25 @@ export default class ProfileFiveIndex extends Component {
                   category: this.state.category,
                   title: item.title,
                   id: item.id,
-                  navLoading: true,
                 })}
                 new_label={item.new_label}
               />
             )}
             keyExtractor={item => 'five-bar-list-' + item.id}
           />
-        </Row>
-      );
-    } else {
-      return (
-        <Row key={2}>
-          <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              scrollEventThrottle={10}
-              pagingEnabled={true}
-            >
-              {this.state.fives.map((item) => {
-                return (
-                  <FiveUnitFullCenter
-                    multiple
-                    key={item.id}
-                    id={item.id}
-                    subtitle={item.subtitle}
-                    title={item.title}
-                    friends_info={`FIVE ${item.five_users_count}`}
-                    image_url={item.image_large_url}
-                    onPress={() => navigation.navigate('FiveShow', {
-                      category: this.state.category,
-                      title: item.title,
-                      id: item.id,
-                      navLoading: true,
-                    })}
-                    borderRadius={12}
-                    cardCut={80}
-                  />
-                )
-              })}
-              {        
-                <Grid style={{
-                    backgroundColor: '#fafafa',
-                    height: 400,
-                    width: Constant.deviceWidth,
-                    justifyContent: 'center',
-                    marginBottom: 0,
-                  }}>
-                  <Col style = {{ width: 16, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
-                  </Col>
-                  <Col style = {{ width: 8, backgroundColor: '#fafafa' }}>
-                  </Col>
-                  <Col style = {{ backgroundColor: '#fafafa', borderRadius: 12 }}>
-                    <Row style = {{ height: 8 }}></Row>
-                    <FlatList
-                      style = {{ backgroundColor: "#fafafa", width: Constant.deviceWidth - 76 }}
-                      data={this.state.fives}
-                      renderItem={({ item }) => (
-                        <FiveUnitBar
-                          id={item.id}
-                          title={item.title}
-                          subtitle={item.subtitle}
-                          friends_info={`FIVE ${item.five_users_count}`}
-                          image_url={item.image_medium_url}
-                          onPress={() => navigation.navigate('FiveShow', {
-                            category: this.state.category,
-                            title: item.title,
-                            id: item.id,
-                            navLoading: true,
-                          })}
-                          new_label={item.new_label}
-                        />
-                      )}
-                      keyExtractor={item => 'five-bar-list-' + item.id}
-                    /> 
-                  </Col>       
-                  <Col style = {{ width: 16, backgroundColor: '#fafafa' }}>
-                  </Col>          
-                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
-                  </Col>
-                </Grid>
-              }
-            </ScrollView>
-        </Row>
-      );
-    }
+        </Col>
+        <Col style = {{ width: 16, backgroundColor: '#fafafa' }}>
+        </Col>
+        <Col style = {{ width: 24, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
+        </Col>
+      </View>
+    )
   }
 
   render() {
     const { container, preLoading, rowFlexCenterCenter } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container>
@@ -278,6 +186,7 @@ export default class ProfileFiveIndex extends Component {
             category: this.state.category,
             category_korean: this.state.category_korean,
             klass: this.state.klass,
+            navigation: this.props.navigation
           })}
           headerText=""
         />
@@ -287,7 +196,7 @@ export default class ProfileFiveIndex extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }>
-          <Grid>
+          <Grid key={'outer-grid'}>
             <View style={{ marginBottom: 10 }}>
               <View style={rowFlexCenterCenter}>
                 <Text style = {styles.fiveUsername}>{my_profile.name}의</Text>
@@ -300,7 +209,7 @@ export default class ProfileFiveIndex extends Component {
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
                 }} onPress={() => navigation.navigate('ProfileFollowerIndex', { category: this.state.category })}>
                   <Text style = {styles.fiveFollowText}>{'팔로워  '}</Text>
-                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text> 
+                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity transparent style={{
                   flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
@@ -311,7 +220,9 @@ export default class ProfileFiveIndex extends Component {
               </View>
             </View>
             <Row style = {{ height: 16, backgroundColor: '#fafafa' }}></Row>
-            {this.renderCard(this.state.flip)}
+            <Row key={'card-list'}>
+              {this.renderCard()}
+            </Row>
             <Row style = {{ height: 48, backgroundColor: '#fafafa' }}></Row>
           </Grid>
         </Content>

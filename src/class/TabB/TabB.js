@@ -11,19 +11,16 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FivesBar, ElevenHeader, EmptyBox, TabIcon, NavBar
+  UserUnitRound, FivesBar, EmptyBox, TabIcon, NavBar
 } from '../../component/common';
-import axios from 'axios';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class TabB extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -41,42 +38,29 @@ export default class TabB extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
-      categories: [],
       headerShow: true,
     };
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.MY_PROFILE}`, this.state.header)
-      .then((response) => {
-        this.props.ApplicationStore.setMyProfile(response.data.user);
-        this.setState({
-          loading: false, //실서비스에서는 로딩 true로
-          categories: response.data.categories,
-        });
-      })
-      .catch((error) => {
-        console.log(JSON.stringify(error.response));
-      });
+    this.server.profileIndex(async (res) => {
+      await this.app.setMyProfile(res.data.user)
+    }).then(() => {this.setState({ loading: false });});
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
+    this.setState({ refreshing: true }, () => {
+      this.server.profileIndex((res) => {
+        this.app.setMyProfile(res.data.user)
+          .then(() => this.app.setCategories(res.data.categories));
+      }).then(() => {
+        this.setState({ refreshing: false });
+      });
     });
   }
 
@@ -114,7 +98,7 @@ export default class TabB extends Component {
   render() {
     const { preLoading } = BaseStyle;
     const { navigation } = this.props;
-    const { my_profile } = this.props.ApplicationStore;
+    const { my_profile } = this.app;
 
     return (
       <Container style={{ backgroundColor: '#fafafa' }}>
@@ -122,17 +106,19 @@ export default class TabB extends Component {
           rightButton
           rightAsImage
           rightIcon={require('../../assets/images/bookmark_pink_full.png')}
-          onPressRight={() => navigation.navigate('ProfileWishIndex')}
+          onPressRight={() => navigation.navigate('ProfileWishIndex', { initialCategory: null })}
         />
           <FlatList
-            data={this.state.categories}
+            data={this.app.categories}
             style={{paddingBottom: 16}}
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)}
             onScroll={(e) => {this.handleScroll(e)}}
             renderItem={({ item }) => (
               <FivesBar
-                onPress={() => navigation.navigate('ProfileFiveIndex', { category: item.category })}
+                onPress={() => navigation.navigate('ProfileFiveIndex', {
+                  category_chunk: item
+                })}
                 category={item.category}
                 followers={item.followers_count}
                 followees={item.followees_count}
@@ -193,7 +179,7 @@ export default class TabB extends Component {
               </Row>
             }
           />
-        { this.state.categories.length > 0 ?
+        { this.app.categories.length > 0 ?
           null
           : <EmptyBox
             barWidth={Constant.deviceWidth - 20}

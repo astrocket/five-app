@@ -9,20 +9,19 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { NavBar } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ModalWebViewShow extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false,
+      loading: true,
     };
   }
 
@@ -38,6 +37,7 @@ export default class ModalWebViewShow extends Component {
           leftAsImage
           leftIcon={require('../../assets/images/cancel_icon_grey.png')}
           onPressLeft={() => modalNavigation.goBack()}
+          mediaPlaybackRequiresUserAction={false}
           headerText={headerTitle}
         />
         <Grid>
@@ -45,6 +45,9 @@ export default class ModalWebViewShow extends Component {
             <WebView
               source={{ uri: url }}
               style={{ flex: 1 }}
+              onLoadEnd={() => this.setState({
+                loading: false
+              })}
             />
           </Row>
         </Grid>

@@ -21,8 +21,7 @@ import { FiveUnitBar, NavBar } from '../../component/common';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveStoryShow extends Component {
   static navigationOptions = ({ navigation }) => ({
     /*title: navigation.state.params.title,
@@ -47,6 +46,8 @@ export default class FiveStoryShow extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: false,
       five_story: this.props.navigation.state.params.five_story,

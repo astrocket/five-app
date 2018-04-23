@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, TouchableOpacity,
+  View
 } from 'react-native';
 import {
-  Container, Spinner, Tabs, Tab, ScrollableTab, Button, Text, TabHeading, Header,
+  Container, Spinner, Tabs, Tab, ScrollableTab, Button, Text, Header,
 } from 'native-base';
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import { EmptyBox, NavBar } from '../../component/common';
 import ProfileWishShow from './ProfileWishShow';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ProfileWishIndex extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -26,48 +23,35 @@ export default class ProfileWishIndex extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       headerShow: true,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       categories: [],
-      initialPage: 0
+      initialPage: 0,
+      initialCategory: (typeof this.props.navigation.state.params.initialCategory === 'undefined') ? null : this.props.navigation.state.params.initialCategory
     };
   }
 
   componentDidMount() {
-    this.apiCall().then(() => {
-      this.moveToPage();
-    });
+    this.server.profileWishes((data) => this.setState(data))
+      .then(() => {
+        this.setState({ loading: false }, () => {
+          if (this.state.initialCategory !== null) {
+            this.moveToPage();
+          }
+        })
+      });
   }
 
   moveToPage() {
-    const { initialCategory } = this.props.navigation.state.params;
-
     this.state.categories.map ((each_category,i) => {
       const { category } = each_category;
-      if (typeof initialCategory !== undefined && initialCategory === category) {
+      if (this.state.initialCategory === category) {
         this.tabView.goToPage(i);
       }
     });
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.MY_PROFILE}/wishes`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          categories: response.data.categories,
-        });
-      })
-      .catch((error) => {
-        console.log('에러 : ' + error.response);
-      });
   }
 
   handleScroll(e) {
@@ -108,45 +92,6 @@ export default class ProfileWishIndex extends Component {
       );
     });
   }
-
-  renderTabButtonsOld(goToPage) {
-    const { flexCenterCenter } = BaseStyle;
-    return (
-      <View style = {{
-        flex: 1,
-        backgroundColor: 'red',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start' }}>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{
-            height: 36,
-          }}
-          data={this.state.categories}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity key={index} onPress={() => goToPage(index)}
-                              style={{
-                                height: 24,
-                                width: null,
-                                paddingRight: 24,
-                              }}>
-              <Text normal style={{
-                        color: '#333333',
-                        fontSize: 20,
-                        fontWeight: '900'
-                      }}>
-                  {item.category_korean}
-                </Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => 'tabs-' + item.category}
-        />
-      </View>
-    );
-  }
-
 
   render() {
     const { container, preLoading } = BaseStyle;

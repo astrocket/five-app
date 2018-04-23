@@ -10,19 +10,15 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import { ImageCon, TabIcon } from '../../component/common';
-import axios from 'axios';
 import HomeIndex from './HomeIndex';
 import FiveIndex from '../Five/FiveIndex';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
-
+@inject('stores') @observer
 export default class TabA extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     header: null,
@@ -39,6 +35,8 @@ export default class TabA extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true,
       categories: [],
@@ -47,11 +45,7 @@ export default class TabA extends Component {
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  apiCall() {
-    this.props.ApplicationStore.updateCategories().then(() => {
+    this.app.updateCategories().then(() => {
       this.setState({ loading: false })
     });
   }
@@ -90,7 +84,7 @@ export default class TabA extends Component {
   renderCategoryTabs(onScroll) {
     const { navigation } = this.props;
 
-    return this.props.ApplicationStore.categories.map(function (chunk, i) {
+    return this.app.category_names.map(function (chunk, i) {
       const { category, category_korean } = chunk;
       return (
         <Tab key={i} heading={<TabHeading/>}>
@@ -110,7 +104,7 @@ export default class TabA extends Component {
           style={{
             height: 56,
           }}
-          data={this.props.ApplicationStore.categories}
+          data={this.app.category_names}
           renderItem={({ item, index }) => (
             <TouchableOpacity 
               key={index + 1} 

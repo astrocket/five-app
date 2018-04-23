@@ -11,84 +11,74 @@ import {
 import {
   RowHeaderBar, FiveUnitRound, UserFivesBar, FiveUnitFull, EmptyBox,
 } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
 import * as Images from '../../assets/images/Images';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class FiveIndex extends Component {
 
-  state = {
-    loading: true,
-    refreshing: false,
-    category: this.props.category,
-    category_korean: Constant.CategoryToKorean(this.props.category),
-    header: {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    },
-    fives: [],
-    my_wish_fives: [],
-    follow_suggestions: [],
-    challenge_fives: []
-  };
+  constructor(props) {
+    super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.  state = {
+      loading: true,
+      refreshing: false,
+      category: this.props.category,
+      category_korean: Constant.CategoryToKorean(this.props.category),
+      fives: [],
+      my_wish_fives: [],
+      follow_suggestions: [],
+      challenge_fives: []
+    };
+  }
 
   componentDidMount() {
-    this.apiCall();
+    this.server.fiveIndex(this.state.category, (data) => this.setState(data))
+      .then(() => {
+        this.setState({ loading: false });
+      });
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.props.ApplicationStore.updateCategories().then(() => {
-        this.setState({ loading: false, refreshing: false })
-      });
+    this.setState({ refreshing: true }, () => {
+      this.server.fiveIndex(this.state.category, (data) => this.setState(data))
+        .then(() => {
+          this.app.updateCategories().then(() => {
+            this.setState({ refreshing: false })
+          });
+        });
     });
   }
 
-  async apiCall() {
-    await axios.get(Constant.CategoryToApi(this.state.category), this.state.header)
-      .then((response) => {
-        const { fives, my_wish_fives, follow_suggestions, challenge_fives } = response.data;
-        this.setState({
-          loading: false, fives, my_wish_fives, follow_suggestions, challenge_fives
-        })
-      }).catch((error) => {
-        console.log(error.response);
+  toggleFollowCall(item, index) {
+    this.onClickFollow(item, index)
+      .then(() => {
+        this.server.followPost(item.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
+          .then(() => this.afterClickFollow(item, index));
       });
   }
 
-  followCall(item, index) {
-    const data = {
-      following: {
-        user_id: item.user.id,
-        following: !item.following,
-      },
-    };
-
-    axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, this.state.header)
-      .then((response) => {
-        this.onCreateFollowCallSuccess(response, index);
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
+  async onClickFollow(item, index) {
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].loading = true;
+    await this.setState({ follow_suggestions: stateBefore })
   }
 
-  onCreateFollowCallSuccess(response, index) {
-    const new_following = response.data;
-    const stateBefore = [...this.state.follow_suggestions];
-    stateBefore[index].following = new_following;
+  async afterClickFollow(item, index) {
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].loading = false;
+    await this.setState({ follow_suggestions: stateBefore })
+  }
+
+  onSuccessFollow(res, index) {
+    const new_following = res.data;
+    const stateBefore = [ ...this.state.follow_suggestions ];
+    stateBefore[ index ].following = new_following;
     this.setState({ follow_suggestions: stateBefore });
   }
 
@@ -165,7 +155,7 @@ export default class FiveIndex extends Component {
                   renderItem={({ item, index }) => (
                     <UserFivesBar
                       onPress={() => navigation.navigate('UserShow', { user: item.user })}
-                      onPressFollow={() => this.followCall(item, index)}
+                      onPressFollow={() => this.toggleFollowCall(item, index)}
                       defaultImage={Images.findImageOf(item.category)}
                       category={item.category}
                       fives={item.fives}

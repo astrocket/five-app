@@ -15,15 +15,12 @@ import {
   Row,
   Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { InviteBox } from '../../component/common/InviteBox';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class Invitation extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -33,6 +30,8 @@ export default class Invitation extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: false, //실서비스에서는 로딩 true로
       restaurant_invitations: [
@@ -49,25 +48,6 @@ export default class Invitation extends Component {
       ],
     }
     ;
-  }
-
-  apiCall() {
-    const config = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-    axios.get(ApiServer.HOME_INDEX, config)
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
   }
 
   renderRestaurantInviteBoxes() {

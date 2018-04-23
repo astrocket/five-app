@@ -20,9 +20,7 @@ import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
-
+@inject('stores') @observer
 export default class TabA extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     header: null,
@@ -39,6 +37,8 @@ export default class TabA extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true,
       categories: [],

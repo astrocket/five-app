@@ -8,18 +8,15 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
 import {
   UserUnitRound, FivesBar, NavBar,
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class UserShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -28,109 +25,77 @@ export default class UserShow extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
       loading: true, //실서비스에서는 로딩 true로
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
-      user: '',
+      user: this.props.navigation.state.params.user,
       categories: [],
     };
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.USERS}/${this.props.navigation.state.params.user.id}`, this.state.header)
-      .then((response) => {
-        this.setState({
-          loading: false,
-          user: response.data.user,
-          categories: response.data.categories,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
+    this.server.userShow(this.state.user.id, (res) => {
+      this.setState({
+        user: res.data.user,
+        categories: res.data.categories,
       });
+    }).then(() => this.setState({ loading: false }));
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
-    });
-  }
-
-  askFollowOption(item, index) {
-    console.log(JSON.stringify(this.props.ApplicationStore.categories));
-    this.props.ApplicationStore.hasCategory(item.category).then((have) => {
-      if (have) {
-        this.followCall(item, index);
-      } else {
-        Alert.alert(
-          `아직 참여한 카테고리는 아니에요`,
-          `${Constant.askToParticipate(item.category_korean, this.state.user.name)}`,
-          [
-            {
-              text: '네',
-              onPress: () => {
-                this.props.navigation.navigate(`SearchFive`, {
-                  category: item.category,
-                  category_korean: item.category_korean,
-                  klass: item.klass,
-                });
-              },
-            },
-            {
-              text: '취소',
-              style: 'cancel',
-            },
-          ],
-          { cancelable: true },
-        );
-      }
-    });
-  }
-
-  async followCall(item, index) {
-    const data = {
-      following: {
-        user_id: this.state.user.id,
-        following: !item.following,
-      },
-    };
-
-    const header = {
-      headers: {
-        'X-User-Email': this.props.ApplicationStore.email,
-        'X-User-Token': this.props.ApplicationStore.token,
-      },
-    };
-
-    await axios.post(`${ApiServer.FOLLOWINGS}/?category=${item.category}`, data, header)
-      .then((response) => {
-        this.onCreateFollowCallSuccess(response, index); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-        console.log(error.response);
-        Toast.show({
-          text: JSON.stringify(error.response.data),
-          position: 'bottom',
-          duration: 1500,
+    this.setState({ refreshing: true }, () => {
+      this.server.userShow(this.state.id, (res) => {
+        this.setState({
+          user: res.data.user,
+          categories: res.data.categories,
         });
-      });
+      }).then(() => this.setState({ refreshing: false }));
+    });
   }
 
-  onCreateFollowCallSuccess(response, index) {
-    const new_following = response.data;
+  toggleFollowCall(item, index) {
+    this.onClickFollow(item, index)
+      .then(() => {
+        const have = this.app.hasCategory(item.category);
+        if (have) {
+          this.server.followPost(this.state.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
+            .then(() => this.afterClickFollow(item, index));
+        } else {
+          Alert.alert(
+            `아직 참여한 카테고리는 아니에요`,
+            `${Constant.askToParticipate(item.category_korean, this.state.user.name)}`,
+            [ {
+              text: '네',
+              onPress: () => this.server.followPost(this.state.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
+                .then(() => this.afterClickFollow(item, index)
+                  .then(() => this.props.navigation.navigate(`SearchFive`, { category: item.category, category_korean: item.category_korean, klass: item.klass})))
+            },
+              { text: '취소', style: 'cancel', },
+            ], { cancelable: true },
+          );
+        }
+      })
+  }
+
+  async onClickFollow(item, index) {
+    const stateBefore = [ ...this.state.categories ];
+    stateBefore[ index ].loading = true;
+    await this.setState({ categories: stateBefore })
+  }
+
+  async afterClickFollow(item, index) {
+    const stateBefore = [ ...this.state.categories ];
+    stateBefore[ index ].loading = false;
+    await this.setState({ categories: stateBefore })
+  }
+
+  onSuccessFollow(res, index) {
+    const new_following = res.data;
     const stateBefore = [ ...this.state.categories ];
     stateBefore[ index ].following = new_following;
-    this.setState({ follow_suggestions: stateBefore });
+    this.setState({ categories: stateBefore });
   }
 
   render() {
@@ -194,12 +159,13 @@ export default class UserShow extends Component {
                 renderItem={({ item, index }) => (
                   <FivesBar
                     followButton
-                    onPressFollow={() => this.askFollowOption(item, index)}
+                    onPressFollow={() => this.toggleFollowCall(item, index)}
                     onPress={() => navigation.navigate('UserFiveShow', { user: this.props.navigation.state.params.user, category_data: item, category: item.category, navLoading: true })}
                     category={item.category}
                     followers={item.followers_count}
                     followees={item.followees_count}
                     clicked={item.following}
+                    loading={item.loading}
                     fives={item.fives}
                     image={require('../../assets/images/five_void_grey.png')}
                     fiveImage={Images.findImageOf(item.klass.toLowerCase())}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, TouchableOpacity, FlatList, Alert, Keyboard,
+  View, TouchableOpacity, FlatList
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner,
@@ -10,19 +10,16 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  FiveUnitBar, ElevenHeader, RowHeaderBar, EmptyBox, ShowMore, SearchUserUnitBar,
+  ElevenHeader, RowHeaderBar, EmptyBox, ShowMore, SearchUserUnitBar,
 } from '../../component/common';
 import UserContacts from '../Device/UserContacts';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class SearchUser extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -31,14 +28,9 @@ export default class SearchUser extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
     this.state = {
-      loading: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       page: 1,
       page_loading: false,
       input_search: '',
@@ -50,25 +42,6 @@ export default class SearchUser extends Component {
     }
   }
 
-  searchUser() {
-    this.setState({ loading: true });
-    axios.get(`${ApiServer.USERS}/search_user?s=${this.state.input_search}&page=${this.state.page}`, this.state.header)
-      .then((res) => {
-        if (res.data.users.length > 0) {
-          this.setState({ loading: false, no_result: false, searched: true, users: res.data.users, no_more: res.data.no_more, page_loading: false})
-        } else {
-          this.setState({ loading: false, no_result: true, searched: true, users: res.data.users, no_more: res.data.no_more, page_loading: false})
-        }
-      }).catch((e) => console.log(e.response));
-  }
-
-  pageCall() {
-    axios.get(`${ApiServer.USERS}/search_user?s=${this.state.input_search}&page=${this.state.page}`, this.state.header)
-      .then((res) => {
-        this.setState({ loading: false, no_result: false, searched: true, users: [ ...this.state.users, ...res.data.users], no_more: res.data.no_more, page_loading: false})
-      }).catch((e) => console.log(e.response));
-  }
-
   handleInputSearch(input_search) {
     if (input_search === '') {
       this.setState({ searched: false, input_search: input_search });
@@ -77,12 +50,25 @@ export default class SearchUser extends Component {
     }
   }
 
+  onSubmit() {
+    this.setState({
+      page: 1, page_loading: true,
+    }, () => {
+      this.server.searchUser(this.state, (data) => this.setState(data))
+        .then(() => {
+          this.setState({ page_loading: false })
+        });
+    });
+  }
+
   nextPage() {
     this.setState({
-      page: this.state.page + 1,
-      page_loading: true,
+      page: this.state.page + 1, page_loading: true,
     }, () => {
-      this.pageCall();
+      this.server.searchUserPaging(this.state, (data) => this.setState(data))
+        .then(() => {
+          this.setState({ page_loading: false })
+        });
     });
   }
 
@@ -220,7 +206,7 @@ export default class SearchUser extends Component {
               cancelButtonTitle={'취소'}
               value={this.state.input_search}
               returnKeyType={'search'}
-              onSubmitEditing={() => this.setState({page:1}, this.searchUser(this.state.input_search))}
+              onSubmitEditing={() => this.onSubmit()}
               onChangeText={(input_search) => this.handleInputSearch(input_search)}
             />
             <TouchableOpacity onPress={() => this.setState({

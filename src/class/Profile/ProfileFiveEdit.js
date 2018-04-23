@@ -8,15 +8,12 @@ import {
 import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
-import axios from 'axios';
-import { FiveUnitBar, FiveUnitBar4Edit, EmptyBox, NavBar} from '../../component/common';
+import { FiveUnitBar, EmptyBox, NavBar} from '../../component/common';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class ProfileFiveEdit extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -25,108 +22,103 @@ export default class ProfileFiveEdit extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.server = this.props.stores.server;
+    this.five = this.props.stores.five;
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      loading: true, //실서비스에서는 로딩 true로
+      loading: true,
       refreshing: false,
-      header: {
-        headers: {
-          'X-User-Email': this.props.ApplicationStore.email,
-          'X-User-Token': this.props.ApplicationStore.token,
-        },
-      },
       category: this.props.navigation.state.params.category,
       category_korean: this.props.navigation.state.params.category_korean,
       klass: this.props.navigation.state.params.klass,
       fives: [],
-      wishes: []
     };
   }
 
   componentDidMount() {
-    this.apiCall();
-  }
-
-  async apiCall() {
-    await axios.get(`${ApiServer.MY_PROFILE}/fives?category=${this.state.category}`, this.state.header)
-      .then((response) => {
+    if (typeof this.props.navigation.state.params.fives === 'undefined') {
+      this.server.profileCategoryFive(this.state.category, (res) => {
         this.setState({
-          loading: false,
-          klass: response.data.klass,
-          fives: response.data.fives,
-          wishes: response.data.wishes
+          category: res.data.category, klass: res.data.klass, category_korean: res.data.category_korean, fives: res.data.fives
         });
-      })
-      .catch((error) => {
-        console.log('에러 : ' + error.response);
-      });
+      }).then(() => this.setState({ loading: false }));
+    } else {
+      this.setState({ fives: this.props.navigation.state.params.fives, loading: false })
+    }
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
-    this.apiCall().then(() => {
-      this.setState({refreshing: false});
+    this.setState({ refreshing: true }, () => {
+      this.server.profileCategoryFive(this.state.category, (res) => {
+        this.setState({
+          category: res.data.category, klass: res.data.klass, category_korean: res.data.category_korean, fives: res.data.fives
+        });
+      }).then(() => this.setState({ refreshing: false }));
     });
   }
 
-  deleteCall(url, data, onSuccess) {
-    axios.post(url, data, this.state.header)
-      .then((response) => {
-        onSuccess(response); // 업로드 후 유저를 통째로 리턴시킨다.
-      }).catch((error) => {
-      console.log(error.response);
-      Toast.show({
-        text: JSON.stringify(error.response.data),
-        position: 'bottom',
-        duration: 1500,
-      });
-    });
-  }
-
-  askDelete(secId, rowId, rowMap, five_data) {
-    const url = `${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`;
+  askFiveDestroy(data, secId, rowId, rowMap) {
     const item = this.state.fives[ rowId ];
-    if(item) {
-     const data = {
-       favorable_id: item.id
-     };
+    rowMap[`${secId}${rowId}`].props.closeRow();
 
-     if (this.state.fives.length <= 1) {
-       Alert.alert(
-         '알림',
-         '1개 이하로 파이브를 삭제할 수 없습니다.',
-         [
-           {
-             text: '확인',
-           },
-         ],
-         { cancelable: true },
-       );
-       rowMap[`${secId}${rowId}`].props.closeRow();
-     } else {
-       Alert.alert(
-         '아이템 삭제 확인',
-         '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
-         [
-           { text: '아니요',
-             style: 'cancel'
-           },
-           {
-             text: '네',
-             onPress: () => this.deleteCall(url, data, (response) => this.deleteRow(secId, rowId, rowMap)),
-           },
-         ],
-         { cancelable: true },
-       );
-     }
-   }
+    if (item) {
+      Alert.alert(
+        '아이템 삭제 확인',
+        '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
+        [
+          { text: '아니요',
+            style: 'cancel'
+          },
+          {
+            text: '네',
+            onPress: () => this.five.fiveDestroy(this.state.category, item.id, (res) => {
+              this.onFiveDestroy(res, secId, rowId, rowMap)
+            }),
+          },
+        ],
+        { cancelable: true },
+      );
+    }
   }
 
-  deleteRow(secId, rowId, rowMap) {
-    rowMap[`${secId}${rowId}`].props.closeRow();
+  onFiveDestroy(res, secId, rowId, rowMap) {
     const newData = [...this.state.fives];
     newData.splice(rowId, 1);
     this.setState({ fives: newData });
+  }
+
+  renderFiveList() {
+    if (this.state.fives.length > 0 ){
+      return (
+        <List
+          dataSource={this.ds.cloneWithRows([0,1,2,3,4])}
+          renderRow={(data, secId, rowId, rowMap) =>
+            this.renderFiveUnitBars(data, secId, rowId, rowMap)
+          }
+          disableRightSwipe={true}
+          renderLeftHiddenRow={data =>
+            null
+          }
+          renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+            this.state.fives[ rowId ] ?
+              <Button full danger onPress={_ => this.askFiveDestroy(data, secId, rowId, rowMap)}>
+                <Text>삭제</Text>
+              </Button> : null
+          }
+          leftOpenValue={75}
+          rightOpenValue={-75}
+        />
+      )
+    } else {
+      return <EmptyBox
+        barWidth={Constant.deviceWidth - 20}
+        message={`아직 담긴 FIVE가 없네요.`}
+        barHeight={100}
+        borderRadius={10}
+        marginRight={0}
+      />;
+    }
   }
 
   renderFiveUnitBars(data, secId, rowId, rowMap) {
@@ -152,7 +144,7 @@ export default class ProfileFiveEdit extends Component {
           key={rowId}
           barWidth={null}
           onPress={() => navigation.navigate(`SearchFive`, {
-            category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass, wishes: this.state.wishes
+            category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass
           })}
           barHeight={60}
           borderRadius={24}
@@ -185,24 +177,7 @@ export default class ProfileFiveEdit extends Component {
             <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
             </Row>
             <Row>
-              <List
-                dataSource={this.ds.cloneWithRows([0,1,2,3,4])}
-                renderRow={(data, secId, rowId, rowMap) =>
-                  this.renderFiveUnitBars(data, secId, rowId, rowMap)
-                }
-                disableRightSwipe={true}
-                renderLeftHiddenRow={data =>
-                  null
-                }
-                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                  this.state.fives[ rowId ] ?
-                  <Button full danger onPress={_ => this.askDelete(secId, rowId, rowMap, data)}>
-                    <Text>삭제</Text>
-                  </Button> : null
-                }
-                leftOpenValue={75}
-                rightOpenValue={-75}
-              />
+              {this.renderFiveList()}
             </Row>
             <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
             </Row>

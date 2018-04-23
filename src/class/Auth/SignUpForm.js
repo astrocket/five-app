@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, Keyboard,
+  View, Keyboard,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Toast,
@@ -10,15 +10,12 @@ import {
 } from 'react-native-easy-grid';
 import { NavigationActions } from 'react-navigation';
 import { MainLargeTitle, InputSingle, InputToggle, BottomFullButton } from '../../component/common';
-import axios from 'axios';
 import * as Constant from '../../config/Constant';
-import * as ApiServer from '../../config/ApiServer';
 import BaseStyle from '../../config/BaseStyle';
 import { ErrorHandler} from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
-@inject('ApplicationStore') // Inject some or all the stores!
-@observer
+@inject('stores') @observer
 export default class SignUpForm extends Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -27,6 +24,8 @@ export default class SignUpForm extends Component {
 
   constructor(props) {
     super(props);
+    this.app = this.props.stores.app;
+    this.auth = this.props.stores.auth;
     this.state = {
       loading: false,
       submiting: false,
@@ -66,10 +65,7 @@ export default class SignUpForm extends Component {
       return false
     }
 
-    this.setState({ submiting: true });
-
-    // rails server 에 로그인 시도하는 부분. 로그인 시도하고 서버에서 나온 결과값에 따라서 토스트메세지를 띄운다.
-    axios.post(`${ApiServer.USERS}`, {
+    const data = {
       user: {
         email: this.state.user.email,
         phone: this.state.user.phone,
@@ -79,30 +75,22 @@ export default class SignUpForm extends Component {
         birthyear: this.state.input_birth,
         gender: this.state.input_gender
       }
-    }).then((response) => {
-      this.onSignUpSuccess(response.data);
-    }).catch((error) => {
-      this.setState({ submiting: false });
-      ErrorHandler(JSON.stringify(error.response.data.errors.password));
-    });
-  }
+    };
 
-  onSignUpSuccess(data) {
-    AsyncStorage.multiSet([
-      [ 'email',  data.email],
-      [ 'token', data.authentication_token ],
-      [ 'key', data.key ]
-    ]).then(() => {
-      this.props.ApplicationStore.setFirstAuth()
-        .then(() => this.props.navigation.dispatch(
-          NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'Hello',
-              }),
-            ],
-          })));
+    const dispatch = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'Hello'}),
+      ],
+    });
+
+    this.setState({ submiting: true }, () => {
+      this.auth.userCreate(data, (res) => {
+        this.app.onSignUpSuccess(res.data)
+          .then(() => this.props.navigation.dispatch(dispatch))
+      }).then(() => {
+        this.setState({ submiting: false });
+      })
     });
   }
 
@@ -231,7 +219,7 @@ export default class SignUpForm extends Component {
                   {`버튼을 누르면 MYFIVE의 `}
                 </Text>
                 <Text
-                  onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                  onPress={() => modalNavigation.navigate('ModalWebViewShow', {
                     url: `https://myfivecs.blogspot.kr/`,
                     headerTitle: '이용약관'
                   })}
@@ -242,7 +230,7 @@ export default class SignUpForm extends Component {
                   {`과 `}
                 </Text>
                 <Text
-                  onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
+                  onPress={() => modalNavigation.navigate('ModalWebViewShow', {
                     url: `https://myfivecs.blogspot.kr/`,
                     headerTitle: '개인정보보호정책'
                   })}
