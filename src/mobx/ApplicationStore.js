@@ -124,7 +124,7 @@ class ApplicationStore extends StoreBase {
 
   hasCategory(target_category) {
     let have = false;
-    this.categories.forEach((category_chunk) => {
+    this.category_names.forEach((category_chunk) => {
       if (category_chunk.category === target_category) {
         have = true;
       }
