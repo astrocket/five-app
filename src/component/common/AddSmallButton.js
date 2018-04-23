@@ -12,24 +12,24 @@ const AddSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
   const {width, height} = Image.resolveAssetSource(require('../../assets/images/add_five_green.png'));
   if (clicked) {
     return (
-      <Button transparent onPress={onPress}>
+      <Button transparent small onPress={onPress}>
         <Image
           source={require('../../assets/images/add_five_green.png')}
           style={{
-            height: 25,
-            width: 25 * (width / height) + 1,
+            height: 26,
+            width: 26 * (width / height),
           }}
         />
       </Button>
     );
   } else {
     return (
-      <Button transparent onPress={onPress}>
+      <Button transparent small onPress={onPress}>
         <Image
           source={require('../../assets/images/add_five_pink.png')}
           style={{
-            height: 25,
-            width: 25 * (width / height) + 1,
+            height: 26,
+            width: 26 * (width / height),
           }}
         />
       </Button>

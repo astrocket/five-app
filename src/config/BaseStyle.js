@@ -29,6 +29,7 @@ const BaseStyle = StyleSheet.create({
   },
   headerDoubleIconsContainer: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
     width: null,
   },
   flexAroundCenter: {

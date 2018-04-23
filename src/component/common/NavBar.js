@@ -9,30 +9,26 @@ import { ImageCon } from './';
 import BaseStyle from '../../config/BaseStyle';
 import * as Constant from '../../config/Constant';
 
-const NavBar = ({ statusBar, hasTabs, backgroundImage, onPressLeft, leftButton, leftAsImage, leftIcon, leftIconColor, onPressRight, rightButton, rightAsImage, rightIcon, rightIconColor, headerText }) => {
+const NavBar = ({ category, statusBar, hasTabs, backgroundImage, onPressLeft, leftButton, leftAsImage, leftIcon, leftIconColor, onPressRight, rightButton, rightAsImage, rightIcon, rightIconColor, headerText }) => {
   const { container } = BaseStyle;
   const { leftSpace, rightSpace } = styles;
 
   if (backgroundImage) {
     return (
-      <View style={{ height: 240 }}>
+      <View style={{ height: (category === 'book' ? 260 : 240), backgroundColor: Constant.LightGrey }}>
         {backgroundImage ?
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-            }}
-          >
             <Image
               style={{
-                flex: 1
+                flex: 1,
+                resizeMode: (category === 'book' ? 'contain' : 'cover'),
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: Constant.deviceWidth,
+                height: '100%',
               }}
               source={backgroundImage}
             />
-          </View>
           : null
         }
         <Header

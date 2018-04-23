@@ -226,7 +226,7 @@ export default class ProfileFiveIndex extends Component {
                   <Col style = {{ backgroundColor: '#fafafa', borderRadius: 12 }}>
                     <Row style = {{ height: 8 }}></Row>
                     <FlatList
-                      style = {{ backgroundColor: "#fafafa" }}
+                      style = {{ backgroundColor: "#fafafa", width: Constant.deviceWidth - 76 }}
                       data={this.state.fives}
                       renderItem={({ item }) => (
                         <FiveUnitBar
@@ -293,7 +293,7 @@ export default class ProfileFiveIndex extends Component {
                 <Text style = {styles.fiveUsername}>{my_profile.name}의</Text>
               </View>
               <View style={rowFlexCenterCenter}>
-                <Text style = {styles.fiveTitle}>{this.state.category_korean} 파이브</Text>
+                <Text style = {styles.fiveTitle}>{this.state.category_korean}</Text><Text style = {styles.fiveTitleFive}> 파이브</Text>
               </View>
               <View style={rowFlexCenterCenter}>
                 <TouchableOpacity transparent style={{
@@ -342,16 +342,19 @@ export default class ProfileFiveIndex extends Component {
 
 const styles = StyleSheet.create({
   fiveUsername: {
-    color: Constant.GreyColor,
-    fontFamily: 'montserrat',
+    color: 'grey',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '300',
   },
   fiveTitle: {
     color: '#333333',
-    fontFamily: 'montserrat',
     fontSize: 28,
-    fontWeight: '900',
+    fontWeight: '800',
+  },
+    fiveTitleFive: {
+    color: '#333333',
+    fontSize: 28,
+    fontWeight: '300',
   },
   fiveFollowText: {
     color: 'grey',

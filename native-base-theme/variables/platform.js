@@ -261,7 +261,7 @@ export default {
   // Text
   textColor: '#000',
   inverseTextColor: '#fff',
-  noteFontSize: 14,
+  noteFontSize: 13,
 
   // Title
   titleFontfamily: platform === 'ios' ? 'System' : 'Roboto_medium',

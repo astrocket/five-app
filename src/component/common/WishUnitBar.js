@@ -17,12 +17,12 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
     <ListItem avatarList>
       <TouchableOpacity onPress={onPressImage}>
         <Image
-          style={{ width: 64, height: 64, borderRadius: 16 }}
+          style={{ width: 64, height: 64, borderRadius: 12, paddingTop: 4 , paddingBottom: 4 }}
           source={{ uri: image_url }}
         />
       </TouchableOpacity>
       <Body>
-      <View style={{ flex: 1, height: 56, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+      <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
         <Text normal numberOfLines={1} style={{ margin: 1 }}>{title}</Text>
         <Text note numberOfLines={1} style={{ margin: 1 }}>{subtitle}</Text>
         <Text micro yellow>FIVE {five_users_count}</Text>

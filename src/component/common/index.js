@@ -21,7 +21,7 @@ export * from './FiveUserUnitBar';
 export * from './HomeCategoryBar';
 export * from './FivesBar';
 export * from './FiveUnitFull';
-export * from './FiveUnitFullCenter';
+export * from './FiveUnitFullCenter'; // Add by Jake
 export * from './FiveUnitBar';
 export * from './FiveUpdatedUnitBar';
 export * from './FiveStoryFull';
@@ -43,3 +43,4 @@ export * from './TabIcon';
 export * from './AddSmallButton';
 export * from './AddWishSmallButton';
 export * from './SearchUserUnitBar';
+export * from './FiveShowButtons'; // Added by Jake 180423

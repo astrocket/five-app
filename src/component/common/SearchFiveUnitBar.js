@@ -15,14 +15,14 @@ const FiveUnitBarImage = ({ image_url }) => {
   if (image_url) {
     return (
       <Image
-        style={{ width: 56, height: 56, borderRadius: 10 }}
+        style={{ width: 56, height: 56, borderRadius: 12, marginLeft: 4, paddingTop: 4, paddingBottom: 4 }}
         source={{ uri: image_url }}
       />
     )
   } else {
     return (
       <Image
-        style={{ width: 56, height: 56, borderRadius: 10 }}
+        style={{ width: 56, height: 56, borderRadius: 12, marginLeft: 4, paddingTop: 4, paddingBottom: 4 }}
         source={require('../../assets/images/five_void.png')}
       />
     )
@@ -34,13 +34,13 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
 
   if (clicked) {
     return (
-      <ListItem avatarList style={{ height: 76, marginLeft: 12, marginTop: 4 }}>
+      <ListItem avatarList>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <View style={{ flex: 1, height: 56, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-          <Text normal style = {{ fontWeight: '900', padding: 1 }} numberOfLines={1}>{title}</Text>
+        <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+          <Text normal style = {{ fontWeight: '600', padding: 1 }} numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>
         </View>
@@ -63,12 +63,12 @@ const SearchFiveUnitBar = ({ id, subtitle, title, onPress, onPressImage, clicked
     );
   } else {
     return (
-      <ListItem avatarList style={{ height: 76, marginLeft: 12, marginTop: 4 }}>
+      <ListItem avatarList>
         <TouchableOpacity onPress={onPressImage}>
           <FiveUnitBarImage image_url={image_url} />
         </TouchableOpacity>
         <Body>
-        <View style={{ flex: 1, height: 56, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
+        <View style={{ flex: 1, height: 64, flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
           <Text normal style = {{ fontWeight: '100', padding: 1 }} numberOfLines={1}>{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>
