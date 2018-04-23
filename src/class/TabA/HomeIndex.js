@@ -221,6 +221,7 @@ export default class HomeIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
+                    category={this.state.category}
                     id={item.five.id}
                     title={item.five.title}
                     subtitle={item.five.subtitle}
@@ -232,10 +233,8 @@ export default class HomeIndex extends Component {
                       id: item.five.id,
                       navLoading: true,
                     })}
-                    barWidth={164}
-                    barHeight={156}
-                    borderRadius={16}
-                    marginRight={0}
+                    borderRadius={12}
+                    marginRight={16}
                   />
                 )}
                 keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
@@ -312,6 +311,7 @@ export default class HomeIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
+                    category='{this.state.category}'
                     id={item.five.id}
                     title={item.five.title}
                     subtitle={item.five.subtitle}
@@ -323,17 +323,15 @@ export default class HomeIndex extends Component {
                       id: item.five.id,
                       navLoading: true,
                     })}
-                    barWidth={164}
-                    barHeight={156}
-                    borderRadius={16}
-                    marginRight={0}
+                    borderRadius={12}
+                    marginRight={16}
                   />
                 )}
                 keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
               />
             </Row>
           </Grid>
-
+{/* 영화
           <Grid> 
             <Row
               style={{ height: 32, backgroundColor: '#fafafa' }}
@@ -403,6 +401,7 @@ export default class HomeIndex extends Component {
                 style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
+                    category={this.state.category}
                     id={item.five.id}
                     title={item.five.title}
                     subtitle={item.five.subtitle}
@@ -414,16 +413,15 @@ export default class HomeIndex extends Component {
                       id: item.five.id,
                       navLoading: true,
                     })}
-                    barWidth={164}
-                    barHeight={156}
-                    borderRadius={16}
-                    marginRight={0}
+                    borderRadius={12}
+                    marginRight={16}
                   />
                 )}
                 keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}
               />
             </Row>
           </Grid>
+*/}
 
         </Content>
         {this.state.loading &&

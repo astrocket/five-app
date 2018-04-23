@@ -357,7 +357,7 @@ export default class UserFiveShow extends Component {
               <Text style = {styles.fiveUsername}>{this.state.user.name}의</Text>
             </View>
             <View style={rowFlexCenterCenter}>
-              <Text style = {styles.fiveTitle}>{this.state.category_korean} 파이브</Text>
+              <Text style = {styles.fiveTitle}>{this.state.category_korean}</Text><Text style = {styles.fiveTitleFive}> 파이브</Text>
             </View>
             <View style={rowFlexCenterCenter}>
               <TouchableOpacity transparent style={{
@@ -406,15 +406,19 @@ export default class UserFiveShow extends Component {
 const styles = StyleSheet.create({
   fiveUsername: {
     color: Constant.GreyColor,
-    fontFamily: 'montserrat',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '400',
   },
   fiveTitle: {
     color: '#333333',
     fontFamily: 'montserrat',
     fontSize: 28,
-    fontWeight: '900',
+    fontWeight: '800',
+  },
+    fiveTitleFive: {
+    color: '#333333',
+    fontSize: 28,
+    fontWeight: '300',
   },
   fiveFollowText: {
     color: Constant.GreyColor,

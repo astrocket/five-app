@@ -211,7 +211,7 @@ export default class SearchFive extends Component {
     axios.post(`${ApiServer.MY_PROFILE}/destroy_five?category=${this.state.category}`, data, this.state.header)
       .then((res) => {
         this.onDeleteFiveSuccess(chunk, index)
-      }).catch((error) => {Toast.show({ text: '에러 : ' + JSON.stringify(error.response.data.errors), position: 'bottom', duration: 1500, });
+      }).catch((error) => {Toast.show({ text: '확인해 주세요. ' + JSON.stringify(error.response.data.errors), position: 'bottom', duration: 1500, });
     });
   }
 
@@ -273,7 +273,7 @@ export default class SearchFive extends Component {
       .then((response) => {
         axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.state.header).then((response) => {
             Toast.show({
-              text:`${title}이 보관함에 추가되었습니다.`,
+              text:`${title}이(가) 보관함에 추가되었습니다.`,
               position: 'bottom',
               duration: 1500,
             });
@@ -297,7 +297,7 @@ export default class SearchFive extends Component {
   addWishMusic(track, index, title) {
     axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { chunk: track, }, this.state.header).then((response) => {
       Toast.show({
-        text:`${title}이 보관함에 추가되었습니다.`,
+        text:`${title}이(가) 보관함에 추가되었습니다.`,
         position: 'bottom',
         duration: 1500,
       });
@@ -314,7 +314,7 @@ export default class SearchFive extends Component {
   addWishBook(document, index, title) {
     axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=${this.state.category}`, { chunk: document, }, this.state.header).then((response) => {
       Toast.show({
-        text:`${title}이 보관함에 추가되었습니다.`,
+        text:`${title}이(가) 보관함에 추가되었습니다.`,
         position: 'bottom',
         duration: 1500,
       });
@@ -504,11 +504,11 @@ export default class SearchFive extends Component {
       } else {
         return (
           <View style={{
-            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white',
+            justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white', paddingTop: 100,
           }}>
             <Image style = {{ width: 100, height: 100 }} source = {require('../../assets/images/sign_up_done.png')} />
           </View>
-        );보
+        );
       }
     }
   }
@@ -543,7 +543,6 @@ export default class SearchFive extends Component {
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
-              cancelButtonTitle={'취소'}
               value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.setState({page:1},this.state.methods.search_api(this.state.input_search))}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-  View, Alert, FlatList, RefreshControl, Linking, StatusBar,
+  View, Alert, FlatList, RefreshControl, Linking, StatusBar, Image,
 } from 'react-native';
 import {
   Container, Content, Text, Spinner, Thumbnail, Button, Left,
-  Body, Toast, ListItem, ActionSheet, List,
+  Body, Toast, ListItem, ActionSheet, List, 
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -12,7 +12,7 @@ import {
 import {
   RowHeaderBar, NavBar, UserUnitRound, AddSmallButton, ListItemIconClick,
 } from '../../component/common';
-import { FiveUnitRound, ImageCon } from '../../component/common';
+import { FiveUnitRound, FiveShowButtons, ImageCon } from '../../component/common';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import * as Images from '../../assets/images/Images';
@@ -262,6 +262,7 @@ export default class FiveShow extends Component {
           />
         }>
           <NavBar
+            category={this.state.category}
             statusBar={'light-content'}
             backgroundImage={{uri: this.state.five.image_large_url}}
             leftButton
@@ -282,82 +283,34 @@ export default class FiveShow extends Component {
                   <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    padding: 0,
                   }}>
-                    <Text large numberOfLines={1} style={{ marginLeft: 2, width: Constant.deviceWidth/2 + 32}}>{this.state.five.title}</Text>
-                    <View style={BaseStyle.headerDoubleIconsContainer}>
-                      <Button onPress={() => this.createWishCall()} transparent style={{ marginRight: 16 }}>
+                  <Text large numberOfLines={2} style={{ lineHeight: 30, marginLeft: 4, marginRight: 16, width: Constant.deviceWidth/2 + 32}}>{this.state.five.title}</Text>           
+                  <Button onPress={() => this.createWishCall()} small transparent style={{ paddingTop: 4, marginRight: 16 }}>
                         {this.state.my_wish ?
                           <ImageCon
                             image={require('../../assets/images/bookmark_pink_full.png')}
                           /> : <ImageCon
                             image={require('../../assets/images/bookmark_icon_pink.png')}
                           />}
-                      </Button>
-                      <View style={{
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        paddingRight: 5,
-                      }}>
-                        <AddSmallButton
+                  </Button>
+                  <AddSmallButton
                           onPress={() => this.createFiveCall()}
                           textTrue={'담김'}
                           textFalse={'+ 담기'}
                           clicked={this.state.my_five}
-                        />
-                      </View>
-                    </View>
+                    />
                   </View>
-                  <Text note numberOfLines={1} style={{ marginLeft: 3, width: Constant.deviceWidth/2 }}>{this.state.five.subtitle}</Text>
+                  <Text note numberOfLines={2} style={{ marginTop: 12, marginLeft: 5, width: Constant.deviceWidth/2 }}>{this.state.five.subtitle}</Text>
                 </View>
               </View>
             </Row>
-            <Row style = {{ height: 100 }}>
-              <Col size={50}>
-                <Button style={{
-                  flex: 1,
-                  backgroundColor: 'white',
-                  height: 56,
-                  width: Constant.deviceWidth / 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 16,
-                }} onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                  url: this.state.five.related_link,
-                  headerTitle: '가사 보기'
-                })}
-                >
-                  <Icon name='align-left' 
-                    style={{
-                      color: Constant.LightGrey,
-                      fontSize: 36,
-                    }}
-                  />
-                </Button>
-              </Col>
-              <Col size={50}>
-                <Button style={{
-                  flex: 1,
-                  backgroundColor: 'white',
-                  height: 56,
-                  width: Constant.deviceWidth / 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 16,
-                }} onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
-                  url: this.state.five.youtube_link,
-                  headerTitle: this.state.five.track_name
-                })}
-                >
-                  <Icon name='youtube-square' 
-                    style={{
-                      color: Constant.LightGrey,
-                      fontSize: 36,
-                    }}
-                  />
-                </Button>
-              </Col>
-            </Row>
+            <FiveShowButtons
+              five={this.state.five}
+              category={this.state.category}
+              modalNavigation={this.props.screenProps.modalNavigation}
+            />
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
               title={`이 ${this.state.category_korean}을 FIVE한 사람들   `}
@@ -404,6 +357,7 @@ export default class FiveShow extends Component {
                 style={rowWrapper}
                 renderItem={({ item }) => (
                   <FiveUnitRound
+                    category={this.state.category}
                     id={item.id}
                     title={item.title}
                     subtitle={item.subtitle}
@@ -415,10 +369,8 @@ export default class FiveShow extends Component {
                       id: item.id,
                       navLoading: true,
                     })}
-                    barWidth={150}
-                    barHeight={150}
-                    borderRadius={12}
-                    marginRight={16}
+                    borderRadius={6}
+                    marginRight={24}
                   />
                 )}
                 keyExtractor={item => `related-${item.klass}-fives-` + item.id}

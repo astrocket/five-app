@@ -107,7 +107,7 @@ export default class FiveStoryShow extends Component {
               style={{ flex: 1 }}
             />
           </Row>
-          <Row style={{ width: deviceWidth, height: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>
+          <Row style={{ width: deviceWidth, height: 96, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>
             <Col style={{ flex: 1, width: deviceWidth, height: 76, borderRadius: 24, backgroundColor: 'white' }}>
             <ScrollView
               horizontal

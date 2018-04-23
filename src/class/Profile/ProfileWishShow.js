@@ -178,7 +178,7 @@ export default class ProfileWishShow extends Component {
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 클립에 담긴 FIVE가 없네요.`}
+                  message={`아직 보관해 둔 아이템이 없어요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
