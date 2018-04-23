@@ -47,8 +47,8 @@ const SearchUserUnitBar = ({ user, onPress }) => {
           <Thumbnail small style={{ marginLeft: 4 }} source={{ uri: user.image_thumb_url }}/>
         </Left>
         <Body style={{ borderBottomWidth: 0 }}>
-        <Text numberOfLines={1}>{user.name}</Text>
-        <Text note numberOfLines={1}>{user.introduce}</Text>
+        <Text small style={styles.followUnitName} numberOfLines={1}>{user.name}</Text>
+        <Text note style={styles.followUnitComment} numberOfLines={1}>{user.introduce}</Text>
         </Body>
       </ListItem>
     );

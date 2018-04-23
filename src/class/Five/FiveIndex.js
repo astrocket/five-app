@@ -125,7 +125,7 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      borderRadius={3}
+                      borderRadius={8}
                       marginRight={16}
                       cardCut={80}
                     />
@@ -190,6 +190,7 @@ export default class FiveIndex extends Component {
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
+                      category={this.state.category}
                       id={item.id}
                       subtitle={item.subtitle}
                       title={item.title}
@@ -200,17 +201,15 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      barWidth={150}
-                      barHeight={150}
-                      borderRadius={12}
-                      marginRight={16}
+                      borderRadius={6}
+                      marginRight={24}
                     />
                   )}
                   keyExtractor={item => 'wish-five-' + item.id}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth - 20}
-                  message={`아직 클립에 담은 ${this.state.category_korean}이 없으시네요.`}
+                  message={`아직 보관한 ${this.state.category_korean}이 없으시네요.`}
                   barHeight={100}
                   borderRadius={10}
                   marginRight={0}
@@ -230,6 +229,7 @@ export default class FiveIndex extends Component {
                   style={rowWrapper}
                   renderItem={({ item }) => (
                     <FiveUnitRound
+                      category={this.state.category}
                       id={item.id}
                       subtitle={item.subtitle}
                       title={item.title}
@@ -240,10 +240,8 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      barWidth={150}
-                      barHeight={150}
-                      borderRadius={12}
-                      marginRight={16}
+                      borderRadius={6}
+                      marginRight={24}
                     />
                   )}
                   keyExtractor={item => 'five-challenge-' + item.id}

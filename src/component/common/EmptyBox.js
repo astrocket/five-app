@@ -21,7 +21,7 @@ const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWid
       <View style={{
         width: barWidth - 20,
         height: barHeight,
-        margin: 10,
+        margin: 0,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -33,7 +33,7 @@ const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWid
           <Text style = {{
             color: Constant.GreyColor,
             fontSize: 16,
-            fontWeight: '600'
+            fontWeight: '300'
           }}
             >{message}</Text>
           : <Icon

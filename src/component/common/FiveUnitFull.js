@@ -21,11 +21,12 @@ const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, 
     return (
       <View>
         <View style={{
-          width: 240,
-          height: null,
-          marginBottom: 10,
+          width: null,
+          height: 380,
+          marginBottom: 12,
           borderRadius: borderRadius,
           marginRight: marginRight,
+          marginTop: 6,
         }}>
           <TouchableOpacity transparent style={{
             width: null,
@@ -36,9 +37,10 @@ const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, 
             <Image
               source={{ uri: image_url }}
               style={{
-                width: (category === 'book' ? 170 : 240),
+                width: (category === 'book' ? 170  : 240),
                 resizeMode: 'cover',
-                height: 240
+                height: 240,
+                borderRadius: borderRadius,
               }}
             />
           </TouchableOpacity>
@@ -46,11 +48,12 @@ const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, 
             <View style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
+              marginTop: 12,
             }}>
-              <Text large numberOfLines={1} style = {{ paddingLeft: 3, width: 200 }}>{title}</Text>
+              <Text large numberOfLines={1} style = {{ padding: 4, width: 190 }}>{title}</Text>
             </View>
-            <Text note numberOfLines={1} style = {{ padding: 6, paddingLeft: 3, width: 200 }}>{subtitle}</Text>
-            <Text micro yellow style = {{ padding: 3 }}>{friends_info}</Text>
+            <Text note numberOfLines={1} style = {{ paddingLeft: 4, width: 190 }}>{subtitle}</Text>
+            <Text micro yellow style = {{ padding: 6 }}>{friends_info}</Text>
           </View>
         </View>
       </View>

@@ -49,7 +49,10 @@ export default class UserInfoNew extends Component {
 
   openImagePicker() {
     const options = {
-      title: '프로필 사진 선택하기',
+      title: '프로필 사진을 선택하세요',
+      takePhotoButtonTitle: '사진 찍기',
+      chooseFromLibraryButtonTitle: '내 사진 중에서 선택하기',
+      cancelButtonTitle: '취소',
       storageOptions: {
         skipBackup: true, path: 'images',
       },
@@ -128,7 +131,7 @@ export default class UserInfoNew extends Component {
               <InputSingle
                 placeholder={my_profile.name}
                 submitText={'확인'}
-                autoFocus={true}
+                autoFocus={false}
                 defaultValue={my_profile.name}
                 onChangeText={(name) => this.setState({ name })}
                 onSubmitPress={() => this.postUserInfo()}
@@ -146,7 +149,7 @@ export default class UserInfoNew extends Component {
               <InputSingle
                 placeholder={my_profile.introduce}
                 submitText={'확인'}
-                autoFocus={false}
+                autoFocus={true}
                 defaultValue={my_profile.introduce}
                 onChangeText={(introduce) => this.setState({ introduce })}
                 onSubmitPress={() => this.postUserInfo()}

@@ -36,6 +36,7 @@ const InputSingle = ({ value, defaultValue, placeholder, autoFocus, submitText, 
           returnKeyType={returnKeyType}
           onSubmitEditing={onSubmitEditing}
           style={{
+            justifyContent: 'center',
             fontSize: 18,
             fontWeight: '600',
             color: '#555555',

@@ -7,7 +7,8 @@ export default (variables = variable) => {
     color: variables.textColor,
     ".note": {
       color: "#a7a7a7",
-      marginBottom: 3,
+      marginTop: 1,
+      marginBottom: 4,
       fontSize: variables.noteFontSize
     },
     ".xlarge": {
@@ -35,17 +36,17 @@ export default (variables = variable) => {
     },
     ".normal-thin": {
       fontSize: 17,
-      marginBottom: 3,
+      marginBottom: 4,
       fontWeight: "800"
     },
     ".small": {
       fontSize: 14,
-      marginBottom: 3,
+      marginBottom: 2,
       fontWeight: "800",
     },
     ".micro": {
       fontSize: 12,
-      marginBottom: 3,
+
     },
     ".yellow": {
       color: '#F9D764',

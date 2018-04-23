@@ -280,11 +280,11 @@ export default class SearchFive extends Component {
       } else {
         return (
           <View style={{
-            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white',
+            justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white', paddingTop: 100,
           }}>
             <Image style = {{ width: 100, height: 100 }} source = {require('../../assets/images/sign_up_done.png')} />
           </View>
-        );보
+        );
       }
     }
   }
@@ -319,7 +319,6 @@ export default class SearchFive extends Component {
               autoCorrect={false}
               autoFocus={true}
               multiline={false}
-              cancelButtonTitle={'취소'}
               value={this.state.input_search}
               returnKeyType={'search'}
               onSubmitEditing={() => this.submitSearch()}

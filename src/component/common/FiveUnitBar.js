@@ -15,14 +15,14 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
 
   if (updated_at) {
     return (
-      <ListItem avatarList button onPress={onPress} style={{paddingTop: paddingTop || 10}}>
+      <ListItem avatarList button onPress={onPress} style={{height: 72, width: Constant.deviceWidth, backgroundColor: 'red' }}>
         <Image
-          style={{ width: 64, height: 64, borderRadius: 16 }}
+          style={{ width: 64, height: 64, borderRadius: 12 }}
           source={{ uri: image_url }}
         />
-        <Body style={{ flex: 1, height: 56, alignItems: 'flex-start', justifyContent: 'center'}}>
+        <Body style={{ flex: 1, height: 64, alignItems: 'flex-start', justifyContent: 'center'}}>
         <View>
-          <Text normal numberOfLines={1} style={{ margin: 2 }} >{title}</Text>
+          <Text normal numberOfLines={1} style={{ padding: 2, width: 200 }} >{title}</Text>
           <Text note numberOfLines={1}>{subtitle}</Text>
           <Text micro yellow>{friends_info}</Text>
         </View>
@@ -46,14 +46,14 @@ const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBot
     );
   } else {
     return (
-      <ListItem avatarList button onPress={onPress} style={{height: 76, width: Constant.deviceWidth, backgroundColor: 'transparent' }}>
+      <ListItem avatarList button onPress={onPress} style={{height: 72, width: Constant.deviceWidth, backgroundColor: 'transparent', marginTop: 4, marginBottom: 4 }}>
         <Image
           style={{ width: 64, height: 64, borderRadius: 12, margin: 0, resizeMode: 'cover' }}
           source={{ uri: image_url }}
         />
-        <Body style={{ flex: 1, height: 56, alignItems: 'flex-start', justifyContent: 'center' }}>
+        <Body style={{ flex: 1, height: 64, alignItems: 'flex-start', justifyContent: 'center' }}>
           <View>
-            <Text normal style={{ marginTop: 2, marginBottom: 3 }} numberOfLines={1}>{title}</Text>
+            <Text normal style={{ marginTop: 4 }} numberOfLines={1}>{title}</Text>
             <Text note numberOfLines={1}>{subtitle}</Text>
             <Text micro yellow>{friends_info}</Text>
           </View>

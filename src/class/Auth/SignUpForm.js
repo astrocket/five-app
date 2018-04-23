@@ -124,7 +124,7 @@ export default class SignUpForm extends Component {
   handleInputBirth(input_birth) {
     let regExp = /^[(0-9)]{0,2}$/;
     if ( !regExp.test( input_birth ) ) {
-      ErrorHandler('$"$92$"$와 같이 두 자리 숫자만으로 충분해요!',
+      ErrorHandler('"92"와 같이 두 자리 숫자만으로 충분해요!',
         () => this.setState({ input_birth: '' }));
       return false
     } else {
@@ -210,7 +210,7 @@ export default class SignUpForm extends Component {
                 noButton
               />
             </Row>
-            <Row style={{ margin: 10}}>
+            <Row style={{ margin: 0, marginTop: 200, padding: 16, borderRadius: 12, backgroundColor: '#fafafa' }}>
               <Text style={{ fontSize: 4 }}>
                 <Text>
                   {`완료`}

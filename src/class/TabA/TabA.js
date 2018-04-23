@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, FlatList, TouchableOpacity, StyleSheet,
+  View, FlatList, TouchableOpacity, StyleSheet, Image,
 } from 'react-native';
 import {
   Container, Header, Content, Text, Spinner, Button, List, ListItem, Tabs, Tab, TabHeading,
@@ -77,7 +77,7 @@ export default class TabA extends Component {
 
   handleScroll(e) {
     const currentOffset = e.nativeEvent.contentOffset.y;
-    const headerShow = currentOffset < 30;
+    const headerShow = currentOffset < 70;
     this.setState({ headerShow });
   }
 
@@ -117,7 +117,7 @@ export default class TabA extends Component {
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
             <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24, marginLeft: 2 }]}>
-              <Text style={styles.cateTab}>투데이</Text>
+              <Text style={styles.cateTab}>둘러보기</Text>
             </TouchableOpacity>
           }
         />
@@ -149,7 +149,7 @@ export default class TabA extends Component {
             paddingTop: Constant.globalPaddingTop + 12,
             height: Constant.globalPaddingTop + 12 + 66 + 56,
             paddingLeft: 16,
-            paddingRight: 30,
+            paddingRight: 24,
             backgroundColor: '#FFF',
             borderBottomWidth: 0
           }}>
@@ -168,7 +168,7 @@ export default class TabA extends Component {
                   justifyContent: 'flex-end',
                   alignItems: 'flex-start'
                 }}>
-                  <Text style={styles.mainTitle}>{'홈'}</Text>
+                  <Text xlarge style={{ color: '#333333' }}>홈</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}
@@ -177,7 +177,7 @@ export default class TabA extends Component {
           : <Header style={{
             paddingTop: Constant.globalPaddingTop,
             paddingLeft: 16,
-            paddingRight: 30,
+            paddingRight: 24,
             height: 56 + Constant.globalPaddingTop,
             backgroundColor: '#FFF',
             borderBottomWidth: 0,
@@ -207,12 +207,13 @@ export default class TabA extends Component {
 const styles = StyleSheet.create({
   mainTitle: {
     color: '#333333',
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: '900',
     fontFamily: "montserrat"
   },
   cateTab: {
     color: Constant.LightGrey,
+    fontFamily: 'montserrat',
     fontSize: 24,
     fontWeight: '900',
   },
