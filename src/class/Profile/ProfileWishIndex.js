@@ -118,7 +118,7 @@ export default class ProfileWishIndex extends Component {
             {this.renderCategoryTabs((e) => this.handleScroll(e))}
           </Tabs>
           : <EmptyBox
-            barWidth={Constant.deviceWidth - 20}
+            barWidth={Constant.deviceWidth}
             message={`아직 보관한 아이템이 하나도 없어요. ${'\n'}나의 FIVE가 될 아이템을 찾아보세요!`}
             barHeight={100}
             borderRadius={10}

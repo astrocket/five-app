@@ -76,9 +76,9 @@ export default class Hello extends Component {
         </View>
         <View style={{
           flex: 1,
-          margin: 36,
-          padding: 0,
-          alignSelf: 'stretch',
+          margin: 24,
+          padding: 24,
+
           backgroundColor: 'white',
         }}>
           <Row style = {{ borderRadius: 12, backgroundColor: '#fafafa' }} >
@@ -147,7 +147,7 @@ export default class Hello extends Component {
               </Body>
             </ListItem>
             <ListItem noBorder style={{ justifyContent: 'center'}}>
-              <Text micro grey>이용자 설정 메뉴를 통해 언제든지 권한 재설정이 가능하며,{'\n'}선택적 접근 권한을 허용하지 않아도 해당 기능 외의 서비스{'\n'}이용은 가능합니다 (정보통신망법에 의한 권한 고지).</Text>
+              <Text micro grey>이용자 설정 메뉴를 통해 언제든지 권한 재설정이 가능하며, 선택적 접근 권한을 허용하지 않아도 해당 기능 외의 서비스 이용은 가능합니다 (정보통신망법에 의한 고지).</Text>
             </ListItem>
           </List>
           </Row>

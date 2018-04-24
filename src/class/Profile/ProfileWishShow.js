@@ -132,7 +132,7 @@ export default class ProfileWishShow extends Component {
                   rightOpenValue={-75}
                 />
                 :<EmptyBox
-                  barWidth={Constant.deviceWidth - 20}
+                  barWidth={Constant.deviceWidth}
                   message={`아직 보관해 둔 아이템이 없어요.`}
                   barHeight={100}
                   borderRadius={10}

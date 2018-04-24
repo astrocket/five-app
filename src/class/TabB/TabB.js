@@ -182,9 +182,9 @@ export default class TabB extends Component {
         { this.app.categories.length > 0 ?
           null
           : <EmptyBox
-            barWidth={Constant.deviceWidth - 20}
+            barWidth={Constant.deviceWidth}
             onPress={() => this.onClickAdd()}
-            message={`아직 FIVE를 하나도 선택하지 않았어요. ${'\n'}여기를 눌러서 아이템을 추가해 보세요!`}
+            message={`아직 FIVE를 하나도 선택하지 않았어요. ${'\n'}여기를 눌러서 음악 또는 책을 추가해 보세요!`}
             barHeight={100}
             borderRadius={10}
             marginRight={0}
