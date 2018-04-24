@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AstroBoilerApp.xcodeproj">
+      location = "group:/Users/eec1/MyFive/five-rn/ios/AstroBoilerApp.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
