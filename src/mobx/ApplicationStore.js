@@ -88,7 +88,6 @@ class ApplicationStore extends StoreBase {
       this.categories = this.formattedCategories(categories),
       this.category_names = categories.map((category_chunk) => {return this.formattedCategoryName(category_chunk)})
     );
-    console.log('currentCategories : ' + JSON.stringify(this.categories));
   }
 
   formattedCategoryName(category_chunk) {
@@ -194,7 +193,6 @@ class ApplicationStore extends StoreBase {
     if (newFives.length < 6) {
       newFives.push(target_five);
     }
-    console.log('6');
     await this.updateFives(target_category, newFives);
   }
 

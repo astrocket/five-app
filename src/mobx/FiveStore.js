@@ -140,8 +140,8 @@ class FiveStore extends StoreBase {
   }
 
   // 카카오 맛집 검색결과 추가 하기 시작
-  addFiveRestaurant(document, index, title, cb, eb) {
-    axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
+  async addFiveRestaurant(document, index, title, cb, eb) {
+    await axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
       .then((response) => {
         axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=restaurant`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.header)
           .then(async(res) => {
@@ -152,20 +152,17 @@ class FiveStore extends StoreBase {
   }
 
   // 뮤직스 검색결과 추가 하기 시작
-  addFiveMusic(track, index, title, cb, eb) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=music`, { chunk: track, }, this.header)
+  async addFiveMusic(track, index, title, cb, eb) {
+    await axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=music`, { chunk: track, }, this.header)
       .then(async(res) => {
-        console.log('0');
         await this.app.addFive('music', res.data.five);
-        console.log('7');
         cb(res);
-        console.log('8');
       }).catch(eb);
   }
 
   // 카카오 책 검색결과 추가 하기 시작
-  addFiveBook(document, index, title, cb, eb) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=book`, { chunk: document, }, this.header)
+  async addFiveBook(document, index, title, cb, eb) {
+    await axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=book`, { chunk: document, }, this.header)
       .then(async(res) => {
         await this.app.addFive('book', res.data.five);
         cb(res);
@@ -173,8 +170,8 @@ class FiveStore extends StoreBase {
   }
 
   // 카카오 맛집 검색결과 추가 하기 시작
-  addWishRestaurant(document, index, title) {
-    axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
+  async addWishRestaurant(document, index, title) {
+    await axios.get(`${ApiServer.KAKAO_GEO_API}?x=${document.x}&y=${document.y}&input_coord=WGS84`, { headers: { 'Authorization': ApiServer.KAKAO_API_KEY, }, })
       .then((response) => {
         axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=restaurant`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.header).then((response) => {
           this.toastHandler(`${title}이 보관함에 추가되었습니다.`)
@@ -183,15 +180,15 @@ class FiveStore extends StoreBase {
   }
 
   // 뮤직스 검색결과 추가 하기 시작
-  addWishMusic(track, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=music`, { chunk: track, }, this.header).then((response) => {
+  async addWishMusic(track, index, title) {
+    await axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=music`, { chunk: track, }, this.header).then((response) => {
       this.toastHandler(`${title}이 보관함에 추가되었습니다.`)
     }).catch((e) => this.defaultErrorHandler(e));
   }
 
   // 카카오 책 검색결과 추가 하기 시작
-  addWishBook(document, index, title) {
-    axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=book`, { chunk: document, }, this.header).then((response) => {
+  async addWishBook(document, index, title) {
+    await axios.post(`${ApiServer.MY_PROFILE}/add_and_create_wish?category=book`, { chunk: document, }, this.header).then((response) => {
       this.toastHandler(`${title}이 보관함에 추가되었습니다.`)
     }).catch((e) => this.defaultErrorHandler(e));
   }

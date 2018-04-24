@@ -1,14 +1,10 @@
 import { Toast } from "native-base";
+import * as Constant from '../config/Constant';
 
 class StoreBase {
 
   defaultErrorHandler(e) {
-    let msg = (typeof e.response.data.errors === 'undefined') ? e.response.data : e.response.data.errors;
-    if (Object.keys(msg).length > 1) {
-      msg = Object.keys(msg).map((k) => `[${msg[k]}]`);
-    } else {
-      msg = JSON.stringify(msg)
-    }
+    let msg = Constant.stringifyServerError(e);
     return Toast.show({
       text: msg,
       position: 'top',
