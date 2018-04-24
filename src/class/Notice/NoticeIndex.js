@@ -9,10 +9,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  NoticeUnitBar, EmptyBox
-} from '../../component/common';
-import {
-  NavBar,
+  NoticeUnitBar, EmptyBox, ShowMore, NavBar
 } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
@@ -32,21 +29,34 @@ export default class NoticeIndex extends Component {
     this.state = {
       loading: true,
       refreshing: false,
+      page: 1,
+      page_loading: false,
+      no_more: false,
       notices: [],
     };
   }
 
   componentDidMount() {
-    this.server.homeNotice((data) => this.setState(data)).then(() => {
+    this.server.homeNotice(this.state.page, (res) => {
+      this.setState({ notices: res.data.notices, no_more: res.data.no_more })
+    }).then(() => {
       this.setState({ loading: false });
     });
   }
 
   _onRefresh() {
-    this.setState({ refreshing: true }, () => {
-      this.server.homeNotice((data) => this.setState(data)).then(() => {
-        this.setState({ refreshing: false });
-      });
+    this.setState({ refreshing: true, page: 1 }, () => {
+      this.server.homeNotice(this.state.page, (res) => {
+        this.setState({ notices: res.data.notices, no_more: res.data.no_more })
+      }).then(() => {this.setState({ refreshing: false })});
+    });
+  }
+
+  nextPage() {
+    this.setState({ page: this.state.page + 1, page_loading: true, }, () => {
+      this.server.homeNotice(this.state.page, (res) => {
+        this.setState({ notices: [ ...this.state.notices, ...res.data.notices], no_more: res.data.no_more })
+      }).then(() => this.setState({ page_loading: false }));
     });
   }
 
@@ -84,6 +94,16 @@ export default class NoticeIndex extends Component {
                 />
               )}
               keyExtractor={item => 'notice-list-' + item.id}
+              ListFooterComponent={
+                () =>
+                  <ShowMore
+                    onPress={() => this.nextPage()}
+                    moreText={'더보기'}
+                    overText={'끝'}
+                    no_more={this.state.no_more}
+                    page_loading={this.state.page_loading}
+                  />
+              }
             />
           :<EmptyBox
               barWidth={Constant.deviceWidth - 20}

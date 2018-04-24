@@ -23,6 +23,7 @@ const FiveShowButtons = ({ category, modalNavigation, five }) => {
 
     let buttonHeight = 40;
     let buttonMargin = 16;
+    const right_button = Constant.FiveShowButtonRight(category, five);
 
     return (
         <Grid>
@@ -55,7 +56,6 @@ const FiveShowButtons = ({ category, modalNavigation, five }) => {
                     }}
                   />
                 </Button>
-
                 <Button style={{
                   backgroundColor: Constant.LightGrey,
                   height: buttonHeight,
@@ -66,12 +66,12 @@ const FiveShowButtons = ({ category, modalNavigation, five }) => {
                   marginLeft: buttonMargin,
                   marginRight: 16,
                 }} onPress={() => modalNavigation.navigate('ModalWebViewShow', {
-                  url: five.youtube_link,
-                  headerTitle: five.track_name
+                  url: right_button.url,
+                  headerTitle: right_button.title
                 })}
                 >
-                  <Text style = {{ fontSize: 16, fontWeight: 'bold', fontFamily: 'montserrat', color: 'white' }}>Play</Text>
-                  <Icon name='play' 
+                  <Text style = {{ fontSize: 16, fontWeight: 'bold', fontFamily: 'montserrat', color: 'white' }}>{right_button.text}</Text>
+                  <Icon name={right_button.icon}
                     style={{
                       color: 'white',
                       fontSize: 22,

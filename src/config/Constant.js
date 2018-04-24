@@ -81,6 +81,45 @@ export const CategoryToApi = (category) => {
   return api_suffix
 };
 
+export const FiveShowButtonRight = (category, five) => {
+  let button_right;
+  switch (category) {
+    case 'restaurant':
+      button_right = {
+        url: five.related_link || '',
+        title: five.title || 'n/a',
+        text: '보기',
+        icon: 'utensils'
+      };
+      break;
+    case 'music':
+      button_right = {
+        url: five.youtube_link || '',
+        title: five.title || 'n/a',
+        ext: 'Play',
+        icon: 'play'
+      };
+      break;
+    case 'book':
+      button_right = {
+        url: five.purchase_link,
+        title: five.title,
+        text: 'Read',
+        icon: 'book'
+      };
+      break;
+    default:
+      button_right = {
+        url: '',
+        title: 'n/a',
+        text: 'n/a',
+        icon: 'n/a'
+      };
+      break;
+  }
+  return button_right
+};
+
 export const askToParticipate = (category, user) => {
   return `${category} 파이브를 시작하고 ${user}님을 팔로우 하시겠어요?`
 };

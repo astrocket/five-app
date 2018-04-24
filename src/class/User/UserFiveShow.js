@@ -43,6 +43,7 @@ export default class UserFiveShow extends Component {
       followers_count: '',
       followees_count: '',
       following: false,
+      follow_loading: false,
     };
   }
 
@@ -69,29 +70,34 @@ export default class UserFiveShow extends Component {
   }
 
   toggleFollow() {
-    const have = this.app.hasCategory(this.state.category);
-    if (have) {
-      this.followCall();
-    } else {
-      Alert.alert(
-        `아직 참여한 카테고리는 아니에요`,
-        `${Constant.askToParticipate(this.state.category_korean, this.state.user.name)}`,
-        [ {
+    this.setState({ follow_loading: true }, async () => {
+      const have = await this.app.hasCategory(this.state.category);
+      if (have) {
+        this.server.followPost(this.state.user.id, this.state.following, this.state.category, (res) => this.onSuccessFollow(res))
+          .then(() => this.afterClickFollow())
+      } else {
+        Alert.alert(
+          `아직 참여한 카테고리는 아니에요`,
+          `${Constant.askToParticipate(this.state.category_korean, this.state.user.name)}`,
+          [ {
             text: '네',
-            onPress: () => this.followCall(five)
-              .then(() => this.props.navigation.navigate(`SearchFive`, { category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass}))
-        },
-          { text: '취소', style: 'cancel'},
-        ], { cancelable: true },
-      );
-    }
+            onPress: () => this.server.followPost(this.state.user.id, this.state.following, this.state.category, (res) => this.onSuccessFollow(res))
+              .then(() => this.afterClickFollow().then(() => {
+                this.props.navigation.navigate(`SearchFive`, { category: this.state.category, category_korean: this.state.category_korean, klass: this.state.klass})
+              }))
+          },
+            { text: '취소', style: 'cancel', onPress: () => this.afterClickFollow() },
+          ], { cancelable: true },
+        );
+      }
+    });
   }
 
-  async followCall() {
-    await this.server.followPost(this.state.user.id, this.state.following, this.state.category, (res) => this.onFollowSuccess(res))
+  async afterClickFollow() {
+    await this.setState({ follow_loading: false });
   }
 
-  async onFollowSuccess(response) {
+  async onSuccessFollow(response) {
     const new_following = response.data;
     await this.setState({
       following: new_following,
@@ -265,9 +271,8 @@ export default class UserFiveShow extends Component {
           <Right>
             <FollowSmallButton
               onPress={() => this.toggleFollow()}
-              textTrue={'팔로잉'}
-              textFalse={'팔로우'}
               clicked={this.state.following}
+              loading={this.state.follow_loading}
             />
           </Right>
         </Header>
