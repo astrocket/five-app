@@ -190,7 +190,7 @@ class ServerStore extends StoreBase {
   }
 
   async homeNotice(page, cb, eb = (e) => this.defaultErrorHandler(e)) {
-    await axios.get(`${ApiServer.HOME}/notice`, this.header)
+    await axios.get(`${ApiServer.HOME}/notice?page=${page}`, this.header)
       .then(cb).catch(eb)
   }
 

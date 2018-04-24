@@ -100,7 +100,6 @@ export default class FiveShow extends Component {
         }).then(() => this.setState({ five_loading: false }));
       } else {
         this.five.fiveCreate(this.state.category, this.state.five.id, (res) => {
-          console.log(JSON.stringify(res.data.first_kiss));
           if (res.data.first_kiss) {
             this.app.updateCategories().then(() => {
               this.setState({ five_users_count: (this.state.five_users_count += 1), my_five: res.data.my_five, my_wish: res.data.my_wish, });
@@ -110,7 +109,7 @@ export default class FiveShow extends Component {
           }
         }, (e) => {
           if (e.response.data.full && !this.state.my_wish) {
-            this.askAddWish(JSON.stringify(e.response.data.errors[0]));
+            this.askAddWish(Constant.stringifyServerError(e));
           } else {
             this.five.defaultErrorHandler(e)
           }

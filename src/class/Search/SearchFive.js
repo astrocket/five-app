@@ -62,9 +62,11 @@ export default class SearchFive extends Component {
         const category = this.state.category;
         const id = item.wish.id;
         if (item.also_five) {
-          this.five.fiveDestroy(category, id, (res) => this.onWishToFiveDestroySuccess(res.data, index));
+          this.five.fiveDestroy(category, id, (res) => this.onWishToFiveDestroySuccess(res.data, index))
+            .then(() => this.afterClickToggleWish(index));
         } else {
-          this.five.fiveCreate(category, id, (res) => this.onWishToFiveCreateSuccess(res.data, index));
+          this.five.fiveCreate(category, id, (res) => this.onWishToFiveCreateSuccess(res.data, index))
+            .then(() => this.afterClickToggleWish(index));
         }
       }
     );
@@ -76,10 +78,15 @@ export default class SearchFive extends Component {
     await this.setState({ wishes: stateBefore });
   }
 
+  async afterClickToggleWish(index) {
+    const stateBefore = [ ...this.state.wishes ];
+    stateBefore[ index ].loading = false;
+    await this.setState({ wishes: stateBefore });
+  }
+
   async onWishToFiveCreateSuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = true;
-    stateBefore[index].loading = false;
     stateBefore[index].wish.five_users_count += 1;
     const have = await this.app.hasCategory(this.state.category);
     if (have) {
@@ -94,7 +101,6 @@ export default class SearchFive extends Component {
   onWishToFiveDestroySuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = false;
-    stateBefore[index].loading = false;
     stateBefore[index].wish.five_users_count -= 1;
     this.setState({ wishes: stateBefore });
   }
@@ -106,11 +112,13 @@ export default class SearchFive extends Component {
       .then(() => {
         if (chunk.already_five) {
           // 이미 파이브면 삭제 시도
-          this.five.fiveDestroy(this.state.category, chunk.id, (res) => this.onFiveDestroySuccess(res.data, index));
+          this.five.fiveDestroy(this.state.category, chunk.id, (res) => this.onFiveDestroySuccess(res.data, index))
+            .then(() => this.afterClickToggleFive(index));
         } else {
           this.state.methods.add_five_api(chunk, index, this.five.namesPerApi(this.state.category, chunk).title, (res) => {
             this.onFiveCreateSuccess(chunk, index, res.data);
           }, (e) => this.onFiveCreateFailed(e, chunk, index))
+            .then(() => this.afterClickToggleFive(index));
         }
       }
     );
@@ -122,10 +130,15 @@ export default class SearchFive extends Component {
     await this.setState({ chunks: chunksBefore });
   }
 
+  async afterClickToggleFive(index) {
+    const chunksBefore = [ ...this.state.chunks ];
+    chunksBefore[ index ].loading = false;
+    await this.setState({ chunks: chunksBefore });
+  }
+
   onFiveDestroySuccess(chunk, index) {
     const chunksBefore = [ ...this.state.chunks ];
     chunksBefore[ index ].already_five = false;
-    chunksBefore[ index ].loading = false;
     chunksBefore[ index ].five_users_count -= 1;
     this.setState({ chunks: chunksBefore });
   }
@@ -134,7 +147,6 @@ export default class SearchFive extends Component {
     const chunksBefore = [ ...this.state.chunks ];
     chunksBefore[ index ] = data.five;
     chunksBefore[ index ].already_five = true;
-    chunksBefore[ index ].loading = false;
     if (data.first_kiss) {
       this.app.updateCategories().then(() => {
         this.setState({ chunks: chunksBefore })
@@ -146,14 +158,13 @@ export default class SearchFive extends Component {
 
   onFiveCreateFailed(error, chunk, index) {
     Alert.alert(
-      `${JSON.stringify(error.response.data.errors[0])}`,
+      `${Constant.stringifyServerError(error)}`,
       `${this.five.namesPerApi(this.state.category, chunk).title}을(를) ${this.state.category_korean} 보관함에 담으시겠어요?`,
-      [ { text: '아니요', style: 'cancel', },
+      [ { text: '아니요', style: 'cancel'},
         { text: '네', onPress: () => this.state.methods.add_wish_api(chunk, index, this.five.namesPerApi(this.state.category, chunk).title) }, ],
       { cancelable: true },
     );
   }
-  // 백엔드 단 카카오 검색 관련
 
   handleInputSearch(input_search) {
     if (input_search === '') {

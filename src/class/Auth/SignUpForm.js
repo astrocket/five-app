@@ -12,6 +12,7 @@ import { NavigationActions } from 'react-navigation';
 import { MainLargeTitle, InputSingle, InputToggle, BottomFullButton } from '../../component/common';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
+import * as ApiServer from '../../config/ApiServer';
 import { ErrorHandler} from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
@@ -220,7 +221,7 @@ export default class SignUpForm extends Component {
                 </Text>
                 <Text
                   onPress={() => modalNavigation.navigate('ModalWebViewShow', {
-                    url: `https://myfivecs.blogspot.kr/`,
+                    url: `${ApiServer.COMPANY}/privacy_and_policy`,
                     headerTitle: '이용약관'
                   })}
                 >
@@ -231,7 +232,7 @@ export default class SignUpForm extends Component {
                 </Text>
                 <Text
                   onPress={() => modalNavigation.navigate('ModalWebViewShow', {
-                    url: `https://myfivecs.blogspot.kr/`,
+                    url: `${ApiServer.COMPANY}/privacy_and_policy`,
                     headerTitle: '개인정보보호정책'
                   })}
                 >

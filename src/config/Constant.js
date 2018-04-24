@@ -123,3 +123,19 @@ export const FiveShowButtonRight = (category, five) => {
 export const askToParticipate = (category, user) => {
   return `${category} 파이브를 시작하고 ${user}님을 팔로우 하시겠어요?`
 };
+
+export const stringifyServerError = (e) => {
+  let string_msg;
+  let msg = (typeof e.response.data.errors === 'undefined') ? e.response.data : e.response.data.errors;
+  if (Object.keys(msg).length > 1) {
+    console.log('1');
+    console.log(JSON.stringify(msg));
+    msg = Object.keys(msg).map((k) => `${msg[k][0]}`).join('\n');
+  } else {
+    console.log('2');
+    console.log(JSON.stringify(msg));
+    msg = JSON.stringify(msg[0])
+  }
+  string_msg = msg.replace(/"/g,"");
+  return string_msg;
+};
