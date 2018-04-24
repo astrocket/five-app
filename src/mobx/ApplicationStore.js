@@ -116,15 +116,15 @@ class ApplicationStore extends StoreBase {
 
   async updateCategories() {
     const header = { headers: { 'X-User-Email': this.email, 'X-User-Token': this.token, }, };
-    axios.get(`${ApiServer.MY_PROFILE}/categories`, header)
+    await axios.get(`${ApiServer.MY_PROFILE}/categories`, header)
       .then( async (res) => {
         await this.setCategories(res.data.categories)
       }).catch((e) => {this.defaultErrorHandler(e)});
   }
 
-  hasCategory(target_category) {
+  async hasCategory(target_category) {
     let have = false;
-    this.category_names.forEach((category_chunk) => {
+    await this.category_names.forEach((category_chunk) => {
       if (category_chunk.category === target_category) {
         have = true;
       }
@@ -140,13 +140,13 @@ class ApplicationStore extends StoreBase {
           category = category_chunk;
         }
       });
-      return category
+      return category;
     })
   }
 
-  findCategoryIndex(target_category) {
+  async findCategoryIndex(target_category) {
     let index = -1;
-    this.categories.forEach((category_chunk, i) => {
+    await this.categories.forEach((category_chunk, i) => {
       if (category_chunk.category === target_category ) {
         index = i;
       }
@@ -156,7 +156,7 @@ class ApplicationStore extends StoreBase {
 
   @action
   async updateCategory(target_category, category_chunk) {
-    const i = this.findCategoryIndex(target_category);
+    const i = await this.findCategoryIndex(target_category);
     let newCategories = this.categories;
     newCategories[i] = category_chunk;
     await this.setCategories(newCategories);
@@ -164,14 +164,14 @@ class ApplicationStore extends StoreBase {
 
   @action
   async updateFives(target_category, fives) {
-    const i = this.findCategoryIndex(target_category);
+    const i = await this.findCategoryIndex(target_category);
     let newCategories = this.categories;
     newCategories[i].fives = fives;
     await this.setCategories(newCategories);
   }
 
   async removeFive(target_category, target_five_id) {
-    const i = this.findCategoryIndex(target_category);
+    const i = await this.findCategoryIndex(target_category);
     let newFives = this.categories[i].fives;
     newFives.forEach((five, index) => {
       if (five.id === target_five_id) {
@@ -182,13 +182,19 @@ class ApplicationStore extends StoreBase {
   }
 
   async addFive(target_category, target_five) {
-    const i = this.findCategoryIndex(target_category);
+    let i;
+    const have = await this.hasCategory(target_category);
+    if (have) {
+      i = await this.findCategoryIndex(target_category);
+    } else {
+      await this.updateCategories();
+      i = await this.findCategoryIndex(target_category);
+    }
     let newFives = this.categories[i].fives;
     if (newFives.length < 6) {
-      console.log('beforePush' + JSON.stringify(newFives));
       newFives.push(target_five);
-      console.log('afterPush' + JSON.stringify(newFives));
     }
+    console.log('6');
     await this.updateFives(target_category, newFives);
   }
 

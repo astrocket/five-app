@@ -3,9 +3,14 @@ import { Toast } from "native-base";
 class StoreBase {
 
   defaultErrorHandler(e) {
-    const msg = (typeof e.response.data.errors === 'undefined') ? e.response.data : e.response.data.errors;
+    let msg = (typeof e.response.data.errors === 'undefined') ? e.response.data : e.response.data.errors;
+    if (Object.keys(msg).length > 1) {
+      msg = Object.keys(msg).map((k) => `[${msg[k]}]`);
+    } else {
+      msg = JSON.stringify(msg)
+    }
     return Toast.show({
-      text: JSON.stringify(msg),
+      text: msg,
       position: 'top',
       duration: 1500
     });

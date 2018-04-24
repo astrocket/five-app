@@ -76,12 +76,13 @@ export default class SearchFive extends Component {
     await this.setState({ wishes: stateBefore });
   }
 
-  onWishToFiveCreateSuccess(data, index) {
+  async onWishToFiveCreateSuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = true;
     stateBefore[index].loading = false;
     stateBefore[index].wish.five_users_count += 1;
-    if (this.app.hasCategory(this.state.category)) {
+    const have = await this.app.hasCategory(this.state.category);
+    if (have) {
       this.setState({ wishes: stateBefore })
     } else {
       this.app.updateCategories().then(() => {
@@ -207,7 +208,7 @@ export default class SearchFive extends Component {
       if (this.state.no_result) {
         return (
           <View style={{
-            justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column',
+            justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
             <EmptyBox
               barWidth={Constant.deviceWidth - 20}

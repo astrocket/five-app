@@ -46,7 +46,7 @@ export default class UserShow extends Component {
 
   _onRefresh() {
     this.setState({ refreshing: true }, () => {
-      this.server.userShow(this.state.id, (res) => {
+      this.server.userShow(this.state.user.id, (res) => {
         this.setState({
           user: res.data.user,
           categories: res.data.categories,
@@ -57,8 +57,8 @@ export default class UserShow extends Component {
 
   toggleFollowCall(item, index) {
     this.onClickFollow(item, index)
-      .then(() => {
-        const have = this.app.hasCategory(item.category);
+      .then(async () => {
+        const have = await this.app.hasCategory(item.category);
         if (have) {
           this.server.followPost(this.state.user.id, item.following, item.category, (res) => this.onSuccessFollow(res, index))
             .then(() => this.afterClickFollow(item, index));
@@ -72,7 +72,7 @@ export default class UserShow extends Component {
                 .then(() => this.afterClickFollow(item, index)
                   .then(() => this.props.navigation.navigate(`SearchFive`, { category: item.category, category_korean: item.category_korean, klass: item.klass})))
             },
-              { text: '취소', style: 'cancel', },
+              { text: '취소', style: 'cancel', onPress: () => this.afterClickFollow(item, index) },
             ], { cancelable: true },
           );
         }
@@ -91,11 +91,11 @@ export default class UserShow extends Component {
     await this.setState({ categories: stateBefore })
   }
 
-  onSuccessFollow(res, index) {
+  async onSuccessFollow(res, index) {
     const new_following = res.data;
     const stateBefore = [ ...this.state.categories ];
     stateBefore[ index ].following = new_following;
-    this.setState({ categories: stateBefore });
+    await this.setState({ categories: stateBefore });
   }
 
   render() {

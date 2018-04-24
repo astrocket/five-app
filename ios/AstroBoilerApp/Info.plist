@@ -72,6 +72,17 @@
                 <key>NSAllowsArbitraryLoads</key>
                 <true/>
             </dict>
+			<key>m1.daumcdn.net</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
             <key>book.daum.net</key>
             <dict>
                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -94,6 +105,32 @@
                 <key>NSExceptionRequiresForwardSecrecy</key>
                 <false/>
                 <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
+            <key>www.aladin.co.kr</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+            <key>image.aladin.co.kr</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
                 <true/>
             </dict>
 		</dict>

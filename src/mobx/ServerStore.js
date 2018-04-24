@@ -29,7 +29,7 @@ class ServerStore extends StoreBase {
   async homeIndex(setState, eb = (e) => this.defaultErrorHandler(e)) {
     await axios.get(`${ApiServer.HOME_INDEX}`, this.header)
       .then((res) => {
-        setState({ five_story: res.data.five_story, popular_fives: res.data.popular_fives, follow_suggestions: res.data.follow_suggestions });
+        setState({ home_categories: res.data.home_categories });
       }).catch(eb);
   }
 
@@ -40,7 +40,6 @@ class ServerStore extends StoreBase {
       }).catch(eb);
   }
 
-  /* action calls */
 
   async followPost(user_id, current_following, category, cb, eb = (e) => this.defaultErrorHandler(e)) {
     const data = { following: { user_id: user_id, following: !current_following}};
@@ -190,11 +189,9 @@ class ServerStore extends StoreBase {
       .then(cb).catch(eb);
   }
 
-  async homeNotice(setState, eb = (e) => this.defaultErrorHandler(e)) {
+  async homeNotice(page, cb, eb = (e) => this.defaultErrorHandler(e)) {
     await axios.get(`${ApiServer.HOME}/notice`, this.header)
-      .then((res) => {
-        setState({ notices: res.data })
-      }).catch(eb)
+      .then(cb).catch(eb)
   }
 
   /* general Functions */

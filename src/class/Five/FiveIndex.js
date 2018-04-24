@@ -156,7 +156,7 @@ export default class FiveIndex extends Component {
                     <UserFivesBar
                       onPress={() => navigation.navigate('UserShow', { user: item.user })}
                       onPressFollow={() => this.toggleFollowCall(item, index)}
-                      defaultImage={Images.findImageOf(item.category)}
+                      defaultImage={Images.default_main}
                       category={item.category}
                       fives={item.fives}
                       clicked={item.following}

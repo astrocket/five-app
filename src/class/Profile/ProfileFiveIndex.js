@@ -33,11 +33,13 @@ export default class ProfileFiveIndex extends Component {
       loading: false,
       refreshing: false,
       category: this.props.navigation.state.params.category_chunk.category,
+      category_korean: this.props.navigation.state.params.category_chunk.category_korean,
+      klass: this.props.navigation.state.params.category_chunk.klass,
       flip: false,
       clicked: false,
-      fives: [],
-      followers_count: '',
-      followees_count: '',
+      fives: this.props.navigation.state.params.category_chunk.fives,
+      followers_count: this.props.navigation.state.params.category_chunk.followers_count,
+      followees_count: this.props.navigation.state.params.category_chunk.followees_count,
     };
   }
 
@@ -86,43 +88,40 @@ export default class ProfileFiveIndex extends Component {
   renderCard() {
     const navigation = this.props.navigation;
     return (
-      <Observer>
-        {() => (
-          <FlatList
-            key={'flat-list-card-section'}
-            data={this.app.findCategory(this.state.category).get().fives}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={10}
-            pagingEnabled={true}
-            renderItem={({ item }) => (
-              <FiveUnitFullCenter
-                multiple
-                id={item.id}
-                subtitle={item.subtitle}
-                title={item.title}
-                friends_info={`FIVE ${item.five_users_count}`}
-                image_url={item.image_large_url}
-                onPress={() => navigation.navigate('FiveShow', {
-                  category: this.state.category,
-                  title: item.title,
-                  id: item.id,
-                })}
-                borderRadius={12}
-                cardCut={80}
-              />
-            )}
-            keyExtractor={item => 'card-list' + item.id}
-            ListFooterComponent={
-                        this.renderList()
-            }
+      <FlatList
+        key={'flat-list-card-section'}
+        data={this.app.findCategory(this.state.category).get().fives}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={10}
+        pagingEnabled={true}
+        renderItem={({ item }) => (
+          <FiveUnitFullCenter
+            multiple
+            id={item.id}
+            subtitle={item.subtitle}
+            title={item.title}
+            friends_info={`FIVE ${item.five_users_count}`}
+            image_url={item.image_large_url}
+            onPress={() => navigation.navigate('FiveShow', {
+              category: this.state.category,
+              title: item.title,
+              id: item.id,
+            })}
+            borderRadius={12}
+            cardCut={80}
           />
         )}
-      </Observer>
+        keyExtractor={item => 'card-list' + item.id}
+        ListFooterComponent={
+          this.renderList()
+        }
+      />
     )
   }
 
   renderList() {
+    const navigation = this.props.navigation;
     return (
       <View style={{
         backgroundColor: '#fafafa',

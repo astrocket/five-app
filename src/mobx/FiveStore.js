@@ -155,8 +155,11 @@ class FiveStore extends StoreBase {
   addFiveMusic(track, index, title, cb, eb) {
     axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=music`, { chunk: track, }, this.header)
       .then(async(res) => {
+        console.log('0');
         await this.app.addFive('music', res.data.five);
+        console.log('7');
         cb(res);
+        console.log('8');
       }).catch(eb);
   }
 
@@ -200,7 +203,7 @@ class FiveStore extends StoreBase {
         if (response.data.documents.length > 0) {
           setState({ no_result: false, searched: true, chunks: response.data.documents, no_more: response.data.meta.is_end });
         } else {
-          setState({ no_result: true, searched: false, chunks: response.data.documents, no_more: response.data.meta.is_end });
+          setState({ no_result: true, searched: true, chunks: response.data.documents, no_more: response.data.meta.is_end });
         }
       }).catch((e) => this.defaultErrorHandler(e));
   }
@@ -219,7 +222,7 @@ class FiveStore extends StoreBase {
         if (response.data.tracks.length > 0) {
           setState({ no_result: false, searched: true, chunks: response.data.tracks, no_more: response.data.no_more });
         } else {
-          setState({ no_result: true, searched: false, chunks: response.data.tracks, no_more: response.data.no_more });
+          setState({ no_result: true, searched: true, chunks: response.data.tracks, no_more: response.data.no_more });
         }
       }).catch((e) => this.defaultErrorHandler(e));
   }
@@ -238,7 +241,7 @@ class FiveStore extends StoreBase {
         if (response.data.documents.length > 0) {
           setState({ no_result: false, searched: true, chunks: response.data.documents });
         } else {
-          setState({ no_result: true, searched: false, chunks: response.data.documents, no_more: response.data.meta.is_end });
+          setState({ no_result: true, searched: true, chunks: response.data.documents, no_more: response.data.meta.is_end });
         }
       }).catch((e) => this.defaultErrorHandler(e));
   }

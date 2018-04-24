@@ -1,6 +1,7 @@
 export const restaurant_main = require('./restaurant_main.png');
 export const music_main = require('./music_main.png');
 export const book_main = require('./book_main.png');
+export const default_main = require('./five_void_grey.png');
 
 export const findImageOf = (name) => {
   let image;
