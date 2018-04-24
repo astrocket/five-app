@@ -70,7 +70,7 @@ export default class UserContacts extends Component {
     } else {
       return (
         <EmptyBox
-          barWidth={Constant.deviceWidth - 20}
+          barWidth={Constant.deviceWidth}
           onPress={() => RNOpenSettings.openSettings()}
           message={`내 주변 친구들의 취향이 궁금하다면? ${'\n'}여기를 눌러서 연락처를 통해 친구를 찾아보세요.`}
           barHeight={100}

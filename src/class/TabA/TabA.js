@@ -117,7 +117,7 @@ export default class TabA extends Component {
           keyExtractor={item => 'tabs-' + item.category}
           ListHeaderComponent={
             <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24, marginLeft: 2 }]}>
-              <Text style={styles.cateTab}>둘러보기</Text>
+              <Text style={styles.cateTab}>홈</Text>
             </TouchableOpacity>
           }
         />
@@ -168,7 +168,7 @@ export default class TabA extends Component {
                   justifyContent: 'flex-end',
                   alignItems: 'flex-start'
                 }}>
-                  <Text xlarge style={{ color: '#333333' }}>홈</Text>
+                  <Text xlarge style={{ color: '#333333' }}>myfive</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}

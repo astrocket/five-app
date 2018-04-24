@@ -133,7 +133,7 @@ export default class FiveIndex extends Component {
                   keyExtractor={item => 'five-' + item.id}
                 />
                 :<EmptyBox
-                  barWidth={Constant.deviceWidth - 20}
+                  barWidth={Constant.deviceWidth}
                   message={`${this.state.category_korean} 친구를 팔로우하면${'\n'}여기에서 친구들의 ${this.state.category_korean} FIVE를 확인할 수 있어요.`}
                   barHeight={100}
                   borderRadius={10}

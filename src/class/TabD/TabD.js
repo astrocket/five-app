@@ -127,7 +127,7 @@ export default class TabD extends Component {
             />
           }>
             <EmptyBox
-              barWidth={Constant.deviceWidth - 20}
+              barWidth={Constant.deviceWidth}
               message={`아직 친구들 소식이 없어요. ${'\n'}친구들을 더 팔로우하고 소식을 받아보세요!`}
               barHeight={100}
               borderRadius={10}

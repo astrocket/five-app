@@ -102,7 +102,7 @@ export default class SearchUser extends Component {
             justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column', backgroundColor: 'white'
           }}>
             <EmptyBox
-              barWidth={Constant.deviceWidth - 20}
+              barWidth={Constant.deviceWidth}
               message={`검색 결과가 없어요. ${'\n'}다른 아이디로 다시 검색해 보세요!`}
               barHeight={100}
               borderRadius={10}
