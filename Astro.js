@@ -58,29 +58,7 @@ export default class App extends Component<{}> {
       });
   }
 
-  fakeAuthCallback() {
-    AsyncStorage.multiSet([
-      [ 'email', 'astro@insomenia.com' ],
-      [ 'token', 'astrotoken' ],
-      [ 'key', 'astrokey' ],
-      [ 'login', true ],
-    ]).then(() => {
-      this.app.setAuthInfo().then(() => {
-        this.setState({
-          loggedIn: true,
-          loading: false,
-        });
-      });
-    });
-  }
-
-  authSuccessCallback() {
-    this.setState({
-      loggedIn: true,
-      loading: false,
-    });
-  }
-
+  
   render() {
     const { container } = BaseStyle;
     if (this.state.loading) {

@@ -7,14 +7,14 @@ import {
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
-const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
+const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse, loading }) => {
   const { container } = BaseStyle;
   const {width, height} = Image.resolveAssetSource(require('../../assets/images/add_green.png'));
-  if (clicked) {
+  if (typeof loading !== 'undefined' && loading) {
     return (
-      <Button transparent onPress={onPress}>
+      <Button transparent>
         <Image
-          source={require('../../assets/images/add_five_green.png')}
+          source={require('../../assets/images/add_five_loading.png')}
           style={{
             height: 25,
             width: 25 * (width / height) + 5,
@@ -23,17 +23,31 @@ const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse }) => {
       </Button>
     );
   } else {
-    return (
-      <Button transparent onPress={onPress}>
-        <Image
-          source={require('../../assets/images/add_five_pink.png')}
-          style={{
-            height: 25,
-            width: 25 * (width / height) + 5,
-          }}
-        />
-      </Button>
-    );
+    if (clicked) {
+      return (
+        <Button transparent onPress={onPress}>
+          <Image
+            source={require('../../assets/images/add_five_green.png')}
+            style={{
+              height: 25,
+              width: 25 * (width / height) + 5,
+            }}
+          />
+        </Button>
+      );
+    } else {
+      return (
+        <Button transparent onPress={onPress}>
+          <Image
+            source={require('../../assets/images/add_five_pink.png')}
+            style={{
+              height: 25,
+              width: 25 * (width / height) + 5,
+            }}
+          />
+        </Button>
+      );
+    }
   }
 };
 
