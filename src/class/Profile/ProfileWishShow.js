@@ -39,9 +39,11 @@ export default class ProfileWishShow extends Component {
     this.onClickToggleFive(index)
       .then(() => {
         if (wish_data.also_five) {
-          this.five.fiveDestroy(this.state.category, wish_data.wish.id, (res) => this.onFiveDestroySuccess(res.data, index));
+          this.five.fiveDestroy(this.state.category, wish_data.wish.id, (res) => this.onFiveDestroySuccess(res.data, index))
+            .then(() => this.afterClickToggleFive(index));
         } else {
-          this.five.fiveCreate(this.state.category, wish_data.wish.id, (res) => this.onFiveCreateSuccess(res.data, index));
+          this.five.fiveCreate(this.state.category, wish_data.wish.id, (res) => this.onFiveCreateSuccess(res.data, index))
+            .then(() => this.afterClickToggleFive(index));
         }
       });
   }
@@ -52,10 +54,15 @@ export default class ProfileWishShow extends Component {
     await this.setState({ wishes: stateBefore })
   }
 
+  async afterClickToggleFive(index) {
+    const stateBefore = [ ...this.state.wishes];
+    stateBefore[ index ].loading = false;
+    await this.setState({ wishes: stateBefore })
+  }
+
   onFiveCreateSuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = true;
-    stateBefore[index].loading = false;
     stateBefore[index].wish.five_users_count += 1;
     this.setState({ wishes: stateBefore });
   }
@@ -63,7 +70,6 @@ export default class ProfileWishShow extends Component {
   onFiveDestroySuccess(data, index) {
     const stateBefore = [...this.state.wishes];
     stateBefore[index].also_five = false;
-    stateBefore[index].loading = false;
     stateBefore[index].wish.five_users_count -= 1;
     this.setState({ wishes: stateBefore });
   }
@@ -117,6 +123,7 @@ export default class ProfileWishShow extends Component {
                       image_url={data.wish.image_medium_url}
                       also_five={data.also_five}
                       five_users_count={data.wish.five_users_count}
+                      loading={data.loading}
                     />
                   }
                   disableRightSwipe={true}
