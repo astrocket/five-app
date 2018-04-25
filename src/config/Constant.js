@@ -96,7 +96,7 @@ export const FiveShowButtonRight = (category, five) => {
       button_right = {
         url: five.youtube_link || '',
         title: five.title || 'n/a',
-        ext: 'Play',
+        text: 'Play',
         icon: 'play'
       };
       break;

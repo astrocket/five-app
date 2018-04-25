@@ -240,14 +240,14 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      borderRadius={6}
+                      borderRadius={8}
                       marginRight={24}
                     />
                   )}
                   keyExtractor={item => 'five-challenge-' + item.id}
                 />
                 :<EmptyBox
-                  barWidth={Constant.deviceWidth - 20}
+                  barWidth={Constant.deviceWidth}
                   message={`아직 추천 해드릴 ${this.state.category_korean}이 없네요.`}
                   barHeight={100}
                   borderRadius={10}

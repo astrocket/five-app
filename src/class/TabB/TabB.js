@@ -105,7 +105,7 @@ export default class TabB extends Component {
         <NavBar
           rightButton
           rightAsImage
-          rightIcon={require('../../assets/images/bookmark_pink_full.png')}
+          rightIcon={require('../../assets/images/bookmark_box.png')}
           onPressRight={() => navigation.navigate('ProfileWishIndex', { initialCategory: null })}
         />
           <FlatList

@@ -83,7 +83,7 @@ const NavBar = ({ category, statusBar, hasTabs, backgroundImage, onPressLeft, le
                         : <Icon
                           name={rightIcon}
                           style={{
-                            fontSize: 25,
+                            fontSize: 28,
                             color: rightIconColor || Constant.FiveColor,
                           }}/>
                     }
@@ -154,7 +154,7 @@ const NavBar = ({ category, statusBar, hasTabs, backgroundImage, onPressLeft, le
                       : <Icon
                         name={rightIcon}
                         style={{
-                          fontSize: 25,
+                          fontSize: 28,
                           color: rightIconColor || Constant.FiveColor,
                         }}/>
                   }

@@ -100,6 +100,7 @@ export default class ProfileWishShow extends Component {
                 <List
                   dataSource={this.ds.cloneWithRows(this.state.wishes)}
                   style={{
+                    flex: 1,
                     paddingTop: 2.5,
                   }}
                   renderRow={(data, secId, rowId, rowMap) =>
@@ -128,8 +129,8 @@ export default class ProfileWishShow extends Component {
                       <Text>삭제</Text>
                     </Button> : null
                   }
-                  leftOpenValue={75}
-                  rightOpenValue={-75}
+                  leftOpenValue={80}
+                  rightOpenValue={-80}
                 />
                 :<EmptyBox
                   barWidth={Constant.deviceWidth}

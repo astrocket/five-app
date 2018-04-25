@@ -234,8 +234,8 @@ export default class HomeIndex extends Component {
                     title: item.five.title,
                     id: item.five.id,
                   })}
-                  borderRadius={12}
-                  marginRight={16}
+                  borderRadius={8}
+                  marginRight={24}
                 />
               )}
               keyExtractor={item => `popular-${item.five.klass}-fives-` + item.five.id}

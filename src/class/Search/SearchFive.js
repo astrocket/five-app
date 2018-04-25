@@ -222,11 +222,11 @@ export default class SearchFive extends Component {
             justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'column',
           }}>
             <EmptyBox
-              barWidth={Constant.deviceWidth - 20}
+              barWidth={Constant.deviceWidth}
               message={`검색 결과가 없어요. ${'\n'}다른 검색어로 다시 시도해 보세요!`}
               barHeight={100}
               borderRadius={10}
-              marginRight={10}
+              margin={10}
             />
           </View>
         );
@@ -306,7 +306,7 @@ export default class SearchFive extends Component {
     const { navigation } = this.props;
 
     return (
-      <Container keyboardShouldPersistTaps={'always'}>
+      <Container keyboardShouldPersistTaps={'always'} style = {{ backgroundColor: 'white' }}>
         <ElevenHeader
           headerShow={this.state.headerShow}
           title={`${this.state.category_korean} 검색`}

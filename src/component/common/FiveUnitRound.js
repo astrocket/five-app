@@ -30,7 +30,7 @@ const FiveUnitRound = ({ category, id, subtitle, title, image_url, five_users_co
             height: (category === 'book' ? 200 : 156),
             width: (category === 'book' ? 140 : 156),
             borderRadius: borderRadius,
-            marginRight: 8,
+            marginRight: marginRight,
             flex: 1,
             resizeMode: (category === 'book' ? 'contain' : 'cover'),
           }}/>

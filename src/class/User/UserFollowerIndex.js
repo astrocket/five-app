@@ -111,7 +111,7 @@ export default class UserFollowerIndex extends Component {
               }
             />
           :<EmptyBox
-              barWidth={Constant.deviceWidth - 20}
+              barWidth={Constant.deviceWidth}
               message={`아직 ${this.state.user.name}님을 팔로우 하는 친구가 없어요.`}
               barHeight={100}
               borderRadius={10}
