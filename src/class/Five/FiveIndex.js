@@ -160,6 +160,7 @@ export default class FiveIndex extends Component {
                       category={item.category}
                       fives={item.fives}
                       clicked={item.following}
+                      loading={item.loading}
                       user={item.user}
                     />
                   )}
