@@ -115,10 +115,9 @@ export default class SearchFive extends Component {
           this.five.fiveDestroy(this.state.category, chunk.id, (res) => this.onFiveDestroySuccess(res.data, index))
             .then(() => this.afterClickToggleFive(index));
         } else {
-          this.state.methods.add_five_api(chunk, index, this.five.namesPerApi(this.state.category, chunk).title, (res) => {
-            this.onFiveCreateSuccess(chunk, index, res.data);
+          this.state.methods.add_five_api(chunk, index, this.five.namesPerApi(this.state.category, chunk).title, async (res) => {
+            await this.onFiveCreateSuccess(chunk, index, res.data);
           }, (e) => this.onFiveCreateFailed(e, chunk, index))
-            .then(() => this.afterClickToggleFive(index));
         }
       }
     );
@@ -139,20 +138,22 @@ export default class SearchFive extends Component {
   onFiveDestroySuccess(chunk, index) {
     const chunksBefore = [ ...this.state.chunks ];
     chunksBefore[ index ].already_five = false;
+    chunksBefore[ index ].loading = false;
     chunksBefore[ index ].five_users_count -= 1;
     this.setState({ chunks: chunksBefore });
   }
 
-  onFiveCreateSuccess(chunk, index, data) {
+  async onFiveCreateSuccess(chunk, index, data) {
     const chunksBefore = [ ...this.state.chunks ];
     chunksBefore[ index ] = data.five;
     chunksBefore[ index ].already_five = true;
+    chunksBefore[ index ].loading = false;
     if (data.first_kiss) {
       this.app.updateCategories().then(() => {
-        this.setState({ chunks: chunksBefore })
+        this.setState({ chunks: chunksBefore });
       });
     } else {
-      this.setState({ chunks: chunksBefore })
+      await this.setState({ chunks: chunksBefore })
     }
   }
 

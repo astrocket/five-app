@@ -145,8 +145,9 @@ class FiveStore extends StoreBase {
       .then((response) => {
         axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=restaurant`, { zipcode: response.data.documents[ 0 ].road_address.zone_no, chunk: document, }, this.header)
           .then(async(res) => {
-            await this.app.addFive('restaurant', res.data.five);
-            cb(res);
+            await this.app.addFive('restaurant', res.data.five).then(() => {
+              cb(res)
+            });
           }).catch(eb)
       }).catch((e) => this.defaultErrorHandler(e));
   }
@@ -155,8 +156,9 @@ class FiveStore extends StoreBase {
   async addFiveMusic(track, index, title, cb, eb) {
     await axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=music`, { chunk: track, }, this.header)
       .then(async(res) => {
-        await this.app.addFive('music', res.data.five);
-        cb(res);
+        await this.app.addFive('music', res.data.five).then(() => {
+          cb(res)
+        });
       }).catch(eb);
   }
 
@@ -164,8 +166,9 @@ class FiveStore extends StoreBase {
   async addFiveBook(document, index, title, cb, eb) {
     await axios.post(`${ApiServer.MY_PROFILE}/add_or_create_five?category=book`, { chunk: document, }, this.header)
       .then(async(res) => {
-        await this.app.addFive('book', res.data.five);
-        cb(res);
+        await this.app.addFive('book', res.data.five).then(() => {
+          cb(res)
+        });
       }).catch(eb);
   }
 
