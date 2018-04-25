@@ -6,15 +6,24 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="qqd-Ay-kNk">
             <objects>
-                <viewController id="Us3-2v-MNZ" sceneMemberID="viewController"/>
+                <viewController id="Us3-2v-MNZ" sceneMemberID="viewController">
+                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashIcon" id="grn-dc-DIq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4a-aq-daD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1215.2" y="67.916041979010501"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SplashIcon" width="562" height="1000"/>
+    </resources>
 </document>

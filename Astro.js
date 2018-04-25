@@ -20,6 +20,7 @@ import platform from './native-base-theme/variables/platform';
 import BaseStyle from './src/config/BaseStyle';
 import RootNavigation from './src/config/RootNavigation';
 import AuthNavigation from './src/config/AuthNavigation';
+import SplashScreen from 'react-native-smart-splash-screen'
 import { observer, inject } from 'mobx-react/native';
 
 @inject('stores') // Inject some or all the stores!
@@ -56,6 +57,14 @@ export default class App extends Component<{}> {
           });
         }
       });
+  }
+
+  componentDidMount () {
+     SplashScreen.close({
+        animationType: SplashScreen.animationType.scale,
+        duration: 850,
+        delay: 500,
+     })
   }
 
   

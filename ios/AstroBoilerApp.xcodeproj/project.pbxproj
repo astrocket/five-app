@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -51,6 +50,7 @@
 		C44110B304BF4F6384A9576C /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB50D001084D3CB38BE926 /* libRNVectorIcons.a */; };
 		C9D0F1B76DA34029B51631C9 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B6B20F6F1B456094CB6563 /* SimpleLineIcons.ttf */; };
 		CEDB0A33925B4ED0BB8B016B /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42E09B0F05C942FD9EBF172A /* Entypo.ttf */; };
+		D9568A01C8C04E9C8A934202 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2626553625D346B4826B88ED /* libRCTSplashScreen.a */; };
 		DF1670081AF545428E6AD6AA /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEB8F2C3EB49C583EC3F91 /* Entypo.ttf */; };
 		E4ADF95ACF3E4C25971C5C1E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51B9AB9B9C455DACCA5EFE /* libRNImagePicker.a */; };
 		E61FE8F169F34F999E0F86F3 /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35029C0828B74D64A9A56625 /* libRCTContacts.a */; };
@@ -100,6 +100,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = AstroBoilerApp;
+		};
+		01DDC10F20905E0800BDD537 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70CDB3904B484BF7A82B8A05 /* RCTSplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9F90C2241D619E9400F3E238;
+			remoteInfo = RCTSplashScreen;
 		};
 		043BAC9F1FE3C821008740D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -356,6 +363,7 @@
 		1526BC6281AB42D9909C6319 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		1788D31D68B545AC8F9FB7D4 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2453C175F6294433A0C1B2E4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		2626553625D346B4826B88ED /* libRCTSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSplashScreen.a; sourceTree = "<group>"; };
 		28E1D9C7323C43CF8A678D35 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2B5DD0DFBA014CD38B314542 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		35029C0828B74D64A9A56625 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTContacts.a; sourceTree = "<group>"; };
@@ -367,6 +375,7 @@
 		64D3ED135D85499EABDA0AC2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		65B6B20F6F1B456094CB6563 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		687F8A6519EA40FD8F829230 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		70CDB3904B484BF7A82B8A05 /* RCTSplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTSplashScreen.xcodeproj; path = "../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		77DDA0FC595B4850B0723823 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNOpenSettings.xcodeproj; path = "../node_modules/react-native-open-setting/ios/RNOpenSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -421,6 +430,7 @@
 				A5AE1EF5692F36BD2426A4B7 /* libPods-AstroBoilerApp.a in Frameworks */,
 				E61FE8F169F34F999E0F86F3 /* libRCTContacts.a in Frameworks */,
 				8A5A6DCE68B04AD1B37276D5 /* libRNOpenSettings.a in Frameworks */,
+				D9568A01C8C04E9C8A934202 /* libRCTSplashScreen.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +496,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		01DDC10C20905E0800BDD537 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01DDC11020905E0800BDD537 /* libRCTSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		043BAC7A1FE3C81D008740D3 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,6 +511,8 @@
 				48DB50D001084D3CB38BE926 /* libRNVectorIcons.a */,
 				35029C0828B74D64A9A56625 /* libRCTContacts.a */,
 				D7607BD3760E4D7B9B12DB09 /* libRNOpenSettings.a */,
+				EE5A294C562B4FB6A2A19CCF /* libSplashScreen.a */,
+				2626553625D346B4826B88ED /* libRCTSplashScreen.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -629,6 +649,7 @@
 				99B8623FDFC0430BBD48FF38 /* RNVectorIcons.xcodeproj */,
 				420386FEDEA446D8A1700BBB /* RCTContacts.xcodeproj */,
 				793336941D914031ACDA07FF /* RNOpenSettings.xcodeproj */,
+				70CDB3904B484BF7A82B8A05 /* RCTSplashScreen.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -834,6 +855,10 @@
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
 				{
+					ProductGroup = 01DDC10C20905E0800BDD537 /* Products */;
+					ProjectRef = 70CDB3904B484BF7A82B8A05 /* RCTSplashScreen.xcodeproj */;
+				},
+				{
 					ProductGroup = 832341B11AAA6A8300B99B32 /* Products */;
 					ProjectRef = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
 				},
@@ -904,6 +929,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		01DDC11020905E0800BDD537 /* libRCTSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTSplashScreen.a;
+			remoteRef = 01DDC10F20905E0800BDD537 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		043BACA01FE3C821008740D3 /* libRNImagePicker.a */ = {
@@ -1292,15 +1324,13 @@
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen",
 				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1327,15 +1357,13 @@
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen",
 				);
 				INFOPLIST_FILE = AstroBoilerAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1365,6 +1393,7 @@
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen",
 				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1399,6 +1428,7 @@
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-open-setting/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen",
 				);
 				INFOPLIST_FILE = AstroBoilerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
