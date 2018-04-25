@@ -11,6 +11,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RCTSplashScreen.h"
 
 @import GoogleMaps;
 
@@ -36,6 +37,7 @@
                                                       moduleName:@"AstroBoilerApp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
+  [RCTSplashScreen open:rootView withImageNamed:@"SplashIcon"];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

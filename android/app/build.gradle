@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-smart-splash-screen')
     compile project(':react-native-open-setting')
     compile project(':react-native-contacts')
     compile project(':react-native-vector-icons')
