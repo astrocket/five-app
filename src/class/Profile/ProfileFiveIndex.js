@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
   },
-    fiveTitleFive: {
+  fiveTitleFive: {
     color: '#333333',
     fontSize: 28,
     fontWeight: '300',

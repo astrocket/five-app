@@ -205,7 +205,7 @@ export default class UserFiveShow extends Component {
                     justifyContent: 'center',
                     marginBottom: 0,
                   }}>
-                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
+                  <Col style = {{ width: 4, backgroundColor: '#fafafa', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
                   </Col>
                   <Col style = {{ width: 4, backgroundColor: '#fafafa' }}>
                   </Col>
@@ -235,7 +235,7 @@ export default class UserFiveShow extends Component {
                   </Col>       
                   <Col style = {{ width: 16, backgroundColor: '#fafafa' }}>
                   </Col>          
-                  <Col style = {{ width: 24, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
+                  <Col style = {{ width: 4, backgroundColor: '#fafafa', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
                   </Col>
                 </Grid>
               }
@@ -283,26 +283,29 @@ export default class UserFiveShow extends Component {
           />
         }>
           <Grid>
-            <View style={rowFlexCenterCenter}>
-              <Text style = {styles.fiveUsername}>{this.state.user.name}의</Text>
-            </View>
-            <View style={rowFlexCenterCenter}>
-              <Text style = {styles.fiveTitle}>{this.state.category_korean}</Text><Text style = {styles.fiveTitleFive}> 파이브</Text>
-            </View>
-            <View style={rowFlexCenterCenter}>
-              <TouchableOpacity transparent style={{
-                flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
-              }} onPress={() => navigation.navigate('UserFollowerIndex', { category: this.state.category, user: navigation.state.params.user})}>
-                <Text style = {styles.fiveFollowText}>팔로워  </Text>
-                <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity transparent style={{
-                flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
-              }} onPress={() => navigation.navigate('UserFolloweeIndex', { category: this.state.category, user: navigation.state.params.user})}>
-                <Text style = {styles.fiveFollowText}>팔로잉  </Text>
-                <Text style = {styles.fiveFollowNumber}>{Number(this.state.followees_count).toLocaleString()}</Text>
-              </TouchableOpacity>
-            </View>
+
+              <View style={rowFlexCenterCenter}>
+                <Text style = {styles.fiveUsername}>{this.state.user.name}의</Text>
+              </View>
+              <View style={rowFlexCenterCenter}>
+                <Text style = {styles.fiveTitle}>{this.state.category_korean}</Text>
+                <Text style = {styles.fiveTitleFive}> 파이브</Text>
+              </View>
+              <View style={rowFlexCenterCenter}>
+                <TouchableOpacity transparent style={{
+                  flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 10
+                }} onPress={() => navigation.navigate('UserFollowerIndex', { category: this.state.category, user: navigation.state.params.user})}>
+                  <Text style = {styles.fiveFollowText}>팔로워  </Text>
+                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followers_count).toLocaleString()}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity transparent style={{
+                  flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10
+                }} onPress={() => navigation.navigate('UserFolloweeIndex', { category: this.state.category, user: navigation.state.params.user})}>
+                  <Text style = {styles.fiveFollowText}>팔로잉  </Text>
+                  <Text style = {styles.fiveFollowNumber}>{Number(this.state.followees_count).toLocaleString()}</Text>
+                </TouchableOpacity>
+              </View>
+
             <Row style = {{ height: 16, backgroundColor: '#fafafa' }}></Row>
             {this.renderCard(this.state.flip)}
             <Row style = {{ height: 48, backgroundColor: '#fafafa' }}></Row>
@@ -337,15 +340,14 @@ const styles = StyleSheet.create({
   fiveUsername: {
     color: Constant.GreyColor,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '300',
   },
   fiveTitle: {
     color: '#333333',
-    fontFamily: 'montserrat',
     fontSize: 28,
     fontWeight: '800',
   },
-    fiveTitleFive: {
+  fiveTitleFive: {
     color: '#333333',
     fontSize: 28,
     fontWeight: '300',

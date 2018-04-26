@@ -136,7 +136,7 @@ export default class UserShow extends Component {
                   fontSize: 26,
                   padding: 5
                 }} large numberOfLines={1}>{this.state.user.name}</Text>
-                <Text note style={{ width: 250, textAlign: 'center', padding: 3, marginBottom: 32 }} numberOfLines={2}>❝ {this.state.user.introduce} ❞</Text>
+                <Text note style={{ width: 250, textAlign: 'center', padding: 3, marginBottom: 32 }} numberOfLines={2}>{this.state.user.introduce}</Text>
               </Col>
             </Row>
             <View style={{

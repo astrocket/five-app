@@ -68,7 +68,7 @@ export default class Setting extends Component {
             <ListItem icon
                       onPress={() => this.props.screenProps.modalNavigation.navigate('ModalWebViewShow', {
                         url: `${ApiServer.COMPANY}/privacy_and_policy`,
-                        headerTitle: '이용약관',
+                        headerTitle: '이용약관 등',
                       })}>
               <Left>
                 <Icon name="paper" />

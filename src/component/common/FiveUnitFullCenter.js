@@ -32,7 +32,7 @@ const FiveUnitFullCenter = ({ id, category, subtitle, title, image_url, friends_
           justifyContent: 'center',
           marginBottom: 0,
         }}>
-        <Col style = {{ width: 16, backgroundColor: 'white', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
+        <Col style = {{ width: 16, backgroundColor: '#fafafa', borderTopRightRadius: 12, borderBottomRightRadius: 12 }}>
         </Col>
         <Col style = {{ width: (Constant.deviceWidth - fiveCardWidth) / 2 - 16, backgroundColor: '#fafafa' }}>
         </Col>
@@ -63,10 +63,10 @@ const FiveUnitFullCenter = ({ id, category, subtitle, title, image_url, friends_
               }}/>
             </Button>
           </Row>
-          <Row size={50} style={{ justifyContent: 'center', backgroundColor: 'transparent', marginRight: 10, marginLeft: 10 }}>
+          <Row size={50} style={{ justifyContent: 'center', backgroundColor: 'transparent', marginRight: 20, marginLeft: 20 }}>
             <Text large numberOfLines={1}>{title}</Text>
           </Row>
-          <Row size={30} style={{ width: 260, justifyContent: 'center', marginRight: 20, marginLeft: 20 }}>
+          <Row size={30} style={{ justifyContent: 'center', marginRight: 30, marginLeft: 30 }}>
             <Text note numberOfLines={1}>{subtitle}</Text>
           </Row>
           <Row size={40} style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
@@ -75,7 +75,7 @@ const FiveUnitFullCenter = ({ id, category, subtitle, title, image_url, friends_
         </Col>
         <Col style = {{ width: (Constant.deviceWidth - fiveCardWidth) / 2 - 16, backgroundColor: '#fafafa' }}>
         </Col>          
-        <Col style = {{ width: 16, backgroundColor: 'white', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
+        <Col style = {{ width: 16, backgroundColor: '#fafafa', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>
         </Col>
       </Grid>
     );
