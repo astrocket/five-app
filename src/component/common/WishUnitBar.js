@@ -6,8 +6,8 @@ import {
   Card, CardItem, Text, Thumbnail, ListItem,  Left,  Body,  Right, Icon
 } from 'native-base';
 import {
-  AddWishSmallButton
-} from './AddWishSmallButton';
+  AddSmallButton
+} from './AddSmallButton';
 import BaseStyle from '../../config/BaseStyle';
 
 const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, icon, also_five, five_users_count, loading }) => {
@@ -32,12 +32,9 @@ const WishUnitBar = ({ id, subtitle, title, image_url, onPressImage, onPress, ic
         <View style={{
           alignItems: 'center',
           justifyContent: 'center',
-          paddingRight: 3,
         }}>
-          <AddWishSmallButton
+          <AddSmallButton
             onPress={onPress}
-            textTrue={'담김'}
-            textFalse={'+ 담기'}
             clicked={also_five}
             loading={loading}
           />

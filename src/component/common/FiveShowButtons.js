@@ -43,6 +43,7 @@ const FiveShowButtons = ({ category, modalNavigation, five }) => {
                   alignItems: 'center',
                   justifyContent: 'center', 
                   marginRight: 0,
+                  elevation: 0,
                 }} onPress={() => modalNavigation.navigate('ModalWebViewShow', {
                   url: five.related_link,
                   headerTitle: (category === 'music' ? '가사 보기' : '정보 보기'),
@@ -65,6 +66,7 @@ const FiveShowButtons = ({ category, modalNavigation, five }) => {
                   justifyContent: 'center',
                   marginLeft: buttonMargin,
                   marginRight: 16,
+                  elevation: 0,
                 }} onPress={() => modalNavigation.navigate('ModalWebViewShow', {
                   url: right_button.url,
                   headerTitle: right_button.title

@@ -95,6 +95,7 @@ export default class ProfileFiveIndex extends Component {
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={10}
         pagingEnabled={true}
+        removeClippedSubviews={true}
         renderItem={({ item }) => (
           <FiveUnitFullCenter
             multiple
@@ -108,7 +109,6 @@ export default class ProfileFiveIndex extends Component {
               title: item.title,
               id: item.id,
             })}
-            borderRadius={12}
             cardCut={80}
           />
         )}
@@ -140,6 +140,7 @@ export default class ProfileFiveIndex extends Component {
             key={'flat-list-listing-section'}
             data={this.app.findCategory(this.state.category).get().fives}
             style = {{ backgroundColor: "#fafafa" }}
+            removeClippedSubviews={true}
             renderItem={({ item }) => (
               <FiveUnitBar
                 id={item.id}
@@ -180,7 +181,7 @@ export default class ProfileFiveIndex extends Component {
           onPressLeft={() => navigation.goBack()}
           rightButton
           rightAsImage
-          rightIcon={require('../../assets/images/pencil_icon_pink.png')}
+          rightIcon={require('../../assets/images/five_edit_text.png')}
           onPressRight={() => navigation.navigate('ProfileFiveEdit', {
             category: this.state.category,
             category_korean: this.state.category_korean,

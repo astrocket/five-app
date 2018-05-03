@@ -56,7 +56,7 @@ export default class ProfileWishIndex extends Component {
 
   handleScroll(e) {
     const currentOffset = e.nativeEvent.contentOffset.y;
-    const headerShow = currentOffset < 100;
+    const headerShow = currentOffset < 0;
     this.setState({ headerShow });
   }
 
@@ -68,17 +68,17 @@ export default class ProfileWishIndex extends Component {
 
       return (
         <Tab key={i} heading={category_korean} tabStyle={{
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         }} activeTabStyle={{
           backgroundColor: 'transparent'
         }} textStyle={{
           color: Constant.LightGrey,
-          fontSize: 18,
-          fontWeight: '900'
+          fontSize: 20,
+          fontWeight: 'bold'
         }} activeTextStyle={{
-          color: '#333333',
-          fontSize: 18,
-          fontWeight: '900',
+          color: Constant.FiveColor,
+          fontSize: 20,
+          fontWeight: 'bold',
         }}>
           <ProfileWishShow
             klass={klass}
@@ -110,16 +110,21 @@ export default class ProfileWishIndex extends Component {
         {this.state.categories.length > 0 ?
           <Tabs locked initialPage={this.state.initialPage} ref={(tabView) => {
             this.tabView = tabView;
-          }} renderTabBar={() => <ScrollableTab tabsContainerStyle={{ justifyContent: 'flex-start', flexWrap: 'wrap', backgroundColor: 'transparent'}}/>} tabBarUnderlineStyle={{
-            backgroundColor: 'transparent',
-            borderBottomColor: '#FFF',
-            elevation: 0,
-          }}>
+          }} renderTabBar={() => <ScrollableTab tabsContainerStyle={{ 
+                                                                      justifyContent: 'flex-start', 
+                                                                      flexWrap: 'wrap', 
+                                                                      backgroundColor: 'transparent',
+                                                                    }}/>} 
+                                                tabBarUnderlineStyle={{
+                                                                      backgroundColor: 'transparent',
+                                                                      borderBottomColor: '#FFF',
+                                                                      elevation: 0,
+                                                                    }}>
             {this.renderCategoryTabs((e) => this.handleScroll(e))}
           </Tabs>
           : <EmptyBox
             barWidth={Constant.deviceWidth}
-            message={`아직 보관한 아이템이 하나도 없어요. ${'\n'}나의 FIVE가 될 아이템을 찾아보세요!`}
+            message={`아직 보관한 아이템이 하나도 없어요. ${'\n'}북마크를 누르면 여기에 보관할 수 있어요!`}
             barHeight={100}
             borderRadius={10}
             marginRight={0}

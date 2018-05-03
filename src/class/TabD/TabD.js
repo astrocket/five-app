@@ -71,7 +71,7 @@ export default class TabD extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 100;
+    var headerShow = currentOffset < 50000;
     this.setState({ headerShow });
   }
 
@@ -89,6 +89,7 @@ export default class TabD extends Component {
         { this.state.notifications.length > 0 ?
           <FlatList
             data={this.state.notifications}
+            removeClippedSubviews={true} 
             style={{
               paddingBottom: 10,
             }}

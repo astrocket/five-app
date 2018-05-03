@@ -95,9 +95,8 @@ export default class FiveList extends Component {
                 id={item.id}
                 title={item.title}
                 subtitle={item.subtitle}
-                friends_info={`FIVE ${item.five_users_count}`}
+                friends_info={item.friends_info}
                 image_url={item.image_medium_url}
-                icon={null}
                 onPress={() => this.props.navigation.navigate('FiveShow', {
                   category: item.category,
                   title: item.title,

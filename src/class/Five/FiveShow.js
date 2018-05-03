@@ -81,10 +81,28 @@ export default class FiveShow extends Component {
   toggleWishCall() {
     this.setState({ wish_loading: true }, () => {
       if (this.state.my_wish) {
+        Toast.show({
+              type: "default",
+              position: "top",
+              textStyle: {fontSize: 14, fontWeight: 'bold', color: 'white'},
+              text: `내 ${this.state.category_korean} 보관함에서 삭제되었어요.`,
+              buttonText: 'OK',
+              buttonTextStyle: {fontSize: 16, fontWeight: 'bold', color: 'white'},
+              duration: 3000,
+                })
         this.five.wishDestroy(this.state.category, this.state.five.id, (res) => {
           this.setState({ my_wish: false });
         }).then(() => this.setState({ wish_loading: false }));
       } else {
+        Toast.show({
+              type: "default",
+              position: "top",
+              textStyle: {fontSize: 14, fontWeight: 'bold', color: 'white'},
+              text: `내 ${this.state.category_korean} 보관함에 담겼어요.`,
+              buttonText: 'OK',
+              buttonTextStyle: {fontSize: 16, fontWeight: 'bold', color: 'white'},
+              duration: 3000,
+                })
         this.five.wishCreate(this.state.category, this.state.five.id, (res) => {
           this.setState({ my_five: res.data.my_five, my_wish: res.data.my_wish, });
         }).then(() => this.setState({ wish_loading: false }));
@@ -95,10 +113,28 @@ export default class FiveShow extends Component {
   toggleFiveCall() {
     this.setState({ five_loading: true }, () => {
       if (this.state.my_five) {
+        Toast.show({
+              type: "default",
+              position: "top",
+              textStyle: {fontSize: 14, fontWeight: 'bold', color: 'white'},
+              text: `내 ${this.state.category_korean} 파이브에서 삭제되었어요. ${'\n'}보관함에는 남아있어요.`,
+              buttonText: 'OK',
+              buttonTextStyle: {fontSize: 16, fontWeight: 'bold', color: 'white'},
+              duration: 3000,
+                })
         this.five.fiveDestroy(this.state.category, this.state.five.id, (res) => {
           this.setState({ five_users_count: (this.state.five_users_count -= 1), my_five: false });
         }).then(() => this.setState({ five_loading: false }));
       } else {
+        Toast.show({
+              type: "default",
+              position: "top",
+              textStyle: {fontSize: 14, fontWeight: 'bold', color: 'white'},
+              text: `내 ${this.state.category_korean} 파이브로 추가되었어요.`,
+              buttonText: 'OK',
+              buttonTextStyle: {fontSize: 16, fontWeight: 'bold', color: 'white'},
+              duration: 3000,
+                })
         this.five.fiveCreate(this.state.category, this.state.five.id, (res) => {
           if (res.data.first_kiss) {
             this.app.updateCategories().then(() => {

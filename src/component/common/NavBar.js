@@ -15,7 +15,7 @@ const NavBar = ({ category, statusBar, hasTabs, backgroundImage, onPressLeft, le
 
   if (backgroundImage) {
     return (
-      <View style={{ height: (category === 'book' ? 260 : 240), backgroundColor: Constant.LightGrey }}>
+      <View style={{ height: (category === 'book' ? 260 : Constant.deviceWidth / 375 * 210), backgroundColor: Constant.LightGrey }}>
         {backgroundImage ?
             <Image
               style={{
@@ -174,14 +174,14 @@ const NavBar = ({ category, statusBar, hasTabs, backgroundImage, onPressLeft, le
 
 const styles = StyleSheet.create({
   leftSpace: {
-    height: 55,
-    width: 55,
+    height: 48,
+    width: 56,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rightSpace: {
-    height: 55,
-    width: 55,
+    height: 48,
+    width: 56,
     justifyContent: 'center',
     alignItems: 'center',
   },

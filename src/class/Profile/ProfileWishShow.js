@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View, Alert, ListView
+  View, Alert, ListView, 
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Button, List, ListItem, Icon, Toast
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Toast,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react/native';
 export default class ProfileWishShow extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    header: null
+    header: null,
   });
 
   constructor(props) {
@@ -76,10 +76,10 @@ export default class ProfileWishShow extends Component {
 
   askWishDestroy(secId, rowId, rowMap, item) {
     Alert.alert(
-      '삭제 알림',
-      '이 아이템을 보관함에서 삭제하시겠어요?',
-      [ { text: '아니요', style: 'cancel', },
-        { text: 'OK', onPress: () => this.five.wishDestroy(this.state.category, item.wish.id, (res) => this.deleteRow(secId, rowId, rowMap)), }, ],
+      `이 ${this.state.category_korean}을 삭제하시겠어요?`,
+      ``,
+      [ { text: '아니오', style: 'cancel', },
+        { text: '네', onPress: () => this.five.wishDestroy(this.state.category, item.wish.id, (res) => this.deleteRow(secId, rowId, rowMap)), }, ],
       { cancelable: true },
     );
   }
@@ -97,14 +97,13 @@ export default class ProfileWishShow extends Component {
 
     return (
       <Container>
-        <Row style={{ height: 12, backgroundColor: '#fafafa' }}>
-        </Row>
         <Content onScroll={this.props.onScroll}>
           <Grid>
             <Row>
               {this.state.wishes.length > 0 ?
                 <List
                   dataSource={this.ds.cloneWithRows(this.state.wishes)}
+                  removeClippedSubviews={true}
                   style={{
                     flex: 1,
                     paddingTop: 2.5,

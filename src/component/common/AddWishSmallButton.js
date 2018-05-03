@@ -16,8 +16,8 @@ const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse, loading }) 
         <Image
           source={require('../../assets/images/add_five_loading.png')}
           style={{
-            height: 25,
-            width: 25 * (width / height) + 5,
+            height: 24,
+            width: 24 * (width / height),
           }}
         />
       </Button>
@@ -29,8 +29,8 @@ const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse, loading }) 
           <Image
             source={require('../../assets/images/add_five_green.png')}
             style={{
-              height: 25,
-              width: 25 * (width / height) + 5,
+              height: 24,
+              width: 24 * (width / height),
             }}
           />
         </Button>
@@ -41,8 +41,8 @@ const AddWishSmallButton = ({ clicked, onPress, textTrue, textFalse, loading }) 
           <Image
             source={require('../../assets/images/add_five_pink.png')}
             style={{
-              height: 25,
-              width: 25 * (width / height) + 5,
+              height: 24,
+              width: 24 * (width / height),
             }}
           />
         </Button>

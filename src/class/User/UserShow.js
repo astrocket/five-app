@@ -169,7 +169,7 @@ export default class UserShow extends Component {
                     fives={item.fives}
                     image={require('../../assets/images/five_void_grey.png')}
                     fiveImage={Images.findImageOf(item.klass.toLowerCase())}
-                  />
+                  /> 
                 )}
                 keyExtractor={item => 'five-category-list-' + item.klass}
               />

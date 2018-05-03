@@ -22,13 +22,14 @@ const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, 
       <View>
         <View style={{
           width: null,
-          height: 380,
+          height: 340,
           marginBottom: 12,
           borderRadius: borderRadius,
           marginRight: marginRight,
           marginTop: 6,
         }}>
-          <TouchableOpacity transparent style={{
+          <TouchableOpacity style={{
+            backgroundColor: 'transparent',
             width: null,
             height: null,
             borderRadius: borderRadius,
@@ -50,10 +51,10 @@ const FiveUnitFull = ({ id, category, subtitle, title, image_url, friends_info, 
               justifyContent: 'flex-start',
               marginTop: 12,
             }}>
-              <Text large numberOfLines={1} style = {{ padding: 4, width: 190 }}>{title}</Text>
+              <Text large numberOfLines={1} style = {{ paddingLeft: 3, padding: 4, width: 190 }}>{title}</Text>
             </View>
             <Text note numberOfLines={1} style = {{ paddingLeft: 4, width: 190 }}>{subtitle}</Text>
-            <Text micro yellow style = {{ padding: 6 }}>{friends_info}</Text>
+            <Text micro yellow style = {{ paddingLeft: 5, padding: 2 }}>{friends_info}</Text>
           </View>
         </View>
       </View>

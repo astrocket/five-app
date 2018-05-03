@@ -63,6 +63,7 @@ export default class UserContacts extends Component {
           ListHeaderComponent={
             <RowHeaderBar
               title={'연락처 친구'}
+              sub={'주변 친구들을 팔로우하고 음악과 책 취향을 알아보세요.'}
             />
           }
         />
