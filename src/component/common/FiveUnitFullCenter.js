@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   TouchableHighlight,
+  TouchableOpacity,
   View, Dimensions,
 } from 'react-native';
 import {
@@ -36,43 +37,44 @@ const FiveUnitFullCenter = ({ id, category, subtitle, title, image_url, friends_
         </Col>
         <Col style = {{ width: (Constant.deviceWidth - fiveCardWidth) / 2 - 16, backgroundColor: '#fafafa' }}>
         </Col>
-        <Col style={{ backgroundColor: 'white', borderRadius: 16 }}>
-          <Row size={(category === 'book' ? fiveHeight - 140 : fiveHeight - 200)}
-            style={{
-            width: fiveCardWidth,
-            height: (category === 'book' ? fiveHeight : fiveHeight - 60),
-            borderRadius: 12,
-            padding: 16,
-            backgroundColor: 'transparent',
-            }}>
-            <Button transparent style={{
+        <View style={{ 
+          backgroundColor: 'white', 
+          borderRadius: 16,
+          height: fiveHeight,
+          width: fiveCardWidth,
+          }}>
+            <TouchableOpacity style={{ 
+              backgroundColor: 'transparent',
               flex: 1,
               height: (category === 'book' ? 240  : 200),
               width: 260,
-              marginTop: 16,
-              marginBottom: 16, 
-              borderRadius: 8
+              margin: 16,
+              borderRadius: 0
               }} onPress={onPress}>
               <Image 
                 source={{ uri: image_url }}
                 style={{
                   height: (category === 'book' ? 240  : 240),
                   width: (category === 'book' ? 200  : 260),
-                  borderRadius: 8,
+                  borderRadius: 4,
                   resizeMode: 'contain',
               }}/>
-            </Button>
-          </Row>
-          <Row size={50} style={{ justifyContent: 'center', backgroundColor: 'transparent', marginRight: 20, marginLeft: 20 }}>
-            <Text large numberOfLines={1}>{title}</Text>
-          </Row>
-          <Row size={30} style={{ justifyContent: 'center', marginRight: 30, marginLeft: 30 }}>
-            <Text note numberOfLines={1}>{subtitle}</Text>
-          </Row>
-          <Row size={40} style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
-            <Text micro yellow>{friends_info}</Text>
-          </Row>
-        </Col>
+            </TouchableOpacity>
+
+          <View style = {{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text large numberOfLines={1} style = {{
+              paddingTop: 8, paddingBottom: 8, paddingLeft: 32, paddingRight: 32,
+              }}
+              >{title}</Text>
+            <Text note numberOfLines={1} style = {{
+              paddingTop: 4, paddingBottom: 4, paddingLeft: 40, paddingRight: 40,
+              }}>{subtitle}</Text>
+            <Text micro yellow style = {{
+              padding: 8,
+              marginBottom: 16
+              }}>{friends_info}</Text>
+          </View>
+        </View>
         <Col style = {{ width: (Constant.deviceWidth - fiveCardWidth) / 2 - 16, backgroundColor: '#fafafa' }}>
         </Col>          
         <Col style = {{ width: 16, backgroundColor: '#fafafa', borderTopLeftRadius: 12, borderBottomLeftRadius: 12 }}>

@@ -15,9 +15,11 @@ const ElevenHeader = (props) => {
   const { container } = BaseStyle;
   const { headerShow, title, custom, rightButton, onPressRight, buttonIcon, rightAsImage } = props;
   const bigHeader = {
-    paddingBottom: 10, paddingTop: Constant.globalPaddingTop + 35,
-    paddingLeft: 16, paddingRight: 16,
-    height: Constant.globalPaddingTop + 35 + 50,
+    paddingBottom: 16, 
+    paddingTop: Constant.globalPaddingTop + 16,
+    paddingLeft: 16, 
+    paddingRight: 16,
+    height: Constant.globalPaddingTop + 56,
     backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -28,13 +30,24 @@ const ElevenHeader = (props) => {
     return (
       headerShow ?
         <View style={bigHeader}>
-          <Text xlarge montserrat>{title}</Text>
+          <Text style = {{
+            fontSize: 26,
+            fontWeight: '900',
+            color: '#333333',
+          }}
+            >{title}</Text>
           {rightButton ?
-            <View>
+            <View style = {{ position: 'absolute', top: 16, right: 12 }}>
               <Button onPress={onPressRight} transparent>
                 {rightAsImage ?
-                  <ImageCon
-                    image={buttonIcon}
+                  <Image
+                    source={buttonIcon}
+                    style={{
+                      height: 28,
+                      width: 66,
+                      marginTop: 2,
+                      resizeMode: 'contain',
+                    }}
                   />
                   :<Icon
                     name={buttonIcon}

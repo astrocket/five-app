@@ -35,19 +35,19 @@ export default (variables = variable) => {
       flex: 1,
       alignSelf: "stretch",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       borderRadius: null,
       borderBottomColor: "transparent",
       backgroundColor: variables.tabBgColor
     },
-    height: 45,
+    height: 42,
     flexDirection: "row",
     justifyContent: "space-around",
-    borderWidth: 1,
+    borderWidth: 0,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: "#ccc",
+    borderBottomColor: "#fff",
     backgroundColor: variables.tabBgColor
   };
 

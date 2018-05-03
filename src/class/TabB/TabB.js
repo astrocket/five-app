@@ -11,7 +11,7 @@ import {
   Col, Row, Grid,
 } from 'react-native-easy-grid';
 import {
-  UserUnitRound, FivesBar, EmptyBox, TabIcon, NavBar
+  UserUnitRound, FivesBar, EmptyBox, TabIcon, NavBar, ElevenHeader,
 } from '../../component/common';
 import * as Images from '../../assets/images/Images';
 import * as Constant from '../../config/Constant';
@@ -77,7 +77,7 @@ export default class TabB extends Component {
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '+ FIVE',
+        title: '어떤 FIVE를 만들어 보시겠어요?',
       },
       buttonIndex => {
         navigation.navigate(`${pages[ buttonIndex ]}`, {
@@ -91,7 +91,7 @@ export default class TabB extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 180;
+    var headerShow = currentOffset < 50000;
     this.setState({ headerShow });
   }
 
@@ -102,10 +102,12 @@ export default class TabB extends Component {
 
     return (
       <Container style={{ backgroundColor: '#fafafa' }}>
-        <NavBar
+        <ElevenHeader
+          custom
+          headerShow={this.state.headerShow}
           rightButton
           rightAsImage
-          rightIcon={require('../../assets/images/bookmark_box.png')}
+          buttonIcon={require('../../assets/images/bookmark_box.png')}
           onPressRight={() => navigation.navigate('ProfileWishIndex', { initialCategory: null })}
         />
           <FlatList

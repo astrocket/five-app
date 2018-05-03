@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, FlatList, RefreshControl, Alert,
+  StyleSheet, View, FlatList, RefreshControl, Alert, Text,
 } from 'react-native';
 import {
-  Container, Content, Spinner, Toast,
+  Container, Content, Spinner, Toast, Button,
 } from 'native-base';
 import {
   Col, Row, Grid,
@@ -15,6 +15,8 @@ import {
 import * as Images from '../../assets/images/Images';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @inject('stores') @observer
 export default class HomeIndex extends Component {
@@ -31,6 +33,7 @@ export default class HomeIndex extends Component {
       loading: true, //실서비스에서는 로딩 true로
       home_categories: [],
       refreshing: false,
+      showToast: false,
     };
   }
 
@@ -187,7 +190,8 @@ export default class HomeIndex extends Component {
           </Row>
           <RowHeaderBar
             style={{ backgroundColor: '#fafafa' }}
-            title={`${category_korean} 팔로우 제안`}
+            title={`팔로우 제안`}
+            sub={`다른 사람의 ${category_korean} 파이브를 둘러보세요.`}
           />
           <Row style={{ backgroundColor: '#fafafa' }}>
             <FlatList
@@ -195,6 +199,7 @@ export default class HomeIndex extends Component {
               showsHorizontalScrollIndicator={false}
               data={follow_suggestions}
               style={rowWrapper}
+              removeClippedSubviews={true}
               renderItem={({ item, index }) => (
                 <UserFivesBar
                   onPress={() => navigation.navigate('UserShow', {
@@ -213,7 +218,8 @@ export default class HomeIndex extends Component {
             />
           </Row>
           <RowHeaderBar
-            title={`당신을 위한 ${category_korean} 제안`}
+            title={`이런 ${category_korean}은 어떠세요?`}
+            sub={`지금 누군가의 FIVE로 선택된 ${category_korean}입니다.`}
           />
           <Row>
             <FlatList
@@ -221,6 +227,7 @@ export default class HomeIndex extends Component {
               showsHorizontalScrollIndicator={false}
               data={popular_fives}
               style={rowWrapper}
+              removeClippedSubviews={true}
               renderItem={({ item }) => (
                 <FiveUnitRound
                   category={category}

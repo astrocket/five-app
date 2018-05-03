@@ -74,7 +74,7 @@ export default class SearchUser extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 100;
+    var headerShow = currentOffset < 50000;
     this.setState({ headerShow });
   }
 
@@ -193,15 +193,15 @@ export default class SearchUser extends Component {
           borderBottomColor: 'white',
           backgroundColor: 'white',
         }}>
-          <Item style = {{ backgroundColor: Constant.LightGrey, height: 44, borderRadius: 12 }}>
-            <Icon name="search" style={{ fontSize: 26, color: 'grey', marginLeft: 12, marginRight: 6 }}/>
+          <Item style = {{ backgroundColor: Constant.LightGrey, height: 40, borderRadius: 12 }}>
+            <Icon name="search" style={{ fontSize: 20, color: 'grey', marginLeft: 12, marginRight: 4 }}/>
             <Input
               showLoading
               placeholder={` 아이디로 친구를 찾아 보세요...`}
               placeholderTextColor={Constant.GreyColor}
               autoCapitalize={'none'}
               autoCorrect={false}
-              autoFocus={true}
+              autoFocus={false}
               multiline={false}
               cancelButtonTitle={'취소'}
               value={this.state.input_search}

@@ -62,7 +62,7 @@ export default class FiveStoryShow extends Component {
               })}
             />
           </Row>
-          <Row style={{ width: deviceWidth, height: 96, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>
+          <Row style={{ width: deviceWidth, height: 84, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent', borderRadius: 24 }}>
             <Col style={{ flex: 1, width: deviceWidth, height: 76, borderRadius: 24, backgroundColor: 'white' }}>
             <ScrollView
               horizontal
@@ -72,7 +72,7 @@ export default class FiveStoryShow extends Component {
             >
               {this.state.five_story.fives.map((item) => {
                 return (
-                  <View key={item.id} style={{ width: deviceWidth, paddingTop: 0, paddingBottom: 10 }}>
+                  <View key={item.id} style={{ width: deviceWidth, paddingTop: 0, paddingBottom: 6 }}>
                     <FiveUnitBar
                       id={item.id}
                       title={item.title}

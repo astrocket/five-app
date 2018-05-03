@@ -32,15 +32,15 @@ const EmptyBox = ({ id, location, title, image_url, onPress, onLongPress, barWid
         {message ?
           <Text style = {{
             color: Constant.GreyColor,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: '300'
           }}
             >{message}</Text>
           : <Icon
             name="search-plus"
             style={{
-              fontSize: 48,
-              color: '#fff',
+              fontSize: 36,
+              color: Constant.LightGrey,
             }}
           />
         }

@@ -53,7 +53,7 @@ export default class AlarmEdit extends Component {
           }}>
             <ListItem>
               <Body>
-              <Text>알림 허용</Text>
+              <Text>푸시 알림</Text>
               </Body>
               <Right>
                 <Switch value={true}/>

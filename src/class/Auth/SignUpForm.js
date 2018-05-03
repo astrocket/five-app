@@ -211,7 +211,7 @@ export default class SignUpForm extends Component {
                 noButton
               />
             </Row>
-            <Row style={{ margin: 0, marginTop: 200, padding: 16, borderRadius: 12, backgroundColor: '#fafafa' }}>
+            <Row style={{ margin: 0, marginTop: 120, padding: 16, borderRadius: 12, backgroundColor: '#fafafa' }}>
               <Text style={{ fontSize: 4 }}>
                 <Text>
                   {`완료`}

@@ -13,8 +13,11 @@ export default (variables = variable) => {
     ".success": {
       backgroundColor: variables.brandSuccess
     },
+    ".transparent": {
+      backgroundColor: 'transparent'
+    },
     backgroundColor: "rgba(0,0,0,0.8)",
-    borderRadius: platform === "ios" ? 5 : 0,
+    borderRadius: platform === "ios" ? 16 : 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

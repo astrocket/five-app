@@ -3,7 +3,7 @@ import {
   View, FlatList, TouchableOpacity, StyleSheet, Image,
 } from 'react-native';
 import {
-  Container, Header, Content, Text, Spinner, Button, List, ListItem, Tabs, Tab, TabHeading,
+  Container, Header, Content, Text, Spinner, Button, List, ListItem, Tabs, Tab, TabHeading, Toast,
   ScrollableTab, ActionSheet,
 } from 'native-base';
 import {
@@ -41,6 +41,7 @@ export default class TabA extends Component {
       loading: true,
       categories: [],
       headerShow: true,
+      showToast: false,
     };
   }
 
@@ -49,7 +50,6 @@ export default class TabA extends Component {
       this.setState({ loading: false })
     });
   }
-
   onClickAdd() {
     const { navigation } = this.props;
     const BUTTONS = [ '음악', '책', '취소' ];
@@ -63,7 +63,7 @@ export default class TabA extends Component {
       {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
-        title: '+ FIVE',
+        title: '어떤 FIVE를 만들어 보시겠어요?',
       },
       buttonIndex => {
         navigation.navigate(`${pages[ buttonIndex ]}`, {
@@ -77,7 +77,7 @@ export default class TabA extends Component {
 
   handleScroll(e) {
     const currentOffset = e.nativeEvent.contentOffset.y;
-    const headerShow = currentOffset < 70;
+    const headerShow = currentOffset < 50000;
     this.setState({ headerShow });
   }
 
@@ -96,43 +96,52 @@ export default class TabA extends Component {
 
   renderTabButtons(goToPage) {
     const { flexCenterCenter }= BaseStyle;
+    const { navigation } = this.props;
+
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 56}}>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{
-            height: 56,
-          }}
-          data={this.app.category_names}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity 
-              key={index + 1} 
-              transparent onPress={() => goToPage(index + 1)} 
-              style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24 }]}
-              >
-              <Text style={styles.cateTab}>{item.category_korean}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => 'tabs-' + item.category}
-          ListHeaderComponent={
-            <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 24, marginLeft: 2 }]}>
-              <Text style={styles.cateTab}>홈</Text>
-            </TouchableOpacity>
-          }
-        />
-        <View style={{
-          height: 56,
-        }}>
-          <TouchableOpacity onPress={() => this.onClickAdd()} style={[flexCenterCenter,{ height: 56, width: null, paddingLeft: 16 }]}>
-          <Icon
-            name='plus-circle'
-            style={{
-            fontSize: 32,
-            color: Constant.FiveColor,
-            }}
-          />
-          </TouchableOpacity>
+      <View>
+        <View style={{ flex: 1, flexDirection: 'row', height: 56, width: Constant.deviceWidth }}>
+          <View style={{ width: Constant.deviceWidth, position: 'absolute', justifyContent: 'space-between', alignItems: 'center', flex: 1, flexDirection: 'row', height: 56 }}>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                height: 56,
+              }}
+              data={this.app.category_names}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity 
+                  key={index + 1} 
+                  transparent onPress={() => goToPage(index + 1)} 
+                  style={[flexCenterCenter,{ height: 56, width: null, paddingRight: 20 }]}
+                  >
+                  <Text style={styles.cateTab}>{item.category_korean}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => 'tabs-' + item.category}
+              ListHeaderComponent={
+                <TouchableOpacity transparent onPress={() => goToPage(0)} style={[flexCenterCenter,{ height: 56, paddingRight: 24, marginLeft: 18 }]}>
+                  <Text style={styles.cateTab}>홈</Text> 
+                </TouchableOpacity>
+              }
+            />
+
+            <View style={{
+              right: 22, 
+            }}>
+              <TouchableOpacity onPress={() => this.onClickAdd()}
+                                style={[flexCenterCenter,{ height: 56, paddingLeft: 16, paddingTop: 2, backgroundColor: 'transparent' }]}>
+                <Image 
+                  style={{
+                    height: 28,
+                    width: 66,
+                    resizeMode: 'contain'
+                    }}
+                  source={require('../../assets/images/five_30.png')} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
         </View>
       </View>
     );
@@ -144,6 +153,7 @@ export default class TabA extends Component {
 
     return (
       <Container>
+      {/*
         {this.state.headerShow ?
           <Header style={{
             paddingTop: Constant.globalPaddingTop + 12,
@@ -168,23 +178,26 @@ export default class TabA extends Component {
                   justifyContent: 'flex-end',
                   alignItems: 'flex-start'
                 }}>
-                  <Text xlarge style={{ color: '#333333' }}>myfive</Text>
+                  <Text xlarge style={{ color: '#333333' }}>''</Text>
                 </View>
               </View>
               {this.renderTabButtons((page) => this.tabView.goToPage(page))}
             </View>
           </Header>
-          : <Header style={{
+          : 
+*/
+          <Header style={{
             paddingTop: Constant.globalPaddingTop,
             paddingLeft: 16,
-            paddingRight: 24,
+            paddingRight: 12,
             height: 56 + Constant.globalPaddingTop,
             backgroundColor: '#FFF',
             borderBottomWidth: 0,
+            elevation: 0,
           }}>
             {this.renderTabButtons((page) => this.tabView.goToPage(page))}
           </Header>
-        }
+        } 
         <Tabs locked initialPage={0} ref={(tabView) => {
           this.tabView = tabView;
         }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'} 
@@ -213,8 +226,7 @@ const styles = StyleSheet.create({
   },
   cateTab: {
     color: Constant.LightGrey,
-    fontFamily: 'montserrat',
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '900',
   },
 });

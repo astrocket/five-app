@@ -68,28 +68,26 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
             flex: 1,
             width: null,
             height: null,
-            marginBottom: 8,
+            marginBottom: 0,
           }} onPress={onPress}>
             <View>
-              <ImageBackground 
+              <ImageBackground
+                removeClippedSubviews={true} 
                 style={{
-                  height: (deviceWidth - 48) * 1.2,
+                  height: (deviceWidth - 48) * 1.14,
                   width: deviceWidth - 48,
                   marginBottom: 12 
                 }}
                 imageStyle={{ borderRadius: 16 }}
                 source={{ uri: image_url }} >
-                <View style={{ flex: 65, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
+                <View style={{ flex: 60, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
                   <Text></Text>
                 </View>
                 <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 18 }}>
                   <Text normal numberOfLines={1} style={{ color: Constant.LightGrey, fontWeight: '900', textShadowColor: 'black' }}>{subtitle}</Text>
                 </View>
-                <View style={{ flex: 20, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 16, width: 310 }}> 
+                <View style={{ flex: 24, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginLeft: 16, width: 290 }}> 
                   <Text numberOfLines={2} style={{ color: 'white', fontSize: 32, fontWeight: '900' }}>{title}</Text>
-                </View>
-                <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent'}}>
-                  <Text></Text>
                 </View>
               </ImageBackground>
             </View>
@@ -138,7 +136,7 @@ const FiveStoryFull = ({ id, singleClickable, subtitle, title, image_url, onPres
                 <Icon
                   name="ios-pin"
                   style={{
-                    fontSize: 25,
+                    fontSize: 24,
                     color: Constant.FiveColor,
                   }}
                 />

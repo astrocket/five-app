@@ -160,7 +160,7 @@ export default class SearchFive extends Component {
   onFiveCreateFailed(error, chunk, index) {
     Alert.alert(
       `${Constant.stringifyServerError(error)}`,
-      `${this.five.namesPerApi(this.state.category, chunk).title}을(를) ${this.state.category_korean} 보관함에 담으시겠어요?`,
+      `${this.five.namesPerApi(this.state.category, chunk).title}을(를) ${this.state.category_korean} 보관함에 일단 보관해 두시겠어요?`,
       [ { text: '아니요', style: 'cancel'},
         { text: '네', onPress: () => this.state.methods.add_wish_api(chunk, index, this.five.namesPerApi(this.state.category, chunk).title) }, ],
       { cancelable: true },
@@ -177,7 +177,7 @@ export default class SearchFive extends Component {
 
   handleScroll(e) {
     var currentOffset = e.nativeEvent.contentOffset.y;
-    var headerShow = currentOffset < 50;
+    var headerShow = currentOffset < 50000;
     this.setState({ headerShow });
   }
 
@@ -236,6 +236,7 @@ export default class SearchFive extends Component {
           <Content onScroll={(e) => this.handleScroll(e)} key={'content-chunks'}>
             <FlatList
               data={this.state.chunks}
+              removeClippedSubviews={true}
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
                   id={item.id}
@@ -264,6 +265,7 @@ export default class SearchFive extends Component {
           <Content onScroll={(e) => this.handleScroll(e)} key={'content-wishes'}>
             <FlatList
               data={this.state.wishes}
+              removeClippedSubviews={true}
               renderItem={({ item, index }) => (
                 <SearchFiveUnitBar
                   id={item.wish.id}
@@ -284,7 +286,8 @@ export default class SearchFive extends Component {
               keyExtractor={item => 'five-wish-list-' + item.wish.id}
               ListHeaderComponent={
                 <RowHeaderBar
-                  title={`보관함의 ${this.state.category_korean} 중에서도 선택할 수 있어요.`}
+                  title={` `}
+                  sub={`아니면, 예전에 보관해 둔 ${this.state.category_korean} 중에서도 찾아 보세요.`}
                 />
               }
             />
@@ -310,7 +313,7 @@ export default class SearchFive extends Component {
       <Container keyboardShouldPersistTaps={'always'} style = {{ backgroundColor: 'white' }}>
         <ElevenHeader
           headerShow={this.state.headerShow}
-          title={`${this.state.category_korean} 검색`}
+          title={`${this.state.category_korean} FIVE 만들기`}
           custom
           rightButton
           buttonIcon={'times-circle'}
@@ -327,10 +330,10 @@ export default class SearchFive extends Component {
             <Input
               showLoading
               placeholderTextColor={Constant.GreyColor}
-              placeholder={`좋아하는 ${this.state.category_korean}을 찾아 보세요...`}
+              placeholder={`좋아하는 ${this.state.category_korean}을 검색해 보세요...`}
               autoCapitalize={'none'}
               autoCorrect={false}
-              autoFocus={true}
+              autoFocus={false}
               multiline={false}
               value={this.state.input_search}
               returnKeyType={'search'}

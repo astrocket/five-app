@@ -64,10 +64,10 @@ export default class ProfileFiveEdit extends Component {
 
     if (item) {
       Alert.alert(
-        '아이템 삭제 확인',
-        '이 아이템을 FIVE에서 삭제하시겠어요? 물론, 삭제해도 보관함에는 남아 있어요.',
+        `이 ${this.state.category_korean}을 삭제하시겠어요?`,
+        `삭제해도 ${this.state.category_korean} 보관함에는 남아 있어요.`,
         [
-          { text: '아니요',
+          { text: '아니오',
             style: 'cancel'
           },
           {
@@ -106,8 +106,8 @@ export default class ProfileFiveEdit extends Component {
                 <Text>삭제</Text>
               </Button> : null
           }
-          leftOpenValue={75}
-          rightOpenValue={-75}
+          leftOpenValue={80}
+          rightOpenValue={-80}
         />
       )
     } else {

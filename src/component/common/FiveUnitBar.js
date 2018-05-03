@@ -10,7 +10,7 @@ import * as Constant from '../../config/Constant';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBottom, updated_at, friends_info, new_label }) => {
+const FiveUnitBar = ({ id, subtitle, title, image_url, onPress, icon, paddingBottom, created_at, updated_at, friends_info, new_label }) => {
   const { container } = BaseStyle;
 
   if (updated_at) {

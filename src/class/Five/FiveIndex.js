@@ -25,7 +25,7 @@ export default class FiveIndex extends Component {
     this.server = this.props.stores.server;
     this.app = this.props.stores.app;
     this.server = this.props.stores.server;
-    this.  state = {
+    this.state = {
       loading: true,
       refreshing: false,
       category: this.props.category,
@@ -96,13 +96,14 @@ export default class FiveIndex extends Component {
         }>
           <Grid>
             <RowHeaderBar
-              title={'친구들의 컬렉션'}
+              title={'친구들의 파이브 컬렉션'}
               onPress={() => navigation.navigate('FiveList', {
                 category: this.state.category,
                 fives: this.state.fives,
-                title: '친구들의 컬렉션'
+                title: `친구들의 ${this.state.category_korean} FIVE`,
               })}
               moreTitle={'모두보기'}
+              sub={`업데이트된 친구들의 ${this.state.category_korean} 파이브를 확인해 보세요.`}
             />
             <Row>
               {this.state.fives.length > 0 ?
@@ -111,6 +112,7 @@ export default class FiveIndex extends Component {
                   showsHorizontalScrollIndicator={false}
                   data={this.state.fives}
                   style={rowWrapper}
+                  removeClippedSubviews={true}
                   renderItem={({ item }) => (
                     <FiveUnitFull
                       multiple
@@ -143,7 +145,8 @@ export default class FiveIndex extends Component {
             </Row>
             <RowHeaderBar
               style={{ backgroundColor: '#fafafa' }}
-              title={'팔로우 제안'}
+              title={`${this.state.category_korean} 친구를 만들어 보세요.`}
+              sub={`우연히 발견한 ${this.state.category_korean} 취향으로 인생친구가 될 수도?`}
             />
             <Row style={{ backgroundColor: '#fafafa' }}>
               {this.state.follow_suggestions.length > 0 ?
@@ -152,6 +155,7 @@ export default class FiveIndex extends Component {
                   showsHorizontalScrollIndicator={false}
                   data={this.state.follow_suggestions}
                   style={rowWrapper}
+                  removeClippedSubviews={true}
                   renderItem={({ item, index }) => (
                     <UserFivesBar
                       onPress={() => navigation.navigate('UserShow', { user: item.user })}
@@ -167,7 +171,7 @@ export default class FiveIndex extends Component {
                   keyExtractor={item => 'user-fives-' + item.user.id}
                 />
                 : <EmptyBox
-                  barWidth={Constant.deviceWidth - 20}
+                  barWidth={Constant.deviceWidth}
                   message={`아직 추천 해드릴 ${this.state.category_korean} 팔로워가 없네요.`}
                   barHeight={100}
                   borderRadius={10}
@@ -189,6 +193,7 @@ export default class FiveIndex extends Component {
                   showsHorizontalScrollIndicator={false}
                   data={this.state.my_wish_fives}
                   style={rowWrapper}
+                  removeClippedSubviews={true}
                   renderItem={({ item }) => (
                     <FiveUnitRound
                       category={this.state.category}
@@ -202,14 +207,14 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      borderRadius={6}
+                      borderRadius={(this.state.category === 'book' ? 4 : 12)}
                       marginRight={24}
                     />
                   )}
                   keyExtractor={item => 'wish-five-' + item.id}
                 />
                 :<EmptyBox
-                  barWidth={Constant.deviceWidth - 20}
+                  barWidth={Constant.deviceWidth}
                   message={`아직 보관한 ${this.state.category_korean}이 없으시네요.`}
                   barHeight={100}
                   borderRadius={10}
@@ -219,7 +224,8 @@ export default class FiveIndex extends Component {
 
             </Row>
             <RowHeaderBar
-              title={`당신을 위한 ${this.state.category_korean} 제안`}
+              title={`이런 ${this.state.category_korean}은 어떠세요?`}
+              sub={`지금 누군가의 FIVE로 선택된 ${this.state.category_korean}입니다.`}
             />
             <Row>
               {this.state.challenge_fives.length > 0 ?
@@ -228,6 +234,7 @@ export default class FiveIndex extends Component {
                   showsHorizontalScrollIndicator={false}
                   data={this.state.challenge_fives}
                   style={rowWrapper}
+                  removeClippedSubviews={true}
                   renderItem={({ item }) => (
                     <FiveUnitRound
                       category={this.state.category}
@@ -241,7 +248,7 @@ export default class FiveIndex extends Component {
                         suggest_title: `비슷한 종류의 FIVE ${this.state.category_korean}`,
                         id: item.id, navLoading: true
                       })}
-                      borderRadius={8}
+                      borderRadius={(this.state.category === 'book' ? 4 : 12)}
                       marginRight={24}
                     />
                   )}

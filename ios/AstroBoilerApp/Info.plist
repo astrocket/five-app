@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.80</string>
+	<string>1.00</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -136,13 +136,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>마이파이브에서 사용자의 카메라 앱 접근 허용을 필요로 합니다.</string>
+	<string>지금 카메라로 찍은 사진을 이용하여 보다 친밀한 프로필을 구성할 수 있습니다.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>마이파이브에서 사용자의 연락처 접근 허용을 필요로 합니다.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>주변 친구들과 취향으로 더 빨리 연결되기 위해 연락처 정보를 이용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>마이파이브에서 사용자의 사진 앱 접근 허용을 필요로 합니다.</string>
+	<string>사진첩에 저장한 사진으로 빠르게 프로필을 구성할 수 있습니다.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>보다 향상된 이용자 경험을 위해 항상 사용자의 위치정보를 이용합니다.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>보다 향상된 이용자 경험을 위해 앱 사용시 사용자의 위치정보를 이용합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -174,6 +176,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>ITSAppUsesNonExemptEncryption</key><false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

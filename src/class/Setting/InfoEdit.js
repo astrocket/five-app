@@ -15,6 +15,7 @@ import {
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 import ImagePicker from 'react-native-image-picker';
+import { ErrorHandler} from '../../config/helpers';
 import { observer, inject } from 'mobx-react/native';
 
 @inject('stores') @observer
@@ -74,6 +75,14 @@ export default class UserInfoNew extends Component {
   }
 
   postUserInfo() {
+    let regId = /^[a-zA-Z0-9]{3,10}$/;
+    if ( !regId.test( this.state.name ) ) {
+      ErrorHandler(
+        '마이파이브 닉네임은 3~10자리 영문과 숫자로만 이용할 수 있어요.',
+        () => this.setState({ name: '' })
+      );
+      return false
+    }
     const data = {
       user: {
         name: this.state.name,
@@ -149,7 +158,7 @@ export default class UserInfoNew extends Component {
               <InputSingle
                 placeholder={my_profile.introduce}
                 submitText={'확인'}
-                autoFocus={true}
+                autoFocus={false}
                 defaultValue={my_profile.introduce}
                 onChangeText={(introduce) => this.setState({ introduce })}
                 onSubmitPress={() => this.postUserInfo()}

@@ -3,7 +3,7 @@ import {
   Image,
 } from 'react-native';
 import {
-  Button, Icon, Text, Spinner
+  Button, Icon, Text, Spinner, Toast,
 } from 'native-base';
 import BaseStyle from '../../config/BaseStyle';
 
@@ -17,8 +17,8 @@ const AddSmallButton = ({ clicked, onPress, loading }) => {
         <Image
           source={require('../../assets/images/add_five_loading.png')}
           style={{
-            height: 26,
-            width: 26 * (width / height),
+            height: 24,
+            width: 24 * (width / height),
           }}
         />
       </Button>
@@ -30,8 +30,8 @@ const AddSmallButton = ({ clicked, onPress, loading }) => {
         <Image
           source={require('../../assets/images/add_five_green.png')}
           style={{
-            height: 26,
-            width: 26 * (width / height),
+            height: 24,
+            width: 24 * (width / height),
           }}
         />
       </Button>
@@ -42,8 +42,8 @@ const AddSmallButton = ({ clicked, onPress, loading }) => {
         <Image
           source={require('../../assets/images/add_five_pink.png')}
           style={{
-            height: 26,
-            width: 26 * (width / height),
+            height: 24,
+            width: 24 * (width / height),
           }}
         />
       </Button>
