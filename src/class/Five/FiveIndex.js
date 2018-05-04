@@ -163,7 +163,7 @@ export default class FiveIndex extends Component {
                       defaultImage={Images.default_main}
                       category={item.category}
                       fives={item.fives}
-                      limit={item.fives.length === 2}
+                      limit={item.fives.length > 2}
                       clicked={item.following}
                       loading={item.loading}
                       user={item.user}
