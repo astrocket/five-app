@@ -37,43 +37,47 @@ const FiveImages = ({ fives, defaultImage, pureWidth }) => {
 };
 
 
-const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, user, clicked, loading }) => {
+const UserFivesBar = ({ defaultImage, onPress, onPressFollow, category, fives, user, clicked, loading, limit = false }) => {
   const { container } = BaseStyle;
   let cardPadding = 5;
   let cardMargin = 20;
   let pureWidth = Constant.deviceWidth - 30 - cardMargin * 2 - cardPadding * 2;
 
-  return (
-    <View style={{ backgroundColor: '#FFF', marginRight: 10, borderRadius: 10}}>
-      <TouchableOpacity onPress={onPress}>
-        <View style={{ flexDirection: 'row', height: null,
-          width: Constant.deviceWidth - 60,
-          marginBottom: 10,
-          padding: 10,
-          flex: 1, }}>
-          <FiveImages fives={fives} defaultImage={defaultImage} pureWidth={pureWidth} />
-        </View>
-      </TouchableOpacity>
-      <ListItem cardStyle style={{ borderRadius: 10, backgroundColor: 'transparent' }}>
-        <Thumbnail small source={{ uri: user.image_url}}/>
-        <Body>
-        <View style={{ flexDirection: 'column'}}>
-          <Text note>{user.name}의</Text>
-          <Text medium>{Constant.CategoryToKorean(category)}</Text>
-        </View>
-        </Body>
-        <Right>
-          <FollowSmallButton
-            onPress={onPressFollow}
-            textTrue={'팔로잉'}
-            textFalse={'팔로우'}
-            clicked={clicked}
-            loading={loading}
-          />
-        </Right>
-      </ListItem>
-    </View>
-  );
+  if (limit) {
+    return null;
+  } else {
+    return (
+      <View style={{ backgroundColor: '#FFF', marginRight: 10, borderRadius: 10}}>
+        <TouchableOpacity onPress={onPress}>
+          <View style={{ flexDirection: 'row', height: null,
+            width: Constant.deviceWidth - 60,
+            marginBottom: 10,
+            padding: 10,
+            flex: 1, }}>
+            <FiveImages fives={fives} defaultImage={defaultImage} pureWidth={pureWidth} />
+          </View>
+        </TouchableOpacity>
+        <ListItem cardStyle style={{ borderRadius: 10, backgroundColor: 'transparent' }}>
+          <Thumbnail small source={{ uri: user.image_url}}/>
+          <Body>
+          <View style={{ flexDirection: 'column'}}>
+            <Text note>{user.name}의</Text>
+            <Text medium>{Constant.CategoryToKorean(category)}</Text>
+          </View>
+          </Body>
+          <Right>
+            <FollowSmallButton
+              onPress={onPressFollow}
+              textTrue={'팔로잉'}
+              textFalse={'팔로우'}
+              clicked={clicked}
+              loading={loading}
+            />
+          </Right>
+        </ListItem>
+      </View>
+    );
+  }
 };
 
 export { UserFivesBar };

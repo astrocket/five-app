@@ -209,6 +209,7 @@ export default class HomeIndex extends Component {
                   onPressFollow={() => this.toggleFollowCall(item, index, category_index)}
                   category={category}
                   fives={item.fives}
+                  limit={item.fives.length === 2}
                   clicked={item.following}
                   loading={item.loading}
                   user={item.user}
