@@ -178,5 +178,7 @@
 	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>CodePushDeploymentKey</key>
+	<string>MyWnQKZwp1272JVu6EI-1wFd9V1fec1e1c92-f9f7-4832-92bc-9995b0dd8d90</string>
 </dict>
 </plist>
