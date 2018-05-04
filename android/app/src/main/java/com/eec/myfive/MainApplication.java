@@ -3,6 +3,7 @@ package com.eec.myfive;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.reactlibrary.RNOpenSettingsPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
@@ -20,6 +21,12 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        protected String getJSBundleFile() {
+        return CodePush.getJSBundleFile();
+        }
+    
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -29,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CodePush(YJGIJa0pv5qdU1PS_96hMCsxq-Eiec1e1c92-f9f7-4832-92bc-9995b0dd8d90, getApplicationContext(), BuildConfig.DEBUG),
             new RCTSplashScreenPackage(),
             new RNOpenSettingsPackage(),
             new ReactNativeContacts(),
