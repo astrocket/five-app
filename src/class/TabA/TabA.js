@@ -153,39 +153,6 @@ export default class TabA extends Component {
 
     return (
       <Container>
-      /*
-        {this.state.headerShow ?
-          <Header style={{
-            paddingTop: Constant.globalPaddingTop + 12,
-            height: Constant.globalPaddingTop + 12 + 66 + 56,
-            paddingLeft: 16,
-            paddingRight: 24,
-            backgroundColor: '#FFF',
-            borderBottomWidth: 0
-          }}>
-            <View style={{
-              flex: 1,
-              flexDirection: 'column',
-            }}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                flex: 1,
-                marginTop: Constant.globalPaddingTop,
-              }}>
-                <View style={{
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-start'
-                }}>
-                  <Text xlarge style={{ color: '#333333' }}>''</Text>
-                </View>
-              </View>
-              {this.renderTabButtons((page) => this.tabView.goToPage(page))}
-            </View>
-          </Header>
-          : 
-*/
           <Header style={{
             paddingTop: Constant.globalPaddingTop,
             paddingLeft: 16,
