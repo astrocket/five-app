@@ -1,4 +1,4 @@
-package com.eec.myfive;
+package com.easteregg.myfive;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

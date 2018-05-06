@@ -127,13 +127,15 @@ export const askToParticipate = (category, user) => {
 export const stringifyServerError = (e) => {
   let string_msg;
   let msg = (typeof e.response.data.errors === 'undefined') ? e.response.data : e.response.data.errors;
+  console.log(JSON.stringify(msg));
   if (Object.keys(msg).length > 1) {
-    console.log('1');
-    console.log(JSON.stringify(msg));
-    msg = Object.keys(msg).map((k) => `${msg[k][0]}`).join('\n');
+    msg = Object.keys(msg).map((k) => {
+      console.log(k);
+      if (!(k === 'id' || k === 'status')) {
+        return `${msg[k]}`
+      }
+    }).join('');
   } else {
-    console.log('2');
-    console.log(JSON.stringify(msg));
     msg = JSON.stringify(msg[0])
   }
   string_msg = msg.replace(/"/g,"");

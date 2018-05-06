@@ -1,4 +1,4 @@
-package com.eec.myfive;
+package com.easteregg.myfive;
 
 import android.app.Application;
 
