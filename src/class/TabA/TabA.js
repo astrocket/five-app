@@ -164,7 +164,6 @@ export default class TabA extends Component {
           }}>
             {this.renderTabButtons((page) => this.tabView.goToPage(page))}
           </Header>
-        } 
         <Tabs locked initialPage={0} ref={(tabView) => {
           this.tabView = tabView;
         }} tabBarUnderlineStyle={{ opacity: 0 }} tabBarPosition={'overlayTop'} 
@@ -175,11 +174,11 @@ export default class TabA extends Component {
           {this.renderCategoryTabs((e) => this.handleScroll(e))}
         </Tabs>
         {this.state.loading &&
-        <View style={preLoading}>
-          <Spinner size="large"/>
-          <CodePushComponent />
-        </View>
+          <View style={preLoading}>
+            <Spinner size="large"/>
+          </View>
         }
+        <CodePushComponent />
       </Container>
     );
   }

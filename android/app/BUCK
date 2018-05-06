@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.eec.myfive",
+    package = "com.easteregg.myfive",
 )
 
 android_resource(
     name = "res",
-    package = "com.eec.myfive",
+    package = "com.easteregg.myfive",
     res = "src/main/res",
 )
 
