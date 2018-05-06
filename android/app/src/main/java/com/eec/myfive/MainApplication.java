@@ -36,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(YJGIJa0pv5qdU1PS_96hMCsxq-Eiec1e1c92-f9f7-4832-92bc-9995b0dd8d90, getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush("YJGIJa0pv5qdU1PS_96hMCsxq-Eiec1e1c92-f9f7-4832-92bc-9995b0dd8d90", getApplicationContext(), BuildConfig.DEBUG),
             new RCTSplashScreenPackage(),
             new RNOpenSettingsPackage(),
             new ReactNativeContacts(),
