@@ -15,8 +15,8 @@ import FiveIndex from '../Five/FiveIndex';
 import * as Constant from '../../config/Constant';
 import BaseStyle from '../../config/BaseStyle';
 import { observer, inject } from 'mobx-react/native';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CodePushComponent from '../../../CodePushComponent';
 
 @inject('stores') @observer
 export default class TabA extends Component {
@@ -153,7 +153,7 @@ export default class TabA extends Component {
 
     return (
       <Container>
-      {/*
+      /*
         {this.state.headerShow ?
           <Header style={{
             paddingTop: Constant.globalPaddingTop + 12,
@@ -210,6 +210,7 @@ export default class TabA extends Component {
         {this.state.loading &&
         <View style={preLoading}>
           <Spinner size="large"/>
+          <CodePushComponent />
         </View>
         }
       </Container>

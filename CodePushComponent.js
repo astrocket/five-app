@@ -8,7 +8,7 @@ import {
 
 import codePush from "react-native-code-push";
 
-export default class extends Component {
+export default class CodePushComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
